@@ -1,0 +1,59 @@
+# --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2008-10-30 01:34+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: collective.portlet.collectionbysubject\n"
+
+#: ./collectionbysubject.py:174
+msgid "Add Collection by subject Portlet"
+msgstr ""
+
+#: ./collectionbysubject.py:63
+msgid "Cache duration"
+msgstr ""
+
+#: ./collectionbysubject.py:50
+msgid "Find the collection which provides the items to list"
+msgstr ""
+
+#: ./collectionbysubject.py:57
+msgid "Group by"
+msgstr ""
+
+#: ./collectionbysubject.py:64
+msgid "How long do you want portlet results to be cached (in minutes)?."
+msgstr ""
+
+#: ./collectionbysubject.py:44
+msgid "Portlet header"
+msgstr ""
+
+#: ./collectionbysubject.py:58
+msgid "Select subject you wish to group collection results by."
+msgstr ""
+
+#: ./collectionbysubject.py:49
+msgid "Target collection"
+msgstr ""
+
+#: ./collectionbysubject.py:175
+msgid "This portlet display a listing of items from a Collection that are grouped by selected subject."
+msgstr ""
+
+#: ./collectionbysubject.py:46
+msgid "Title of the rendered portlet it will override collection's title."
+msgstr ""
+
