@@ -90,7 +90,10 @@ class Assignment(base.Assignment):
         """This property is used to give the title of the portlet in the
         "manage portlets" screen.
         """
-        return self.header
+        if self.header:
+            return self.header
+        else:
+            return _(u'Collection By Subject')
 
 def render_cachekey(method, self):
    return time() // (int(self.data.cache_duration) * 60)
@@ -105,9 +108,9 @@ class Renderer(CollectionRenderer):
     """
 
     _template = ViewPageTemplateFile('collectionbysubject.pt')
-    
+   
     def header_url(self):
-        collection = self.collection()
+        collection = self.collection(self.data.target_collection)
         if collection is None:
             return None
         else:
@@ -117,7 +120,7 @@ class Renderer(CollectionRenderer):
         if self.data.header:
             return self.data.header
         
-        collection = self.collection()
+        collection = self.collection(self.data.target_collection)
         if collection is None:
             return None
         else:
@@ -135,7 +138,7 @@ class Renderer(CollectionRenderer):
             This is a wrapper so that we can memoize if and only if we aren't
             selecting random items."""
         results = []
-        collection = self.collection()
+        collection = self.collection(self.data.target_collection)
         if collection is not None:
             results = collection.queryCatalog({})
             if results:
@@ -160,6 +163,24 @@ class Renderer(CollectionRenderer):
                         number  = len(items)))
         return results
 
+    @memoize
+    def collection(self, collection_path=None):
+        """ get the collection the portlet is pointing to"""
+        
+        if collection_path is None:
+            collection_path = self.data.target_collection
+        if not collection_path:
+            return None
+
+        if collection_path.startswith('/'):
+            collection_path = collection_path[1:]
+        
+        if not collection_path:
+            return None
+
+        portal_state = getMultiAdapter((self.context, self.request), name=u'plone_portal_state')
+        portal = portal_state.portal()
+        return portal.restrictedTraverse(collection_path, default=None)
 
 class AddForm(base.AddForm):
     """Portlet add form.
