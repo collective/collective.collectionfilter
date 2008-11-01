@@ -24,12 +24,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from collective.portlet.collectionbysubject import CollectionBySubjectMessageFactory as _
 
 
-
-SUBJECT_TO_INDEX = {
-    'Keywords':         'Subject',
-    'Author':           'Creator',
-    'Location':         'location',
-    'Type':             'Type',}
+from config import SUBJECT_TO_INDEX # add new indexes as neccessary
 
 
 
