@@ -5,6 +5,7 @@ from time import time
 from zope import schema
 from zope.formlib import form
 from zope.interface import implements
+from zope.component import getMultiAdapter
 from zope.schema.interfaces import ISource, IContextSourceBinder
 
 from plone.memoize import ram
