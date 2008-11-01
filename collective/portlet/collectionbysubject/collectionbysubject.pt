@@ -1,0 +1,25 @@
+<dl class="portlet portletCollectionBySubject"
+    i18n:domain="collective.portlet.collectionbysubject">
+
+    <dt class="portletHeader">
+        <a href="#"
+           tal:attributes="href view/header_url"
+           tal:content="view/header_title">
+           Header
+        </a>
+    </dt>
+
+    <dd class="portletItem odd">
+        <ul>
+            <li tal:repeat="subject view/results">
+                <a href="#" 
+                   tal:attributes="href subject/url;
+                                   title subject/title;">
+                    <span tal:content="subject/title">Subject</span>
+                    (<span tal:replace="subject/number"/>)
+                </a>
+            </li>
+        </ul>
+    </dd>
+
+</dl>
