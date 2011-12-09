@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.2 - unreleased
+0.3 - 2011-12-09
 ----------------
 
  * Fix permission used.
