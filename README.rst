@@ -1,10 +1,8 @@
-Collection by Subject Portlet
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Concept - David Bain (david.bain@alteroo.com)
-Implemented by Rok Garbas (big ups to Rok).
+collective.portlet.collectionfilter
+===================================
 
 Introduction
-============
+------------
 
 This portlet makes it possible to present collections grouped by different criteria including:
 
@@ -13,8 +11,9 @@ This portlet makes it possible to present collections grouped by different crite
 * by Type
 * by Location (may require some tweaking)
 
+
 Usage
-=========
+-----
 Click "manage portlets" and add a new "Collection by subject".
 
 Settings include:
@@ -33,3 +32,12 @@ The output looks similar to this::
         drink (4)
         well (2)
         sleep (1)
+
+
+Authors
+-------
+
+Refactoring into collective.portlet.collectionfilter by Johannes Raggam.
+
+Original implementation of collective.portlet.collectionbysubject by Rok
+Garbas. Concept by David Bain (alteroo.com).
