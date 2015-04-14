@@ -1,11 +1,11 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.1'
+version = '0.3'
 
 setup(name='collective.portlet.collectionbysubject',
       version=version,
-      description="Portlet that groups collections items by subject",
+      description="Portlet that groups collection items by subject",
       long_description=open("README.txt").read() + "\n" +
                        open("HISTORY.txt").read(),
       # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
