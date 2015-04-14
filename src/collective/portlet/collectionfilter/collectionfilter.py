@@ -201,7 +201,7 @@ class Renderer(CollectionRenderer):
                 if callable(val):
                     val = val()
                 if not getattr(val, '__iter__', False):
-                    val = list(val)
+                    val = [val]
                 for it in val:
                     grouped_results.setdefault(it, [])
                     grouped_results[it].append(item)
