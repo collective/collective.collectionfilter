@@ -80,26 +80,6 @@ class ICollectionFilterPortlet(IPortletDataProvider):
         vocabulary='collective.portlet.collectionfilter.GroupByCriteria',
     )
 
-    faceted = schema.Bool(
-        title=_(u'label_faceted', default=u'Faceted Filter'),
-        description=_(
-            u'help_faceted',
-            default=u'Use faceted filtering by keeping previously selected '
-                    u'criterias active.'),
-        default=False,
-        required=False
-    )
-
-    faceted_operator = schema.Choice(
-        title=_(u'label_faceted_operator', default=u'Faceted Filter Operator'),
-        description=_(
-            u'help_faceted_operator',
-            default=u'Select, if all (and) or any (or) selected filter '
-                    u'criterias must be met.'),
-        required=True,
-        vocabulary='collective.portlet.collectionfilter.FacetedOperator',
-    )
-
     show_count = schema.Bool(
         title=_(u'label_show_count', default=u'Show count'),
         description=_(
@@ -109,38 +89,66 @@ class ICollectionFilterPortlet(IPortletDataProvider):
         required=False
     )
 
-    list_scaling = schema.Choice(
-        title=_('label_list_scaling', u'List scaling'),
-        description=_(
-            'help_list_scaling',
-            u'Scale list by count. If a scaling is selected, a the list '
-            u'appears as tagcloud.'
-        ),
-        required=True,
-        vocabulary='collective.portlet.collectionfilter.ListScaling',
-    )
+#    faceted = schema.Bool(
+#        title=_(u'label_faceted', default=u'Faceted Filter'),
+#        description=_(
+#            u'help_faceted',
+#            default=u'Use faceted filtering by keeping previously selected '
+#                    u'criterias active.'),
+#        default=False,
+#        required=False
+#    )
+
+#    faceted_operator = schema.Choice(
+#        title=_(u'label_faceted_operator', default=u'Faceted Filter Operator'),
+#        description=_(
+#            u'help_faceted_operator',
+#            default=u'Select, if all (and) or any (or) selected filter '
+#                    u'criterias must be met.'),
+#        required=True,
+#        vocabulary='collective.portlet.collectionfilter.FacetedOperator',
+#    )
+
+#    list_scaling = schema.Choice(
+#        title=_('label_list_scaling', u'List scaling'),
+#        description=_(
+#            'help_list_scaling',
+#            u'Scale list by count. If a scaling is selected, a the list '
+#            u'appears as tagcloud.'
+#        ),
+#        required=True,
+#        vocabulary='collective.portlet.collectionfilter.ListScaling',
+#    )
 
 
 class Assignment(base.Assignment):
     implements(ICollectionFilterPortlet)
+
+    header = u""
+    target_collection = None
+    group_by = u""
+    show_count = False
+    # faceted = False
+    # faceted_operator = 'and'
+    # list_scaling = None
 
     def __init__(
         self,
         header=u"",
         target_collection=None,
         group_by=u"",
-        faceted=False,
-        faceted_operator='and',
         show_count=False,
-        list_scaling=None
+        # faceted=False,
+        # faceted_operator='and',
+        # list_scaling=None
     ):
         self.header = header
         self.target_collection = target_collection
         self.group_by = group_by
-        self.faceted = faceted
-        self.faceted_operator = faceted_operator
         self.show_count = show_count
-        self.list_scaling = list_scaling
+        # self.faceted = faceted
+        # self.faceted_operator = faceted_operator
+        # self.list_scaling = list_scaling
 
     @property
     def title(self):
