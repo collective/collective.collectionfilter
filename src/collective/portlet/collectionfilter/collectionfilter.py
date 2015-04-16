@@ -1,6 +1,10 @@
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from collective.portlet.collectionfilter import msgFact as _
 from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
+from plone.app.event.base import _prepare_range
+from plone.app.event.base import guess_date_from
+from plone.app.event.base import start_end_from_mode
+from plone.app.event.base import start_end_query
 from plone.app.portlets.browser import z3cformhelper
 from plone.app.portlets.portlets import base
 from plone.app.uuid.utils import uuidToObject
@@ -8,16 +12,20 @@ from plone.app.vocabularies.catalog import CatalogSource
 from plone.memoize.instance import memoize
 from plone.portlet.collection.collection import Renderer as CollectionRenderer
 from plone.portlets.interfaces import IPortletDataProvider
+from urllib import urlencode
 from z3c.form import field
 from zope import schema
 from zope.interface import implements
 
 try:
     from plone.app.event.browser.event_listing import EventListing
-    from plone.app.event.base import RET_MODE_OBJECTS
 except ImportError:
     class EventListing(object):
         pass
+
+from datetime import datetime
+import logging
+logger = logging.getLogger(name="collective.portlet.collectionfilter")
 
 
 GROUPBY_CRITERIA = {
@@ -189,19 +197,24 @@ class Renderer(CollectionRenderer):
             collection_layout = collection.getLayout()
             default_view = collection.restrictedTraverse(collection_layout)
             results = []
+            custom_query = {}
             if isinstance(default_view, EventListing):
-                # special plone.app.event event_listing handling
-                # TODO: that's cumbersome. can't pae event_listing be a
-                #       instance of the Collection class?
-                results = default_view.events(
-                    ret_mode=RET_MODE_OBJECTS,
-                    batch=False
-                )
-            elif getattr(default_view, 'results', False):
-                results = default_view.results()
-            else:
-                results = collection.results()
+                request = self.request
+                mode = request.form.get('mode', None)
+                date = request.form.get('date', None)
+                date = guess_date_from(date) if date else None
 
+                if mode:
+                    start, end = start_end_from_mode(mode, date, collection)
+                    start, end = _prepare_range(collection, start, end)
+                    custom_query.update(start_end_query(start, end))
+                    # TODO: expand events. better yet, let collection.results
+                    #       do that
+            results = collection.results(
+                batch=False, custom_query=custom_query
+            )
+
+            t1 = datetime.now()  # LOGGING
             grouped_results = {}
             for item in results:
                 attr = GROUPBY_CRITERIA[self.data.group_by]['metadata']
@@ -213,16 +226,24 @@ class Renderer(CollectionRenderer):
                 for it in val:
                     grouped_results.setdefault(it, [])
                     grouped_results[it].append(item)
+
+            urlquery = {}
+            urlquery.update(self.request.form)
+            idx = GROUPBY_CRITERIA[self.data.group_by]['index']
             for subject, items in grouped_results.iteritems():
+                urlquery[idx] = subject
                 ret.append(dict(
                     title=subject,
-                    url='{0}/?{1}={2}'.format(
+                    url='{0}/?{1}'.format(
                         self.collection.absolute_url(),
-                        GROUPBY_CRITERIA[self.data.group_by]['index'],
-                        subject
+                        urlencode(urlquery)
                     ),
                     count=len(items)
                 ))
+            t2 = datetime.now()  # LOGGING
+            logger.info("time to build cloud: {0}".format(
+                (t2 - t1).total_seconds())
+            )
 
         return ret
 

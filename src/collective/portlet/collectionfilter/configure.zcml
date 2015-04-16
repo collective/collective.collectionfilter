@@ -31,6 +31,12 @@
       name="collective.portlet.collectionfilter.ListScaling"
       />
 
+  <subscriber
+      for="*
+           zope.traversing.interfaces.IBeforeTraverseEvent"
+      handler=".content_filter.set_content_filter"
+      />
+
   <genericsetup:registerProfile
       name="default"
       title="collective.portlet.collectionfilter"
