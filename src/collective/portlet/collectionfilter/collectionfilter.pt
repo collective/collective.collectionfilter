@@ -1,4 +1,4 @@
-<dl class="portlet portletCollectionFilter" i18n:domain="collective.portlet.collectionfilter">
+<dl class="portlet portlet-collection-filter portlet-tags" i18n:domain="collective.portlet.collectionfilter">
   <dt class="portletHeader">
     <span class="portletTopLeft"></span>
     <span class="portletTitle" tal:content="view/header_title"></span>
@@ -6,12 +6,14 @@
   </dt>
   <dd class="portletItem odd">
     <ul>
-      <li tal:repeat="group view/results">
-        <a href="#" tal:attributes="href group/url; title string:Count: ${group/count};">
-          <span tal:content="group/title">Group</span>
-          <tal:show_count condition="view/data/show_count">(<span tal:replace="group/count" />)</tal:show_count>
-        </a>
-      </li>
+      <tal:items repeat="group view/results">
+        <li tal:attributes="class python:'selected' if group['selected'] else ''">
+          <a rel="nofollow" tal:attributes="href group/url; title string:Count: ${group/count};">
+            <span tal:content="group/title">Group</span>
+            <tal:show_count condition="view/data/show_count">(<span tal:replace="group/count" />)</tal:show_count>
+          </a>
+        </li>
+      </tal:items>
     </ul>
   </dd>
 </dl>

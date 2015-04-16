@@ -230,7 +230,18 @@ class Renderer(CollectionRenderer):
             urlquery = {}
             urlquery.update(self.request.form)
             idx = GROUPBY_CRITERIA[self.data.group_by]['index']
+            ret.append(dict(
+                title=_('subject_all', default=u'All categories'),
+                url='{0}/?{1}'.format(
+                    self.collection.absolute_url(),
+                    urlencode(urlquery)
+                ),
+                count=len(results),
+                selected=idx not in urlquery
+            ))
             for subject, items in grouped_results.iteritems():
+                selected = True if self.request.form.get(idx, '') == subject\
+                    else False
                 urlquery[idx] = subject
                 ret.append(dict(
                     title=subject,
@@ -238,7 +249,8 @@ class Renderer(CollectionRenderer):
                         self.collection.absolute_url(),
                         urlencode(urlquery)
                     ),
-                    count=len(items)
+                    count=len(items),
+                    selected=selected
                 ))
             t2 = datetime.now()  # LOGGING
             logger.info("time to build cloud: {0}".format(
