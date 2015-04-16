@@ -200,16 +200,15 @@ class Renderer(CollectionRenderer):
             custom_query = {}
             if isinstance(default_view, EventListing):
                 request = self.request
-                mode = request.form.get('mode', None)
+                mode = request.form.get('mode', 'future')
                 date = request.form.get('date', None)
                 date = guess_date_from(date) if date else None
 
-                if mode:
-                    start, end = start_end_from_mode(mode, date, collection)
-                    start, end = _prepare_range(collection, start, end)
-                    custom_query.update(start_end_query(start, end))
-                    # TODO: expand events. better yet, let collection.results
-                    #       do that
+                start, end = start_end_from_mode(mode, date, collection)
+                start, end = _prepare_range(collection, start, end)
+                custom_query.update(start_end_query(start, end))
+                # TODO: expand events. better yet, let collection.results
+                #       do that
             results = collection.results(
                 batch=False, custom_query=custom_query
             )
