@@ -1,4 +1,5 @@
 from .collectionfilter import GROUPBY_CRITERIA
+from Products.CMFPlone.utils import safe_unicode
 
 
 def set_content_filter(context, event):
@@ -10,5 +11,5 @@ def set_content_filter(context, event):
     for val in GROUPBY_CRITERIA.values():
         idx = val['index']
         if idx in request.form:
-            content_filter[idx] = request.form.get(idx)
+            content_filter[idx] = safe_unicode(request.form.get(idx))
     event.request['contentFilter'] = content_filter

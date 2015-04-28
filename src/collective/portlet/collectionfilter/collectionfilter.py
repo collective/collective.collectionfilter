@@ -1,5 +1,6 @@
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from collective.portlet.collectionfilter import msgFact as _
+from collective.portlet.collectionfilter.vocabularies import GROUPBY_CRITERIA
 from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
 from plone.app.event.base import _prepare_range
 from plone.app.event.base import guess_date_from
@@ -26,32 +27,6 @@ except ImportError:
 from datetime import datetime
 import logging
 logger = logging.getLogger(name="collective.portlet.collectionfilter")
-
-
-GROUPBY_CRITERIA = {
-    'Subject': {
-        'index': 'Subject',  # For querying
-        'metadata': 'Subject',  # For constructing the list
-        'display_modifier': None,  # For modifying list items (e.g. dates)
-        'query_range': None  # For range searches (e.g. for dates or numbers)
-    },
-    'Author': {
-        'index': 'Creator',
-        'metadata': 'Creator',
-        'display_modifier': None,
-        'query_range': None
-    },
-    'Portal Type': {
-        'index': 'portal_type',
-        'metadata': 'portal_type',
-        'display_modifier': None,
-        'query_range': None,
-    }
-}
-
-LIST_SCALING = ['No Scaling', 'Linear', 'Logarithmic']
-
-FACETED_OPERATOR = ['and', 'or']
 
 
 class ICollectionFilterPortlet(IPortletDataProvider):
@@ -231,7 +206,7 @@ class Renderer(CollectionRenderer):
             idx = GROUPBY_CRITERIA[self.data.group_by]['index']
             ret.append(dict(
                 title=_('subject_all', default=u'All categories'),
-                url='{0}/?{1}'.format(
+                url=u'{0}/?{1}'.format(
                     self.collection.absolute_url(),
                     urlencode(urlquery)
                 ),
@@ -239,14 +214,16 @@ class Renderer(CollectionRenderer):
                 selected=idx not in urlquery
             ))
             for subject, items in grouped_results.iteritems():
-                selected = True if self.request.form.get(idx, '') == subject\
-                    else False
+                selected = True if self.request.form.get(idx, '').decode('utf-8') == subject else False  # noqa
                 urlquery[idx] = subject
                 ret.append(dict(
                     title=subject,
-                    url='{0}/?{1}'.format(
+                    url=u'{0}/?{1}'.format(
                         self.collection.absolute_url(),
-                        urlencode(urlquery)
+                        urlencode(dict([
+                            (_key, _val.encode('utf-8'))
+                            for _key, _val in urlquery.items()
+                        ]))
                     ),
                     count=len(items),
                     selected=selected

@@ -1,11 +1,34 @@
 from collective.portlet.collectionfilter import msgFact as _
-from collective.portlet.collectionfilter.collectionfilter import FACETED_OPERATOR  # noqa
-from collective.portlet.collectionfilter.collectionfilter import GROUPBY_CRITERIA  # noqa
-from collective.portlet.collectionfilter.collectionfilter import LIST_SCALING
 from zope.interface import provider
 from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
+
+
+GROUPBY_CRITERIA = {
+    'Subject': {
+        'index': 'Subject',  # For querying
+        'metadata': 'Subject',  # For constructing the list
+        'display_modifier': None,  # For modifying list items (e.g. dates)
+        'query_range': None  # For range searches (e.g. for dates or numbers)
+    },
+    'Author': {
+        'index': 'Creator',
+        'metadata': 'Creator',
+        'display_modifier': None,
+        'query_range': None
+    },
+    'Portal Type': {
+        'index': 'portal_type',
+        'metadata': 'portal_type',
+        'display_modifier': None,
+        'query_range': None,
+    }
+}
+
+LIST_SCALING = ['No Scaling', 'Linear', 'Logarithmic']
+
+FACETED_OPERATOR = ['and', 'or']
 
 
 @provider(IVocabularyFactory)
