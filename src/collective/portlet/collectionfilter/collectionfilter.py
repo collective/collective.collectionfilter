@@ -189,9 +189,9 @@ class Renderer(CollectionRenderer):
             )
 
             t1 = datetime.now()  # LOGGING
+            attr = GROUPBY_CRITERIA[self.data.group_by]['metadata']
             grouped_results = {}
             for item in results:
-                attr = GROUPBY_CRITERIA[self.data.group_by]['metadata']
                 val = getattr(item, attr, None)
                 if callable(val):
                     val = val()
@@ -213,11 +213,13 @@ class Renderer(CollectionRenderer):
                 count=len(results),
                 selected=idx not in urlquery
             ))
+
+            mod = GROUPBY_CRITERIA[self.data.group_by]['display_modifier']
             for subject, items in grouped_results.iteritems():
                 selected = True if self.request.form.get(idx, '').decode('utf-8') == subject else False  # noqa
                 urlquery[idx] = subject
                 ret.append(dict(
-                    title=subject,
+                    title=mod(subject) if mod else subject,  # modify for displaying (e.g. uuid to title)  # noqa
                     url=u'{0}/?{1}'.format(
                         self.collection.absolute_url(),
                         urlencode(dict([
