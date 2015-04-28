@@ -18,6 +18,17 @@
       edit_permission="plone.app.portlets.ManagePortlets"
       />
 
+  <plone:portlet
+      name="collective.portlet.collectionfilter.CollectionSearch"
+      interface=".collectionsearch.ICollectionSearchPortlet"
+      assignment=".collectionsearch.Assignment"
+      renderer=".collectionsearch.Renderer"
+      addview=".collectionsearch.AddForm"
+      editview=".collectionsearch.EditForm"
+      view_permission="zope2.View"
+      edit_permission="plone.app.portlets.ManagePortlets"
+      />
+
   <utility
       component=".vocabularies.GroupByCriteria"
       name="collective.portlet.collectionfilter.GroupByCriteria"

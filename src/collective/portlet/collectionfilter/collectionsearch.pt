@@ -1,0 +1,15 @@
+<dl class="portlet portlet-collectionfilter-search" i18n:domain="collective.portlet.collectionfilter">
+  <dt class="portletHeader">
+    <span class="portletTopLeft"></span>
+    <span class="portletTitle" tal:content="view/header_title"></span>
+    <span class="portletTopRight"></span>
+  </dt>
+  <dd class="portletItem odd">
+    <form method="get" name="searchForm" role="form"
+        tal:attributes="action view/collection/absolute_url">
+        <input name="SearchableText" size="20" title="Veranstaltungen suchen" value="" type="text"
+            tal:attributes="value view/value">
+        <button type="submit">Search</button>
+    </form>
+  </dd>
+</dl>

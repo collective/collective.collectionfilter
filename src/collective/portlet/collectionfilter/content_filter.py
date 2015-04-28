@@ -1,6 +1,8 @@
 from .collectionfilter import GROUPBY_CRITERIA
 from Products.CMFPlone.utils import safe_unicode
 
+TEXT_IDX = "SearchableText"
+
 
 def set_content_filter(context, event):
     """Set the content filter dictionary on the request, built from request
@@ -12,4 +14,6 @@ def set_content_filter(context, event):
         idx = val['index']
         if idx in request.form:
             content_filter[idx] = safe_unicode(request.form.get(idx))
+    if TEXT_IDX in request.form:
+        content_filter[TEXT_IDX] = safe_unicode(request.form.get(TEXT_IDX))
     event.request['contentFilter'] = content_filter

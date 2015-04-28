@@ -1,4 +1,4 @@
-<dl class="portlet portlet-collection-filter portlet-tags" i18n:domain="collective.portlet.collectionfilter">
+<dl class="portlet portlet-collectionfilter portlet-tags" i18n:domain="collective.portlet.collectionfilter">
   <dt class="portletHeader">
     <span class="portletTopLeft"></span>
     <span class="portletTitle" tal:content="view/header_title"></span>
