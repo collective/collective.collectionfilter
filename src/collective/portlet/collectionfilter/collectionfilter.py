@@ -236,7 +236,7 @@ class Renderer(CollectionRenderer):
 
             mod = GROUPBY_CRITERIA[self.data.group_by]['display_modifier']
             for subject, items in grouped_results.iteritems():
-                selected = True if self.request.form.get(idx, '').decode('utf-8') == subject else False  # noqa
+                selected = True if safe_unicode(self.request.form.get(idx, '')) == safe_unicode(subject) else False  # noqa
                 urlquery[idx] = safe_unicode(subject).encode('utf-8')  # paranoia de/encoding  # noqa
                 ret.append(dict(
                     title=mod(subject) if mod else subject,  # modify for displaying (e.g. uuid to title)  # noqa
