@@ -1,4 +1,5 @@
 from . import msgFact as _
+from .utils import safe_encode
 from .vocabularies import GROUPBY_CRITERIA
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -203,14 +204,6 @@ class Renderer(CollectionRenderer):
                 batch=False, custom_query=custom_query
             )
 
-            urlquery = dict([
-                (
-                    safe_unicode(_key).encode('utf-8'),  # paranoia de/encoding
-                    safe_unicode(_val).encode('utf-8')
-                )
-                for _key, _val in urlquery.items()
-            ])
-
             t1 = datetime.now()  # LOGGING
             attr = GROUPBY_CRITERIA[self.data.group_by]['metadata']
             grouped_results = {}
@@ -236,8 +229,8 @@ class Renderer(CollectionRenderer):
 
             mod = GROUPBY_CRITERIA[self.data.group_by]['display_modifier']
             for subject, items in grouped_results.iteritems():
-                selected = True if safe_unicode(self.request.form.get(idx, '')) == safe_unicode(subject) else False  # noqa
-                urlquery[idx] = safe_unicode(subject).encode('utf-8')  # paranoia de/encoding  # noqa
+                selected = True if safe_unicode(self.request.form.get(idx)) == safe_unicode(subject) else False  # noqa
+                urlquery[idx] = safe_encode(subject)  # need to be utf-8
                 ret.append(dict(
                     title=mod(subject) if mod else subject,  # modify for displaying (e.g. uuid to title)  # noqa
                     url=u'{0}/?{1}'.format(
