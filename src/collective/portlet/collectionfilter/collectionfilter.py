@@ -1,6 +1,5 @@
 from . import msgFact as _
 from .vocabularies import GROUPBY_CRITERIA
-from .vocabularies import TEXT_IDX
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
@@ -85,7 +84,8 @@ class ICollectionFilterPortlet(IPortletDataProvider):
 #    )
 
 #    faceted_operator = schema.Choice(
-#        title=_(u'label_faceted_operator', default=u'Faceted Filter Operator'),
+#        title=_(
+#           u'label_faceted_operator', default=u'Faceted Filter Operator'),
 #        description=_(
 #            u'help_faceted_operator',
 #            default=u'Select, if all (and) or any (or) selected filter '
