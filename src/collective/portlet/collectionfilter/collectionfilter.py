@@ -197,6 +197,14 @@ class Renderer(CollectionRenderer):
                 # facetted searches - TODO)
                 if it in urlquery:
                     del urlquery[it]
+            urlquery = dict([
+                (
+                    safe_unicode(_key).encode('utf-8'),  # paranoia de/encoding
+                    safe_unicode(_val).encode('utf-8')
+                )
+                for _key, _val in urlquery.items()
+            ])
+
             custom_query.update(urlquery)
 
             results = collection.results(
@@ -229,15 +237,12 @@ class Renderer(CollectionRenderer):
             mod = GROUPBY_CRITERIA[self.data.group_by]['display_modifier']
             for subject, items in grouped_results.iteritems():
                 selected = True if self.request.form.get(idx, '').decode('utf-8') == subject else False  # noqa
-                urlquery[idx] = subject
+                urlquery[idx] = safe_unicode(subject).encode('utf-8')  # paranoia de/encoding  # noqa
                 ret.append(dict(
                     title=mod(subject) if mod else subject,  # modify for displaying (e.g. uuid to title)  # noqa
                     url=u'{0}/?{1}'.format(
                         self.collection.absolute_url(),
-                        urlencode(dict([
-                            (_key, _val.encode('utf-8'))
-                            for _key, _val in urlquery.items()
-                        ]))
+                        urlencode(urlquery)
                     ),
                     count=len(items),
                     selected=selected
