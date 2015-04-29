@@ -168,6 +168,7 @@ class Renderer(CollectionRenderer):
         return item
 
     def results(self):
+        t1 = datetime.now()  # LOGGING
         ret = []
         # url_query = self.request.form
         collection = self.collection
@@ -204,7 +205,6 @@ class Renderer(CollectionRenderer):
                 batch=False, custom_query=custom_query
             )
 
-            t1 = datetime.now()  # LOGGING
             attr = GROUPBY_CRITERIA[self.data.group_by]['metadata']
             grouped_results = {}
             for item in results:
