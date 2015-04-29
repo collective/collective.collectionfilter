@@ -197,6 +197,12 @@ class Renderer(CollectionRenderer):
                 # facetted searches - TODO)
                 if it in urlquery:
                     del urlquery[it]
+
+            custom_query.update(urlquery)
+            results = collection.results(
+                batch=False, custom_query=custom_query
+            )
+
             urlquery = dict([
                 (
                     safe_unicode(_key).encode('utf-8'),  # paranoia de/encoding
@@ -204,12 +210,6 @@ class Renderer(CollectionRenderer):
                 )
                 for _key, _val in urlquery.items()
             ])
-
-            custom_query.update(urlquery)
-
-            results = collection.results(
-                batch=False, custom_query=custom_query
-            )
 
             t1 = datetime.now()  # LOGGING
             attr = GROUPBY_CRITERIA[self.data.group_by]['metadata']
