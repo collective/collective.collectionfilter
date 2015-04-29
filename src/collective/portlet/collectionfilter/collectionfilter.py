@@ -188,7 +188,8 @@ class Renderer(CollectionRenderer):
                 #       do that
 
             idx = GROUPBY_CRITERIA[self.data.group_by]['index']
-            urlquery = self.request.form or {}
+            urlquery = {}
+            urlquery.update(self.request.form)
             for it in (idx, 'b_start', 'b_size', 'batch', 'sort_on', 'limit'):
                 # Remove problematic url parameters
                 # And make sure to not filter by previously selected terms from
@@ -222,7 +223,7 @@ class Renderer(CollectionRenderer):
                     urlencode(urlquery)
                 ),
                 count=len(results),
-                selected=idx not in urlquery
+                selected=idx not in self.request.form
             ))
 
             mod = GROUPBY_CRITERIA[self.data.group_by]['display_modifier']
