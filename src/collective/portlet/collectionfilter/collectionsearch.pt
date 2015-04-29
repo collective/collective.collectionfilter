@@ -7,6 +7,9 @@
   <dd class="portletItem odd">
     <form method="get" name="searchForm" role="form"
         tal:attributes="action view/collection/absolute_url">
+        <tal:urlquery repeat="item python:view.urlquery.items()">
+          <input type="hidden" tal:attributes="name python:item[0]; value python:item[1]"/>
+        </tal:urlquery>
         <input name="SearchableText" size="20" title="Veranstaltungen suchen" value="" type="text"
             tal:attributes="value view/value">
         <button type="submit">Search</button>

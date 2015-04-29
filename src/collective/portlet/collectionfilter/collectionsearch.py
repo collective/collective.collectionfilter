@@ -1,6 +1,7 @@
+from . import msgFact as _
+from .vocabularies import TEXT_IDX
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from collective.portlet.collectionfilter import msgFact as _
 from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
 from plone.app.portlets.browser import z3cformhelper
 from plone.app.portlets.portlets import base
@@ -80,11 +81,20 @@ class Renderer(CollectionRenderer):
 
     @property
     def value(self):
-        idx = 'SearchableText'
         val = u""
-        if idx in self.request.form:
-            val = safe_unicode(self.request.form.get(idx))
+        if TEXT_IDX in self.request.form:
+            val = safe_unicode(self.request.form.get(TEXT_IDX))
         return val
+
+    @property
+    def urlquery(self):
+        urlquery = {}
+        urlquery.update(self.request.form)
+        for it in (TEXT_IDX, 'b_start', 'b_size', 'batch', 'sort_on', 'limit'):
+            # Remove problematic url parameters
+            if it in urlquery:
+                del urlquery[it]
+        return urlquery
 
     @property
     @memoize

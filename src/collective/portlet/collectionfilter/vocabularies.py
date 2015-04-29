@@ -5,6 +5,8 @@ from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 
 
+TEXT_IDX = "SearchableText"
+
 GROUPBY_CRITERIA = {
     'Subject': {
         'index': 'Subject',  # For querying

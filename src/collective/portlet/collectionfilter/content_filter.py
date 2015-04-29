@@ -1,7 +1,6 @@
-from .collectionfilter import GROUPBY_CRITERIA
+from .vocabularies import GROUPBY_CRITERIA
+from .vocabularies import TEXT_IDX
 from Products.CMFPlone.utils import safe_unicode
-
-TEXT_IDX = "SearchableText"
 
 
 def set_content_filter(context, event):

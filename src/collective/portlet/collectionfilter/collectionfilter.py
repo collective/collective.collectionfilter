@@ -1,6 +1,8 @@
+from . import msgFact as _
+from .vocabularies import GROUPBY_CRITERIA
+from .vocabularies import TEXT_IDX
+from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from collective.portlet.collectionfilter import msgFact as _
-from collective.portlet.collectionfilter.vocabularies import GROUPBY_CRITERIA
 from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
 from plone.app.event.base import _prepare_range
 from plone.app.event.base import guess_date_from
@@ -184,6 +186,18 @@ class Renderer(CollectionRenderer):
                 custom_query.update(start_end_query(start, end))
                 # TODO: expand events. better yet, let collection.results
                 #       do that
+
+            idx = GROUPBY_CRITERIA[self.data.group_by]['index']
+            urlquery = self.request.form or {}
+            for it in (idx, 'b_start', 'b_size', 'batch', 'sort_on', 'limit'):
+                # Remove problematic url parameters
+                # And make sure to not filter by previously selected terms from
+                # this index. This narrows down too much (except for dedicated
+                # facetted searches - TODO)
+                if it in urlquery:
+                    del urlquery[it]
+            custom_query.update(urlquery)
+
             results = collection.results(
                 batch=False, custom_query=custom_query
             )
@@ -201,9 +215,6 @@ class Renderer(CollectionRenderer):
                     grouped_results.setdefault(it, [])
                     grouped_results[it].append(item)
 
-            urlquery = {}
-            urlquery.update(self.request.form)
-            idx = GROUPBY_CRITERIA[self.data.group_by]['index']
             ret.append(dict(
                 title=_('subject_all', default=u'All categories'),
                 url=u'{0}/?{1}'.format(
