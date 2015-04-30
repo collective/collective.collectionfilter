@@ -1,7 +1,7 @@
 from . import msgFact as _
+from .utils import safe_decode
 from .utils import safe_encode
 from .vocabularies import GROUPBY_CRITERIA
-from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
 from plone.app.event.base import _prepare_range
@@ -229,13 +229,13 @@ class Renderer(CollectionRenderer):
 
             mod = GROUPBY_CRITERIA[self.data.group_by]['display_modifier']
             for subject, items in grouped_results.iteritems():
-                selected = True if safe_unicode(self.request.form.get(idx)) == safe_unicode(subject) else False  # noqa
-                urlquery[idx] = safe_encode(subject)  # need to be utf-8
+                selected = True if safe_decode(self.request.form.get(idx)) == safe_decode(subject) else False  # noqa
+                urlquery[idx] = subject
                 ret.append(dict(
-                    title=mod(subject) if mod else subject,  # modify for displaying (e.g. uuid to title)  # noqa
+                    title=safe_decode(mod(subject) if mod else subject),  # modify for displaying (e.g. uuid to title)  # noqa
                     url=u'{0}/?{1}'.format(
                         self.collection.absolute_url(),
-                        urlencode(urlquery)
+                        urlencode(safe_encode(urlquery))  # need to be utf-8 encoded  # noqa
                     ),
                     count=len(items),
                     selected=selected
