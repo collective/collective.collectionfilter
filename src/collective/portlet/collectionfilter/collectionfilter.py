@@ -229,7 +229,7 @@ class Renderer(CollectionRenderer):
 
             mod = GROUPBY_CRITERIA[self.data.group_by]['display_modifier']
             for subject, items in grouped_results.iteritems():
-                urlquery[idx] = subject  # build query before translating empty subjects  # noqa
+                urlquery[idx] = subject or ''  # build query before translating empty subjects  # noqa
                 if not subject:
                     subject = _('subject_other', default=u'Other')
                 selected = True if safe_decode(self.request.form.get(idx)) == safe_decode(subject) else False  # noqa
