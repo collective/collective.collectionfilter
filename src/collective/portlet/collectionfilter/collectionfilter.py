@@ -229,10 +229,10 @@ class Renderer(CollectionRenderer):
 
             mod = GROUPBY_CRITERIA[self.data.group_by]['display_modifier']
             for subject, items in grouped_results.iteritems():
+                urlquery[idx] = subject  # build query before translating empty subjects  # noqa
                 if not subject:
                     subject = _('subject_other', default=u'Other')
                 selected = True if safe_decode(self.request.form.get(idx)) == safe_decode(subject) else False  # noqa
-                urlquery[idx] = subject
                 ret.append(dict(
                     title=safe_decode(mod(subject) if mod else subject),  # modify for displaying (e.g. uuid to title)  # noqa
                     url=u'{0}/?{1}'.format(
