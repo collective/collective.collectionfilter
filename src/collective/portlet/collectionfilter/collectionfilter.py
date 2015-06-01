@@ -155,7 +155,7 @@ class Renderer(CollectionRenderer):
         if self.data.header:
             return self.data.header
 
-        collection = self.collection(self.data.target_collection)
+        collection = self.collection
         if collection is None:
             return None
         else:
