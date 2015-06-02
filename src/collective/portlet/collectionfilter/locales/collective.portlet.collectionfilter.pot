@@ -1,0 +1,105 @@
+# --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2015-06-02 11:09+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: collective.portlet.collectionfilter\n"
+
+#: collective/portlet/collectionfilter/collectionfilter.py:283
+msgid "Add Collection Filter Portlet"
+msgstr ""
+
+#: collective/portlet/collectionfilter/collectionsearch.py:109
+msgid "Add Collection Search Portlet"
+msgstr ""
+
+#: collective/portlet/collectionfilter/collectionfilter.py:146
+msgid "Collection Filter"
+msgstr ""
+
+#: collective/portlet/collectionfilter/collectionsearch.py:62
+msgid "Collection Search"
+msgstr ""
+
+#: collective/portlet/collectionfilter/collectionfilter.py:296
+msgid "Edit Collection Filter Portlet"
+msgstr ""
+
+#: collective/portlet/collectionfilter/collectionsearch.py:121
+msgid "Edit Collection Search Portlet"
+msgstr ""
+
+#: collective/portlet/collectionfilter/collectionsearch.py:110
+msgid "This portlet allows fulltext search in collection results."
+msgstr ""
+
+#: collective/portlet/collectionfilter/collectionfilter.py:284
+msgid "This portlet shows grouped criteria of collection results and allows filtering of collection results."
+msgstr ""
+
+#. Default: "Other"
+#: collective/portlet/collectionfilter/collectionfilter.py:253
+msgid "crit_other"
+msgstr ""
+
+#. Default: "Select the criteria to group the collection results by."
+#: collective/portlet/collectionfilter/collectionfilter.py:62
+msgid "help_groupby"
+msgstr ""
+
+#. Default: Title of the rendered portlet.
+#: collective/portlet/collectionfilter/collectionfilter.py:40
+#: collective/portlet/collectionfilter/collectionsearch.py:22
+msgid "help_header"
+msgstr ""
+
+#. Default: "Show the result count for each filter group."
+#: collective/portlet/collectionfilter/collectionfilter.py:72
+msgid "help_show_count"
+msgstr ""
+
+#. Default: "The collection, which is the source for the filter items and where the filter is applied."
+#: collective/portlet/collectionfilter/collectionfilter.py:49
+#: collective/portlet/collectionfilter/collectionsearch.py:31
+msgid "help_target_collection"
+msgstr ""
+
+#. Default: "Group by"
+#: collective/portlet/collectionfilter/collectionfilter.py:61
+msgid "label_groupby"
+msgstr ""
+
+#. Default: "Portlet header"
+#: collective/portlet/collectionfilter/collectionfilter.py:39
+#: collective/portlet/collectionfilter/collectionsearch.py:21
+msgid "label_header"
+msgstr ""
+
+#. Default: "Show count"
+#: collective/portlet/collectionfilter/collectionfilter.py:71
+msgid "label_show_count"
+msgstr ""
+
+#. Default: "Target Collection"
+#: collective/portlet/collectionfilter/collectionfilter.py:48
+#: collective/portlet/collectionfilter/collectionsearch.py:30
+msgid "label_target_collection"
+msgstr ""
+
+#. Default: "All categories"
+#: collective/portlet/collectionfilter/collectionfilter.py:227
+msgid "subject_all"
+msgstr ""
+

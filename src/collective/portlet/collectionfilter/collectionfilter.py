@@ -38,7 +38,7 @@ class ICollectionFilterPortlet(IPortletDataProvider):
     header = schema.TextLine(
         title=_('label_header', default=u'Portlet header'),
         description=_(
-            'help_header'
+            'help_header',
             u'Title of the rendered portlet.'
         ),
         required=False,
