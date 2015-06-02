@@ -227,6 +227,9 @@ class Renderer(CollectionRenderer):
                         val = val()
                     if not getattr(val, '__iter__', False):
                         val = [val]
+                    if not val:
+                        # We want to count items with empty criterions too.
+                        val = ['']
                     for crit in val:
                         if crit not in grouped_results:
                             crit = crit or ''
