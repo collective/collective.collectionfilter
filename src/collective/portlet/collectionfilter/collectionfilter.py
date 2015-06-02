@@ -12,9 +12,11 @@ from plone.app.portlets.browser import z3cformhelper
 from plone.app.portlets.portlets import base
 from plone.app.uuid.utils import uuidToObject
 from plone.app.vocabularies.catalog import CatalogSource
+from plone.memoize import ram
 from plone.memoize.instance import memoize
 from plone.portlet.collection.collection import Renderer as CollectionRenderer
 from plone.portlets.interfaces import IPortletDataProvider
+from time import time
 from urllib import urlencode
 from z3c.form import field
 from zope import schema
@@ -144,6 +146,11 @@ class Assignment(base.Assignment):
             return _(u'Collection Filter')
 
 
+def _results_cachekey(method, self, collection, request_params):
+    timeout = time() // (60 * 60)  # cache for one hour
+    return ('/'.join(collection.getPhysicalPath()), request_params, timeout)
+
+
 class Renderer(CollectionRenderer):
     render = ViewPageTemplateFile('collectionfilter.pt')
 
@@ -169,18 +176,28 @@ class Renderer(CollectionRenderer):
 
     def results(self):
         t1 = datetime.now()  # LOGGING
+
+        # return cached
+        results = self._results(self.collection, self.request.form or {})
+
+        t2 = datetime.now()  # LOGGING
+        logger.info("time to build cloud: {0}".format(
+            (t2 - t1).total_seconds())
+        )
+        return results
+
+    @ram.cache(_results_cachekey)
+    def _results(self, collection, request_params):
+        logger.info("rebuild cloud")
         ret = []
-        # url_query = self.request.form
-        collection = self.collection
         if collection:
             collection_layout = collection.getLayout()
             default_view = collection.restrictedTraverse(collection_layout)
             results = []
             custom_query = {}
             if isinstance(default_view, EventListing):
-                request = self.request
-                mode = request.form.get('mode', 'future')
-                date = request.form.get('date', None)
+                mode = request_params.get('mode', 'future')
+                date = request_params.get('date', None)
                 date = guess_date_from(date) if date else None
 
                 start, end = start_end_from_mode(mode, date, collection)
@@ -191,7 +208,7 @@ class Renderer(CollectionRenderer):
 
             idx = GROUPBY_CRITERIA[self.data.group_by]['index']
             urlquery = {}
-            urlquery.update(self.request.form)
+            urlquery.update(request_params)
             for it in (idx, 'b_start', 'b_size', 'batch', 'sort_on', 'limit'):
                 # Remove problematic url parameters
                 # And make sure to not filter by previously selected terms from
@@ -214,7 +231,7 @@ class Renderer(CollectionRenderer):
                         urlencode(urlquery)
                     ),
                     count=len(results),
-                    selected=idx not in self.request.form
+                    selected=idx not in request_params
                 ))
 
                 attr = GROUPBY_CRITERIA[self.data.group_by]['metadata']
@@ -239,7 +256,7 @@ class Renderer(CollectionRenderer):
                                 self.collection.absolute_url(),
                                 urlencode(safe_encode(urlquery))  # need to be utf-8 encoded  # noqa
                             )
-                            selected = safe_decode(self.request.form.get(idx)) == safe_decode(crit)  # noqa
+                            selected = safe_decode(request_params.get(idx)) == safe_decode(crit)  # noqa
                             sort_key = crit if crit else 'zzzzzz'
                             crit_dict = {
                                 'sort_key': sort_key.lower(),
@@ -257,11 +274,6 @@ class Renderer(CollectionRenderer):
                     grouped_results.values(),
                     key=lambda it: it['sort_key']
                 )
-
-        t2 = datetime.now()  # LOGGING
-        logger.info("time to build cloud: {0}".format(
-            (t2 - t1).total_seconds())
-        )
 
         return ret
 
