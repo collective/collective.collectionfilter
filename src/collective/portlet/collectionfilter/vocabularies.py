@@ -5,6 +5,9 @@ from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 
 
+# Use this EMPTY_MARKER for your custom indexer to index empty criterions.
+EMPTY_MARKER = '__EMPTY__'
+
 TEXT_IDX = "SearchableText"
 
 GROUPBY_CRITERIA = {

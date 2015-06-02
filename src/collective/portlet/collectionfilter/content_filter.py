@@ -1,5 +1,6 @@
 from .utils import safe_decode
 from .utils import safe_encode
+from .vocabularies import EMPTY_MARKER
 from .vocabularies import GROUPBY_CRITERIA
 from .vocabularies import TEXT_IDX
 
@@ -13,16 +14,12 @@ def set_content_filter(context, event):
     for val in GROUPBY_CRITERIA.values():
         idx = val['index']
         if idx in request.form:
-            crit = request.form.get(idx)
+            crit = request.form.get(idx) or EMPTY_MARKER
             if idx == 'Subject':
                 # Subject does not accept unicode values
                 # https://github.com/plone/Products.CMFPlone/issues/470
-                if not crit:
-                    crit = ()
                 crit = safe_encode(crit)
             else:
-                if not crit:
-                    crit = ''
                 crit = safe_decode(crit)
             content_filter[idx] = crit
     if TEXT_IDX in request.form:
