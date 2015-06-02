@@ -205,47 +205,60 @@ class Renderer(CollectionRenderer):
                 batch=False, custom_query=custom_query
             )
 
-            attr = GROUPBY_CRITERIA[self.data.group_by]['metadata']
-            grouped_results = {}
-            for item in results:
-                val = getattr(item, attr, None)
-                if callable(val):
-                    val = val()
-                if not getattr(val, '__iter__', False):
-                    val = [val]
-                for it in val:
-                    grouped_results.setdefault(it, [])
-                    grouped_results[it].append(item)
+            if results:
 
-            ret.append(dict(
-                title=_('subject_all', default=u'All categories'),
-                url=u'{0}/?{1}'.format(
-                    self.collection.absolute_url(),
-                    urlencode(urlquery)
-                ),
-                count=len(results),
-                selected=idx not in self.request.form
-            ))
-
-            mod = GROUPBY_CRITERIA[self.data.group_by]['display_modifier']
-            for subject, items in grouped_results.iteritems():
-                urlquery[idx] = subject or ''  # build query before translating empty subjects  # noqa
-                if not subject:
-                    subject = _('subject_other', default=u'Other')
-                selected = True if safe_decode(self.request.form.get(idx)) == safe_decode(subject) else False  # noqa
                 ret.append(dict(
-                    title=safe_decode(mod(subject) if mod else subject),  # modify for displaying (e.g. uuid to title)  # noqa
+                    title=_('subject_all', default=u'All categories'),
                     url=u'{0}/?{1}'.format(
                         self.collection.absolute_url(),
-                        urlencode(safe_encode(urlquery))  # need to be utf-8 encoded  # noqa
+                        urlencode(urlquery)
                     ),
-                    count=len(items),
-                    selected=selected
+                    count=len(results),
+                    selected=idx not in self.request.form
                 ))
-            t2 = datetime.now()  # LOGGING
-            logger.info("time to build cloud: {0}".format(
-                (t2 - t1).total_seconds())
-            )
+
+                attr = GROUPBY_CRITERIA[self.data.group_by]['metadata']
+                mod = GROUPBY_CRITERIA[self.data.group_by]['display_modifier']
+
+                grouped_results = {}
+                for item in results:
+                    val = getattr(item, attr, None)
+                    if callable(val):
+                        val = val()
+                    if not getattr(val, '__iter__', False):
+                        val = [val]
+                    for crit in val:
+                        if crit not in grouped_results:
+                            crit = crit or ''
+                            urlquery[idx] = crit
+                            title = safe_decode(mod(crit) if mod else crit) if crit else _('crit_other', default=u'Other')  # modify for displaying (e.g. uuid to title)  # noqa
+                            url = u'{0}/?{1}'.format(
+                                self.collection.absolute_url(),
+                                urlencode(safe_encode(urlquery))  # need to be utf-8 encoded  # noqa
+                            )
+                            selected = safe_decode(self.request.form.get(idx)) == safe_decode(crit)  # noqa
+                            sort_key = crit if crit else 'zzzzzz'
+                            crit_dict = {
+                                'sort_key': sort_key.lower(),
+                                'count': 1,
+                                'title': title,
+                                'url': url,
+                                'selected': selected
+                            }
+                            grouped_results[crit] = crit_dict
+
+                        else:
+                            grouped_results[crit]['count'] += 1
+
+                ret += sorted(
+                    grouped_results.values(),
+                    key=lambda it: it['sort_key']
+                )
+
+        t2 = datetime.now()  # LOGGING
+        logger.info("time to build cloud: {0}".format(
+            (t2 - t1).total_seconds())
+        )
 
         return ret
 
