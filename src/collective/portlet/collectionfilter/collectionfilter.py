@@ -175,20 +175,19 @@ class Renderer(CollectionRenderer):
         return item
 
     def results(self):
-        t1 = datetime.now()  # LOGGING
+        t0 = datetime.now()
 
         # return cached
         results = self._results(self.collection, self.request.form or {})
 
-        t2 = datetime.now()  # LOGGING
-        logger.info("time to build cloud: {0}".format(
-            (t2 - t1).total_seconds())
+        logger.debug("time to build cloud: {0}".format(
+            (datetime.now() - t0).total_seconds())
         )
         return results
 
     @ram.cache(_results_cachekey)
     def _results(self, collection, request_params):
-        logger.info("rebuild cloud")
+        logger.debug("rebuild cloud")
         ret = []
         if collection:
             collection_layout = collection.getLayout()
