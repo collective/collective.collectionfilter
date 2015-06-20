@@ -5,7 +5,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
 from plone.app.portlets.browser import z3cformhelper
 from plone.app.portlets.portlets import base
-from plone.app.uuid.utils import uuidToObject
+from plone.app.uuid.utils import uuidToCatalogBrain
 from plone.app.vocabularies.catalog import CatalogSource
 from plone.memoize.instance import memoize
 from plone.portlet.collection.collection import Renderer as CollectionRenderer
@@ -99,7 +99,7 @@ class Renderer(CollectionRenderer):
     @property
     @memoize
     def collection(self):
-        item = uuidToObject(self.data.target_collection)
+        item = uuidToCatalogBrain(self.data.target_collection)
         return item
 
 
