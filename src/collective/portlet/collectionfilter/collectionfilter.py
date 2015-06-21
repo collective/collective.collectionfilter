@@ -16,7 +16,6 @@ from plone.app.uuid.utils import uuidToObject
 from plone.app.vocabularies.catalog import CatalogSource
 from plone.memoize import ram
 from plone.memoize.instance import memoize
-from plone.portlet.collection.collection import Renderer as CollectionRenderer
 from plone.portlets.interfaces import IPortletDataProvider
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletRetriever
@@ -168,7 +167,7 @@ def _results_cachekey(method, self, collection, request_params):
     return cachekey
 
 
-class Renderer(CollectionRenderer):
+class Renderer(base.Renderer):
     render = ViewPageTemplateFile('collectionfilter.pt')
 
     @property
