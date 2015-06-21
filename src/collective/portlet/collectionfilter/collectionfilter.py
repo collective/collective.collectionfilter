@@ -2,6 +2,8 @@ from . import msgFact as _
 from .utils import safe_decode
 from .utils import safe_encode
 from .vocabularies import GROUPBY_CRITERIA
+from Acquisition import aq_base
+from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
 from plone.app.event.base import _prepare_range
@@ -16,10 +18,15 @@ from plone.memoize import ram
 from plone.memoize.instance import memoize
 from plone.portlet.collection.collection import Renderer as CollectionRenderer
 from plone.portlets.interfaces import IPortletDataProvider
+from plone.portlets.interfaces import IPortletManager
+from plone.portlets.interfaces import IPortletRetriever
+from plone.portlets.utils import hashPortletInfo
 from time import time
 from urllib import urlencode
 from z3c.form import field
 from zope import schema
+from zope.component import getMultiAdapter
+from zope.component import getUtilitiesFor
 from zope.interface import implements
 
 try:
@@ -147,8 +154,18 @@ class Assignment(base.Assignment):
 
 
 def _results_cachekey(method, self, collection, request_params):
+    portlethash = self.portlethash
+    path = '/'.join(self.context.getPhysicalPath())
+    portal_membership = getToolByName(self.context, 'portal_membership')
     timeout = time() // (60 * 60)  # cache for one hour
-    return ('/'.join(collection.getPhysicalPath()), request_params, timeout)
+    cachekey = (
+        portlethash,
+        path,
+        portal_membership.getAuthenticatedMember().id,
+        timeout,
+        request_params
+    )
+    return cachekey
 
 
 class Renderer(CollectionRenderer):
@@ -275,6 +292,25 @@ class Renderer(CollectionRenderer):
                 )
 
         return ret
+
+    @property
+    @memoize
+    def portlethash(self):
+        portlethash = None
+        assignment = aq_base(self.data)
+
+        # Get the portlet info, to get the portlet hash.
+        # THIS IS CRAZY!
+        context = self.context
+        for name, manager in getUtilitiesFor(IPortletManager, context=context):
+            retriever = getMultiAdapter((context, manager), IPortletRetriever)
+            portlets = retriever.getPortlets()
+            for portlet in portlets:
+                if assignment == portlet['assignment']:
+                    # got you
+                    portlet['manager'] = self.manager.__name__  # not available in portlet info, yet. hurray.  # noqa
+                    portlethash = hashPortletInfo(portlet)
+        return portlethash
 
 
 class AddForm(z3cformhelper.AddForm):
