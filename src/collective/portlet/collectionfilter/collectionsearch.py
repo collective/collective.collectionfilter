@@ -7,7 +7,6 @@ from plone.app.portlets.browser import z3cformhelper
 from plone.app.portlets.portlets import base
 from plone.app.uuid.utils import uuidToCatalogBrain
 from plone.app.vocabularies.catalog import CatalogSource
-from plone.memoize.instance import memoize
 from plone.portlet.collection.collection import Renderer as CollectionRenderer
 from plone.portlets.interfaces import IPortletDataProvider
 from z3c.form import field
@@ -97,7 +96,6 @@ class Renderer(CollectionRenderer):
         return urlquery
 
     @property
-    @memoize
     def collection(self):
         item = uuidToCatalogBrain(self.data.target_collection)
         return item

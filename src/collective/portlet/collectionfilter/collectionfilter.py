@@ -15,7 +15,6 @@ from plone.app.portlets.portlets import base
 from plone.app.uuid.utils import uuidToObject
 from plone.app.vocabularies.catalog import CatalogSource
 from plone.memoize import ram
-from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletRetriever
@@ -185,7 +184,6 @@ class Renderer(base.Renderer):
             return collection.Title()
 
     @property
-    @memoize
     def collection(self):
         item = uuidToObject(self.data.target_collection)
         return item
@@ -293,7 +291,6 @@ class Renderer(base.Renderer):
         return ret
 
     @property
-    @memoize
     def portlethash(self):
         portlethash = None
         assignment = aq_base(self.data)
