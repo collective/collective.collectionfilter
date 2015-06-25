@@ -64,26 +64,25 @@ class Assignment(base.Assignment):
 class Renderer(CollectionRenderer):
     render = ViewPageTemplateFile('collectionsearch.pt')
 
+    _collection = None
+
     @property
     def available(self):
         return True
 
+    @property
     def header_title(self):
         if self.data.header:
             return self.data.header
-
-        collection = self.collection(self.data.target_collection)
-        if collection is None:
-            return None
-        else:
-            return collection.Title()
+        return self.collection.Title if self.collection else None
 
     @property
     def value(self):
-        val = u""
-        if TEXT_IDX in self.request.form:
-            val = safe_unicode(self.request.form.get(TEXT_IDX))
-        return val
+        return safe_unicode(self.request.get(TEXT_IDX, ''))
+
+    @property
+    def action_url(self):
+        return self.collection.getURL()
 
     @property
     def urlquery(self):
@@ -97,7 +96,11 @@ class Renderer(CollectionRenderer):
 
     @property
     def collection(self):
-        item = uuidToCatalogBrain(self.data.target_collection)
+        item = self._collection
+        if not item:
+            self._collection = item = uuidToCatalogBrain(
+                self.data.target_collection
+            )
         return item
 
 

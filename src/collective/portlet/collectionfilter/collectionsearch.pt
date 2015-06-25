@@ -6,7 +6,7 @@
   </dt>
   <dd class="portletItem odd">
     <form method="get" name="searchForm" role="form"
-        tal:attributes="action view/collection/absolute_url">
+        tal:attributes="action view/action_url">
         <tal:urlquery repeat="item python:view.urlquery.items()">
           <input type="hidden" tal:attributes="name python:item[0]; value python:item[1]"/>
         </tal:urlquery>
