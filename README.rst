@@ -1,43 +1,18 @@
 collective.portlet.collectionfilter
 ===================================
 
-Introduction
-------------
+Faceted navigation filter for collection results.
 
-This portlet makes it possible to present collections grouped by different criteria including:
+This portlet allows you to filter collections results for additional catalog
+metadata.  For example, you can add a subject filter, but also a filter for
+authors or portal types. The "Collection Filter" portlet can be used to build
+tag clouds.
 
-* by Author
-* by Keyword
-* by Type
-* by Location (may require some tweaking)
+The filter types can be extended (see:
+``collective.portlet.collectionfilter.vocabularies``).
 
+Besides the "Collection Filter" portlet there is also a "Collection Search"
+portlet for doing a fulltext search on the collection results.
 
-Usage
------
-Click "manage portlets" and add a new "Collection by subject".
-
-Settings include:
-
-Portlet header - the title of the portlet
-Target collection - the collection that the portlet will use
-Group by - the subject that you would like to group the items by
-Cache duration - the lenghth of time the results should be cached
-
-The output looks similar to this::
-
-      by Keyword
-
-        food (4)
-        green (2)
-        drink (4)
-        well (2)
-        sleep (1)
-
-
-Authors
--------
-
-Refactoring into collective.portlet.collectionfilter by Johannes Raggam.
-
-Original implementation of collective.portlet.collectionbysubject by Rok
-Garbas. Concept by David Bain (alteroo.com).
+This package is a fork of ``collective.portlet.collectionbysubject`` by Rok
+Garbas.

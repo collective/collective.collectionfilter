@@ -6,7 +6,7 @@ version = '1.0.dev0'
 setup(
     name='collective.portlet.collectionfilter',
     version=version,
-    description="Portlet that groups collection items by attributes",
+    description="Portlets for filtering collection results.",
     long_description='{0}\n{1}'.format(
         open("README.rst").read(),
         open("CHANGES.rst").read()
@@ -16,7 +16,7 @@ setup(
         "Programming Language :: Python",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
-    keywords='zope plone portlet collective collection grouping tagcloud tags',
+    keywords='plone portlet collection filter faceted tagcloud tags',
     author='Johannes Raggam',
     author_email='johannes@raggam.co.at',
     url='http://github.com/collective/collective.portlet.collectionfilter',
