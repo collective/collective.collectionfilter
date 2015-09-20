@@ -1,6 +1,7 @@
 from . import msgFact as _
 from .utils import safe_decode
 from .utils import safe_encode
+from .vocabularies import EMPTY_MARKER
 from .vocabularies import GROUPBY_CRITERIA
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
@@ -262,10 +263,14 @@ class Renderer(base.Renderer):
                         # We want to count items with empty criterions too.
                         val = ['']
                     for crit in val:
-                        if crit not in grouped_results:
+                        if crit and crit not in grouped_results:
                             crit = crit or ''
                             urlquery[idx] = crit
-                            title = safe_decode(mod(crit) if mod else crit) if crit else _('crit_other', default=u'Other')  # modify for displaying (e.g. uuid to title)  # noqa
+                            title = _(safe_decode(
+                                mod(crit)
+                                if mod and crit is not EMPTY_MARKER
+                                else crit
+                            ))  # mod modifies for displaying (e.g. uuid to title)  # noqa
                             url = u'{0}/?{1}'.format(
                                 self.collection.absolute_url(),
                                 urlencode(safe_encode(urlquery))  # need to be utf-8 encoded  # noqa

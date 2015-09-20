@@ -49,9 +49,8 @@ msgstr "Dieses Portlet erlaubt eine Volltextsuche in Kollektionsergebnissen und 
 msgid "This portlet shows grouped criteria of collection results and allows filtering of collection results."
 msgstr "Dieses Portlet zeigt Gruppierte Kollektionsergebnisse und erlaubt eine weitere Einschränkung der Ergebnisse durch Filter."
 
-#. Default: "Other"
 #: collective/portlet/collectionfilter/collectionfilter.py:253
-msgid "crit_other"
+msgid "__EMPTY__"
 msgstr "Weitere"
 
 #. Default: "Select the criteria to group the collection results by."
