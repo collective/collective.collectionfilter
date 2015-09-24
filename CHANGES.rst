@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.1 (unreleased)
+1.1 (2015-09-25)
 ----------------
 
 - Add a subject indexer, which adds EMPTY_MARKER to the index, where no subject
