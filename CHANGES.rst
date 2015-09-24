@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.1.1 (unreleased)
+1.1.1 (2015-09-25)
 ------------------
 
 - Fix error with rendering the portlet and having an empty subject.
