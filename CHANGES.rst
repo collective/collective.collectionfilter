@@ -1,10 +1,11 @@
 Changelog
 =========
 
-1.2 (unreleased)
-----------------
+1.1.1 (unreleased)
+------------------
 
-- Nothing changed yet.
+- Fix error with rendering the portlet and having an empty subject.
+  [thet]
 
 
 1.1 (2015-09-25)

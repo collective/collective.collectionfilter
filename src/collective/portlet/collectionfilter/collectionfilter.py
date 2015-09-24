@@ -263,7 +263,9 @@ class Renderer(base.Renderer):
                         # We want to count items with empty criterions too.
                         val = ['']
                     for crit in val:
-                        if crit and crit not in grouped_results:
+                        if not crit:
+                            continue
+                        elif crit not in grouped_results:
                             crit = crit or ''
                             urlquery[idx] = crit
                             title = _(safe_decode(
