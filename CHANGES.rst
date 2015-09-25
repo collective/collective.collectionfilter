@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.1.2 (unreleased)
+1.1.2 (2015-09-25)
 ------------------
 
 - In the collection filter portlet, don't count empty values. These cannot be
