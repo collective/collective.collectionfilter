@@ -1,10 +1,13 @@
 Changelog
 =========
 
-1.2 (unreleased)
-----------------
+1.1.2 (unreleased)
+------------------
 
-- Nothing changed yet.
+- In the collection filter portlet, don't count empty values. These cannot be
+  searched via the catalog. Use an empty marker instead (for an example on the
+  ``Subject`` index, see the indexer module).
+  [thet]
 
 
 1.1.1 (2015-09-25)

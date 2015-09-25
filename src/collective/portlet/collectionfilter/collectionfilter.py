@@ -259,14 +259,8 @@ class Renderer(base.Renderer):
                         val = val()
                     if not getattr(val, '__iter__', False):
                         val = [val]
-                    if not val:
-                        # We want to count items with empty criterions too.
-                        val = ['']
                     for crit in val:
-                        if not crit:
-                            continue
-                        elif crit not in grouped_results:
-                            crit = crit or ''
+                        if crit not in grouped_results:
                             urlquery[idx] = crit
                             title = _(safe_decode(
                                 mod(crit)
