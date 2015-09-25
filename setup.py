@@ -1,7 +1,7 @@
 from setuptools import find_packages
 from setuptools import setup
 
-version = '1.2.dev0'
+version = '1.1.3'
 
 setup(
     name='collective.portlet.collectionfilter',
