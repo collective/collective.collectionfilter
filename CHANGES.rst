@@ -1,10 +1,11 @@
 Changelog
 =========
 
-1.2 (unreleased)
-----------------
+1.1.3 (unreleased)
+------------------
 
-- Nothing changed yet.
+- Fix brown bag release.
+  [thet]
 
 
 1.1.2 (2015-09-25)
