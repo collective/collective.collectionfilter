@@ -8,7 +8,12 @@
     <ul>
       <tal:items repeat="group view/results">
         <li tal:attributes="class python:'selected' if group['selected'] else ''">
-          <a rel="nofollow" tal:attributes="href group/url; title string:Count: ${group/count};">
+          <a rel="nofollow"
+             class="pat-contentloader" data-pat-contentloader="url:a;target:#content-core;"
+             tal:attributes="href group/url;
+                             title string:Count: ${group/count};
+                             data-pat-contentloader string:{&quot;url&quot;: &quot;${group/url}&quot;, &quot;target&quot;: &quot;#content&quot;}"
+             >
             <span tal:content="group/title">Group</span>
             <tal:show_count condition="view/data/show_count">(<span tal:replace="group/count" />)</tal:show_count>
           </a>

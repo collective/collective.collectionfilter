@@ -246,7 +246,7 @@ class Renderer(base.Renderer):
 
                 ret.append(dict(
                     title=_('subject_all', default=u'All categories'),
-                    url=u'{0}/?{1}'.format(
+                    url=u'{0}/?{1}&ajax_load=1'.format(
                         self.collection.absolute_url(),
                         urlencode(urlquery)
                     ),
@@ -272,7 +272,7 @@ class Renderer(base.Renderer):
                                 if mod and crit is not EMPTY_MARKER
                                 else crit
                             ))  # mod modifies for displaying (e.g. uuid to title)  # noqa
-                            url = u'{0}/?{1}'.format(
+                            url = u'{0}/?{1}&ajax_load=1'.format(
                                 self.collection.absolute_url(),
                                 urlencode(safe_encode(urlquery))  # need to be utf-8 encoded  # noqa
                             )
