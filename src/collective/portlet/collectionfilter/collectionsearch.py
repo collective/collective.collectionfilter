@@ -3,7 +3,6 @@ from .vocabularies import TEXT_IDX
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
-from plone.app.portlets.browser import z3cformhelper
 from plone.app.portlets.portlets import base
 from plone.app.uuid.utils import uuidToCatalogBrain
 from plone.app.vocabularies.catalog import CatalogSource
@@ -103,10 +102,14 @@ class Renderer(CollectionRenderer):
             )
         return item
 
+    def update(self):
+        pass
 
-class AddForm(z3cformhelper.AddForm):
+
+class AddForm(base.AddForm):
     fields = field.Fields(ICollectionSearchPortlet)
 
+    schema = ICollectionSearchPortlet
     label = _(u"Add Collection Search Portlet")
     description = _(
         u"This portlet allows fulltext search in collection results."
@@ -116,9 +119,10 @@ class AddForm(z3cformhelper.AddForm):
         return Assignment(**data)
 
 
-class EditForm(z3cformhelper.EditForm):
+class EditForm(base.EditForm):
     fields = field.Fields(ICollectionSearchPortlet)
 
+    schema = ICollectionSearchPortlet
     label = _(u"Edit Collection Search Portlet")
     description = _(
         u"This portlet allows fulltext search in collection results."

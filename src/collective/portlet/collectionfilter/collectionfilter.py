@@ -11,7 +11,6 @@ from plone.app.event.base import _prepare_range
 from plone.app.event.base import guess_date_from
 from plone.app.event.base import start_end_from_mode
 from plone.app.event.base import start_end_query
-from plone.app.portlets.browser import z3cformhelper
 from plone.app.portlets.portlets import base
 from plone.app.uuid.utils import uuidToObject
 from plone.app.vocabularies.catalog import CatalogSource
@@ -299,9 +298,10 @@ class Renderer(base.Renderer):
         return ret
 
 
-class AddForm(z3cformhelper.AddForm):
+class AddForm(base.AddForm):
     fields = field.Fields(ICollectionFilterPortlet)
 
+    schema = ICollectionFilterPortlet
     label = _(u"Add Collection Filter Portlet")
     description = _(
         u"This portlet shows grouped criteria of collection results and "
@@ -312,9 +312,10 @@ class AddForm(z3cformhelper.AddForm):
         return Assignment(**data)
 
 
-class EditForm(z3cformhelper.EditForm):
+class EditForm(base.EditForm):
     fields = field.Fields(ICollectionFilterPortlet)
 
+    schema = ICollectionFilterPortlet
     label = _(u"Edit Collection Filter Portlet")
     description = _(
         u"This portlet shows grouped criteria of collection results and "
