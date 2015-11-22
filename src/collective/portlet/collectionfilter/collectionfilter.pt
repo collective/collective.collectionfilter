@@ -9,7 +9,7 @@
       <tal:items repeat="group view/results">
         <li tal:attributes="class python:'selected' if group['selected'] else ''">
           <a rel="nofollow"
-             class="pat-contentloader" data-pat-contentloader="url:a;target:#content-core;"
+             class="pat-contentloader" data-pat-contentloader="url:a;target:#content;"
              tal:attributes="href group/url;
                              title string:Count: ${group/count};
                              data-pat-contentloader string:{&quot;url&quot;: &quot;${group/url}&quot;, &quot;target&quot;: &quot;#content&quot;}"
