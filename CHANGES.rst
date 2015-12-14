@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.2 (unreleased)
+1.2 (2015-12-14)
 ----------------
 
 - Make cache time configurable and set it to 60 seconds instead of an hour.
