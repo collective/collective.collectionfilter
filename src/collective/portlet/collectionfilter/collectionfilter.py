@@ -16,6 +16,7 @@ from plone.app.portlets.portlets import base
 from plone.app.uuid.utils import uuidToObject
 from plone.app.vocabularies.catalog import CatalogSource
 from plone.memoize import ram
+from plone.memoize.volatile import DontCache
 from plone.portlets.interfaces import IPortletDataProvider
 from time import time
 from urllib import urlencode
@@ -28,10 +29,6 @@ try:
 except ImportError:
     class EventListing(object):
         pass
-
-from datetime import datetime
-import logging
-logger = logging.getLogger(name="collective.portlet.collectionfilter")
 
 
 class ICollectionFilterPortlet(IPortletDataProvider):
@@ -77,6 +74,15 @@ class ICollectionFilterPortlet(IPortletDataProvider):
         required=False
     )
 
+    cache_time = schema.TextLine(
+        title=_(u"label_cache_time", default=u"Cache Time (s)"),
+        description=_(
+            u'help_cache_time',
+            default=u"Cache time in seconds. 0 for no caching."
+        ),
+        required=False,
+    )
+
 #    faceted = schema.Bool(
 #        title=_(u'label_faceted', default=u'Faceted Filter'),
 #        description=_(
@@ -117,6 +123,7 @@ class Assignment(base.Assignment):
     target_collection = None
     group_by = u""
     show_count = False
+    cache_time = 60
     # faceted = False
     # faceted_operator = 'and'
     # list_scaling = None
@@ -127,6 +134,7 @@ class Assignment(base.Assignment):
         target_collection=None,
         group_by=u"",
         show_count=False,
+        cache_time=60
         # faceted=False,
         # faceted_operator='and',
         # list_scaling=None
@@ -135,6 +143,7 @@ class Assignment(base.Assignment):
         self.target_collection = target_collection
         self.group_by = group_by
         self.show_count = show_count
+        self.cache_time = cache_time
         # self.faceted = faceted
         # self.faceted_operator = faceted_operator
         # self.list_scaling = list_scaling
@@ -154,10 +163,14 @@ class Assignment(base.Assignment):
 
 
 def _results_cachekey(method, self, collection, request_params):
+    cache_time = int(self.data.cache_time)
+    if not cache_time:
+        # Don't cache on cache_time = 0 or any other falsy value
+        raise DontCache
     context = aq_inner(self.context)
     path = '/'.join(context.getPhysicalPath())
     portal_membership = getToolByName(context, 'portal_membership')
-    timeout = time() // (60 * 60)  # cache for one hour
+    timeout = time() // int(self.data.cache_time)
     cachekey = (
         self.data.portlet_id,
         path,
@@ -191,19 +204,12 @@ class Renderer(base.Renderer):
         return item
 
     def results(self):
-        t0 = datetime.now()
-
         # return cached
         results = self._results(self.collection, self.request.form or {})
-
-        logger.debug("time to build cloud: {0}".format(
-            (datetime.now() - t0).total_seconds())
-        )
         return results
 
     @ram.cache(_results_cachekey)
     def _results(self, collection, request_params):
-        logger.debug("rebuild cloud")
         ret = []
         if collection:
             collection_layout = collection.getLayout()

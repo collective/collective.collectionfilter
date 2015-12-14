@@ -4,7 +4,10 @@ Changelog
 1.2 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Make cache time configurable and set it to 60 seconds instead of an hour.
+  0 is no caching.
+  Remove profiling code.
+  [thet]
 
 
 1.1.3 (2015-09-25)
