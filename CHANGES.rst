@@ -4,10 +4,10 @@ Changelog
 1.3 (unreleased)
 ----------------
 
-- Plone 5 compatibility
+- Plone 5 compatibility.
   [agitator]
 
-- Ajaxification with mockup
+- Ajaxification with mockup, if available.
   [agitator]
 
 

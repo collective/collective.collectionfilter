@@ -5,6 +5,7 @@ from .vocabularies import EMPTY_MARKER
 from .vocabularies import GROUPBY_CRITERIA
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.utils import getFSVersionTuple
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
 from plone.app.event.base import _prepare_range
@@ -19,7 +20,6 @@ from plone.memoize.volatile import DontCache
 from plone.portlets.interfaces import IPortletDataProvider
 from time import time
 from urllib import urlencode
-from z3c.form import field
 from zope import schema
 from zope.interface import implements
 
@@ -28,6 +28,16 @@ try:
 except ImportError:
     class EventListing(object):
         pass
+
+PLONE5 = getFSVersionTuple()[0] >= 5
+
+if PLONE5:
+    base_AddForm = base.AddForm
+    base_EditForm = base.EditForm
+else:
+    from plone.app.portlets.browser.z3cformhelper import AddForm as base_AddForm  # noqa
+    from plone.app.portlets.browser.z3cformhelper import EditForm as base_EditForm  # noqa
+    from z3c.form import field
 
 
 class ICollectionFilterPortlet(IPortletDataProvider):
@@ -246,7 +256,7 @@ class Renderer(base.Renderer):
 
                 ret.append(dict(
                     title=_('subject_all', default=u'All categories'),
-                    url=u'{0}/?{1}&ajax_load=1'.format(
+                    url=u'{0}/?{1}'.format(
                         self.collection.absolute_url(),
                         urlencode(urlquery)
                     ),
@@ -272,7 +282,7 @@ class Renderer(base.Renderer):
                                 if mod and crit is not EMPTY_MARKER
                                 else crit
                             ))  # mod modifies for displaying (e.g. uuid to title)  # noqa
-                            url = u'{0}/?{1}&ajax_load=1'.format(
+                            url = u'{0}/?{1}'.format(
                                 self.collection.absolute_url(),
                                 urlencode(safe_encode(urlquery))  # need to be utf-8 encoded  # noqa
                             )
@@ -298,10 +308,12 @@ class Renderer(base.Renderer):
         return ret
 
 
-class AddForm(base.AddForm):
-    fields = field.Fields(ICollectionFilterPortlet)
+class AddForm(base_AddForm):
+    if PLONE5:
+        schema = ICollectionFilterPortlet
+    else:
+        fields = field.Fields(ICollectionFilterPortlet)
 
-    schema = ICollectionFilterPortlet
     label = _(u"Add Collection Filter Portlet")
     description = _(
         u"This portlet shows grouped criteria of collection results and "
@@ -312,10 +324,12 @@ class AddForm(base.AddForm):
         return Assignment(**data)
 
 
-class EditForm(base.EditForm):
-    fields = field.Fields(ICollectionFilterPortlet)
+class EditForm(base_EditForm):
+    if PLONE5:
+        schema = ICollectionFilterPortlet
+    else:
+        fields = field.Fields(ICollectionFilterPortlet)
 
-    schema = ICollectionFilterPortlet
     label = _(u"Edit Collection Filter Portlet")
     description = _(
         u"This portlet shows grouped criteria of collection results and "
