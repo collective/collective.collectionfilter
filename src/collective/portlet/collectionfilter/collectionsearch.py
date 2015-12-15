@@ -1,17 +1,26 @@
 from . import msgFact as _
 from .vocabularies import TEXT_IDX
+from Products.CMFPlone.utils import getFSVersionTuple
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
-from plone.app.portlets.browser import z3cformhelper
 from plone.app.portlets.portlets import base
 from plone.app.uuid.utils import uuidToCatalogBrain
 from plone.app.vocabularies.catalog import CatalogSource
 from plone.portlet.collection.collection import Renderer as CollectionRenderer
 from plone.portlets.interfaces import IPortletDataProvider
-from z3c.form import field
 from zope import schema
 from zope.interface import implements
+
+PLONE5 = getFSVersionTuple()[0] >= 5
+
+if PLONE5:
+    base_AddForm = base.AddForm
+    base_EditForm = base.EditForm
+else:
+    from plone.app.portlets.browser.z3cformhelper import AddForm as base_AddForm  # noqa
+    from plone.app.portlets.browser.z3cformhelper import EditForm as base_EditForm  # noqa
+    from z3c.form import field
 
 
 class ICollectionSearchPortlet(IPortletDataProvider):
@@ -103,9 +112,15 @@ class Renderer(CollectionRenderer):
             )
         return item
 
+    def update(self):
+        pass
 
-class AddForm(z3cformhelper.AddForm):
-    fields = field.Fields(ICollectionSearchPortlet)
+
+class AddForm(base_AddForm):
+    if PLONE5:
+        schema = ICollectionSearchPortlet
+    else:
+        fields = field.Fields(ICollectionSearchPortlet)
 
     label = _(u"Add Collection Search Portlet")
     description = _(
@@ -116,8 +131,11 @@ class AddForm(z3cformhelper.AddForm):
         return Assignment(**data)
 
 
-class EditForm(z3cformhelper.EditForm):
-    fields = field.Fields(ICollectionSearchPortlet)
+class EditForm(base_EditForm):
+    if PLONE5:
+        schema = ICollectionSearchPortlet
+    else:
+        fields = field.Fields(ICollectionSearchPortlet)
 
     label = _(u"Edit Collection Search Portlet")
     description = _(

@@ -8,12 +8,22 @@
     <ul>
       <tal:items repeat="group view/results">
         <li tal:attributes="class python:'selected' if group['selected'] else ''">
-          <a rel="nofollow" tal:attributes="href group/url; title string:Count: ${group/count};">
+          <a rel="nofollow"
+             class="pat-contentloader"
+             tal:attributes='href group/url;
+                             title string:Count: ${group/count};
+                             data-pat-contentloader string:{"url": "${group/url}&ajax_load=1", "target": "#content"}'
+             >
             <span tal:content="group/title">Group</span>
             <tal:show_count condition="view/data/show_count">(<span tal:replace="group/count" />)</tal:show_count>
           </a>
         </li>
       </tal:items>
     </ul>
+    <script type="text/javascript" charset="utf-8">
+        $('.portlet-collectionfilter ul li a').on('click', function (e) {
+            $(this).closest('ul').find('li.selected').removeClass('selected');
+        });
+    </script>
   </dd>
 </dl>
