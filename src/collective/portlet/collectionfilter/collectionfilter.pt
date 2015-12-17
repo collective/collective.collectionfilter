@@ -23,6 +23,7 @@
     <script type="text/javascript" charset="utf-8">
         $('.portlet-collectionfilter ul li a').on('click', function (e) {
             $(this).closest('ul').find('li.selected').removeClass('selected');
+            $(this).closest('li').addClass('selected');
         });
     </script>
   </dd>
