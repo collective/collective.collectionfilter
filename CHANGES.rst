@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.3.1 (unreleased)
-------------------
+1.4 (2015-12-17)
+----------------
 
 - Set the 'selected' class on clicked collectionfilter link via JavaScript.
   [thet]
