@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.5 (unreleased)
-----------------
+1.4.1 (2016-02-04)
+------------------
 
 - Fix AJAX loading of collectionfilter result to use the #content node instead of whole document.
   [thet]
