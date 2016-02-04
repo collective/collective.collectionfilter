@@ -12,7 +12,7 @@
              class="pat-contentloader"
              tal:attributes='href group/url;
                              title string:Count: ${group/count};
-                             data-pat-contentloader string:{"url": "${group/url}&ajax_load=1", "target": "#content"}'
+                             data-pat-contentloader string:{"url": "${group/url}&ajax_load=1", "content": "#content", "target": "#content"}'
              >
             <span tal:content="group/title">Group</span>
             <tal:show_count condition="view/data/show_count">(<span tal:replace="group/count" />)</tal:show_count>
