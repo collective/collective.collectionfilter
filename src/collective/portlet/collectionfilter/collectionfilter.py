@@ -89,6 +89,7 @@ class ICollectionFilterPortlet(IPortletDataProvider):
             u'help_cache_time',
             default=u"Cache time in seconds. 0 for no caching."
         ),
+        default=u'60',
         required=False,
     )
 
