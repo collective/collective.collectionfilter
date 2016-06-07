@@ -4,7 +4,8 @@ Changelog
 1.5 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Update AJAX selectors to content-core and default value for caching
+  [agitator]
 
 
 1.4.1 (2016-02-04)
