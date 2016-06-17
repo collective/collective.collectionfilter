@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<registry>
+
+  <records prefix="plone.resources/collective.collectionfilter"
+           interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="css">
+        <element>++resource++collective.collectionfilter/styles.less</element>
+      </value>
+  </records>
+
+  <records prefix="plone.bundles/collective.collectionfilter"
+              interface='Products.CMFPlone.interfaces.IBundleRegistry'>
+    <value key="resources">
+      <element>collective.collectionfilter</element>
+    </value>
+    <value key="enabled">True</value>
+    <value key="depends">plone</value>
+    <value key="compile">True</value>
+    <value key="csscompilation">++resource++collective.collectionfilter/styles-compiled.css</value>
+    <value key="last_compilation">2016-06-17 00:00:00</value>
+    <!-- <value key="merge_with">default</value> -->
+  </records>
+
+</registry>

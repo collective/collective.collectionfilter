@@ -3,9 +3,15 @@
     xmlns:i18n="http://namespaces.zope.org/i18n"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="collective.portlet.collectionfilter">
 
   <i18n:registerTranslations directory="locales" />
+
+  <browser:resourceDirectory
+      name="collective.collectionfilter"
+      directory="static"
+      />
 
   <plone:portlet
       name="collective.portlet.collectionfilter.CollectionFilter"

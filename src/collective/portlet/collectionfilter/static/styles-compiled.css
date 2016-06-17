@@ -1,0 +1,26 @@
+.portlet.portletCollectionFilter .portletContent > ul {
+  padding: 0;
+  list-style: none;
+  position: relative;
+}
+.portlet.portletCollectionFilter .portletContent > ul > li a {
+  display: block;
+  padding: 5px 15px 5px 30px;
+  border: 0;
+  position: relative;
+  z-index: 1;
+}
+.portlet.portletCollectionFilter .portletContent > ul > li:first-child > a {
+  padding-top: 10px;
+}
+.portlet.portletCollectionFilter .portletContent > ul > li:last-child > a {
+  padding-bottom: 10px;
+}
+.portlet.portletCollectionFilter .portletContent > ul li.selected a {
+  font-weight: bold;
+}
+.portlet.portletCollectionFilter .portletContent > ul ul {
+  padding-left: 15px;
+  list-style: none;
+}
+/*# sourceMappingURL=styles.css.map */

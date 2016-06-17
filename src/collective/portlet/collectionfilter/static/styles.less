@@ -1,0 +1,36 @@
+//*// PORTLETS //*//
+
+.portlet.portletCollectionFilter {
+    .portletContent {
+        > ul {
+            padding: 0;
+            list-style: none;
+            position: relative;
+            > li {
+                a {
+                display: block;
+                padding: 5px 15px 5px 30px;
+                border: 0;
+                position: relative;
+                z-index: 1;
+                }
+
+                // > a {border-top: @plone-portlet-border;}
+                &:first-child > a {padding-top: 10px;}
+                &:last-child > a {padding-bottom: 10px;}
+                // & a:before {
+                //     content:"•"; position: absolute; font-size: @plone-font-size-h3+1; margin-top: -9px; left: 15px;
+                //     color: lighten(@plone-portlet-list-bullet, 15%);
+                // }
+            }
+            li.selected a {
+                font-weight: bold;
+            }
+            ul {
+                padding-left:15px;
+                list-style: none;
+            }
+        }
+    }
+}
+
