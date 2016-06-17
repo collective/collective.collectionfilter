@@ -1,10 +1,11 @@
-<dl class="portlet portlet-collectionfilter-search" i18n:domain="collective.portlet.collectionfilter">
-  <dt class="portletHeader">
-    <span class="portletTopLeft"></span>
-    <span class="portletTitle" tal:content="view/header_title"></span>
-    <span class="portletTopRight"></span>
-  </dt>
-  <dd class="portletItem odd">
+<aside class="portlet portletCollectionSearch"
+       i18n:domain="collective.portlet.collectionfilter">
+
+  <header class="portletHeader"
+          tal:content="view/header_title">
+          Title
+  </header>
+  <div class="portletContent">
     <form method="get" name="searchForm" role="form"
         tal:attributes="action view/action_url">
         <tal:urlquery repeat="item python:view.urlquery.items()">
@@ -14,5 +15,5 @@
             tal:attributes="value view/value">
         <button type="submit">Search</button>
     </form>
-  </dd>
-</dl>
+  </div>
+</aside>

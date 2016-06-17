@@ -1,10 +1,11 @@
-<dl class="portlet portlet-collectionfilter portlet-tags" i18n:domain="collective.portlet.collectionfilter">
-  <dt class="portletHeader">
-    <span class="portletTopLeft"></span>
-    <span class="portletTitle" tal:content="view/header_title"></span>
-    <span class="portletTopRight"></span>
-  </dt>
-  <dd class="portletItem odd">
+<aside class="portlet portletCollectionFilter"
+       i18n:domain="collective.portlet.collectionfilter">
+
+  <header class="portletHeader"
+          tal:content="view/header_title">
+          Title
+  </header>
+  <div class="portletContent">
     <ul>
       <tal:items repeat="group view/results">
         <li tal:attributes="class python:'selected' if group['selected'] else ''">
@@ -21,10 +22,10 @@
       </tal:items>
     </ul>
     <script type="text/javascript" charset="utf-8">
-        $('.portlet-collectionfilter ul li a').on('click', function (e) {
+        $('.portletCollectionFilter ul li a').on('click', function (e) {
             $(this).closest('ul').find('li.selected').removeClass('selected');
             $(this).closest('li').addClass('selected');
         });
     </script>
-  </dd>
-</dl>
+  </div>
+</aside>
