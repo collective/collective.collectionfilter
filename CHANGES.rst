@@ -1,6 +1,13 @@
 Changelog
 =========
 
+2.0.0 (unreleased)
+----------------
+
+- Plone 5 style portlet markup
+  [agitator]
+
+
 1.5 (unreleased)
 ----------------
 
