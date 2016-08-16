@@ -256,7 +256,7 @@ class Renderer(base.Renderer):
             if results:
 
                 ret.append(dict(
-                    title=_('subject_all', default=u'All categories'),
+                    title=_('subject_all', default=u'All'),
                     url=u'{0}/?{1}'.format(
                         self.collection.absolute_url(),
                         urlencode(urlquery)

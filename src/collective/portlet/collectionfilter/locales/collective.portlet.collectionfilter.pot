@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2015-06-02 11:09+0000\n"
+"POT-Creation-Date: 2016-08-16 14:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,89 +17,101 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: collective.portlet.collectionfilter\n"
 
-#: collective/portlet/collectionfilter/collectionfilter.py:283
+#: collective/portlet/collectionfilter/collectionfilter.py:318
 msgid "Add Collection Filter Portlet"
 msgstr ""
 
-#: collective/portlet/collectionfilter/collectionsearch.py:109
+#: collective/portlet/collectionfilter/collectionsearch.py:125
 msgid "Add Collection Search Portlet"
 msgstr ""
 
-#: collective/portlet/collectionfilter/collectionfilter.py:146
+#: collective/portlet/collectionfilter/collectionfilter.py:172
 msgid "Collection Filter"
 msgstr ""
 
-#: collective/portlet/collectionfilter/collectionsearch.py:62
+#: collective/portlet/collectionfilter/collectionsearch.py:70
 msgid "Collection Search"
 msgstr ""
 
-#: collective/portlet/collectionfilter/collectionfilter.py:296
+#: collective/portlet/collectionfilter/collectionfilter.py:334
 msgid "Edit Collection Filter Portlet"
 msgstr ""
 
-#: collective/portlet/collectionfilter/collectionsearch.py:121
+#: collective/portlet/collectionfilter/collectionsearch.py:140
 msgid "Edit Collection Search Portlet"
 msgstr ""
 
-#: collective/portlet/collectionfilter/collectionsearch.py:110
+#: collective/portlet/collectionfilter/configure.zcml:68
+msgid "Extension profile for Plone."
+msgstr ""
+
+#: collective/portlet/collectionfilter/collectionsearch.py:126
 msgid "This portlet allows fulltext search in collection results."
 msgstr ""
 
-#: collective/portlet/collectionfilter/collectionfilter.py:284
+#: collective/portlet/collectionfilter/collectionfilter.py:319
 msgid "This portlet shows grouped criteria of collection results and allows filtering of collection results."
 msgstr ""
 
-#. Default: "Other"
-#: collective/portlet/collectionfilter/collectionfilter.py:253
-msgid "crit_other"
+#: collective/portlet/collectionfilter/configure.zcml:68
+msgid "collective.portlet.collectionfilter"
+msgstr ""
+
+#. Default: "Cache time in seconds. 0 for no caching."
+#: collective/portlet/collectionfilter/collectionfilter.py:88
+msgid "help_cache_time"
 msgstr ""
 
 #. Default: "Select the criteria to group the collection results by."
-#: collective/portlet/collectionfilter/collectionfilter.py:62
+#: collective/portlet/collectionfilter/collectionfilter.py:69
 msgid "help_groupby"
 msgstr ""
 
-#. Default: Title of the rendered portlet.
-#: collective/portlet/collectionfilter/collectionfilter.py:40
-#: collective/portlet/collectionfilter/collectionsearch.py:22
+#. Default: "Title of the rendered portlet."
+#: collective/portlet/collectionfilter/collectionfilter.py:47
+#: collective/portlet/collectionfilter/collectionsearch.py:30
 msgid "help_header"
 msgstr ""
 
 #. Default: "Show the result count for each filter group."
-#: collective/portlet/collectionfilter/collectionfilter.py:72
+#: collective/portlet/collectionfilter/collectionfilter.py:79
 msgid "help_show_count"
 msgstr ""
 
 #. Default: "The collection, which is the source for the filter items and where the filter is applied."
-#: collective/portlet/collectionfilter/collectionfilter.py:49
-#: collective/portlet/collectionfilter/collectionsearch.py:31
+#: collective/portlet/collectionfilter/collectionfilter.py:56
+#: collective/portlet/collectionfilter/collectionsearch.py:39
 msgid "help_target_collection"
 msgstr ""
 
+#. Default: "Cache Time (s)"
+#: collective/portlet/collectionfilter/collectionfilter.py:87
+msgid "label_cache_time"
+msgstr ""
+
 #. Default: "Group by"
-#: collective/portlet/collectionfilter/collectionfilter.py:61
+#: collective/portlet/collectionfilter/collectionfilter.py:68
 msgid "label_groupby"
 msgstr ""
 
 #. Default: "Portlet header"
-#: collective/portlet/collectionfilter/collectionfilter.py:39
-#: collective/portlet/collectionfilter/collectionsearch.py:21
+#: collective/portlet/collectionfilter/collectionfilter.py:46
+#: collective/portlet/collectionfilter/collectionsearch.py:29
 msgid "label_header"
 msgstr ""
 
 #. Default: "Show count"
-#: collective/portlet/collectionfilter/collectionfilter.py:71
+#: collective/portlet/collectionfilter/collectionfilter.py:78
 msgid "label_show_count"
 msgstr ""
 
 #. Default: "Target Collection"
-#: collective/portlet/collectionfilter/collectionfilter.py:48
-#: collective/portlet/collectionfilter/collectionsearch.py:30
+#: collective/portlet/collectionfilter/collectionfilter.py:55
+#: collective/portlet/collectionfilter/collectionsearch.py:38
 msgid "label_target_collection"
 msgstr ""
 
-#. Default: "All categories"
-#: collective/portlet/collectionfilter/collectionfilter.py:227
+#. Default: "All"
+#: collective/portlet/collectionfilter/collectionfilter.py:259
 msgid "subject_all"
 msgstr ""
-
