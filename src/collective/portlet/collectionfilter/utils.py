@@ -11,7 +11,7 @@ def safe_decode(val):
         ret = [safe_decode(it) for it in val]
     elif isinstance(val, tuple):
         ret = (safe_decode(it) for it in val)
-    else:
+    elif val:
         ret = safe_unicode(val)
     return ret
 
@@ -26,6 +26,6 @@ def safe_encode(val):
         ret = [safe_encode(it) for it in val]
     elif isinstance(val, tuple):
         ret = (safe_encode(it) for it in val)
-    else:
+    elif val:
         ret = safe_unicode(val).encode('utf-8')
     return ret
