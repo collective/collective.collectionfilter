@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2016-08-16 14:34+0000\n"
+"POT-Creation-Date: 2016-09-28 08:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -70,7 +70,6 @@ msgstr "Kriterium zur Gruppierung der Kollektionsergebnisse auswählen."
 #. Default: "Title of the rendered portlet."
 #: collective/portlet/collectionfilter/collectionfilter.py:47
 #: collective/portlet/collectionfilter/collectionsearch.py:30
-#, fuzzy
 msgid "help_header"
 msgstr "Titel des Portlets"
 
@@ -114,6 +113,5 @@ msgstr "Ziel Kollektion"
 
 #. Default: "All"
 #: collective/portlet/collectionfilter/collectionfilter.py:259
-#, fuzzy
 msgid "subject_all"
 msgstr "Alle"
