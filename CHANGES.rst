@@ -4,6 +4,10 @@ Changelog
 2.0.0 (unreleased)
 ----------------
 
+- removed EMPTY indexer
+  [agitator]
+
+
 - Plone 5 style portlet markup
   [agitator]
 

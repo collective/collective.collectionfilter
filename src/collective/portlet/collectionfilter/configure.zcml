@@ -48,11 +48,6 @@
       name="collective.portlet.collectionfilter.ListScaling"
       />
 
-  <!-- subject indexer with empty marker -->
-  <adapter
-      name="Subject"
-      factory=".indexer.subject_indexer"/>
-
   <subscriber
       for="*
            zope.traversing.interfaces.IBeforeTraverseEvent"
