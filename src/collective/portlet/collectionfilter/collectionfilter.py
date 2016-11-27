@@ -93,25 +93,25 @@ class ICollectionFilterPortlet(IPortletDataProvider):
         required=False,
     )
 
-#    faceted = schema.Bool(
-#        title=_(u'label_faceted', default=u'Faceted Filter'),
-#        description=_(
-#            u'help_faceted',
-#            default=u'Use faceted filtering by keeping previously selected '
-#                    u'criterias active.'),
-#        default=False,
-#        required=False
-#    )
+    additive_filter = schema.Bool(
+        title=_(u'label_additive_filter', default=u'Additive Filter'),
+        description=_(
+            u'help_additive_filter',
+            default=u'Use additive_filter filtering by keeping previously selected '
+                    u'criterias active.'),
+        default=False,
+        required=False
+    )
 
-#    faceted_operator = schema.Choice(
+#    additive_operator = schema.Choice(
 #        title=_(
-#           u'label_faceted_operator', default=u'Faceted Filter Operator'),
+#           u'label_additive_operator', default=u'Additive Filter Operator'),
 #        description=_(
-#            u'help_faceted_operator',
+#            u'help_additive_operator',
 #            default=u'Select, if all (and) or any (or) selected filter '
 #                    u'criterias must be met.'),
 #        required=True,
-#        vocabulary='collective.portlet.collectionfilter.FacetedOperator',
+#        vocabulary='collective.portlet.collectionfilter.AdditiveOperator',
 #    )
 
 #    list_scaling = schema.Choice(
@@ -134,8 +134,8 @@ class Assignment(base.Assignment):
     group_by = u""
     show_count = False
     cache_time = 60
-    # faceted = False
-    # faceted_operator = 'and'
+    additive_filter = False
+    # additive_operator = 'and'
     # list_scaling = None
 
     def __init__(
@@ -144,9 +144,9 @@ class Assignment(base.Assignment):
         target_collection=None,
         group_by=u"",
         show_count=False,
-        cache_time=60
-        # faceted=False,
-        # faceted_operator='and',
+        cache_time=60,
+        additive_filter=False,
+        # additive_operator='and',
         # list_scaling=None
     ):
         self.header = header
@@ -154,8 +154,8 @@ class Assignment(base.Assignment):
         self.group_by = group_by
         self.show_count = show_count
         self.cache_time = cache_time
-        # self.faceted = faceted
-        # self.faceted_operator = faceted_operator
+        self.additive_filter = additive_filter
+        # self.additive_operator = additive_operator
         # self.list_scaling = list_scaling
 
     @property
@@ -240,11 +240,16 @@ class Renderer(base.Renderer):
             idx = GROUPBY_CRITERIA[self.data.group_by]['index']
             urlquery = {}
             urlquery.update(request_params)
-            for it in (idx, 'b_start', 'b_size', 'batch', 'sort_on', 'limit'):
-                # Remove problematic url parameters
-                # And make sure to not filter by previously selected terms from
-                # this index. This narrows down too much (except for dedicated
-                # facetted searches - TODO)
+            ignore_params = [
+                'b_start',
+                'b_size',
+                'batch',
+                'sort_on',
+                'limit'
+            ] + [idx] if self.data.additive_filter else []
+
+            for it in ignore_params:
+                # Remove unwanted url parameters
                 if it in urlquery:
                     del urlquery[it]
 

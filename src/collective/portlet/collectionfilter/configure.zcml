@@ -40,8 +40,8 @@
       name="collective.portlet.collectionfilter.GroupByCriteria"
       />
   <utility
-      component=".vocabularies.FacetedOperator"
-      name="collective.portlet.collectionfilter.FacetedOperator"
+      component=".vocabularies.AdditiveOperator"
+      name="collective.portlet.collectionfilter.AdditiveOperator"
       />
   <utility
       component=".vocabularies.ListScaling"

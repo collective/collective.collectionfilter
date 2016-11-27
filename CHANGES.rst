@@ -2,9 +2,12 @@ Changelog
 =========
 
 2.0.0 (unreleased)
-----------------
+------------------
 
-- removed EMPTY indexer
+- Added option for additive filters.
+  [thet]
+
+- Removed EMPTY indexer.
   [agitator]
 
 

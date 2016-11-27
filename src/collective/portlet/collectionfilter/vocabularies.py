@@ -33,13 +33,13 @@ GROUPBY_CRITERIA = {
 
 LIST_SCALING = ['No Scaling', 'Linear', 'Logarithmic']
 
-FACETED_OPERATOR = ['and', 'or']
+ADDITIVE_OPERATOR = ['and', 'or']
 
 
 @provider(IVocabularyFactory)
-def FacetedOperator(context):
+def AdditiveOperator(context):
     items = [
-        SimpleTerm(title=_(it), value=it) for it in FACETED_OPERATOR
+        SimpleTerm(title=_(it), value=it) for it in ADDITIVE_OPERATOR
     ]
     return SimpleVocabulary(items)
 
