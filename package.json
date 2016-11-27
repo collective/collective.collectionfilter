@@ -1,0 +1,13 @@
+{
+  "name": "collectionfilter",
+  "version": "1.0.0",
+  "keywords": [
+    "plone"
+  ],
+  "dependencies": {},
+  "license": "BSD-3-Clause",
+  "devDependencies": {
+    "react": "",
+    "react-dom": ""
+  }
+}
