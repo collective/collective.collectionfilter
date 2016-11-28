@@ -2,50 +2,28 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:i18n="http://namespaces.zope.org/i18n"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
-    xmlns:plone="http://namespaces.plone.org/plone"
     xmlns:browser="http://namespaces.zope.org/browser"
-    i18n_domain="collective.portlet.collectionfilter">
+    i18n_domain="collective.collectionfilter">
 
   <i18n:registerTranslations directory="locales" />
+  <include condition="have plone.app.portlets" package=".portlets" />
 
   <browser:resourceDirectory
       name="collective.collectionfilter"
       directory="resources"
       />
 
-  <plone:portlet
-      name="collective.portlet.collectionfilter.CollectionFilter"
-      interface=".collectionfilter.ICollectionFilterPortlet"
-      assignment=".collectionfilter.Assignment"
-      renderer=".collectionfilter.Renderer"
-      addview=".collectionfilter.AddForm"
-      editview=".collectionfilter.EditForm"
-      view_permission="zope2.View"
-      edit_permission="plone.app.portlets.ManagePortlets"
-      />
-
-  <plone:portlet
-      name="collective.portlet.collectionfilter.CollectionSearch"
-      interface=".collectionsearch.ICollectionSearchPortlet"
-      assignment=".collectionsearch.Assignment"
-      renderer=".collectionsearch.Renderer"
-      addview=".collectionsearch.AddForm"
-      editview=".collectionsearch.EditForm"
-      view_permission="zope2.View"
-      edit_permission="plone.app.portlets.ManagePortlets"
-      />
-
   <utility
       component=".vocabularies.GroupByCriteria"
-      name="collective.portlet.collectionfilter.GroupByCriteria"
+      name="collective.collectionfilter.GroupByCriteria"
       />
   <utility
       component=".vocabularies.AdditiveOperator"
-      name="collective.portlet.collectionfilter.AdditiveOperator"
+      name="collective.collectionfilter.AdditiveOperator"
       />
   <utility
       component=".vocabularies.ListScaling"
-      name="collective.portlet.collectionfilter.ListScaling"
+      name="collective.collectionfilter.ListScaling"
       />
 
   <subscriber
@@ -56,7 +34,7 @@
 
   <genericsetup:registerProfile
       name="default"
-      title="collective.portlet.collectionfilter"
+      title="collective.collectionfilter base"
       directory="profiles/default"
       description='Extension profile for Plone.'
       provides="Products.GenericSetup.interfaces.EXTENSION"

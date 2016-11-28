@@ -1,3 +1,3 @@
 from zope.i18nmessageid import MessageFactory
 
-msgFact = MessageFactory('collective.portlet.collectionfilter')
+_ = MessageFactory('collective.collectionfilter')
