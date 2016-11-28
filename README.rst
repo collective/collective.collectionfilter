@@ -16,3 +16,17 @@ portlet for doing a fulltext search on the collection results.
 
 This package is a fork of ``collective.portlet.collectionbysubject`` by Rok
 Garbas.
+
+
+TODO
+====
+
+- Use React for JavaScript-ification.
+
+  - Click on filter item
+
+    - Reloads content column with collection and ajax_load=1
+    - Reloads all filter portlets / tiles
+    - Updates history
+
+
