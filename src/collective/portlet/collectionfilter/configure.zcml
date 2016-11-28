@@ -10,7 +10,7 @@
 
   <browser:resourceDirectory
       name="collective.collectionfilter"
-      directory="static"
+      directory="resources"
       />
 
   <plone:portlet
