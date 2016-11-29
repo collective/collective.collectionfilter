@@ -27,7 +27,7 @@
     <value key="depends">plone</value>
     <value key="compile">True</value>
     <value key="jscompilation"></value>
-    <value key="sscompilation"></value>
+    <value key="csscompilation"></value>
     <value key="last_compilation">2016-06-17 00:00:00</value>
     <!-- value key="merge_with">default</value -->
   </records>

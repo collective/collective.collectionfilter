@@ -1,12 +1,11 @@
 from . import msgFact as _
+from ..interfaces import ICollectionSearchSchema
 from .vocabularies import TEXT_IDX
 from Products.CMFPlone.utils import getFSVersionTuple
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
 from plone.app.portlets.portlets import base
 from plone.app.uuid.utils import uuidToCatalogBrain
-from plone.app.vocabularies.catalog import CatalogSource
 from plone.portlet.collection.collection import Renderer as CollectionRenderer
 from plone.portlets.interfaces import IPortletDataProvider
 from zope import schema
@@ -23,7 +22,7 @@ else:
     from z3c.form import field
 
 
-class ICollectionSearchPortlet(IPortletDataProvider):
+class ICollectionSearchPortlet(ICollectionSearchSchema, IPortletDataProvider):
 
     header = schema.TextLine(
         title=_('label_header', default=u'Portlet header'),
@@ -32,19 +31,6 @@ class ICollectionSearchPortlet(IPortletDataProvider):
             u'Title of the rendered portlet.'
         ),
         required=False,
-    )
-
-    target_collection = schema.Choice(
-        title=_(u'label_target_collection', default=u'Target Collection'),
-        description=_(
-            u'help_target_collection',
-            default=u'The collection, which is the source for the filter '
-                    u'items and where the filter is applied.'
-        ),
-        required=True,
-        source=CatalogSource(
-            object_provides=ISyndicatableCollection.__identifier__
-        ),
     )
 
 
