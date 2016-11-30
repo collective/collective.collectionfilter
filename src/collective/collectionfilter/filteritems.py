@@ -1,4 +1,4 @@
-from . import msgFact as _
+from . import _
 from .utils import safe_decode
 from .utils import safe_encode
 from .vocabularies import EMPTY_MARKER
@@ -41,7 +41,7 @@ def _results_cachekey(
         group_by,  # TODO: group_by.items() & sort
         additive_filter,
         request_params,  # TODO: request_params.items() & sort
-        getattr(plone.api.get_current, 'id', ''),
+        getattr(plone.api.user.get_current(), 'id', ''),
         timeout
     )
     return cachekey

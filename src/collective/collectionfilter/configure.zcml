@@ -1,12 +1,13 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
-    xmlns:i18n="http://namespaces.zope.org/i18n"
-    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="collective.collectionfilter">
 
   <i18n:registerTranslations directory="locales" />
-  <include condition="have plone.app.portlets" package=".portlets" />
+  <include zcml:condition="installed plone.app.portlets" package=".portlets" />
 
   <browser:resourceDirectory
       name="collective.collectionfilter"
@@ -29,7 +30,7 @@
   <subscriber
       for="*
            zope.traversing.interfaces.IBeforeTraverseEvent"
-      handler=".content_filter.set_content_filter"
+      handler=".contentfilter.set_content_filter"
       />
 
   <genericsetup:registerProfile

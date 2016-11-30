@@ -1,6 +1,6 @@
-from . import msgFact as _
+from .. import _
 from ..interfaces import ICollectionSearchSchema
-from .vocabularies import TEXT_IDX
+from ..vocabularies import TEXT_IDX
 from Products.CMFPlone.utils import getFSVersionTuple
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile

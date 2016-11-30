@@ -6,7 +6,7 @@
     i18n_domain="collective.collectionfilter">
 
   <plone:portlet
-      name="collective.collectionfilter.portlet.CollectionFilter"
+      name="collective.collectionfilter.portlets.CollectionFilter"
       interface=".collectionfilter.ICollectionFilterPortlet"
       assignment=".collectionfilter.Assignment"
       renderer=".collectionfilter.Renderer"
@@ -17,7 +17,7 @@
       />
 
   <plone:portlet
-      name="collective.collectionfilter.portlet.CollectionSearch"
+      name="collective.collectionfilter.portlets.CollectionSearch"
       interface=".collectionsearch.ICollectionSearchPortlet"
       assignment=".collectionsearch.Assignment"
       renderer=".collectionsearch.Renderer"

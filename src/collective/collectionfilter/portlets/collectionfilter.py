@@ -1,4 +1,4 @@
-from . import msgFact as _
+from .. import _
 from ..filteritems import get_filter_items
 from ..interfaces import ICollectionFilterSchema
 from Products.CMFPlone.utils import getFSVersionTuple
