@@ -129,13 +129,13 @@ def get_filter_items(
                         mod(crit)
                         if mod and crit is not EMPTY_MARKER
                         else crit
-                    ))  # mod modifies for displaying (e.g. uuid to title)  # noqa
+                    ))  # mod modifies for displaying (e.g. uuid to title)
                     url = u'{0}/?{1}'.format(
                         collection_url,
                         urlencode(safe_encode(urlquery))  # need to be utf-8 encoded  # noqa
                     )
-                    selected = safe_decode(request_params.get(idx)) == safe_decode(crit)  # noqa
-                    sort_key = crit if crit else 'zzzzzz'
+                    selected = safe_decode(request_params.get(idx)) == safe_decode(crit)  # noqa  # TODO: when idx has multiple filters, this might not work
+                    sort_key = crit if crit else 'zzzzzz'  # ? why should crit be falsy?  # noqa
                     crit_dict = {
                         'sort_key': sort_key.lower(),
                         'count': 1,
