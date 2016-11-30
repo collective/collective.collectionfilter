@@ -3,8 +3,6 @@ from .utils import safe_decode
 from .utils import safe_encode
 from .vocabularies import EMPTY_MARKER
 from .vocabularies import GROUPBY_CRITERIA
-from Acquisition import aq_inner
-from Products.CMFCore.utils import getToolByName
 from plone.app.event.base import _prepare_range
 from plone.app.event.base import guess_date_from
 from plone.app.event.base import start_end_from_mode
