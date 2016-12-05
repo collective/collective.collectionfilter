@@ -97,3 +97,20 @@ class ICollectionSearchSchema(Interface):
             object_provides=ISyndicatableCollection.__identifier__
         ),
     )
+
+
+class IGroupByCriteria(Interface):
+    """Interface for creating the GroupByCriteria data structure.
+
+    For example::
+
+        GROUPBY_CRITERIA = {
+            'Subject': {
+                'index': 'Subject',     # Index for querying.
+                'metadata': 'Subject',  # Metadata name for fast access.
+                'display_modifier': _,  # Function for modifying list items
+                                        # for display. Gets the item passed.
+            },
+        }
+
+    """

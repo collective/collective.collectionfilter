@@ -1,8 +1,8 @@
 from . import _
+from .interfaces import IGroupByCriteria
 from .utils import safe_decode
 from .utils import safe_encode
 from .vocabularies import EMPTY_MARKER
-from .vocabularies import GROUPBY_CRITERIA
 from plone.app.event.base import _prepare_range
 from plone.app.event.base import guess_date_from
 from plone.app.event.base import start_end_from_mode
@@ -12,6 +12,7 @@ from plone.memoize import ram
 from plone.memoize.volatile import DontCache
 from time import time
 from urllib import urlencode
+from zope.component import getUtility
 
 import plone.api
 
@@ -77,7 +78,8 @@ def get_filter_items(
         # TODO: expand events. better yet, let collection.results
         #       do that
 
-    idx = GROUPBY_CRITERIA[group_by]['index']
+    groupby_criteria = getUtility(IGroupByCriteria)()
+    idx = groupby_criteria[group_by]['index']
     urlquery = {}
     urlquery.update(request_params)
     ignore_params = [
@@ -110,8 +112,8 @@ def get_filter_items(
             selected=idx not in request_params
         ))
 
-        attr = GROUPBY_CRITERIA[group_by]['metadata']
-        mod = GROUPBY_CRITERIA[group_by]['display_modifier']
+        attr = groupby_criteria[group_by]['metadata']
+        mod = groupby_criteria[group_by]['display_modifier']
 
         grouped_results = {}
         for item in results:

@@ -16,19 +16,24 @@
 
   <utility
       component=".vocabularies.GroupByCriteria"
+      provides=".interfaces.IGroupByCriteria"
+      />
+
+  <utility
+      component=".vocabularies.GroupByCriteriaVocabulary"
       name="collective.collectionfilter.GroupByCriteria"
       />
   <utility
-      component=".vocabularies.AdditiveOperator"
+      component=".vocabularies.AdditiveOperatorVocabulary"
       name="collective.collectionfilter.AdditiveOperator"
       />
   <utility
-      component=".vocabularies.ListScaling"
+      component=".vocabularies.ListScalingVocabulary"
       name="collective.collectionfilter.ListScaling"
       />
 
   <subscriber
-      for="*
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot
            zope.traversing.interfaces.IBeforeTraverseEvent"
       handler=".contentfilter.set_content_filter"
       />
