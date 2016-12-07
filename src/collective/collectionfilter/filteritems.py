@@ -89,7 +89,7 @@ def get_filter_items(
         'sort_on',
         'limit',
         'portlethash'
-    ] + [idx] if additive_filter else []
+    ] + [idx] if not additive_filter else []
 
     for it in ignore_params:
         # Remove unwanted url parameters
@@ -103,11 +103,15 @@ def get_filter_items(
 
     if results:
 
+        urlquery_all = urlquery.copy()
+        if idx in urlquery_all:
+            # Be sure to be able to clear filters
+            del idx
         ret.append(dict(
             title=_('subject_all', default=u'All'),
             url=u'{0}/?{1}'.format(
                 collection_url,
-                urlencode(urlquery)
+                urlencode(urlquery_all)
             ),
             count=len(results),
             selected=idx not in request_params

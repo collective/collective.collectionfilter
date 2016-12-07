@@ -40,6 +40,7 @@ define([
             var cl = new this.contentloader(this.$el, {
                 url: this.options.reloadURL,
                 target: this.$el,
+                content: 'aside',
                 trigger: 'immediate'
             });
         },
