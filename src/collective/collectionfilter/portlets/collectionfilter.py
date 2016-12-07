@@ -4,7 +4,7 @@ from ..interfaces import ICollectionFilterSchema
 from Products.CMFPlone.utils import getFSVersionTuple
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.app.portlets.portlets import base
-from plone.app.uuid.utils import uuidToObject
+from plone.app.uuid.utils import uuidToCatalogBrain
 from plone.portlets.interfaces import IPortletDataProvider
 from zope import schema
 from zope.interface import implements
@@ -87,22 +87,36 @@ class Renderer(base.Renderer):
     def available(self):
         return True
 
-    def header_title(self):
-        if self.data.header:
-            return self.data.header
-
-        collection = uuidToObject(self.data.target_collection)
-        return collection.Title() if collection else None
-
     def results(self):
-        # return cached
-        results = get_filter_items(
+
+        title = self.data.header or\
+            uuidToCatalogBrain(self.data.target_collection).Title
+
+        portlethash = self.request.form.get(
+            'portlethash',
+            getattr(self, '__portlet_metadata__', {}).get('hash', '')
+        )
+        reload_url = '{0}/@@render-portlet?portlethash={1}'.format(
+            self.context.absolute_url(),
+            portlethash
+        )
+
+        filteritems = get_filter_items(
             self.data.target_collection,
             self.data.group_by,
             self.data.additive_filter,
             self.data.cache_time,
-            self.request.form or {})
-        return results
+            self.request.form or {}
+        )
+
+        ret = {
+            'title': title,
+            'collectionUUID': self.data.target_collection,
+            'reloadURL': reload_url,
+            'filteritems': filteritems
+        }
+
+        return ret
 
 
 class AddForm(base_AddForm):

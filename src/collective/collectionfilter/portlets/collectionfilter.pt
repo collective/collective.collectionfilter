@@ -1,31 +1,28 @@
-<aside class="portlet portletCollectionFilter"
+<aside class="portlet portletCollectionFilter pat-collectionfilter"
+       tal:define="data view/results"
+       data-pat-collectionfilter='{
+          "collectionUUID": "${data/collectionUUID}",
+          "reloadURL": "${data/reloadURL}"
+       }'
        i18n:domain="collective.portlet.collectionfilter">
 
   <header class="portletHeader"
-          tal:content="view/header_title">
+          tal:content="data/title">
           Title
   </header>
   <div class="portletContent">
     <ul>
-      <tal:items repeat="group view/results">
+      <tal:items repeat="group data/filteritems">
         <li tal:attributes="class python:'selected' if group['selected'] else ''">
           <a rel="nofollow"
-             class="pat-contentloader"
-             tal:attributes='href group/url;
-                             title string:Count: ${group/count};
-                             data-pat-contentloader string:{"url": "${group/url}&ajax_load=1", "content": "#content-core", "target": "#content-core"}'
-             >
+             class="filteritem"
+             tal:attributes="href group/url;
+                             title string:Count: ${group/count}">
             <span tal:content="group/title">Group</span>
             <tal:show_count condition="view/data/show_count">(<span tal:replace="group/count" />)</tal:show_count>
           </a>
         </li>
       </tal:items>
     </ul>
-    <script type="text/javascript" charset="utf-8">
-        $('.portletCollectionFilter ul li a').on('click', function (e) {
-            $(this).closest('ul').find('li.selected').removeClass('selected');
-            $(this).closest('li').addClass('selected');
-        });
-    </script>
   </div>
 </aside>

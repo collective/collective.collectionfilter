@@ -87,7 +87,8 @@ def get_filter_items(
         'b_size',
         'batch',
         'sort_on',
-        'limit'
+        'limit',
+        'portlethash'
     ] + [idx] if additive_filter else []
 
     for it in ignore_params:
