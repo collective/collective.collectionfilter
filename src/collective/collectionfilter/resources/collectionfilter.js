@@ -18,7 +18,8 @@ define([
         },
 
         init: function() {
-            $(document).on('collectionfilter:reload', function (e, data) {
+            this.$el.unbind('collectionfilter:reload');
+            this.$el.on('collectionfilter:reload', function (e, data) {
                 if (data.collectionUUID === this.options.collectionUUID) {
                     this.reload();
                 }
@@ -26,7 +27,7 @@ define([
             $('.filteritem', this.$el).on('click', function (e) {
                 e.stopPropagation();
                 e.preventDefault();
-                $(document).trigger(
+                $(this.trigger).trigger(
                     'collectionfilter:reload',
                     {collectionUUID: this.options.collectionUUID}
                 );
