@@ -2,7 +2,8 @@
        tal:define="data view/results"
        data-pat-collectionfilter='{
           "collectionUUID": "${data/collectionUUID}",
-          "reloadURL": "${data/reloadURL}"
+          "reloadURL": "${data/reloadURL}",
+          "additive": ${data/additive}
        }'
        i18n:domain="collective.portlet.collectionfilter">
 

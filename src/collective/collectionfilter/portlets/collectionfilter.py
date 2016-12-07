@@ -113,6 +113,7 @@ class Renderer(base.Renderer):
             'title': title,
             'collectionUUID': self.data.target_collection,
             'reloadURL': reload_url,
+            'additive': 'true' if self.data.additive_filter else 'false',
             'filteritems': filteritems
         }
 
