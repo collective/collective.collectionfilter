@@ -132,20 +132,34 @@ def get_filter_items(
                 val = [val]
             for crit in val:
                 if crit not in grouped_results:
-                    urlquery[idx] = crit
                     title = _(safe_decode(
                         mod(crit)
                         if mod and crit is not EMPTY_MARKER
                         else crit
                     ))  # mod modifies for displaying (e.g. uuid to title)
+
+                    current_idx_value = safe_decode(request_params.get(idx))
+                    selected = False
+                    if isinstance(current_idx_value, list):
+                        selected = safe_decode(crit) in current_idx_value
+                    elif current_idx_value is not None:
+                        selected = safe_decode(crit) == current_idx_value
+
+                    _urlquery = urlquery.copy()
+                    _urlquery[idx] = crit
+                    if additive_filter and current_idx_value != safe_decode(crit):
+                        if isinstance(current_idx_value, list):
+                            _urlquery[idx] = current_idx_value + [crit]
+                        elif current_idx_value is not None:
+                            _urlquery[idx] = [current_idx_value, crit]
+
                     url = u'{0}/?{1}'.format(
                         collection_url,
-                        urlencode(safe_encode(urlquery))  # need to be utf-8 encoded  # noqa
+                        urlencode(safe_encode(_urlquery), True)
                     )
-                    selected = safe_decode(request_params.get(idx)) == safe_decode(crit)  # noqa  # TODO: when idx has multiple filters, this might not work
-                    sort_key = crit if crit else 'zzzzzz'  # ? why should crit be falsy?  # noqa
+
                     crit_dict = {
-                        'sort_key': sort_key.lower(),
+                        'sort_key': crit.lower(),
                         'count': 1,
                         'title': title,
                         'url': url,
