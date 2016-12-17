@@ -54,20 +54,19 @@ def get_filter_items(
         cache_time=3600,
         request_params={}
 ):
-    ret = []
+    custom_query = {}  # Additional query to filter the collection
 
     collection = uuidToObject(target_collection_uid)
     if not collection:
-        return ret
-
+        return None
     collection_url = collection.absolute_url()
-    results = []
-    custom_query = {}
-
-    # Support for the Event Listing view from plone.app.event
-    # TODO: Removal canditate
     collection_layout = collection.getLayout()
     default_view = collection.restrictedTraverse(collection_layout)
+
+    # Recursively transform all to unicode
+    request_params = safe_decode(request_params)
+
+    # Support for the Event Listing view from plone.app.event
     if isinstance(default_view, EventListing):
         mode = request_params.get('mode', 'future')
         date = request_params.get('date', None)
@@ -78,10 +77,15 @@ def get_filter_items(
         # TODO: expand events. better yet, let collection.results
         #       do that
 
+    # Get index in question and the current filter value of this index, if set.
     groupby_criteria = getUtility(IGroupByCriteria)()
     idx = groupby_criteria[group_by]['index']
-    urlquery = {}
-    urlquery.update(request_params)
+    current_idx_value = request_params.get(idx)
+    if not getattr(current_idx_value, '__iter__', False):
+        current_idx_value = [current_idx_value]
+
+    # Construct base url query.
+    # These request params should be ignored.
     ignore_params = [
         'b_start',
         'b_size',
@@ -90,89 +94,93 @@ def get_filter_items(
         'limit',
         'portlethash'
     ]
-
+    # Additive filtering is about adding other filter values of the same index.
     if not additive_filter:
         ignore_params += [idx]
+    # Now remove all to-be-ignored request parameters.
+    urlquery = {
+        k: v for k, v in request_params.items() if k not in ignore_params}
 
-    for it in ignore_params:
-        # Remove unwanted url parameters
-        if it in urlquery:
-            del urlquery[it]
-
+    # Get all collection results with additional filter defined by urlquery
     custom_query.update(urlquery)
-    results = collection.results(
-        batch=False, custom_query=custom_query
+    catalog_results = collection.results(
+        batch=False,
+        custom_query=custom_query
     )
+    if not catalog_results:
+        return None
 
-    if results:
+    # Attribute name for getting filter value from brain
+    metadata_attr = groupby_criteria[group_by]['metadata']
+    # Optional modifier to set title from filter value
+    display_modifier = groupby_criteria[group_by]['display_modifier']
+    grouped_results = {}
+    for brain in catalog_results:
 
-        urlquery_all = urlquery.copy()
-        if idx in urlquery_all:
-            # Be sure to be able to clear filters
-            del urlquery_all[idx]
-        ret.append(dict(
-            title=_('subject_all', default=u'All'),
-            url=u'{0}/?{1}'.format(
-                collection_url,
-                urlencode(urlquery_all)
-            ),
-            count=len(results),
-            selected=idx not in request_params
-        ))
+        # Get filter value
+        val = getattr(brain, metadata_attr, None)
+        if callable(val):
+            val = val()
+        # Make sure it's iterable, as it's the case for e.g. the subject index.
+        if not getattr(val, '__iter__', False):
+            val = [val]
+        val = safe_decode(val)
 
-        attr = groupby_criteria[group_by]['metadata']
-        mod = groupby_criteria[group_by]['display_modifier']
+        for filter_value in val:
 
-        grouped_results = {}
-        for item in results:
-            val = getattr(item, attr, None)
-            if callable(val):
-                val = val()
-            if not getattr(val, '__iter__', False):
-                val = [val]
-            for crit in val:
-                if crit not in grouped_results:
-                    title = _(safe_decode(
-                        mod(crit)
-                        if mod and crit is not EMPTY_MARKER
-                        else crit
-                    ))  # mod modifies for displaying (e.g. uuid to title)
+            # Add counter, if filter value is already present
+            if filter_value in grouped_results:
+                grouped_results[filter_value]['count'] += 1
+                continue
 
-                    current_idx_value = safe_decode(request_params.get(idx))
-                    selected = False
-                    if isinstance(current_idx_value, list):
-                        selected = safe_decode(crit) in current_idx_value
-                    elif current_idx_value is not None:
-                        selected = safe_decode(crit) == current_idx_value
+            # Set title from filter value with modifications,
+            # e.g. uuid to title
+            title = _(safe_decode(
+                display_modifier(filter_value)
+                if display_modifier and filter_value is not EMPTY_MARKER
+                else filter_value
+            ))
 
-                    _urlquery = urlquery.copy()
-                    _urlquery[idx] = crit
-                    if additive_filter and current_idx_value != safe_decode(crit):
-                        if isinstance(current_idx_value, list):
-                            _urlquery[idx] = current_idx_value + [crit]
-                        elif current_idx_value is not None:
-                            _urlquery[idx] = [current_idx_value, crit]
-
-                    url = u'{0}/?{1}'.format(
-                        collection_url,
-                        urlencode(safe_encode(_urlquery), True)
-                    )
-
-                    crit_dict = {
-                        'sort_key': crit.lower(),
-                        'count': 1,
-                        'title': title,
-                        'url': url,
-                        'selected': selected
-                    }
-                    grouped_results[crit] = crit_dict
-
+            # Build filter url query
+            _urlquery = urlquery.copy()
+            # Allow deselection by just not setting the filter,
+            # if it's already set
+            if filter_value not in current_idx_value:
+                if additive_filter and current_idx_value:
+                    _urlquery[idx] = current_idx_value + [filter_value]
                 else:
-                    grouped_results[crit]['count'] += 1
+                    _urlquery[idx] = filter_value
+            url = u'{0}/?{1}'.format(
+                collection_url,
+                urlencode(safe_encode(_urlquery), True)
+            )
 
-        ret += sorted(
-            grouped_results.values(),
-            key=lambda it: it['sort_key']
-        )
+            # Set selected state
+            selected = filter_value in current_idx_value
+
+            grouped_results[filter_value] = {
+                'sort_key': filter_value.lower(),
+                'count': 1,
+                'title': title,
+                'url': url,
+                'selected': selected
+            }
+
+    # Entry to clear all filters
+    urlquery_all = {k: v for k, v in urlquery.items() if k != idx}
+    ret = [{
+        'title': _('subject_all', default=u'All'),
+        'url': u'{0}/?{1}'.format(
+            collection_url,
+            urlencode(safe_encode(urlquery_all))
+        ),
+        'count': len(catalog_results),
+        'selected': idx not in request_params
+    }]
+
+    ret += sorted(
+        grouped_results.values(),
+        key=lambda it: it['sort_key']
+    )
 
     return ret
