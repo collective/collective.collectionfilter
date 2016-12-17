@@ -37,9 +37,9 @@ def _results_cachekey(
     timeout = time() // int(cache_time)
     cachekey = (
         target_collection_uid,
-        group_by,  # TODO: group_by.items() & sort
+        group_by,
         additive_filter,
-        request_params,  # TODO: request_params.items() & sort
+        hash(frozenset(request_params.items())),
         getattr(plone.api.user.get_current(), 'id', ''),
         timeout
     )
@@ -82,7 +82,7 @@ def get_filter_items(
     idx = groupby_criteria[group_by]['index']
     current_idx_value = request_params.get(idx)
     if not getattr(current_idx_value, '__iter__', False):
-        current_idx_value = [current_idx_value]
+        current_idx_value = [current_idx_value] if current_idx_value else []
 
     # Construct base url query.
     # These request params should be ignored.
@@ -143,13 +143,15 @@ def get_filter_items(
 
             # Build filter url query
             _urlquery = urlquery.copy()
-            # Allow deselection by just not setting the filter,
-            # if it's already set
-            if filter_value not in current_idx_value:
-                if additive_filter and current_idx_value:
-                    _urlquery[idx] = current_idx_value + [filter_value]
-                else:
-                    _urlquery[idx] = filter_value
+            # Allow deselection
+            if filter_value in current_idx_value:
+                _urlquery[idx] = [
+                    it for it in current_idx_value if it != filter_value
+                ]
+            elif additive_filter:
+                _urlquery[idx] = current_idx_value + [filter_value]
+            else:
+                _urlquery[idx] = filter_value
             url = u'{0}/?{1}'.format(
                 collection_url,
                 urlencode(safe_encode(_urlquery), True)
