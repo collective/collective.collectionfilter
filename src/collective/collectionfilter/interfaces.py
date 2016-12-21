@@ -54,20 +54,19 @@ class ICollectionFilterSchema(Interface):
         title=_(u'label_additive_filter', default=u'Additive Filter'),
         description=_(
             u'help_additive_filter',
-            default=u'Use additive_filter filtering by keeping previously '
-                    u'selected criterias active.'),
+            default=u'Use additive_filter filtering by keeping previously selected criterias active.'),  # noqa
         default=False,
         required=False
     )
 
-#    additive_operator = schema.Choice(
+#    filter_operator = schema.Choice(
 #        title=_(
-#           u'label_additive_operator', default=u'Additive Filter Operator'),
+#           u'label_filter_operator', default=u'Filter Operator'),
 #        description=_(
-#            u'help_additive_operator',
-#            default=u'Select, if all (and) or any (or) selected filter '
-#                    u'criterias must be met.'),
-#        required=True,
+#            u'help_filter_operator',
+#            default=u'Select, if all (and) or any (or) of the selected filter criterias must be met.'),  # noqa
+#        default='and',
+#        required=False,
 #        vocabulary='collective.collectionfilter.AdditiveOperator',
 #    )
 
