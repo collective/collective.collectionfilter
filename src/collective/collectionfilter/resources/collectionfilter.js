@@ -29,7 +29,7 @@ define([
             $('.filteritem', this.$el).on('click', function (e) {
                 e.stopPropagation();
                 e.preventDefault();
-                var collectionURL = e.target.closest('a').href  // dunno why, but e.target here is a span el, when it should be the a tag. this fixes it forward/backwards compatible...
+                var collectionURL = e.target.closest('a').href;  // dunno why, but e.target here is a span el, when it should be the a tag. this fixes it forward/backwards compatible...
 
                 if (this.options.additive) {
                     $(this.trigger).trigger(
@@ -53,7 +53,7 @@ define([
                 var query1 = urlParts[1] || [];
                 var query2 = filterURL.split('?')[1] || [];
                 var query = [].concat(query1, query2).join('&');
-                var reloadURL = [].concat(urlParts[0], query).join('?');
+                reloadURL = [].concat(urlParts[0], query).join('?');
             }
 
             var cl = new this.contentloader(this.$el, {
