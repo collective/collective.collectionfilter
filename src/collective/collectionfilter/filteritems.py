@@ -2,6 +2,7 @@ from . import _
 from .interfaces import IGroupByCriteria
 from .utils import safe_decode
 from .utils import safe_encode
+from .utils import make_query
 from .vocabularies import EMPTY_MARKER
 from plone.app.event.base import _prepare_range
 from plone.app.event.base import guess_date_from
@@ -39,7 +40,8 @@ def _results_cachekey(
         target_collection_uid,
         group_by,
         additive_filter,
-        hash(frozenset(request_params.items())),
+        request_params,
+        # hash(frozenset(request_params.items())),
         getattr(plone.api.user.get_current(), 'id', ''),
         timeout
     )
@@ -105,7 +107,7 @@ def get_filter_items(
     custom_query.update(urlquery)
     catalog_results = collection.results(
         batch=False,
-        custom_query=custom_query
+        custom_query=make_query(custom_query)
     )
     if not catalog_results:
         return None
