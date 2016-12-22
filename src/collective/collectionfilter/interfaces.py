@@ -59,6 +59,15 @@ class ICollectionFilterSchema(Interface):
         required=False
     )
 
+    as_input = schema.Bool(
+        title=_(u'label_as_input', default=u'Display as checkboxes or radio buttons'),  # noqa
+        description=_(
+            u'help_as_input',
+            default=u'Display filter items as checkboxes or radio buttons, according to the "Additive Filter" setting.'),  # noqa
+        default=False,
+        required=False
+    )
+
 #    filter_operator = schema.Choice(
 #        title=_(
 #           u'label_filter_operator', default=u'Filter Operator'),

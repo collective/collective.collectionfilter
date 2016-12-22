@@ -1,29 +1,44 @@
 <aside class="portlet portletCollectionFilter pat-collectionfilter"
-       tal:define="data view/results"
+       tal:define="settings view/settings"
        data-pat-collectionfilter='{
-          "collectionUUID": "${data/collectionUUID}",
-          "reloadURL": "${data/reloadURL}",
-          "additive": ${data/additive}
+          "collectionUUID": "${settings/target_collection}",
+          "reloadURL": "${view/reload_url}"
        }'
        i18n:domain="collective.portlet.collectionfilter">
 
   <header class="portletHeader"
-          tal:content="data/title">
+          tal:content="view/title">
           Title
   </header>
   <div class="portletContent">
+    <tal:if condition="settings/as_input">
+      <tal:items repeat="group view/results">
+        <label>
+          <input type="checkbox" class="filteritem"
+              tal:attributes="type python:'checkbox' if settings.additive_filter else 'radio';
+                              name view/id;
+                              value group/value;
+                              checked python:'checked' if group['selected'] else None;
+                              data-url group/url"/>
+          <span tal:content="group/title">Group</span>
+          <tal:show_count condition="settings/show_count">(<span tal:replace="group/count" />)</tal:show_count>
+        </label>
+      </tal:items>
+    </tal:if>
+    <tal:if condition="not:settings/as_input">
     <ul>
-      <tal:items repeat="group data/filteritems">
+      <tal:items repeat="group view/results">
         <li tal:attributes="class python:'selected' if group['selected'] else ''">
           <a rel="nofollow"
              class="filteritem"
              tal:attributes="href group/url;
                              title string:Count: ${group/count}">
             <span tal:content="group/title">Group</span>
-            <tal:show_count condition="view/data/show_count">(<span tal:replace="group/count" />)</tal:show_count>
+            <tal:show_count condition="settings/show_count">(<span tal:replace="group/count" />)</tal:show_count>
           </a>
         </li>
       </tal:items>
     </ul>
+    </tal:if>
   </div>
 </aside>

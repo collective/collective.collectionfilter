@@ -164,9 +164,10 @@ def get_filter_items(
 
             grouped_results[filter_value] = {
                 'sort_key': filter_value.lower(),
-                'count': 1,
                 'title': title,
                 'url': url,
+                'value': filter_value,
+                'count': 1,
                 'selected': selected
             }
 
@@ -178,6 +179,7 @@ def get_filter_items(
             collection_url,
             urlencode(safe_encode(urlquery_all))
         ),
+        'value': 'all',
         'count': len(catalog_results),
         'selected': idx not in request_params
     }]

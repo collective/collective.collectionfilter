@@ -43,6 +43,7 @@ class Assignment(base.Assignment):
     show_count = False
     cache_time = 60
     additive_filter = False
+    as_input = False
     # additive_operator = 'and'
     # list_scaling = None
 
@@ -54,6 +55,7 @@ class Assignment(base.Assignment):
         show_count=False,
         cache_time=60,
         additive_filter=False,
+        as_input=False,
         # additive_operator='and',
         # list_scaling=None
     ):
@@ -63,6 +65,7 @@ class Assignment(base.Assignment):
         self.show_count = show_count
         self.cache_time = cache_time
         self.additive_filter = additive_filter
+        self.as_input = as_input
         # self.additive_operator = additive_operator
         # self.list_scaling = list_scaling
 
@@ -87,37 +90,41 @@ class Renderer(base.Renderer):
     def available(self):
         return True
 
-    def results(self):
-
-        title = self.data.header or\
-            uuidToCatalogBrain(self.data.target_collection).Title
-
+    @property
+    def id(self):
         portlethash = self.request.form.get(
             'portlethash',
             getattr(self, '__portlet_metadata__', {}).get('hash', '')
         )
+        return portlethash
+
+    @property
+    def title(self):
+        title = self.data.header or\
+            uuidToCatalogBrain(self.data.target_collection).Title
+        return title
+
+    @property
+    def reload_url(self):
         reload_url = '{0}/@@render-portlet?portlethash={1}'.format(
             self.context.absolute_url(),
-            portlethash
+            self.id
         )
+        return reload_url
 
-        filteritems = get_filter_items(
+    @property
+    def settings(self):
+        return self.data
+
+    def results(self):
+        results = get_filter_items(
             self.data.target_collection,
             self.data.group_by,
             self.data.additive_filter,
             self.data.cache_time,
             self.request.form or {}
         )
-
-        ret = {
-            'title': title,
-            'collectionUUID': self.data.target_collection,
-            'reloadURL': reload_url,
-            'additive': 'true' if self.data.additive_filter else 'false',
-            'filteritems': filteritems
-        }
-
-        return ret
+        return results
 
 
 class AddForm(base_AddForm):
