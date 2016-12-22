@@ -15,7 +15,7 @@ msgstr ""
 "Language-Code: en\n"
 "Language-Name: English\n"
 "Preferred-Encodings: utf-8 latin1\n"
-"Domain: collective.portlet.collectionfilter\n"
+"Domain: collective.collectionfilter\n"
 
 #: collective/portlet/collectionfilter/collectionfilter.py:318
 msgid "Add Collection Filter Portlet"
