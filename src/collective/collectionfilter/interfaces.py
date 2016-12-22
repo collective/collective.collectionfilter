@@ -54,7 +54,7 @@ class ICollectionFilterSchema(Interface):
         title=_(u'label_additive_filter', default=u'Additive Filter'),
         description=_(
             u'help_additive_filter',
-            default=u'Use additive_filter filtering by keeping previously selected criterias active.'),  # noqa
+            default=u'Use this setting to keeping previously selected criterias active.'),  # noqa
         default=False,
         required=False
     )
@@ -72,7 +72,7 @@ class ICollectionFilterSchema(Interface):
         title=_(u'label_narrow_down', default=u'Narrow down filter options'),  # noqa
         description=_(
             u'help_narrow_down',
-            default=u'Narrow down the filter options, when a filter of this group is applied.'  # noqa
+            default=u'Narrow down the filter options when a filter of this group is applied.'  # noqa
                     u' Only options, which are available in the result set will then be displayed.'  # noqa
                     u' Other filter groups can still narrow down this one, though.'),  # noqa
         default=False,
