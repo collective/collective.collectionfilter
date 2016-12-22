@@ -68,6 +68,17 @@ class ICollectionFilterSchema(Interface):
         required=False
     )
 
+    narrow_down = schema.Bool(
+        title=_(u'label_narrow_down', default=u'Narrow down filter options'),  # noqa
+        description=_(
+            u'help_narrow_down',
+            default=u'Narrow down the filter options, when a filter of this group is applied.'  # noqa
+                    u' Only options, which are available in the result set will then be displayed.'  # noqa
+                    u' Other filter groups can still narrow down this one, though.'),  # noqa
+        default=False,
+        required=False
+    )
+
 #    filter_operator = schema.Choice(
 #        title=_(
 #           u'label_filter_operator', default=u'Filter Operator'),

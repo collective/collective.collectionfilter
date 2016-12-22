@@ -44,6 +44,7 @@ class Assignment(base.Assignment):
     cache_time = 60
     additive_filter = False
     as_input = False
+    narrow_down = False
     # additive_operator = 'and'
     # list_scaling = None
 
@@ -56,6 +57,7 @@ class Assignment(base.Assignment):
         cache_time=60,
         additive_filter=False,
         as_input=False,
+        narrow_down=False,
         # additive_operator='and',
         # list_scaling=None
     ):
@@ -66,6 +68,7 @@ class Assignment(base.Assignment):
         self.cache_time = cache_time
         self.additive_filter = additive_filter
         self.as_input = as_input
+        self.narrow_down = narrow_down
         # self.additive_operator = additive_operator
         # self.list_scaling = list_scaling
 
@@ -118,11 +121,12 @@ class Renderer(base.Renderer):
 
     def results(self):
         results = get_filter_items(
-            self.data.target_collection,
-            self.data.group_by,
-            self.data.additive_filter,
-            self.data.cache_time,
-            self.request.form or {}
+            target_collection=self.data.target_collection,
+            group_by=self.data.group_by,
+            additive_filter=self.data.additive_filter,
+            narrow_down=self.data.narrow_down,
+            cache_time=self.data.cache_time,
+            request_params=self.request.form or {}
         )
         return results
 

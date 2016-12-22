@@ -26,9 +26,10 @@ except ImportError:
 
 def _results_cachekey(
         method,
-        target_collection_uid,
+        target_collection,
         group_by,
         additive_filter,
+        narrow_down,
         cache_time,
         request_params):
     cache_time = int(cache_time)
@@ -37,9 +38,10 @@ def _results_cachekey(
         raise DontCache
     timeout = time() // int(cache_time)
     cachekey = (
-        target_collection_uid,
+        target_collection,
         group_by,
         additive_filter,
+        narrow_down,
         request_params,
         # hash(frozenset(request_params.items())),
         getattr(plone.api.user.get_current(), 'id', ''),
@@ -50,15 +52,16 @@ def _results_cachekey(
 
 @ram.cache(_results_cachekey)
 def get_filter_items(
-        target_collection_uid,
+        target_collection,
         group_by,
         additive_filter=False,
+        narrow_down=False,
         cache_time=3600,
         request_params={}
 ):
     custom_query = {}  # Additional query to filter the collection
 
-    collection = uuidToObject(target_collection_uid)
+    collection = uuidToObject(target_collection)
     if not collection:
         return None
     collection_url = collection.absolute_url()
@@ -97,7 +100,7 @@ def get_filter_items(
         'portlethash'
     ]
     # Additive filtering is about adding other filter values of the same index.
-    if not additive_filter:
+    if not narrow_down:
         ignore_params += [idx]
     # Now remove all to-be-ignored request parameters.
     urlquery = {
