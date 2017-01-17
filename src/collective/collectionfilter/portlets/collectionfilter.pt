@@ -15,7 +15,7 @@
       <tal:items repeat="group view/results">
         <label>
           <input type="checkbox" class="filteritem"
-              tal:attributes="type python:'checkbox' if settings.additive_filter else 'radio';
+              tal:attributes="type python:'radio' if settings.filter_type == 'single' else 'checkbox';
                               name view/id;
                               value group/value;
                               checked python:'checked' if group['selected'] else None;

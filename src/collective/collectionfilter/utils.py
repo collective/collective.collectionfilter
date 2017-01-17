@@ -50,7 +50,12 @@ def make_query(params_dict):
                 crit = safe_encode(crit)
             else:
                 crit = safe_decode(crit)
-            query_dict[idx] = {'operator': 'and', 'query': crit}
+            # filter operator
+            op = params_dict.get(idx + '_op', 'or')
+            if op not in ['and', 'or']:
+                op = 'or'
+            # add filter query
+            query_dict[idx] = {'operator': op, 'query': crit}
 
     if TEXT_IDX in params_dict:
         query_dict[TEXT_IDX] = safe_decode(params_dict.get(TEXT_IDX))

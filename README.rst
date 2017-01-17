@@ -14,15 +14,10 @@ Besides the "Collection Filter" portlet/tile there is also a "Collection Search"
 This package is based on ``collective.portlet.collectionfilter`` and ``collective.portlet.collectionbysubject``.
 
 
-TODO
-====
 
-- Use React for JavaScript-ification.
+Settings
+--------
 
-  - Click on filter item
-
-    - Reloads content column with collection and ajax_load=1
-    - Reloads all filter portlets / tiles
-    - Updates history
-
-
+``Filter Type``:
+    Select if single or multiple criterias can be selected and if all (and) or any (or) of the selected criterias must be met.
+    Some index types like ``FieldIndex`` (e.g. Type index) only support the any (or) criteria when set to multiple criterias and ignore, if all (and) is set.

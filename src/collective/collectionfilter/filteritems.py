@@ -4,6 +4,7 @@ from .utils import safe_decode
 from .utils import safe_encode
 from .utils import make_query
 from .vocabularies import EMPTY_MARKER
+from .vocabularies import DEFAULT_FILTER_TYPE
 from plone.app.event.base import _prepare_range
 from plone.app.event.base import guess_date_from
 from plone.app.event.base import start_end_from_mode
@@ -28,7 +29,7 @@ def _results_cachekey(
         method,
         target_collection,
         group_by,
-        additive_filter,
+        filter_type,
         narrow_down,
         cache_time,
         request_params):
@@ -40,7 +41,7 @@ def _results_cachekey(
     cachekey = (
         target_collection,
         group_by,
-        additive_filter,
+        filter_type,
         narrow_down,
         request_params,
         # hash(frozenset(request_params.items())),
@@ -54,7 +55,7 @@ def _results_cachekey(
 def get_filter_items(
         target_collection,
         group_by,
-        additive_filter=False,
+        filter_type=DEFAULT_FILTER_TYPE,
         narrow_down=False,
         cache_time=3600,
         request_params={}
@@ -153,8 +154,10 @@ def get_filter_items(
                 _urlquery[idx] = [
                     it for it in current_idx_value if it != filter_value
                 ]
-            elif additive_filter:
+            elif filter_type != 'single':
+                # additive filter behavior
                 _urlquery[idx] = current_idx_value + [filter_value]
+                _urlquery[idx + '_op'] = filter_type  # additive operator
             else:
                 _urlquery[idx] = filter_value
             url = u'{0}/?{1}'.format(

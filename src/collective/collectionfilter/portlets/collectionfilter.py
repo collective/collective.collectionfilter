@@ -1,6 +1,7 @@
 from .. import _
 from ..filteritems import get_filter_items
 from ..interfaces import ICollectionFilterSchema
+from ..vocabularies import DEFAULT_FILTER_TYPE
 from Products.CMFPlone.utils import getFSVersionTuple
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.app.portlets.portlets import base
@@ -42,10 +43,9 @@ class Assignment(base.Assignment):
     group_by = u""
     show_count = False
     cache_time = 60
-    additive_filter = False
+    filter_type = DEFAULT_FILTER_TYPE
     as_input = False
     narrow_down = False
-    # additive_operator = 'and'
     # list_scaling = None
 
     def __init__(
@@ -55,10 +55,9 @@ class Assignment(base.Assignment):
         group_by=u"",
         show_count=False,
         cache_time=60,
-        additive_filter=False,
+        filter_type=DEFAULT_FILTER_TYPE,
         as_input=False,
         narrow_down=False,
-        # additive_operator='and',
         # list_scaling=None
     ):
         self.header = header
@@ -66,10 +65,9 @@ class Assignment(base.Assignment):
         self.group_by = group_by
         self.show_count = show_count
         self.cache_time = cache_time
-        self.additive_filter = additive_filter
+        self.filter_type = filter_type
         self.as_input = as_input
         self.narrow_down = narrow_down
-        # self.additive_operator = additive_operator
         # self.list_scaling = list_scaling
 
     @property
@@ -123,7 +121,7 @@ class Renderer(base.Renderer):
         results = get_filter_items(
             target_collection=self.data.target_collection,
             group_by=self.data.group_by,
-            additive_filter=self.data.additive_filter,
+            filter_type=self.data.filter_type,
             narrow_down=self.data.narrow_down,
             cache_time=self.data.cache_time,
             request_params=self.request.form or {}

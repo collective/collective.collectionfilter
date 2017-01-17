@@ -24,12 +24,12 @@
       name="collective.collectionfilter.GroupByCriteria"
       />
   <utility
-      component=".vocabularies.AdditiveOperatorVocabulary"
-      name="collective.collectionfilter.AdditiveOperator"
-      />
-  <utility
       component=".vocabularies.ListScalingVocabulary"
       name="collective.collectionfilter.ListScaling"
+      />
+  <utility
+      component=".vocabularies.FilterTypeVocabulary"
+      name="collective.collectionfilter.FilterType"
       />
 
   <subscriber

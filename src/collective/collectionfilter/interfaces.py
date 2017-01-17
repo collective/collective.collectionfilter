@@ -50,13 +50,15 @@ class ICollectionFilterSchema(Interface):
         required=False,
     )
 
-    additive_filter = schema.Bool(
-        title=_(u'label_additive_filter', default=u'Additive Filter'),
+    filter_type = schema.Choice(
+        title=_('label_filter_type', u'Filter Type'),
         description=_(
-            u'help_additive_filter',
-            default=u'Use this setting to keeping previously selected criterias active.'),  # noqa
-        default=False,
-        required=False
+            'help_filter_type',
+            u'Select if single or multiple criterias can be selected and if all (and) or any (or) of the selected criterias must be met.'   # noqa
+            u'Some index types like ``FieldIndex`` (e.g. Type index) only support the any (or) criteria when set to multiple criterias and ignore, if all (and) is set.'  # noqa
+        ),
+        required=True,
+        vocabulary='collective.collectionfilter.FilterType',
     )
 
     as_input = schema.Bool(
@@ -78,17 +80,6 @@ class ICollectionFilterSchema(Interface):
         default=False,
         required=False
     )
-
-#    filter_operator = schema.Choice(
-#        title=_(
-#           u'label_filter_operator', default=u'Filter Operator'),
-#        description=_(
-#            u'help_filter_operator',
-#            default=u'Select, if all (and) or any (or) of the selected filter criterias must be met.'),  # noqa
-#        default='and',
-#        required=False,
-#        vocabulary='collective.collectionfilter.AdditiveOperator',
-#    )
 
 #    list_scaling = schema.Choice(
 #        title=_('label_list_scaling', u'List scaling'),

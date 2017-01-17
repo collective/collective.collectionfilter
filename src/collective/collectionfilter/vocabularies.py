@@ -39,12 +39,8 @@ GROUPBY_BLACKLIST = [
     'sync_uid',
     'total_comments',
 ]
-
-
+DEFAULT_FILTER_TYPE = 'single'
 LIST_SCALING = ['No Scaling', 'Linear', 'Logarithmic']
-ADDITIVE_OPERATOR = ['and', 'or']
-
-
 _GroupByCriteria = None
 
 
@@ -83,8 +79,12 @@ def GroupByCriteriaVocabulary(context):
 
 
 @provider(IVocabularyFactory)
-def AdditiveOperatorVocabulary(context):
-    items = [SimpleTerm(title=_(it), value=it) for it in ADDITIVE_OPERATOR]
+def FilterTypeVocabulary(context):
+    items = [
+        SimpleTerm(title=_('filtertype_single'), value='single'),
+        SimpleTerm(title=_('filtertype_and'), value='and'),
+        SimpleTerm(title=_('filtertype_or'), value='or')
+    ]
     return SimpleVocabulary(items)
 
 
