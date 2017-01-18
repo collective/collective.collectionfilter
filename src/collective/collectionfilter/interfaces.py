@@ -66,7 +66,7 @@ class ICollectionFilterSchema(Interface):
         description=_(
             u'help_as_input',
             default=u'Display filter items as checkboxes or radio buttons, according to the "Additive Filter" setting.'),  # noqa
-        default=False,
+        default=True,
         required=False
     )
 
