@@ -102,7 +102,7 @@ def get_filter_items(
     ]
     # Additive filtering is about adding other filter values of the same index.
     if not narrow_down:
-        ignore_params += [idx]
+        ignore_params += [idx, idx + '_op']
     # Now remove all to-be-ignored request parameters.
     urlquery = {
         k: v for k, v in request_params.items() if k not in ignore_params}
@@ -178,7 +178,9 @@ def get_filter_items(
             }
 
     # Entry to clear all filters
-    urlquery_all = {k: v for k, v in urlquery.items() if k != idx}
+    urlquery_all = {
+        k: v for k, v in urlquery.items() if k not in (idx, idx + '_op')
+    }
     ret = [{
         'title': _('subject_all', default=u'All'),
         'url': u'{0}/?{1}'.format(
