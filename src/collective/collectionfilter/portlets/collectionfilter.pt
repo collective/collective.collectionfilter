@@ -11,10 +11,11 @@
           Title
   </header>
   <div class="portletContent">
-    <tal:if condition="settings/as_input">
       <ul>
         <tal:items repeat="group view/results">
-          <li>
+          <li tal:attributes="class python:'selected' if group['selected'] else ''">
+
+            <tal:if condition="settings/as_input">
             <label>
               <input type="checkbox" class="filteritem"
                   tal:attributes="type python:'radio' if settings.filter_type == 'single' else 'checkbox';
@@ -25,24 +26,20 @@
               <span tal:content="group/title">Group</span>
               <tal:show_count condition="settings/show_count">(<span tal:replace="group/count" />)</tal:show_count>
             </label>
+            </tal:if>
+
+            <tal:if condition="not:settings/as_input">
+            <a rel="nofollow"
+               class="filteritem"
+               tal:attributes="href group/url;
+                               title string:Count: ${group/count}">
+              <span tal:content="group/title">Group</span>
+              <tal:show_count condition="settings/show_count">(<span tal:replace="group/count" />)</tal:show_count>
+            </a>
+            </tal:if>
+
           </li>
         </tal:items>
       </ul>
-    </tal:if>
-    <tal:if condition="not:settings/as_input">
-    <ul>
-      <tal:items repeat="group view/results">
-        <li tal:attributes="class python:'selected' if group['selected'] else ''">
-          <a rel="nofollow"
-             class="filteritem"
-             tal:attributes="href group/url;
-                             title string:Count: ${group/count}">
-            <span tal:content="group/title">Group</span>
-            <tal:show_count condition="settings/show_count">(<span tal:replace="group/count" />)</tal:show_count>
-          </a>
-        </li>
-      </tal:items>
-    </ul>
-    </tal:if>
   </div>
 </aside>
