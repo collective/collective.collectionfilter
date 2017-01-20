@@ -1,27 +1,27 @@
 //*// PORTLETS //*//
 
 .portlet.portletCollectionFilter {
+    background: white;
     .portletContent {
         > ul {
             padding: 0;
             list-style: none;
             position: relative;
+            margin-top: 10px;
+            margin-bottom: 10px;
             > li {
-                a {
-                display: block;
-                padding: 5px 15px 5px 30px;
-                border: 0;
-                position: relative;
-                z-index: 1;
+                list-style-type: none;
+                padding: 2px 15px 2px 15px;
+                > a {
+                    padding: 0px 15px 0px 15px;
+                    display: block;
+                    border: 0;
+                    position: relative;
+                    z-index: 1;
+                    &:before {
+                        left: 2px;
+                    }
                 }
-
-                // > a {border-top: @plone-portlet-border;}
-                &:first-child > a {padding-top: 10px;}
-                &:last-child > a {padding-bottom: 10px;}
-                // & a:before {
-                //     content:"•"; position: absolute; font-size: @plone-font-size-h3+1; margin-top: -9px; left: 15px;
-                //     color: lighten(@plone-portlet-list-bullet, 15%);
-                // }
             }
             li.selected a {
                 font-weight: bold;
@@ -33,16 +33,7 @@
         }
         label {
             display: block;
-        }
-        label:first-child {
-            padding-top: 12px;
-        }
-        label:last-child {
-            padding-bottom: 12px;
-        }
-        > * {
             margin: 0;
-            padding: 3px 15px 3px 15px
         }
     }
 }

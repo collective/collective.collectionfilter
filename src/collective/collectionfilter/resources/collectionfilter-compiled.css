@@ -1,20 +1,26 @@
+.portlet.portletCollectionFilter {
+  background: white;
+}
 .portlet.portletCollectionFilter .portletContent > ul {
   padding: 0;
   list-style: none;
   position: relative;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
-.portlet.portletCollectionFilter .portletContent > ul > li a {
+.portlet.portletCollectionFilter .portletContent > ul > li {
+  list-style-type: none;
+  padding: 2px 15px 2px 15px;
+}
+.portlet.portletCollectionFilter .portletContent > ul > li > a {
+  padding: 0px 15px 0px 15px;
   display: block;
-  padding: 5px 15px 5px 30px;
   border: 0;
   position: relative;
   z-index: 1;
 }
-.portlet.portletCollectionFilter .portletContent > ul > li:first-child > a {
-  padding-top: 10px;
-}
-.portlet.portletCollectionFilter .portletContent > ul > li:last-child > a {
-  padding-bottom: 10px;
+.portlet.portletCollectionFilter .portletContent > ul > li > a:before {
+  left: 2px;
 }
 .portlet.portletCollectionFilter .portletContent > ul li.selected a {
   font-weight: bold;
@@ -25,14 +31,5 @@
 }
 .portlet.portletCollectionFilter .portletContent label {
   display: block;
-}
-.portlet.portletCollectionFilter .portletContent label:first-child {
-  padding-top: 12px;
-}
-.portlet.portletCollectionFilter .portletContent label:last-child {
-  padding-bottom: 12px;
-}
-.portlet.portletCollectionFilter .portletContent > * {
   margin: 0;
-  padding: 3px 15px 3px 15px;
 }

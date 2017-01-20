@@ -12,18 +12,22 @@
   </header>
   <div class="portletContent">
     <tal:if condition="settings/as_input">
-      <tal:items repeat="group view/results">
-        <label>
-          <input type="checkbox" class="filteritem"
-              tal:attributes="type python:'radio' if settings.filter_type == 'single' else 'checkbox';
-                              name view/id;
-                              value group/value;
-                              checked python:'checked' if group['selected'] else None;
-                              data-url group/url"/>
-          <span tal:content="group/title">Group</span>
-          <tal:show_count condition="settings/show_count">(<span tal:replace="group/count" />)</tal:show_count>
-        </label>
-      </tal:items>
+      <ul>
+        <tal:items repeat="group view/results">
+          <li>
+            <label>
+              <input type="checkbox" class="filteritem"
+                  tal:attributes="type python:'radio' if settings.filter_type == 'single' else 'checkbox';
+                                  name view/id;
+                                  value group/value;
+                                  checked python:'checked' if group['selected'] else None;
+                                  data-url group/url"/>
+              <span tal:content="group/title">Group</span>
+              <tal:show_count condition="settings/show_count">(<span tal:replace="group/count" />)</tal:show_count>
+            </label>
+          </li>
+        </tal:items>
+      </ul>
     </tal:if>
     <tal:if condition="not:settings/as_input">
     <ul>
