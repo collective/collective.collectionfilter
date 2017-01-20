@@ -162,7 +162,7 @@ def get_filter_items(
                 _urlquery[idx] = filter_value
             url = u'{0}/?{1}'.format(
                 collection_url,
-                urlencode(safe_encode(_urlquery), True)
+                urlencode(safe_encode(_urlquery), doseq=True)
             )
 
             # Set selected state
@@ -183,7 +183,7 @@ def get_filter_items(
         'title': _('subject_all', default=u'All'),
         'url': u'{0}/?{1}'.format(
             collection_url,
-            urlencode(safe_encode(urlquery_all))
+            urlencode(safe_encode(urlquery_all), doseq=True)
         ),
         'value': 'all',
         'count': len(catalog_results),
