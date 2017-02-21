@@ -49,6 +49,7 @@ class GroupByCriteria():
     """
 
     _groupby = None
+    groupby_modify = {}
 
     @property
     def groupby(self):
@@ -71,6 +72,7 @@ class GroupByCriteria():
             }
             for it in metadata
         }
+        self._groupby.update(self.groupby_modify)
 
         return self._groupby
 

@@ -32,7 +32,7 @@ As you can see, the standard GroupByCriteriaVocabulary implementation implies, t
 Also, we use the ``collective.collectionfilter`` message catalog as standard display_modifier (you can register translations under the ``collective.collectionfilter`` domain to translate index values).
 
 If you need a special ``display_modifier``, or index or metadata columns do not have the same identifier, you can modify this data structure.
-For that, retrieve the ``GroupByCriteria`` utility and modify it's groupby attribute as you like.
+For that, retrieve the ``GroupByCriteria`` utility and pass a dictionary to ``groupby_modify``, which is used to update ``self._groupby``.
 You have to wait for the global registry to finally set up, otherwise you'll get an ``ComponentLookupError``.
 
 This is how.
@@ -53,7 +53,7 @@ Your ``modify_groupby`` looks like this::
 
     def modify_groupby(event):
         groupby = getUtility(IGroupByCriteria)
-        groupby.groupby['Subject']['display_modifier'] = lambda x: x.upper()
+        groupby.groupby_modify = {'Subject': {'display_modifier': lambda x: x.upper()}}
 
 
 Author
