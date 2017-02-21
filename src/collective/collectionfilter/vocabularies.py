@@ -46,26 +46,16 @@ LIST_SCALING = ['No Scaling', 'Linear', 'Logarithmic']
 @implementer(IGroupByCriteria)
 class GroupByCriteria():
     """Global utility for retrieving and manipulating groupby criterias.
-
-    Here is an example on how to modify the groupby criteria in your addon
-    product:
-
-    >>> from .interfaces import IGroupByCriteria
-    >>> from zope.component import getUtility
-    >>> groupby = getUtility(IGroupByCriteria)
-    >>> groupby.groupby['foo']['display_modifier'] = lambda x: x.upper()
-
     """
 
     _groupby = None
 
     @property
     def groupby(self):
-        # The groupby criteria are used at each IBeforeTraverseEvent - so on
-        # each request. We need to make sure that there is no performance issue
-        # with this utility.
 
         if self._groupby is not None:
+            # The groupby criteria are used at each IBeforeTraverseEvent - so
+            # on each request. This has to be fast, so exit early.
             return self._groupby
 
         cat = plone.api.portal.get_tool('portal_catalog')
