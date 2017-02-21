@@ -84,7 +84,7 @@ def get_filter_items(
         #       do that
 
     # Get index in question and the current filter value of this index, if set.
-    groupby_criteria = getUtility(IGroupByCriteria)()
+    groupby_criteria = getUtility(IGroupByCriteria).groupby
     idx = groupby_criteria[group_by]['index']
     current_idx_value = request_params.get(idx)
     if not getattr(current_idx_value, '__iter__', False):

@@ -39,7 +39,7 @@ def make_query(params_dict):
     """Make a query from a dictionary of parameters, like a request form.
     """
     query_dict = {}
-    groupby_criteria = getUtility(IGroupByCriteria)()
+    groupby_criteria = getUtility(IGroupByCriteria).groupby
     for val in groupby_criteria.values():
         idx = val['index']
         if idx in params_dict:

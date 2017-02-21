@@ -15,8 +15,8 @@
       />
 
   <utility
-      component=".vocabularies.GroupByCriteria"
       provides=".interfaces.IGroupByCriteria"
+      factory=".vocabularies.GroupByCriteria"
       />
 
   <utility

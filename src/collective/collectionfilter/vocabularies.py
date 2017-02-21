@@ -41,39 +41,59 @@ GROUPBY_BLACKLIST = [
 ]
 DEFAULT_FILTER_TYPE = 'single'
 LIST_SCALING = ['No Scaling', 'Linear', 'Logarithmic']
-_GroupByCriteria = None
 
 
 @implementer(IGroupByCriteria)
-def GroupByCriteria():
-    # This is called for each IBeforeTraverseEvent - so on each request.
-    # Cache until restart.
-    global _GroupByCriteria
-    if _GroupByCriteria:
-        return _GroupByCriteria
+class GroupByCriteria():
+    """Global utility for retrieving and manipulating groupby criterias.
 
-    cat = plone.api.portal.get_tool('portal_catalog')
-    # get catalog metadata schema, but filter out items which cannot be used
-    # for grouping
-    metadata = filter(lambda it: it not in GROUPBY_BLACKLIST, cat.schema())
+    Here is an example on how to modify the groupby criteria in your addon
+    product:
 
-    default_group_by = {
-        _(it): {
-            'index': it,
-            'metadata': it,
-            'display_modifier': _  # Allow to translate in this package domain per default.  # noqa
+    >>> from .interfaces import IGroupByCriteria
+    >>> from zope.component import getUtility
+    >>> groupby = getUtility(IGroupByCriteria)
+    >>> groupby.groupby['foo']['display_modifier'] = lambda x: x.upper()
+
+    """
+
+    _groupby = None
+
+    @property
+    def groupby(self):
+        # The groupby criteria are used at each IBeforeTraverseEvent - so on
+        # each request. We need to make sure that there is no performance issue
+        # with this utility.
+
+        if self._groupby is not None:
+            return self._groupby
+
+        cat = plone.api.portal.get_tool('portal_catalog')
+        # get catalog metadata schema, but filter out items which cannot be
+        # used for grouping
+        metadata = filter(lambda it: it not in GROUPBY_BLACKLIST, cat.schema())
+
+        self._groupby = {
+            _(it): {
+                'index': it,
+                'metadata': it,
+                'display_modifier': _  # Allow to translate in this package domain per default.  # noqa
+            }
+            for it in metadata
         }
-        for it in metadata
-    }
-    _GroupByCriteria = default_group_by
-    return _GroupByCriteria
+
+        return self._groupby
+
+    @groupby.setter
+    def groupby(self, value):
+        self._groupby = value
 
 
 @provider(IVocabularyFactory)
 def GroupByCriteriaVocabulary(context):
     """Collection filter group by criteria.
     """
-    groupby = getUtility(IGroupByCriteria)()
+    groupby = getUtility(IGroupByCriteria).groupby
     items = [SimpleTerm(title=_(it), value=it) for it in groupby.keys()]
     return SimpleVocabulary(items)
 
