@@ -20,7 +20,7 @@ Overloading GroupByCriteria
 It uses a data structure like this::
 
     self._groupby = {
-        _(it): {                   # Index name, possibly translated (TODO: probabyl shouldn't be translated)
+        it: {                   # Index name
             'index': it,           # Name of the index to use
             'metadata': it,        # Name of the metadata column to use
             'display_modifier': _  # Function to prepare the metadata column value for displaying

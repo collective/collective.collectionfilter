@@ -73,7 +73,7 @@ class GroupByCriteria():
         metadata = filter(lambda it: it not in GROUPBY_BLACKLIST, cat.schema())
 
         self._groupby = {
-            _(it): {
+            it: {
                 'index': it,
                 'metadata': it,
                 'display_modifier': _  # Allow to translate in this package domain per default.  # noqa
