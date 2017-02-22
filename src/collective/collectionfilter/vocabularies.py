@@ -1,6 +1,7 @@
 from . import _
 from .interfaces import IGroupByCriteria
-from .utils import update_nested_dict
+from .interfaces import IGroupByModifier
+from zope.component import getAdapters
 from zope.component import getUtility
 from zope.interface import implementer
 from zope.interface import provider
@@ -47,6 +48,11 @@ LIST_SCALING = ['No Scaling', 'Linear', 'Logarithmic']
 @implementer(IGroupByCriteria)
 class GroupByCriteria():
     """Global utility for retrieving and manipulating groupby criterias.
+
+    1) Populate ``groupby`` catalog metadata.
+    2) Do not use blacklisted metadata columns.
+    3) Use IGroupByModifier adapters to modify the datastructure.
+
     """
 
     _groupby = None
@@ -73,7 +79,10 @@ class GroupByCriteria():
             }
             for it in metadata
         }
-        self._groupby = update_nested_dict(self._groupby, self.groupby_modify)
+
+        modifiers = getAdapters((self, ), IGroupByModifier)
+        for name, modifier in sorted(modifiers, key=lambda it: it[0]):
+            modifier()
 
         return self._groupby
 

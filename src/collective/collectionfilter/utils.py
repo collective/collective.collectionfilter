@@ -1,7 +1,5 @@
 from Products.CMFPlone.utils import safe_unicode
 
-import collections
-
 
 def safe_decode(val):
     """Safely create unicode values.
@@ -31,16 +29,3 @@ def safe_encode(val):
     elif isinstance(val, basestring):
         ret = safe_unicode(val).encode('utf-8')
     return ret
-
-
-def update_nested_dict(d, u):
-    """Update a nested dict.
-    Solution by Alex Martelli, http://stackoverflow.com/a/3233356/1337474
-    """
-    for k, v in u.iteritems():
-        if isinstance(v, collections.Mapping):
-            r = update_nested_dict(d.get(k, {}), v)
-            d[k] = r
-        else:
-            d[k] = u[k]
-    return d

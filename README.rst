@@ -32,28 +32,39 @@ As you can see, the standard GroupByCriteriaVocabulary implementation implies, t
 Also, we use the ``collective.collectionfilter`` message catalog as standard display_modifier (you can register translations under the ``collective.collectionfilter`` domain to translate index values).
 
 If you need a special ``display_modifier``, or index or metadata columns do not have the same identifier, you can modify this data structure.
-For that, retrieve the ``GroupByCriteria`` utility and pass a dictionary to ``groupby_modify``, which is used to update ``self._groupby``.
-You have to wait for the global registry to finally set up, otherwise you'll get an ``ComponentLookupError``.
+For that, register an adapter for ``IGroupByModifier``, which adapts to the GroupByCriteria utility.
+Within this adapter, you can modify the already populated ``_groupby`` attribute (do not use the ``groupby``, which is a property method and at this point hasn't finished).
 
 This is how.
 
-Register an event subscriber listening to ``zope.processlifetime.IProcessStarting``, which is fired after the global registry is finished set up::
-
-    <include package="collective.collectionfilter" />
-    <subscriber
-        for="zope.processlifetime.IProcessStarting"
-        handler=".modify_groupby" />
-
-Your ``modify_groupby`` looks like this::
+Write an adapter::
 
     # -*- coding: utf-8 -*-
     from collective.collectionfilter.interfaces import IGroupByCriteria
-    from zope.component import getUtility
+    from collective.collectionfilter.interfaces import IGroupByModifier
+    from zope.component import adapter
+    from zope.interface import implementer
 
 
-    def modify_groupby(event):
-        groupby = getUtility(IGroupByCriteria)
-        groupby.groupby_modify = {'Subject': {'display_modifier': lambda x: x.upper()}}
+    @implementer(IGroupByModifier)
+    @adapter(IGroupByCriteria)
+    def groupby_modifier(groupby):
+        groupby._groupby['Subject']['display_modifier'] = lambda x: x.upper()
+        groupby._groupby['my_new_index'] = {
+            'index': 'my_new_index',
+            'metadata': 'my_new_index_metadata_colum',
+            'display_modifier': lambda it: u'this is awesome: {0}'.format(it)
+        }
+
+Register the adapter::
+
+    <configure xmlns="http://namespaces.zope.org/zope">
+      <adapter factory=".collectionfilter.groupby_modifier" name="modifier_1" />
+    </configure>
+
+Done.
+
+Your adapter is called by ``collective.collectionfilter.vocabularies.GroupByCriteria.groupby``.
 
 
 Author

@@ -110,17 +110,22 @@ class ICollectionSearchSchema(Interface):
 
 
 class IGroupByCriteria(Interface):
-    """Interface for creating the GroupByCriteria data structure.
+    """Interface for the GroupByCriteria utility.
 
-    For example::
+    groupby provides a datastructure like this::
 
         GROUPBY_CRITERIA = {
             'Subject': {
                 'index': 'Subject',     # Index for querying.
                 'metadata': 'Subject',  # Metadata name for fast access.
                 'display_modifier': _,  # Function for modifying list items
-                                        # for display. Gets the item passed.
+                                        # for display. Gets the item passed
             },
         }
+    """
 
+
+class IGroupByModifier(Interface):
+    """Adapter interface for modifying the groupby criteria data structure,
+    after it has been initially created.
     """
