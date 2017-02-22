@@ -1,5 +1,6 @@
 from . import _
 from .interfaces import IGroupByCriteria
+from .utils import update_nested_dict
 from zope.component import getUtility
 from zope.interface import implementer
 from zope.interface import provider
@@ -72,7 +73,7 @@ class GroupByCriteria():
             }
             for it in metadata
         }
-        self._groupby.update(self.groupby_modify)
+        self._groupby = update_nested_dict(self._groupby, self.groupby_modify)
 
         return self._groupby
 

@@ -1,10 +1,10 @@
 from . import _
 from .interfaces import IGroupByCriteria
+from .query import make_query
 from .utils import safe_decode
 from .utils import safe_encode
-from .utils import make_query
-from .vocabularies import EMPTY_MARKER
 from .vocabularies import DEFAULT_FILTER_TYPE
+from .vocabularies import EMPTY_MARKER
 from plone.app.event.base import _prepare_range
 from plone.app.event.base import guess_date_from
 from plone.app.event.base import start_end_from_mode
@@ -17,6 +17,7 @@ from urllib import urlencode
 from zope.component import getUtility
 
 import plone.api
+
 
 try:
     from plone.app.event.browser.event_listing import EventListing

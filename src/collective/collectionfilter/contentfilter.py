@@ -1,4 +1,4 @@
-from .utils import make_query
+from .query import make_query
 
 
 def set_content_filter(context, event):
