@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
 from plone.app.vocabularies.catalog import CatalogSource
 from zope import schema

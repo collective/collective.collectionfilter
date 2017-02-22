@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from .. import _
 from ..filteritems import get_filter_items
 from ..interfaces import ICollectionFilterSchema

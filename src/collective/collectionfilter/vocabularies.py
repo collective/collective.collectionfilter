@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from . import _
 from .interfaces import IGroupByCriteria
 from .interfaces import IGroupByModifier

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from .. import _
 from ..interfaces import ICollectionSearchSchema
 from ..vocabularies import TEXT_IDX

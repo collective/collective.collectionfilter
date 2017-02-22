@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from .interfaces import IGroupByCriteria
 from .utils import safe_decode
 from .utils import safe_encode
