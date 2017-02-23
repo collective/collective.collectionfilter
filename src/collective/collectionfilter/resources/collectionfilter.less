@@ -1,40 +1,59 @@
 //*// PORTLETS //*//
 
 .portlet.portletCollectionFilter {
-    background: white;
-    .portletContent {
-        > ul {
-            padding: 0;
-            list-style: none;
-            position: relative;
-            margin-top: 10px;
-            margin-bottom: 10px;
-            > li {
-                list-style-type: none;
-                padding: 2px 15px 2px 15px;
-                > a {
-                    padding: 0px 15px 0px 15px;
-                    display: block;
-                    border: 0;
-                    position: relative;
-                    z-index: 1;
-                    &:before {
-                        left: 2px;
-                    }
-                }
-            }
-            li.selected a {
-                font-weight: bold;
-            }
-            ul {
-                padding-left:15px;
-                list-style: none;
-            }
-        }
+  background: white;
+  .portletContent {
+    > ul {
+      padding: 0;
+      list-style: none;
+      position: relative;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      > li {
+        list-style-type: none;
+        padding: 2px 15px 2px 15px;
         label {
-            display: block;
-            margin: 0;
+          display: table;
+          .filterControl, .filterLabel{
+              display: table-cell;
+              vertical-align: top;
+          }
+          input[type="radio"], input[type="checkbox"] {
+            margin: 0.3em 0.5em 0 0;
+            line-height: normal;
+          }
+          .filterControl {
+              margin-right: 0.5em;
+          }
+          .filterLabel{
+            -webkit-hyphens: auto;
+            -moz-hyphens: auto;
+            hyphens: auto;
+          }
         }
+      > a {
+        padding: 0px 15px 0px 15px;
+        display: block;
+        border: 0;
+        position: relative;
+        z-index: 1;
+        &:before {
+            left: 2px;
+        }
+      }
+      }
+      li.selected a {
+          font-weight: bold;
+      }
+      ul {
+          padding-left:15px;
+          list-style: none;
+      }
     }
+    label {
+      display: block;
+      margin: 0;
+    }
+  }
 }
 

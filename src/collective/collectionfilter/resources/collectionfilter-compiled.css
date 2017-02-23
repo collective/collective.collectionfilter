@@ -12,6 +12,27 @@
   list-style-type: none;
   padding: 2px 15px 2px 15px;
 }
+.portlet.portletCollectionFilter .portletContent > ul > li label {
+  display: table;
+}
+.portlet.portletCollectionFilter .portletContent > ul > li label .filterControl,
+.portlet.portletCollectionFilter .portletContent > ul > li label .filterLabel {
+  display: table-cell;
+  vertical-align: top;
+}
+.portlet.portletCollectionFilter .portletContent > ul > li label input[type="radio"],
+.portlet.portletCollectionFilter .portletContent > ul > li label input[type="checkbox"] {
+  margin: 0.3em 0.5em 0 0;
+  line-height: normal;
+}
+.portlet.portletCollectionFilter .portletContent > ul > li label .filterControl {
+  margin-right: 0.5em;
+}
+.portlet.portletCollectionFilter .portletContent > ul > li label .filterLabel {
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  hyphens: auto;
+}
 .portlet.portletCollectionFilter .portletContent > ul > li > a {
   padding: 0px 15px 0px 15px;
   display: block;
@@ -33,3 +54,4 @@
   display: block;
   margin: 0;
 }
+/*# sourceMappingURL=collectionfilter-compiled.css.map */
