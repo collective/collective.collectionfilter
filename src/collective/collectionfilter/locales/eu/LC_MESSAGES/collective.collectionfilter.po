@@ -1,0 +1,165 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2017-04-11 09:28+0000\n"
+"PO-Revision-Date: 2017-04-11 12:01+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: DOMAIN\n"
+"Last-Translator: Mikel Larreategi <mlarreategi@codesyntax.com>\n"
+"Language-Team: \n"
+"Language: eu\n"
+"X-Generator: Poedit 1.8.7.1\n"
+
+#: collective/collectionfilter/portlets/collectionfilter.py:139
+msgid "Add Collection Filter Portlet"
+msgstr "Bildumaren filtro-portleta gehitu"
+
+#: collective/collectionfilter/portlets/collectionsearch.py:112
+msgid "Add Collection Search Portlet"
+msgstr "Bildumaren bilaketa-portleta gehitu"
+
+#: collective/collectionfilter/portlets/collectionfilter.py:85
+msgid "Collection Filter"
+msgstr "Bildumaren filtroa"
+
+#: collective/collectionfilter/portlets/collectionsearch.py:57
+msgid "Collection Search"
+msgstr "Bildumaren bilaketa"
+
+#: collective/collectionfilter/portlets/collectionfilter.py:155
+msgid "Edit Collection Filter Portlet"
+msgstr "Bildumaren filtro-portleta editatu"
+
+#: collective/collectionfilter/portlets/collectionsearch.py:127
+msgid "Edit Collection Search Portlet"
+msgstr "Bildumaren bilaketa-portleta editatu"
+
+#: collective/collectionfilter/configure.zcml:47
+#: collective/collectionfilter/portlets/configure.zcml:36
+msgid "Extension profile for Plone."
+msgstr "Ploneren profila"
+
+#: collective/collectionfilter/portlets/collectionsearch.py:113
+msgid "This portlet allows fulltext search in collection results."
+msgstr "Portlet honek bilduma baten emaitzetan testu-bilaketak egiten ditu."
+
+#: collective/collectionfilter/portlets/collectionfilter.py:140
+msgid "This portlet shows grouped criteria of collection results and allows filtering of collection results."
+msgstr "Portlet honek bilduma baten emaitzetan konfiguratutako eremuen araberako filtroak egiten ditu."
+
+#: collective/collectionfilter/configure.zcml:47
+msgid "collective.collectionfilter base"
+msgstr "collective.collectionfilter base"
+
+#: collective/collectionfilter/portlets/configure.zcml:36
+msgid "collective.collectionfilter portlets"
+msgstr "collective.collectionfilter base"
+
+#: collective/collectionfilter/portlets/configure.zcml:44
+msgid "collective.collectionfilter portlets uninstall"
+msgstr "collective.collectionfilter base"
+
+#: collective/collectionfilter/vocabularies.py:108
+msgid "filtertype_and"
+msgstr "eta"
+
+#: collective/collectionfilter/vocabularies.py:109
+msgid "filtertype_or"
+msgstr "edo"
+
+#: collective/collectionfilter/vocabularies.py:107
+msgid "filtertype_single"
+msgstr "bakarra"
+
+#. Default: "Display filter items as checkboxes or radio buttons, according to the \"Additive Filter\" setting."
+#: collective/collectionfilter/interfaces.py:67
+msgid "help_as_input"
+msgstr "Filtroaren elementuak aukeraketa edo irrati botoi gisa erakutsi \"Filtro gehigarriak\" aukeraren arabera"
+
+#. Default: "Cache time in seconds. 0 for no caching."
+#: collective/collectionfilter/interfaces.py:46
+msgid "help_cache_time"
+msgstr "Katxe denbora segundutan. 0 idazten baduzu, ez da katxerik egongo."
+
+#. Default: "Select if single or multiple criterias can be selected and if all (and) or any (or) of the selected criterias must be met.Some index types like ``FieldIndex`` (e.g. Type index) only support the any (or) criteria when set to multiple criterias and ignore, if all (and) is set."
+#: collective/collectionfilter/interfaces.py:56
+msgid "help_filter_type"
+msgstr "Aukeratu filtro guztiak (eta) edo bat baino gehiago (edo) bete behar diren egindo den bilaketan. Filtro batzuk ``FieldIndex`` motakoek, `edo` filtroa aplikatzen dute elementu bat baino gehiago eskatuz gero eta ez dute kontuan hartzen `eta` filtroa erabiliz gero."
+
+#. Default: "Select the criteria to group the collection results by."
+#: collective/collectionfilter/interfaces.py:27
+msgid "help_groupby"
+msgstr "Aukeratu zeren araberako filtroa egingo den."
+
+#. Default: "Title of the rendered portlet."
+#: collective/collectionfilter/portlets/collectionfilter.py:31
+#: collective/collectionfilter/portlets/collectionsearch.py:30
+msgid "help_header"
+msgstr "Portletaren goiburua"
+
+#. Default: "Narrow down the filter options when a filter of this group is applied. Only options, which are available in the result set will then be displayed. Other filter groups can still narrow down this one, though."
+#: collective/collectionfilter/interfaces.py:76
+msgid "help_narrow_down"
+msgstr "Filtroaren aukeretako bat aukeratzen duzunean, aukerak murriztu. Emaitza gisa ikusten diren elementuek dituzten balioak bakarrik egongo dira zerrendan. Beste filtro batzuek ere murriztu ditzakete hemengo balioak."
+
+#. Default: "Show the result count for each filter group."
+#: collective/collectionfilter/interfaces.py:37
+msgid "help_show_count"
+msgstr "Erakutsi zenbat elementu dagoen aukera bakoitzeko."
+
+#. Default: "The collection, which is the source for the filter items and where the filter is applied."
+#: collective/collectionfilter/interfaces.py:14
+msgid "help_target_collection"
+msgstr "Elementuen filtroa egiteko erabiliko den bilduma"
+
+#. Default: "Display as checkboxes or radio buttons"
+#: collective/collectionfilter/interfaces.py:66
+msgid "label_as_input"
+msgstr "Aukeraketa- edo irrati-botoi kutxak erakutsi"
+
+#. Default: "Cache Time (s)"
+#: collective/collectionfilter/interfaces.py:45
+msgid "label_cache_time"
+msgstr "Katxe denbora"
+
+#. Default: "Filter Type"
+#: collective/collectionfilter/interfaces.py:55
+msgid "label_filter_type"
+msgstr "Filtro-mota"
+
+#. Default: "Group by"
+#: collective/collectionfilter/interfaces.py:26
+msgid "label_groupby"
+msgstr "Zeren arabera filtratu"
+
+#. Default: "Portlet header"
+#: collective/collectionfilter/portlets/collectionfilter.py:30
+#: collective/collectionfilter/portlets/collectionsearch.py:29
+msgid "label_header"
+msgstr "Portletaren izenburua"
+
+#. Default: "Narrow down filter options"
+#: collective/collectionfilter/interfaces.py:75
+msgid "label_narrow_down"
+msgstr "Filtroak murriztu"
+
+#. Default: "Show count"
+#: collective/collectionfilter/interfaces.py:36
+msgid "label_show_count"
+msgstr "Kopuruak erakutsi"
+
+#. Default: "Target Collection"
+#: collective/collectionfilter/interfaces.py:13
+msgid "label_target_collection"
+msgstr "Bilduma"
+
+#. Default: "All"
+#: collective/collectionfilter/filteritems.py:187
+msgid "subject_all"
+msgstr "Guztiak"
