@@ -1,8 +1,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-04-11 09:28+0000\n"
+"POT-Creation-Date: 2017-10-28 15:02+0000\n"
 "PO-Revision-Date: 2017-04-11 11:39+0200\n"
+"Last-Translator: Mikel Larreategi <mlarreategi@codesyntax.com>\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11,12 +13,10 @@ msgstr ""
 "Language-Name: English\n"
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: DOMAIN\n"
-"Last-Translator: Mikel Larreategi <mlarreategi@codesyntax.com>\n"
-"Language-Team: \n"
 "Language: es\n"
 "X-Generator: Poedit 1.8.7.1\n"
 
-#: collective/collectionfilter/portlets/collectionfilter.py:139
+#: collective/collectionfilter/portlets/collectionfilter.py:146
 msgid "Add Collection Filter Portlet"
 msgstr "Añadir portlet de filtro de colección"
 
@@ -24,7 +24,7 @@ msgstr "Añadir portlet de filtro de colección"
 msgid "Add Collection Search Portlet"
 msgstr "Añadir portlet de búsqueda en colección"
 
-#: collective/collectionfilter/portlets/collectionfilter.py:85
+#: collective/collectionfilter/portlets/collectionfilter.py:87
 msgid "Collection Filter"
 msgstr "Filtro de colección"
 
@@ -32,7 +32,7 @@ msgstr "Filtro de colección"
 msgid "Collection Search"
 msgstr "Búsqueda en colección"
 
-#: collective/collectionfilter/portlets/collectionfilter.py:155
+#: collective/collectionfilter/portlets/collectionfilter.py:162
 msgid "Edit Collection Filter Portlet"
 msgstr "Editar portlet de filtro de colección"
 
@@ -49,9 +49,14 @@ msgstr "Perfil de extensión para Plone"
 msgid "This portlet allows fulltext search in collection results."
 msgstr "Este portlet permite búsquedas de texto completo entre los resultados de la colección"
 
-#: collective/collectionfilter/portlets/collectionfilter.py:140
+#: collective/collectionfilter/portlets/collectionfilter.py:147
 msgid "This portlet shows grouped criteria of collection results and allows filtering of collection results."
 msgstr "Este portlet muestra criterios para poder filtrar los resultados de una colección."
+
+#. Default: "Search"
+#: collective/collectionfilter/portlets/collectionsearch.pt:16
+msgid "button_search"
+msgstr ""
 
 #: collective/collectionfilter/configure.zcml:47
 msgid "collective.collectionfilter base"
@@ -98,7 +103,7 @@ msgid "help_groupby"
 msgstr "Seleccione el criterio por el que se agruparan los resultados de la colección."
 
 #. Default: "Title of the rendered portlet."
-#: collective/collectionfilter/portlets/collectionfilter.py:31
+#: collective/collectionfilter/portlets/collectionfilter.py:33
 #: collective/collectionfilter/portlets/collectionsearch.py:30
 msgid "help_header"
 msgstr "Título del portlet"
@@ -139,7 +144,7 @@ msgid "label_groupby"
 msgstr "Agrupar por"
 
 #. Default: "Portlet header"
-#: collective/collectionfilter/portlets/collectionfilter.py:30
+#: collective/collectionfilter/portlets/collectionfilter.py:32
 #: collective/collectionfilter/portlets/collectionsearch.py:29
 msgid "label_header"
 msgstr "Título del portlet"
@@ -160,6 +165,6 @@ msgid "label_target_collection"
 msgstr "Colección"
 
 #. Default: "All"
-#: collective/collectionfilter/filteritems.py:187
+#: collective/collectionfilter/filteritems.py:190
 msgid "subject_all"
 msgstr "Todos"

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2017-04-11 10:04+0000\n"
+"POT-Creation-Date: 2017-10-28 15:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: collective.collectionfilter\n"
 
-#: collective/collectionfilter/portlets/collectionfilter.py:139
+#: collective/collectionfilter/portlets/collectionfilter.py:146
 msgid "Add Collection Filter Portlet"
 msgstr ""
 
@@ -25,7 +25,7 @@ msgstr ""
 msgid "Add Collection Search Portlet"
 msgstr ""
 
-#: collective/collectionfilter/portlets/collectionfilter.py:85
+#: collective/collectionfilter/portlets/collectionfilter.py:87
 msgid "Collection Filter"
 msgstr ""
 
@@ -33,7 +33,7 @@ msgstr ""
 msgid "Collection Search"
 msgstr ""
 
-#: collective/collectionfilter/portlets/collectionfilter.py:155
+#: collective/collectionfilter/portlets/collectionfilter.py:162
 msgid "Edit Collection Filter Portlet"
 msgstr ""
 
@@ -50,8 +50,13 @@ msgstr ""
 msgid "This portlet allows fulltext search in collection results."
 msgstr ""
 
-#: collective/collectionfilter/portlets/collectionfilter.py:140
+#: collective/collectionfilter/portlets/collectionfilter.py:147
 msgid "This portlet shows grouped criteria of collection results and allows filtering of collection results."
+msgstr ""
+
+#. Default: "Search"
+#: collective/collectionfilter/portlets/collectionsearch.pt:16
+msgid "button_search"
 msgstr ""
 
 #: collective/collectionfilter/configure.zcml:47
@@ -99,7 +104,7 @@ msgid "help_groupby"
 msgstr ""
 
 #. Default: "Title of the rendered portlet."
-#: collective/collectionfilter/portlets/collectionfilter.py:31
+#: collective/collectionfilter/portlets/collectionfilter.py:33
 #: collective/collectionfilter/portlets/collectionsearch.py:30
 msgid "help_header"
 msgstr ""
@@ -140,7 +145,7 @@ msgid "label_groupby"
 msgstr ""
 
 #. Default: "Portlet header"
-#: collective/collectionfilter/portlets/collectionfilter.py:30
+#: collective/collectionfilter/portlets/collectionfilter.py:32
 #: collective/collectionfilter/portlets/collectionsearch.py:29
 msgid "label_header"
 msgstr ""
@@ -161,6 +166,6 @@ msgid "label_target_collection"
 msgstr ""
 
 #. Default: "All"
-#: collective/collectionfilter/filteritems.py:187
+#: collective/collectionfilter/filteritems.py:190
 msgid "subject_all"
 msgstr ""

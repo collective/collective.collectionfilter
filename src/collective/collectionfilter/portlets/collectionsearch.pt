@@ -1,5 +1,5 @@
 <aside class="portlet portletCollectionSearch"
-       i18n:domain="collective.portlet.collectionfilter">
+       i18n:domain="collective.collectionfilter">
 
   <header class="portletHeader"
           tal:content="view/header_title">
@@ -13,7 +13,7 @@
         </tal:urlquery>
         <input name="SearchableText" size="20" type="text"
             tal:attributes="value view/value">
-        <button type="submit">Search</button>
+        <button type="submit" i18n:translate="button_search">Search</button>
     </form>
   </div>
 </aside>

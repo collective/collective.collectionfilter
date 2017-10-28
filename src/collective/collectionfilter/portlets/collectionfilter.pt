@@ -6,7 +6,7 @@
           "collectionUUID": "${settings/target_collection}",
           "reloadURL": "${view/reload_url}"
        }'
-       i18n:domain="collective.portlet.collectionfilter">
+       i18n:domain="collective.collectionfilter">
 
   <header class="portletHeader"
           tal:content="view/title">
