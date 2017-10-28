@@ -137,7 +137,8 @@ def get_filter_items(
         val = safe_decode(val)
 
         for filter_value in val:
-
+            if not filter_value:
+                continue
             # Add counter, if filter value is already present
             if filter_value in grouped_results:
                 grouped_results[filter_value]['count'] += 1
