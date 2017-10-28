@@ -1,5 +1,7 @@
 <aside class="portlet portletCollectionFilter pat-collectionfilter"
-       tal:define="settings view/settings"
+       tal:define="settings view/settings;
+                   shortname python:view.shortname.capitalize()"
+       tal:attributes="class string: portlet filter$shortname portletCollectionFilter pat-collectionfilter"
        data-pat-collectionfilter='{
           "collectionUUID": "${settings/target_collection}",
           "reloadURL": "${view/reload_url}"

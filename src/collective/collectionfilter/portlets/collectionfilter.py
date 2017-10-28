@@ -3,12 +3,14 @@ from .. import _
 from ..filteritems import get_filter_items
 from ..interfaces import ICollectionFilterSchema
 from ..vocabularies import DEFAULT_FILTER_TYPE
-from Products.CMFPlone.utils import getFSVersionTuple
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.app.portlets.portlets import base
 from plone.app.uuid.utils import uuidToCatalogBrain
+from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.portlets.interfaces import IPortletDataProvider
+from Products.CMFPlone.utils import getFSVersionTuple
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope import schema
+from zope.component import queryUtility
 from zope.interface import implements
 
 
@@ -105,6 +107,11 @@ class Renderer(base.Renderer):
         title = self.data.header or\
             uuidToCatalogBrain(self.data.target_collection).Title
         return title
+
+    @property
+    def shortname(self):
+        if self.data.header:
+            return queryUtility(IIDNormalizer).normalize(self.data.header)
 
     @property
     def reload_url(self):
