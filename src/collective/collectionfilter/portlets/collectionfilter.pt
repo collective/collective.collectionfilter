@@ -17,7 +17,7 @@
 
             <tal:if condition="settings/as_input">
             <label>
-              <input type="checkbox" class="filterControl"
+              <input type="checkbox" class="filterControl filteritem"
                   tal:attributes="type python:'radio' if settings.filter_type == 'single' else 'checkbox';
                                   name view/id;
                                   value group/value;
