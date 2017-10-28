@@ -16,6 +16,8 @@ from plone.memoize.volatile import DontCache
 from time import time
 from urllib import urlencode
 from zope.component import getUtility
+from zope.i18n import translate
+from zope.globalrequest import getRequest
 
 import plone.api
 
@@ -184,7 +186,7 @@ def get_filter_items(
         k: v for k, v in urlquery.items() if k not in (idx, idx + '_op')
     }
     ret = [{
-        'title': _('subject_all', default=u'All'),
+        'title': translate(_('subject_all', default=u'All'), context=getRequest()),
         'url': u'{0}/?{1}'.format(
             collection_url,
             urlencode(safe_encode(urlquery_all), doseq=True)
