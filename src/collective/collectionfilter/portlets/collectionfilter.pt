@@ -1,7 +1,8 @@
 <aside class="portlet portletCollectionFilter pat-collectionfilter"
-       tal:define="settings view/settings;
-                   shortname python:view.shortname.capitalize()"
-       tal:attributes="class string: portlet filter$shortname portletCollectionFilter pat-collectionfilter"
+       tal:define="input_type view/input_type;
+                   settings view/settings;
+                   className view/filterClassName"
+       tal:attributes="class string: portlet ${className} portletCollectionFilter pat-collectionfilter"
        data-pat-collectionfilter='{
           "collectionUUID": "${settings/target_collection}",
           "reloadURL": "${view/reload_url}"
@@ -13,14 +14,14 @@
           Title
   </header>
   <div class="portletContent">
-      <ul>
-        <tal:items repeat="group view/results">
-          <li tal:attributes="class python:'selected filterItem' if group['selected'] else 'filterItem'">
 
-            <tal:if condition="settings/as_input">
+        <tal:if condition="python:input_type in ('checkbox', 'radio')">
+        <ul>
+          <tal:items repeat="group view/results">
+          <li tal:attributes="class python:'selected filterItem' if group['selected'] else 'filterItem'">
             <label>
               <input type="checkbox" class="filterControl filteritem"
-                  tal:attributes="type python:'radio' if settings.filter_type == 'single' else 'checkbox';
+                  tal:attributes="type input_type;
                                   name view/id;
                                   value group/value;
                                   checked python:'checked' if group['selected'] else None;
@@ -31,9 +32,31 @@
               </span>
 
             </label>
-            </tal:if>
+          </li>
+          </tal:items>
+        </ul>
+        </tal:if>
 
-            <tal:if condition="not:settings/as_input">
+        <tal:if condition="python:view.input_type == 'dropdown'">
+          <select class="filteritem" tal:attributes="name view/id">
+          <tal:items repeat="group view/results">
+            <option tal:attributes="
+                value group/value;
+                selected python:'selected' if group['selected'] else None;
+                data-url group/url">
+              <span class="filterLabel">
+                <span tal:replace="python:group['title'].replace('/', u'/\u00AD')">Group</span>
+                <tal:show_count condition="settings/show_count">(<span tal:replace="group/count" />)</tal:show_count>
+              </span>
+            </option>
+          </tal:items>
+          </select>
+        </tal:if>
+
+        <tal:if condition="python:view.input_type == 'link'">
+        <ul>
+          <tal:items repeat="group view/results">
+          <li tal:attributes="class python:'selected filterItem' if group['selected'] else 'filterItem'">
             <a rel="nofollow"
                class="filteritem"
                tal:attributes="href group/url;
@@ -41,10 +64,10 @@
               <span tal:content="group/title">Group</span>
               <tal:show_count condition="settings/show_count">(<span tal:replace="group/count" />)</tal:show_count>
             </a>
-            </tal:if>
-
           </li>
-        </tal:items>
-      </ul>
+          </tal:items>
+        </ul>
+        </tal:if>
+
   </div>
 </aside>

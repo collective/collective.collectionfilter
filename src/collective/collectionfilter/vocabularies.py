@@ -112,6 +112,16 @@ def FilterTypeVocabulary(context):
 
 
 @provider(IVocabularyFactory)
+def InputTypeVocabulary(context):
+    items = [
+        SimpleTerm(title=_('inputtype_links'), value='links'),
+        SimpleTerm(title=_('inputtype_checkboxes_radiobuttons'), value='checkboxes_radiobuttons'),  # noqa
+        SimpleTerm(title=_('inputtype_checkboxes_dropdowns'), value='checkboxes_dropdowns')  # noqa
+    ]
+    return SimpleVocabulary(items)
+
+
+@provider(IVocabularyFactory)
 def ListScalingVocabulary(context):
     items = [SimpleTerm(title=_(it), value=it) for it in LIST_SCALING]
     return SimpleVocabulary(items)
