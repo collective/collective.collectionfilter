@@ -62,13 +62,15 @@ class ICollectionFilterSchema(Interface):
         vocabulary='collective.collectionfilter.FilterType',
     )
 
-    as_input = schema.Bool(
-        title=_(u'label_as_input', default=u'Display as checkboxes or radio buttons'),  # noqa
+    input_type = schema.Choice(
+        title=_('label_input_type', u'Input Type'),
         description=_(
-            u'help_as_input',
-            default=u'Display filter items as checkboxes or radio buttons, according to the "Additive Filter" setting.'),  # noqa
-        default=True,
-        required=False
+            'help_input_type',
+            u'Select how the UI of the collection filter should be rendered. '
+            u'Wether as links, as checkboxes and radiobuttons or checkboxes and dropdowns.'  # noqa
+        ),
+        required=True,
+        vocabulary='collective.collectionfilter.InputType',
     )
 
     narrow_down = schema.Bool(

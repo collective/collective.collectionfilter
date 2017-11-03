@@ -57,6 +57,23 @@ define([
                 this.reloadCollection(collectionURL + '&ajax_load=1');
             }.bind(this));
 
+            // OPTION 3 - filter rendered as dropdowns
+            $('select.filteritem', this.$el).on('change', function (e) {
+                // See: https://stackoverflow.com/a/12750327/1337474
+                var option = $('option:selected', e.target);
+                var collectionURL = $(option).data('url');
+
+                $(this.trigger).trigger(
+                    'collectionfilter:reload',
+                    {
+                        collectionUUID: this.options.collectionUUID,
+                        targetFilterURL: collectionURL
+                    }
+                );
+
+                this.reloadCollection(collectionURL + '&ajax_load=1');
+            }.bind(this));
+
         },
 
         reload: function (filterURL) {

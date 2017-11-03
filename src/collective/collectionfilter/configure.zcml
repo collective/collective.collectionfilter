@@ -31,6 +31,10 @@
       component=".vocabularies.FilterTypeVocabulary"
       name="collective.collectionfilter.FilterType"
       />
+  <utility
+      component=".vocabularies.InputTypeVocabulary"
+      name="collective.collectionfilter.InputType"
+      />
 
   <subscriber
       for="Products.CMFPlone.interfaces.IPloneSiteRoot
@@ -44,6 +48,14 @@
       directory="profiles/default"
       description='Extension profile for Plone.'
       provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+  <genericsetup:upgradeStep
+      source="1"
+      destination="2"
+      title="Portlet upgrade for new filter_type attribute"
+      description=""
+      profile="collective.collectionfilter:default"
+      handler=".upgrades.upgrade_portlet_input_type"
       />
 
 </configure>

@@ -47,7 +47,7 @@ class Assignment(base.Assignment):
     show_count = False
     cache_time = 60
     filter_type = DEFAULT_FILTER_TYPE
-    as_input = False
+    input_type = 'links'
     narrow_down = False
     # list_scaling = None
 
@@ -59,7 +59,7 @@ class Assignment(base.Assignment):
         show_count=False,
         cache_time=60,
         filter_type=DEFAULT_FILTER_TYPE,
-        as_input=False,
+        input_type='links',
         narrow_down=False,
         # list_scaling=None
     ):
@@ -69,7 +69,7 @@ class Assignment(base.Assignment):
         self.show_count = show_count
         self.cache_time = cache_time
         self.filter_type = filter_type
-        self.as_input = as_input
+        self.input_type = input_type
         self.narrow_down = narrow_down
         # self.list_scaling = list_scaling
 
@@ -109,9 +109,11 @@ class Renderer(base.Renderer):
         return title
 
     @property
-    def shortname(self):
+    def filterClassName(self):
         if self.data.header:
-            return queryUtility(IIDNormalizer).normalize(self.data.header)
+            name = queryUtility(IIDNormalizer).normalize(self.data.header)
+            return u'filter' + name.capitalize()
+        return ''
 
     @property
     def reload_url(self):
@@ -124,6 +126,18 @@ class Renderer(base.Renderer):
     @property
     def settings(self):
         return self.data
+
+    @property
+    def input_type(self):
+        if self.data.input_type == 'links':
+            return 'link'
+        elif self.data.filter_type == 'single':
+            if self.data.input_type == 'checkboxes_radiobuttons':
+                return 'radio'
+            else:
+                return 'dropdown'
+        else:
+            return 'checkbox'
 
     def results(self):
         results = get_filter_items(

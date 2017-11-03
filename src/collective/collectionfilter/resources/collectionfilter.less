@@ -3,15 +3,14 @@
 .portlet.portletCollectionFilter {
   background: white;
   .portletContent {
+    padding: 1em;
     > ul {
       padding: 0;
       list-style: none;
       position: relative;
-      margin-top: 10px;
-      margin-bottom: 10px;
       > li {
         list-style-type: none;
-        padding: 2px 15px 2px 15px;
+        padding: 2px;
         label {
           display: table;
           .filterControl, .filterLabel{
@@ -32,7 +31,7 @@
           }
         }
       > a {
-        padding: 0px 15px 0px 15px;
+        padding: 0;
         display: block;
         border: 0;
         position: relative;
@@ -53,6 +52,9 @@
     label {
       display: block;
       margin: 0;
+    }
+    select {
+      padding: 0 0.5em;
     }
   }
 }
