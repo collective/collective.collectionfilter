@@ -23,6 +23,39 @@ define([
                 }
             }.bind(this));
 
+            // Collection Search
+            if (this.$el.hasClass('portletCollectionSearch')) {
+                // initialize collection search
+                $('button[type="submit"]', this.$el).hide();
+                $('form', this.$el).on('submit', function (e) {
+                    e.preventDefault();
+                });
+                var delayTimer;
+                $('input[name="SearchableText"]', this.$el).on('keyup', function (e) {
+                    clearTimeout(delayTimer);
+                    delayTimer = setTimeout(function() {
+                        var collectionURL = $(e.target).data('url');
+                        var val = encodeURIComponent($(e.target).val());
+                        collectionURL += '&' + $(e.target).attr('name') + '=' + val;
+                        $(this.trigger).trigger(
+                            'collectionfilter:reload',
+                            {
+                                collectionUUID: this.options.collectionUUID,
+                                targetFilterURL: collectionURL
+                            }
+                        );
+                        this.reloadCollection(collectionURL + '&ajax_load=1');
+                        var focusTimer = setTimeout(function() {
+                            var el = $('input[name="SearchableText"]', this.$el);
+                            el.focus();
+                            // TODO: not working yet, because value is empty at this point:
+                            el[0].value = el[0].value;  // set cursor to end.
+                            clearTimeout(focusTimer);
+                        }, 500);
+                    }.bind(this), 500);
+                }.bind(this));
+            }
+
             // OPTION 1 - filter rendered as links
             $('a.filteritem', this.$el).on('click', function (e) {
                 e.stopPropagation();

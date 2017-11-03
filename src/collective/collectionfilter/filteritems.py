@@ -2,6 +2,7 @@
 from . import _
 from .interfaces import IGroupByCriteria
 from .query import make_query
+from .utils import base_query
 from .utils import safe_decode
 from .utils import safe_encode
 from .vocabularies import DEFAULT_FILTER_TYPE
@@ -94,22 +95,12 @@ def get_filter_items(
     if not getattr(current_idx_value, '__iter__', False):
         current_idx_value = [current_idx_value] if current_idx_value else []
 
-    # Construct base url query.
-    # These request params should be ignored.
-    ignore_params = [
-        'b_start',
-        'b_size',
-        'batch',
-        'sort_on',
-        'limit',
-        'portlethash'
-    ]
-    # Additive filtering is about adding other filter values of the same index.
+    extra_ignores = []
     if not narrow_down:
-        ignore_params += [idx, idx + '_op']
-    # Now remove all to-be-ignored request parameters.
-    urlquery = {
-        k: v for k, v in request_params.items() if k not in ignore_params}
+        # Additive filtering is about adding other filter values of the same
+        # index.
+        extra_ignores = [idx, idx + '_op']
+    urlquery = base_query(request_params, extra_ignores)
 
     # Get all collection results with additional filter defined by urlquery
     custom_query.update(urlquery)

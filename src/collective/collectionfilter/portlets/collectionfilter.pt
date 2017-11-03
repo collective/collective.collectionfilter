@@ -1,8 +1,6 @@
-<aside class="portlet portletCollectionFilter pat-collectionfilter"
+<aside class="portlet ${view/filterClassName} portletCollectionFilter pat-collectionfilter"
        tal:define="input_type view/input_type;
-                   settings view/settings;
-                   className view/filterClassName"
-       tal:attributes="class string: portlet ${className} portletCollectionFilter pat-collectionfilter"
+                   settings view/settings"
        data-pat-collectionfilter='{
           "collectionUUID": "${settings/target_collection}",
           "reloadURL": "${view/reload_url}"
