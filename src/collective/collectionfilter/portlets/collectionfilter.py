@@ -12,6 +12,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope import schema
 from zope.component import queryUtility
 from zope.interface import implements
+from Products.CMFPlone.resources import add_resource_on_request
 
 
 PLONE5 = getFSVersionTuple()[0] >= 5
@@ -89,6 +90,11 @@ class Assignment(base.Assignment):
 
 class Renderer(base.Renderer):
     render = ViewPageTemplateFile('collectionfilter.pt')
+
+    def update(self):
+        # utility function to add resource to rendered page
+        add_resource_on_request(self.request, 'collectionfilter')
+        return super(Renderer, self).update()
 
     @property
     def available(self):
