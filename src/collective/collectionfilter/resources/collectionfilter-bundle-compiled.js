@@ -265,5 +265,5 @@ require([
 
 });
 
-define("/home/_thet/data/dev/agitator/collectionfilter/plone/src/collective.collectionfilter/src/collective/collectionfilter/resources/collectionfilter-bundle.js", function(){});
+define("/Users/peter/workspace/buildout.coredev/src/collective.collectionfilter/src/collective/collectionfilter/resources/collectionfilter-bundle.js", function(){});
 
