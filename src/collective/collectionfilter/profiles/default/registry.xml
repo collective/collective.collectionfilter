@@ -32,7 +32,7 @@
       <element>collectionfilter-bundle</element>
     </value>
     <value key="enabled">True</value>
-    <value key="depends">plone</value>
+    <value key="depends">*</value>
     <value key="compile">True</value>
     <!-- do not merge with default for now - todo investigate side effects -->
     <!-- <value key="merge_with">default</value> -->
