@@ -34,8 +34,7 @@
     <value key="enabled">True</value>
     <value key="depends">*</value>
     <value key="compile">True</value>
-    <!-- do not merge with default for now - todo investigate side effects -->
-    <!-- <value key="merge_with">default</value> -->
+    <value key="merge_with">default</value>
     <value key="jscompilation">++resource++collective.collectionfilter/collectionfilter-compiled.js</value>
     <value key="csscompilation">++resource++collective.collectionfilter/collectionfilter-compiled.css</value>
     <value key="last_compilation">2017-11-13 21:50:00</value>
