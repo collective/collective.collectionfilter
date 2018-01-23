@@ -143,8 +143,6 @@ define('collectionfilter',[
     'mockup-patterns-contentloader'
 ], function($, Base, contentloader) {
 
-    'use strict';
-
     var CollectionFilter = Base.extend({
         name: 'collectionfilter',
         trigger: '.pat-collectionfilter',
@@ -168,7 +166,10 @@ define('collectionfilter',[
             $('a.filteritem', this.$el).on('click', function (e) {
                 e.stopPropagation();
                 e.preventDefault();
-                var collectionURL = e.target.closest('a').href;  // strange, it's not the anchor element, but a span.
+                // TODO: nextline: strange, it's not the anchor element itself,
+                // but a span. jQuery's closest also catches the root element
+                // itself, so this shouldn't be a problem.
+                var collectionURL = $(e.target).closest('a').attr('href');
 
                 $(this.trigger).trigger(
                     'collectionfilter:reload',
@@ -265,5 +266,5 @@ require([
 
 });
 
-define("/Users/peter/workspace/buildout.coredev/src/collective.collectionfilter/src/collective/collectionfilter/resources/collectionfilter-bundle.js", function(){});
+define("/home/_thet/data/dev/agitator/collectionfilter/plone/src/collective.collectionfilter/src/collective/collectionfilter/resources/collectionfilter-bundle.js", function(){});
 
