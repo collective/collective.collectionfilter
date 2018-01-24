@@ -4,6 +4,13 @@ Changelog
 1.0 (unreleased)
 ----------------
 
+- Update the history / location bar URL with the current filter URL.
+  [thet]
+
+- Fix error where ``closest`` DOM method isn't supported on IE.
+  Fixes #6.
+  [agitator]
+
 - Register bundle to depend on ``*`` to avoid weird Select2 initialization error.
   [thet]
 
