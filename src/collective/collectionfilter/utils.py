@@ -30,3 +30,22 @@ def safe_encode(val):
     elif isinstance(val, basestring):
         ret = safe_unicode(val).encode('utf-8')
     return ret
+
+
+def base_query(request_params={}, extra_ignores=[]):
+    # Construct base url query.
+
+    # These request params should be ignored.
+    ignore_params = [
+        'b_start',
+        'b_size',
+        'batch',
+        'sort_on',
+        'limit',
+        'portlethash'
+    ] + extra_ignores
+    # Now remove all to-be-ignored request parameters.
+    urlquery = {
+        k: v for k, v in request_params.items() if k not in ignore_params
+    }
+    return urlquery

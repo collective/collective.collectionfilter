@@ -4,6 +4,9 @@ Changelog
 1.0 (unreleased)
 ----------------
 
+- Implement AJAX search for the collection search portlet.
+  [thet]
+
 - Update the history / location bar URL with the current filter URL.
   [thet]
 

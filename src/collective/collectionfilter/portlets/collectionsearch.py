@@ -1,16 +1,23 @@
 # -*- coding: utf-8 -*-
 from .. import _
 from ..interfaces import ICollectionSearchSchema
+from ..utils import base_query
+from ..utils import safe_decode
+from ..utils import safe_encode
 from ..vocabularies import TEXT_IDX
+from plone.app.portlets.portlets import base
+from plone.app.uuid.utils import uuidToObject
+from plone.i18n.normalizer.interfaces import IIDNormalizer
+from plone.portlet.collection.collection import Renderer as CollectionRenderer
+from plone.portlets.interfaces import IPortletDataProvider
 from Products.CMFPlone.utils import getFSVersionTuple
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from plone.app.portlets.portlets import base
-from plone.app.uuid.utils import uuidToCatalogBrain
-from plone.portlet.collection.collection import Renderer as CollectionRenderer
-from plone.portlets.interfaces import IPortletDataProvider
+from urllib import urlencode
 from zope import schema
+from zope.component import queryUtility
 from zope.interface import implements
+
 
 PLONE5 = getFSVersionTuple()[0] >= 5
 
@@ -70,7 +77,30 @@ class Renderer(CollectionRenderer):
     def header_title(self):
         if self.data.header:
             return self.data.header
-        return self.collection.Title if self.collection else None
+        return self.collection.title
+
+    @property
+    def filterClassName(self):
+        if self.data.header:
+            name = queryUtility(IIDNormalizer).normalize(self.data.header)
+            return u'filter' + name.capitalize()
+        return ''
+
+    @property
+    def id(self):
+        portlethash = self.request.form.get(
+            'portlethash',
+            getattr(self, '__portlet_metadata__', {}).get('hash', '')
+        )
+        return portlethash
+
+    @property
+    def reload_url(self):
+        reload_url = '{0}/@@render-portlet?portlethash={1}'.format(
+            self.context.absolute_url(),
+            self.id
+        )
+        return reload_url
 
     @property
     def value(self):
@@ -78,7 +108,7 @@ class Renderer(CollectionRenderer):
 
     @property
     def action_url(self):
-        return self.collection.getURL()
+        return self.collection.absolute_url()
 
     @property
     def urlquery(self):
@@ -91,13 +121,24 @@ class Renderer(CollectionRenderer):
         return urlquery
 
     @property
+    def ajax_url(self):
+        # Recursively transform all to unicode
+        request_params = safe_decode(self.request.form)
+        request_params.update({'x': 'y'})  # ensure at least one val is set
+        urlquery = base_query(request_params, extra_ignores=['SearchableText'])
+        ajax_url = u'{0}/?{1}'.format(
+            self.collection.absolute_url(),
+            urlencode(safe_encode(urlquery), doseq=True)
+        )
+        return ajax_url
+
+    @property
     def collection(self):
-        item = self._collection
-        if not item:
-            self._collection = item = uuidToCatalogBrain(
+        if not self._collection:
+            self._collection = uuidToObject(
                 self.data.target_collection
             )
-        return item
+        return self._collection
 
     def update(self):
         pass

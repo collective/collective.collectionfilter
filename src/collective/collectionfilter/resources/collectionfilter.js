@@ -18,10 +18,41 @@ define([
         init: function() {
             this.$el.unbind('collectionfilter:reload');
             this.$el.on('collectionfilter:reload', function (e, data) {
+                if (data.noReloadSearch && this.$el.hasClass('portletCollectionSearch')) {
+                    // don't reload search portlet while typing.
+                    return;
+                }
                 if (data.collectionUUID === this.options.collectionUUID) {
                     this.reload(data.targetFilterURL);
                 }
             }.bind(this));
+
+            // Collection Search
+            if (this.$el.hasClass('portletCollectionSearch')) {
+                // initialize collection search
+                $('button[type="submit"]', this.$el).hide();
+                $('form', this.$el).on('submit', function (e) {
+                    e.preventDefault();
+                });
+                var delayTimer;
+                $('input[name="SearchableText"]', this.$el).on('keyup', function (e) {
+                    clearTimeout(delayTimer);
+                    delayTimer = setTimeout(function() {
+                        var collectionURL = $(e.target).data('url');
+                        var val = encodeURIComponent($(e.target).val());
+                        collectionURL += '&' + $(e.target).attr('name') + '=' + val;
+                        $(this.trigger).trigger(
+                            'collectionfilter:reload',
+                            {
+                                collectionUUID: this.options.collectionUUID,
+                                targetFilterURL: collectionURL,
+                                noReloadSearch: true
+                            }
+                        );
+                        this.reloadCollection(collectionURL);
+                    }.bind(this), 500);
+                }.bind(this));
+            }
 
             // OPTION 1 - filter rendered as links
             $('a.filteritem', this.$el).on('click', function (e) {
