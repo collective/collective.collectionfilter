@@ -4,6 +4,9 @@ Changelog
 1.0 (unreleased)
 ----------------
 
+- Update the history / location bar URL with the current filter URL.
+  [thet]
+
 - Fix error where ``closest`` DOM method isn't supported on IE.
   Fixes #6.
   [agitator]
