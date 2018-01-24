@@ -18,6 +18,10 @@ define([
         init: function() {
             this.$el.unbind('collectionfilter:reload');
             this.$el.on('collectionfilter:reload', function (e, data) {
+                if (data.noReloadSearch && this.$el.hasClass('portletCollectionSearch')) {
+                    // don't reload search portlet while typing.
+                    return;
+                }
                 if (data.collectionUUID === this.options.collectionUUID) {
                     this.reload(data.targetFilterURL);
                 }
@@ -41,17 +45,11 @@ define([
                             'collectionfilter:reload',
                             {
                                 collectionUUID: this.options.collectionUUID,
-                                targetFilterURL: collectionURL
+                                targetFilterURL: collectionURL,
+                                noReloadSearch: true
                             }
                         );
-                        this.reloadCollection(collectionURL + '&ajax_load=1');
-                        var focusTimer = setTimeout(function() {
-                            var el = $('input[name="SearchableText"]', this.$el);
-                            el.focus();
-                            // TODO: not working yet, because value is empty at this point:
-                            el[0].value = el[0].value;  // set cursor to end.
-                            clearTimeout(focusTimer);
-                        }, 500);
+                        this.reloadCollection(collectionURL);
                     }.bind(this), 500);
                 }.bind(this));
             }
