@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0 (unreleased)
+1.0 (2018-01-27)
 ----------------
 
 - Implement AJAX search for the collection search portlet.
