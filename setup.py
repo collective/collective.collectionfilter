@@ -14,6 +14,7 @@ setup(
     ),
     classifiers=[
         "Framework :: Plone",
+        "Framework :: Plone :: 5.1",
         "Programming Language :: Python",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
