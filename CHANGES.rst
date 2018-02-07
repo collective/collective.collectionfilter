@@ -4,7 +4,8 @@ Changelog
 1.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix target collection selection via catalog vocabular and RelatedItemsFieldWidget.
+  [agitator]
 
 
 1.0 (2018-01-27)

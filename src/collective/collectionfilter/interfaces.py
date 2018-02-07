@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
 from plone.app.vocabularies.catalog import CatalogSource
+from plone.app.z3cform.widget import RelatedItemsFieldWidget
+from plone.autoform.directives import widget
 from zope import schema
 from zope.interface import Interface
 
@@ -17,9 +19,14 @@ class ICollectionFilterSchema(Interface):
                     u'items and where the filter is applied.'
         ),
         required=True,
-        source=CatalogSource(
-            object_provides=ISyndicatableCollection.__identifier__
-        ),
+        vocabulary='plone.app.vocabularies.Catalog',
+    )
+    widget(
+        'target_collection',
+        RelatedItemsFieldWidget,
+        pattern_options={
+            'selectableTypes': ['Collection'],
+        }
     )
 
     group_by = schema.Choice(
