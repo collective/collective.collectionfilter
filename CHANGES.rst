@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.1 (unreleased)
+1.0.1 (2018-02-09)
 ------------------
 
 - Fix target collection selection via catalog vocabular and RelatedItemsFieldWidget.
