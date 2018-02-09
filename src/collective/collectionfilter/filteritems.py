@@ -106,6 +106,7 @@ def get_filter_items(
     custom_query.update(urlquery)
     catalog_results = collection.results(
         batch=False,
+        brains=True,
         custom_query=make_query(custom_query)
     )
     if not catalog_results:
