@@ -6,6 +6,7 @@ Changelog
 
 Breaking changes:
 
+- Depend on Products.CMFPlone >= 5.1 for using ``get_top_request``.
 - collectionsearch.pt: changed ``header_title`` to ``title``.
 
 New:

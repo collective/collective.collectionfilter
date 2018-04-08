@@ -4,6 +4,7 @@ from ..baseviews import BaseSearchView
 from ..interfaces import ICollectionSearchSchema
 from plone.app.portlets.portlets import base
 from plone.portlets.interfaces import IPortletDataProvider
+from Products.CMFPlone.utils import get_top_request
 from Products.CMFPlone.utils import getFSVersionTuple
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import queryUtility
@@ -53,7 +54,8 @@ class Renderer(BaseSearchView, base.Renderer):
 
     @property
     def id(self):
-        portlethash = self.request.form.get(
+        request = get_top_request(self.request)
+        portlethash = request.form.get(
             'portlethash',
             getattr(self, '__portlet_metadata__', {}).get('hash', '')
         )

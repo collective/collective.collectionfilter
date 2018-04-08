@@ -30,7 +30,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'setuptools',
-        'Products.CMFPlone',
+        'Products.CMFPlone >= 5.1',  # need get_top_request
     ],
     entry_points="""
     # -*- Entry points: -*-

@@ -6,6 +6,7 @@ from .utils import safe_encode
 from .vocabularies import TEXT_IDX
 from plone.app.uuid.utils import uuidToCatalogBrain
 from plone.i18n.normalizer.interfaces import IIDNormalizer
+from Products.CMFPlone.utils import get_top_request
 from Products.CMFPlone.utils import safe_unicode
 from urllib import urlencode
 from zope.component import queryUtility
@@ -16,6 +17,7 @@ class BaseView(object):
     """
     data = None
     _collection = None
+    _top_request = None
 
     @property
     def available(self):
@@ -41,6 +43,12 @@ class BaseView(object):
     @property
     def settings(self):
         return self.data
+
+    @property
+    def top_request(self):
+        if not self._top_request:
+            self._top_request = get_top_request(self.request)
+        return self._top_request
 
     @property
     def collection(self):
@@ -72,7 +80,7 @@ class BaseFilterView(BaseView):
             filter_type=self.data.filter_type,
             narrow_down=self.data.narrow_down,
             cache_time=self.data.cache_time,
-            request_params=self.request.form or {}
+            request_params=self.top_request.form or {}
         )
         return results
 
@@ -81,7 +89,7 @@ class BaseSearchView(BaseView):
 
     @property
     def value(self):
-        return safe_unicode(self.request.get(TEXT_IDX, ''))
+        return safe_unicode(self.top_request.get(TEXT_IDX, ''))
 
     @property
     def action_url(self):
@@ -90,7 +98,7 @@ class BaseSearchView(BaseView):
     @property
     def urlquery(self):
         urlquery = {}
-        urlquery.update(self.request.form)
+        urlquery.update(self.top_request.form)
         for it in (TEXT_IDX, 'b_start', 'b_size', 'batch', 'sort_on', 'limit'):
             # Remove problematic url parameters
             if it in urlquery:
@@ -100,7 +108,7 @@ class BaseSearchView(BaseView):
     @property
     def ajax_url(self):
         # Recursively transform all to unicode
-        request_params = safe_decode(self.request.form)
+        request_params = safe_decode(self.top_request.form)
         request_params.update({'x': 'y'})  # ensure at least one val is set
         urlquery = base_query(request_params, extra_ignores=['SearchableText'])
         ajax_url = u'{0}/?{1}'.format(
