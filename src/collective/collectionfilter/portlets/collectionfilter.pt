@@ -1,8 +1,7 @@
 <aside class="portlet ${view/filterClassName} portletCollectionFilter pat-collectionfilter"
-       tal:define="input_type view/input_type;
-                   settings view/settings"
+       tal:define="input_type view/input_type"
        data-pat-collectionfilter='{
-          "collectionUUID": "${settings/target_collection}",
+          "collectionUUID": "${view/settings/target_collection}",
           "reloadURL": "${view/reload_url}"
        }'
        tal:condition="view/available"
@@ -27,7 +26,7 @@
                                   data-url group/url"/>
               <span class="filterLabel">
                 <span tal:replace="python:group['title'].replace('/', u'/\u00AD')">Group</span>
-                <tal:show_count condition="settings/show_count">(<span tal:replace="group/count" />)</tal:show_count>
+                <tal:show_count condition="view/settings/show_count">(<span tal:replace="group/count" />)</tal:show_count>
               </span>
 
             </label>
@@ -45,7 +44,7 @@
                 data-url group/url">
               <span class="filterLabel">
                 <span tal:replace="python:group['title'].replace('/', u'/\u00AD')">Group</span>
-                <tal:show_count condition="settings/show_count">(<span tal:replace="group/count" />)</tal:show_count>
+                <tal:show_count condition="view/settings/show_count">(<span tal:replace="group/count" />)</tal:show_count>
               </span>
             </option>
           </tal:items>
@@ -61,7 +60,7 @@
                tal:attributes="href group/url;
                                title string:Count: ${group/count}">
               <span tal:content="group/title">Group</span>
-              <tal:show_count condition="settings/show_count">(<span tal:replace="group/count" />)</tal:show_count>
+              <tal:show_count condition="view/settings/show_count">(<span tal:replace="group/count" />)</tal:show_count>
             </a>
           </li>
           </tal:items>

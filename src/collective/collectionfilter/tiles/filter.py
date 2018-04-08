@@ -1,10 +1,23 @@
 # -*- coding: utf-8 -*-
-from plone.tiles.tile import Tile
+from . import DictDataWrapper
 from ..baseviews import BaseFilterView
+from ..interfaces import ICollectionFilterSchema
+from plone.supermodel.model import Schema
+from plone.tiles.tile import Tile
+from zope.interface import implementer
 
 
-class FilterTile(BaseFilterView, Tile):
-    
+class IFilterTile(Schema, ICollectionFilterSchema):
+    pass
+
+
+@implementer(IFilterTile)
+class FilterTile(Tile, BaseFilterView):
+
+    @property
+    def settings(self):
+        return DictDataWrapper(self.data)
+
     @property
     def id(self):
         return u''

@@ -1,6 +1,6 @@
 <aside class="collectionSearch ${view/filterClassName} pat-collectionfilter"
        data-pat-collectionfilter='{
-           "collectionUUID": "${view/data/target_collection}",
+           "collectionUUID": "${view/settings/target_collection}",
            "reloadURL": "${view/reload_url}"
        }'
        tal:condition="view/available"

@@ -38,7 +38,6 @@ def _results_cachekey(
         narrow_down,
         cache_time,
         request_params):
-    cache_time = int(cache_time)
     if not cache_time:
         # Don't cache on cache_time = 0 or any other falsy value
         raise DontCache

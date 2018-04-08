@@ -15,9 +15,12 @@ from zope.component import queryUtility
 class BaseView(object):
     """Abstract base filter view class.
     """
-    data = None
     _collection = None
     _top_request = None
+
+    @property
+    def settings(self):
+        return self.data
 
     @property
     def available(self):
@@ -29,7 +32,11 @@ class BaseView(object):
 
     @property
     def title(self):
-        return self.data.header or self.collection.Title
+        return getattr(
+            self.settings,
+            'header',
+            getattr(self.collection, 'Title', u'')
+        )
 
     @property
     def filterClassName(self):
@@ -41,10 +48,6 @@ class BaseView(object):
         raise NotImplementedError
 
     @property
-    def settings(self):
-        return self.data
-
-    @property
     def top_request(self):
         if not self._top_request:
             self._top_request = get_top_request(self.request)
@@ -54,7 +57,7 @@ class BaseView(object):
     def collection(self):
         if not self._collection:
             self._collection = uuidToCatalogBrain(
-                self.data.target_collection
+                self.settings.target_collection
             )
         return self._collection
 
@@ -63,10 +66,10 @@ class BaseFilterView(BaseView):
 
     @property
     def input_type(self):
-        if self.data.input_type == 'links':
+        if self.settings.input_type == 'links':
             return 'link'
-        elif self.data.filter_type == 'single':
-            if self.data.input_type == 'checkboxes_radiobuttons':
+        elif self.settings.filter_type == 'single':
+            if self.settings.input_type == 'checkboxes_radiobuttons':
                 return 'radio'
             else:
                 return 'dropdown'
@@ -75,11 +78,11 @@ class BaseFilterView(BaseView):
 
     def results(self):
         results = get_filter_items(
-            target_collection=self.data.target_collection,
-            group_by=self.data.group_by,
-            filter_type=self.data.filter_type,
-            narrow_down=self.data.narrow_down,
-            cache_time=self.data.cache_time,
+            target_collection=self.settings.target_collection,
+            group_by=self.settings.group_by,
+            filter_type=self.settings.filter_type,
+            narrow_down=self.settings.narrow_down,
+            cache_time=self.settings.cache_time,
             request_params=self.top_request.form or {}
         )
         return results
@@ -99,7 +102,15 @@ class BaseSearchView(BaseView):
     def urlquery(self):
         urlquery = {}
         urlquery.update(self.top_request.form)
-        for it in (TEXT_IDX, 'b_start', 'b_size', 'batch', 'sort_on', 'limit'):
+        for it in (
+            TEXT_IDX,
+            'b_start',
+            'b_size',
+            'batch',
+            'sort_on',
+            'limit',
+            'portlethash'
+        ):
             # Remove problematic url parameters
             if it in urlquery:
                 del urlquery[it]
