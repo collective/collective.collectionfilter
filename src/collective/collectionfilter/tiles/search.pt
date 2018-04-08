@@ -10,6 +10,7 @@
   <div class="searchContent">
     <form method="get" name="searchForm" role="form"
         tal:attributes="action view/action_url">
+        <input type="hidden" name="collectionfilter" value="1"/>
         <tal:urlquery repeat="item python:view.urlquery.items()">
           <input type="hidden" tal:attributes="name python:item[0]; value python:item[1]"/>
         </tal:urlquery>

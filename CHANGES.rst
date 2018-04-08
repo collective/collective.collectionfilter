@@ -13,6 +13,7 @@ New:
 
 - Add filter and search tiles.
 
+- Ensure early exit on the content filter traverse handler if it is not needed to run.
 
 
 1.0.1 (2018-02-09)

@@ -7,6 +7,10 @@ def set_content_filter(context, event):
     parameters to narrow the results of the collection.
     """
     # TODO: remove following check, if called for each tile traversal...
-    print("CALLED set_content_filter")
-    content_filter = make_query(event.request.form)
+
+    req = event.request
+    if 'collectionfilter' not in req.form:
+        return
+    del req.form['collectionfilter']
+    content_filter = make_query(req.form)
     event.request['contentFilter'] = content_filter
