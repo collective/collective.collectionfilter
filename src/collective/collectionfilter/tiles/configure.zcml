@@ -1,0 +1,30 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="plone">
+
+    <plone:tile
+        name="collective.collectionfilter.tiles.CollectionFilter"
+        title="Collection Filter Tile"
+        description="Show the collection filter tile."
+        add_permission="cmf.ModifyPortalContent"
+        class=".filter.FilterTile"
+        for="*"
+        permission="zope2.View"
+        schema="..interfaces.ICollectionFilterTile"
+        template="filter.pt"
+        />
+
+    <plone:tile
+        name="collective.collectionfilter.tiles.CollectionSearch"
+        title="Collection Search Tile"
+        description="Show the collection search tile."
+        add_permission="cmf.ModifyPortalContent"
+        class=".search.SearchTile"
+        for="*"
+        permission="zope2.View"
+        schema="..interfaces.ICollectionSearchTile"
+        template="search.pt"
+        />
+
+</configure>

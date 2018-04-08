@@ -1,17 +1,13 @@
 # -*- coding: utf-8 -*-
 from .. import _
-from ..filteritems import get_filter_items
+from ..baseviews import BaseFilterView
 from ..interfaces import ICollectionFilterSchema
 from ..vocabularies import DEFAULT_FILTER_TYPE
 from plone.app.portlets.portlets import base
-from plone.app.uuid.utils import uuidToCatalogBrain
-from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.portlets.interfaces import IPortletDataProvider
 from Products.CMFPlone.utils import getFSVersionTuple
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from zope import schema
-from zope.component import queryUtility
-from zope.interface import implements
+from zope.interface import implementer
 
 
 PLONE5 = getFSVersionTuple()[0] >= 5
@@ -28,18 +24,9 @@ else:
 class ICollectionFilterPortlet(ICollectionFilterSchema, IPortletDataProvider):
     """Portlet interface based on ICollectionFilterSchema
     """
-    header = schema.TextLine(
-        title=_('label_header', default=u'Portlet header'),
-        description=_(
-            'help_header',
-            u'Title of the rendered portlet.'
-        ),
-        required=False,
-    )
 
-
+@implementer(ICollectionFilterPortlet)
 class Assignment(base.Assignment):
-    implements(ICollectionFilterPortlet)
 
     header = u""
     target_collection = None
@@ -87,12 +74,8 @@ class Assignment(base.Assignment):
             return _(u'Collection Filter')
 
 
-class Renderer(base.Renderer):
+class Renderer(BaseFilterView, base.Renderer):
     render = ViewPageTemplateFile('collectionfilter.pt')
-
-    @property
-    def available(self):
-        return True
 
     @property
     def id(self):
@@ -103,52 +86,12 @@ class Renderer(base.Renderer):
         return portlethash
 
     @property
-    def title(self):
-        title = self.data.header or\
-            uuidToCatalogBrain(self.data.target_collection).Title
-        return title
-
-    @property
-    def filterClassName(self):
-        if self.data.header:
-            name = queryUtility(IIDNormalizer).normalize(self.data.header)
-            return u'filter' + name.capitalize()
-        return ''
-
-    @property
     def reload_url(self):
         reload_url = '{0}/@@render-portlet?portlethash={1}'.format(
             self.context.absolute_url(),
             self.id
         )
         return reload_url
-
-    @property
-    def settings(self):
-        return self.data
-
-    @property
-    def input_type(self):
-        if self.data.input_type == 'links':
-            return 'link'
-        elif self.data.filter_type == 'single':
-            if self.data.input_type == 'checkboxes_radiobuttons':
-                return 'radio'
-            else:
-                return 'dropdown'
-        else:
-            return 'checkbox'
-
-    def results(self):
-        results = get_filter_items(
-            target_collection=self.data.target_collection,
-            group_by=self.data.group_by,
-            filter_type=self.data.filter_type,
-            narrow_down=self.data.narrow_down,
-            cache_time=self.data.cache_time,
-            request_params=self.request.form or {}
-        )
-        return results
 
 
 class AddForm(base_AddForm):

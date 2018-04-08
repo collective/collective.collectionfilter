@@ -4,7 +4,14 @@ Changelog
 1.0.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+Breaking changes:
+
+- collectionsearch.pt: changed ``header_title`` to ``title``.
+
+New:
+
+- Add filter and search tiles.
+
 
 
 1.0.1 (2018-02-09)

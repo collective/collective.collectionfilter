@@ -1,22 +1,13 @@
 # -*- coding: utf-8 -*-
 from .. import _
+from ..baseviews import BaseSearchView
 from ..interfaces import ICollectionSearchSchema
-from ..utils import base_query
-from ..utils import safe_decode
-from ..utils import safe_encode
-from ..vocabularies import TEXT_IDX
 from plone.app.portlets.portlets import base
-from plone.app.uuid.utils import uuidToObject
-from plone.i18n.normalizer.interfaces import IIDNormalizer
-from plone.portlet.collection.collection import Renderer as CollectionRenderer
 from plone.portlets.interfaces import IPortletDataProvider
 from Products.CMFPlone.utils import getFSVersionTuple
-from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from urllib import urlencode
-from zope import schema
 from zope.component import queryUtility
-from zope.interface import implements
+from zope.interface import implementer
 
 
 PLONE5 = getFSVersionTuple()[0] >= 5
@@ -31,19 +22,12 @@ else:
 
 
 class ICollectionSearchPortlet(ICollectionSearchSchema, IPortletDataProvider):
-
-    header = schema.TextLine(
-        title=_('label_header', default=u'Portlet header'),
-        description=_(
-            'help_header',
-            u'Title of the rendered portlet.'
-        ),
-        required=False,
-    )
+    """Portlet interface based on ICollectionSearchSchema
+    """
 
 
+@implementer(ICollectionSearchPortlet)
 class Assignment(base.Assignment):
-    implements(ICollectionSearchPortlet)
 
     header = u""
     target_collection = None
@@ -64,27 +48,8 @@ class Assignment(base.Assignment):
             return _(u'Collection Search')
 
 
-class Renderer(CollectionRenderer):
+class Renderer(BaseSearchView, base.Renderer):
     render = ViewPageTemplateFile('collectionsearch.pt')
-
-    _collection = None
-
-    @property
-    def available(self):
-        return True
-
-    @property
-    def header_title(self):
-        if self.data.header:
-            return self.data.header
-        return self.collection.title
-
-    @property
-    def filterClassName(self):
-        if self.data.header:
-            name = queryUtility(IIDNormalizer).normalize(self.data.header)
-            return u'filter' + name.capitalize()
-        return ''
 
     @property
     def id(self):
@@ -101,47 +66,6 @@ class Renderer(CollectionRenderer):
             self.id
         )
         return reload_url
-
-    @property
-    def value(self):
-        return safe_unicode(self.request.get(TEXT_IDX, ''))
-
-    @property
-    def action_url(self):
-        return self.collection.absolute_url()
-
-    @property
-    def urlquery(self):
-        urlquery = {}
-        urlquery.update(self.request.form)
-        for it in (TEXT_IDX, 'b_start', 'b_size', 'batch', 'sort_on', 'limit'):
-            # Remove problematic url parameters
-            if it in urlquery:
-                del urlquery[it]
-        return urlquery
-
-    @property
-    def ajax_url(self):
-        # Recursively transform all to unicode
-        request_params = safe_decode(self.request.form)
-        request_params.update({'x': 'y'})  # ensure at least one val is set
-        urlquery = base_query(request_params, extra_ignores=['SearchableText'])
-        ajax_url = u'{0}/?{1}'.format(
-            self.collection.absolute_url(),
-            urlencode(safe_encode(urlquery), doseq=True)
-        )
-        return ajax_url
-
-    @property
-    def collection(self):
-        if not self._collection:
-            self._collection = uuidToObject(
-                self.data.target_collection
-            )
-        return self._collection
-
-    def update(self):
-        pass
 
 
 class AddForm(base_AddForm):

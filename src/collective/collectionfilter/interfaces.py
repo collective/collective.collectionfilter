@@ -8,7 +8,16 @@ from zope import schema
 from zope.interface import Interface
 
 
-class ICollectionFilterSchema(Interface):
+class ICollectionFilterBaseSchema(Interface):
+
+    header = schema.TextLine(
+        title=_('label_header', default=u'Filter title'),
+        description=_(
+            'help_header',
+            u'Title of the rendered filter.'
+        ),
+        required=False,
+    )
 
     target_collection = schema.Choice(
         title=_(u'label_target_collection', default=u'Target Collection'),
@@ -29,6 +38,11 @@ class ICollectionFilterSchema(Interface):
             'selectableTypes': ['Collection'],
         }
     )
+
+
+class ICollectionFilterSchema(ICollectionFilterBaseSchema):
+    """Schema for the filter.
+    """
 
     group_by = schema.Choice(
         title=_('label_groupby', u'Group by'),
@@ -104,27 +118,10 @@ class ICollectionFilterSchema(Interface):
 #    )
 
 
-class ICollectionSearchSchema(Interface):
+class ICollectionSearchSchema(ICollectionFilterBaseSchema):
+    """Schema for the search filter.
+    """
 
-    target_collection = schema.Choice(
-        title=_(u'label_target_collection', default=u'Target Collection'),
-        description=_(
-            u'help_target_collection',
-            default=u'The collection, which is the source for the filter '
-                    u'items and where the filter is applied.'
-        ),
-        required=True,
-        vocabulary='plone.app.vocabularies.Catalog',
-    )
-    widget(
-        'target_collection',
-        RelatedItemsFieldWidget,
-        pattern_options={
-            'basePath': utils.target_collection_base_path,
-            'recentlyUsed': True,
-            'selectableTypes': ['Collection'],
-        }
-    )
 
 
 class IGroupByCriteria(Interface):
