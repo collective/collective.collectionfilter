@@ -3,6 +3,7 @@
   <record name="plone.app.tiles">
     <value purge="false">
       <element remove="True">collective.collectionfilter.tiles.filter</element>
+      <element remove="True">collective.collectionfilter.tiles.search</element>
     </value>
   </record>
 </registry>
