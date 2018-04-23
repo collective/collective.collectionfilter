@@ -38,7 +38,7 @@
   <genericsetup:registerProfile
       name="uninstall"
       title="collective.collectionfilter portlets uninstall"
-      directory="profiles/default"
+      directory="profiles/uninstall"
       description='Extension profile for Plone.'
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />

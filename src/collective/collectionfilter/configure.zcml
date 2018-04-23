@@ -50,6 +50,13 @@
       description='Extension profile for Plone.'
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
+  <genericsetup:registerProfile
+      name="uninstall"
+      title="collective.collectionfilter base uninstall"
+      directory="profiles/uninstall"
+      description='Extension profile for Plone.'
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
   <genericsetup:upgradeStep
       source="1"
       destination="2"
