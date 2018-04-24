@@ -7,6 +7,7 @@ from .utils import safe_decode
 from .utils import safe_encode
 from .vocabularies import DEFAULT_FILTER_TYPE
 from .vocabularies import EMPTY_MARKER
+from plone.app.contenttypes.behaviors.collection import ICollection
 from plone.app.event.base import _prepare_range
 from plone.app.event.base import guess_date_from
 from plone.app.event.base import start_end_from_mode
@@ -17,8 +18,8 @@ from plone.memoize.volatile import DontCache
 from time import time
 from urllib import urlencode
 from zope.component import getUtility
-from zope.i18n import translate
 from zope.globalrequest import getRequest
+from zope.i18n import translate
 
 import plone.api
 
@@ -103,7 +104,7 @@ def get_filter_items(
 
     # Get all collection results with additional filter defined by urlquery
     custom_query.update(urlquery)
-    catalog_results = collection.results(
+    catalog_results = ICollection(collection).results(
         batch=False,
         brains=True,
         custom_query=make_query(custom_query)

@@ -9,6 +9,10 @@ Breaking changes:
 - Depend on Products.CMFPlone >= 5.1 for using ``get_top_request``.
 - collectionsearch.pt: changed ``header_title`` to ``title``.
 
+- Depend on plone.app.contenttypes.
+  All target collections must provide ``plone.app.contenttypes.behaviors.collection.ICollection`` interface.
+  The ``result`` method will be callend on this behavior adapter.
+
 New:
 
 - Add filter and search tiles.
