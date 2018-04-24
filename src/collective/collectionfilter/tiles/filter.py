@@ -3,7 +3,7 @@ from . import DictDataWrapper
 from ..baseviews import BaseFilterView
 from ..interfaces import ICollectionFilterSchema
 from plone.supermodel.model import Schema
-from plone.tiles.tile import Tile
+from plone.tiles.tile import PersistentTile
 from zope.interface import implementer
 
 
@@ -12,7 +12,7 @@ class IFilterTile(Schema, ICollectionFilterSchema):
 
 
 @implementer(IFilterTile)
-class FilterTile(Tile, BaseFilterView):
+class FilterTile(PersistentTile, BaseFilterView):
 
     @property
     def settings(self):
@@ -24,4 +24,4 @@ class FilterTile(Tile, BaseFilterView):
 
     @property
     def reload_url(self):
-        return u''
+        return self.url

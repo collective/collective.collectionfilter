@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from . import DictDataWrapper
-from ..baseviews import BaseFilterView
+from ..baseviews import BaseSearchView
 from ..interfaces import ICollectionSearchSchema
 from plone.supermodel.model import Schema
 from plone.tiles.tile import PersistentTile
@@ -12,7 +12,7 @@ class ISearchTile(Schema, ICollectionSearchSchema):
 
 
 @implementer(ISearchTile)
-class SearchTile(BaseFilterView, PersistentTile):
+class SearchTile(PersistentTile, BaseSearchView):
 
     @property
     def settings(self):
@@ -24,4 +24,4 @@ class SearchTile(BaseFilterView, PersistentTile):
 
     @property
     def reload_url(self):
-        return u''
+        return self.url
