@@ -17,6 +17,9 @@ New:
 
 - Add filter and search tiles.
 
+- Add ``view_name`` configuration parameter to call a special result listing view.
+  This can be used to call a tile instead to call the whole context view.
+
 - Ensure early exit on the content filter traverse handler if it is not needed to run.
 
 

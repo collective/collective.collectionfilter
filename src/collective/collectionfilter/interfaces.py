@@ -39,6 +39,18 @@ class ICollectionFilterBaseSchema(Interface):
         }
     )
 
+    view_name = schema.TextLine(
+        title=_('label_view_name', default=u'Result listing view name'),
+        description=_(
+            'help_view_name',
+            default=u'Optional view name, if the result listing should be'
+            u' rendered with a special view. Can be used to direct the request'
+            u' to a tile.'
+        ),
+        required=False,
+        default=None
+    )
+
 
 class ICollectionFilterSchema(ICollectionFilterBaseSchema):
     """Schema for the filter.

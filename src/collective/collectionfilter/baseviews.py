@@ -82,6 +82,7 @@ class BaseFilterView(BaseView):
             group_by=self.settings.group_by,
             filter_type=self.settings.filter_type,
             narrow_down=self.settings.narrow_down,
+            view_name=self.settings.view_name,
             cache_time=self.settings.cache_time,
             request_params=self.top_request.form or {}
         )
@@ -122,8 +123,10 @@ class BaseSearchView(BaseView):
         request_params = safe_decode(self.top_request.form)
         request_params.update({'x': 'y'})  # ensure at least one val is set
         urlquery = base_query(request_params, extra_ignores=['SearchableText'])
-        ajax_url = u'{0}/?{1}'.format(
+        query_param = urlencode(safe_encode(urlquery), doseq=True)
+        ajax_url = u'/'.join([it for it in [
             self.collection.getURL(),
-            urlencode(safe_encode(urlquery), doseq=True)
-        )
+            self.settings.view_name,
+            '?' + query_param if query_param else None
+        ] if it])
         return ajax_url

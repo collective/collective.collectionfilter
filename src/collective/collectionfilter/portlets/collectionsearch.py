@@ -32,14 +32,17 @@ class Assignment(base.Assignment):
 
     header = u""
     target_collection = None
+    view_name = None
 
     def __init__(
         self,
         header=u"",
         target_collection=None,
+        view_name=None,
     ):
         self.header = header
         self.target_collection = target_collection
+        self.view_name = view_name
 
     @property
     def title(self):

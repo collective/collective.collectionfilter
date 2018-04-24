@@ -37,6 +37,7 @@ def _results_cachekey(
         group_by,
         filter_type,
         narrow_down,
+        view_name,
         cache_time,
         request_params):
     if not cache_time:
@@ -48,6 +49,7 @@ def _results_cachekey(
         group_by,
         filter_type,
         narrow_down,
+        view_name,
         request_params,
         # hash(frozenset(request_params.items())),
         getattr(plone.api.user.get_current(), 'id', ''),
@@ -62,6 +64,7 @@ def get_filter_items(
         group_by,
         filter_type=DEFAULT_FILTER_TYPE,
         narrow_down=False,
+        view_name='',
         cache_time=3600,
         request_params={}
 ):
@@ -157,10 +160,13 @@ def get_filter_items(
                 _urlquery[idx + '_op'] = filter_type  # additive operator
             else:
                 _urlquery[idx] = filter_value
-            url = u'{0}/?{1}'.format(
+
+            query_param = urlencode(safe_encode(_urlquery), doseq=True)
+            url = u'/'.join([it for it in [
                 collection_url,
-                urlencode(safe_encode(_urlquery), doseq=True)
-            )
+                view_name,
+                '?' + query_param if query_param else None
+            ] if it])
 
             # Set selected state
             selected = filter_value in current_idx_value

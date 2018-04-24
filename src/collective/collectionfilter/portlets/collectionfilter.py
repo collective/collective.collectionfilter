@@ -37,6 +37,7 @@ class Assignment(base.Assignment):
     filter_type = DEFAULT_FILTER_TYPE
     input_type = 'links'
     narrow_down = False
+    view_name = None
     # list_scaling = None
 
     def __init__(
@@ -49,6 +50,7 @@ class Assignment(base.Assignment):
         filter_type=DEFAULT_FILTER_TYPE,
         input_type='links',
         narrow_down=False,
+        view_name=None,
         # list_scaling=None
     ):
         self.header = header
@@ -59,6 +61,7 @@ class Assignment(base.Assignment):
         self.filter_type = filter_type
         self.input_type = input_type
         self.narrow_down = narrow_down
+        self.view_name = view_name
         # self.list_scaling = list_scaling
 
     @property
