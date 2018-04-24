@@ -12,7 +12,8 @@ define([
         defaults: {
             collectionUUID: '',
             collectionURL: '',
-            reloadURL: ''
+            reloadURL: '',
+            contentSelector: '#content-core',
         },
 
         init: function() {
@@ -128,8 +129,8 @@ define([
         reloadCollection: function (collectionURL) {
             var cl = new this.contentloader(this.$el, {
                 url: collectionURL + '&ajax_load=1',
-                target: '#content-core',
-                content: '#content-core',
+                target: this.options.contentSelector,
+                content: this.options.contentSelector,
                 trigger: 'immediate'
             });
             // TODO: remove this, once ``contentloader`` handles history

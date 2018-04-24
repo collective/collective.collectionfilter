@@ -20,6 +20,8 @@ New:
 - Add ``view_name`` configuration parameter to call a special result listing view.
   This can be used to call a tile instead to call the whole context view.
 
+- Add ``content_selector`` configuration parameter to choose a DOM node from the source to inject into the target.
+
 - Ensure early exit on the content filter traverse handler if it is not needed to run.
 
 

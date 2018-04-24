@@ -11,7 +11,8 @@
        tal:define="input_type view/input_type"
        data-pat-collectionfilter='{
           "collectionUUID": "${view/settings/target_collection}",
-          "reloadURL": "${view/reload_url}"
+          "reloadURL": "${view/reload_url}",
+          "contentSelector": "${view/settings/content_selector}"
        }'
        tal:condition="view/available">
 

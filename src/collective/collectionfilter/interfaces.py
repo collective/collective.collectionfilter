@@ -51,6 +51,18 @@ class ICollectionFilterBaseSchema(Interface):
         default=None
     )
 
+    content_selector = schema.TextLine(
+        title=_('label_content_selector', default=u'Content Selector'),
+        description=_(
+            'help_content_selector',
+            default=u'Selector which is used to choose a DOM node from the'
+            u' source into the target. For source and target the same'
+            u' selectors are used.'
+        ),
+        required=True,
+        default=u'#content-core',
+    )
+
 
 class ICollectionFilterSchema(ICollectionFilterBaseSchema):
     """Schema for the filter.
