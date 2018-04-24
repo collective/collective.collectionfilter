@@ -27,7 +27,7 @@ class BaseView(object):
         return True
 
     @property
-    def id(self):
+    def filter_id(self):
         raise NotImplementedError
 
     @property

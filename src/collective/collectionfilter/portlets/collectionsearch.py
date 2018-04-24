@@ -53,7 +53,7 @@ class Renderer(BaseSearchView, base.Renderer):
     render = ViewPageTemplateFile('collectionsearch.pt')
 
     @property
-    def id(self):
+    def filter_id(self):
         request = get_top_request(self.request)
         portlethash = request.form.get(
             'portlethash',
@@ -65,7 +65,7 @@ class Renderer(BaseSearchView, base.Renderer):
     def reload_url(self):
         reload_url = '{0}/@@render-portlet?portlethash={1}'.format(
             self.context.absolute_url(),
-            self.id
+            self.filter_id
         )
         return reload_url
 

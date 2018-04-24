@@ -20,7 +20,7 @@
             <label>
               <input type="checkbox" class="filterControl filteritem"
                   tal:attributes="type input_type;
-                                  name view/id;
+                                  name view/filter_id;
                                   value group/value;
                                   checked python:'checked' if group['selected'] else None;
                                   data-url group/url"/>
@@ -36,7 +36,7 @@
         </tal:if>
 
         <tal:if condition="python:view.input_type == 'dropdown'">
-          <select class="filteritem" tal:attributes="name view/id">
+          <select class="filteritem" tal:attributes="name view/filter_id">
           <tal:items repeat="group view/results">
             <option tal:attributes="
                 value group/value;

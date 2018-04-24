@@ -19,8 +19,8 @@ class FilterTile(Tile, BaseFilterView):
         return DictDataWrapper(self.data)
 
     @property
-    def id(self):
-        return u''
+    def filter_id(self):
+        return self.id
 
     @property
     def reload_url(self):
