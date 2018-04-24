@@ -1,11 +1,19 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xml:lang="en"
+    lang="en"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="collective.collectionfilter">
+<body>
+
 <aside class="collectionFilter ${view/filterClassName} pat-collectionfilter"
        tal:define="input_type view/input_type"
        data-pat-collectionfilter='{
           "collectionUUID": "${view/settings/target_collection}",
           "reloadURL": "${view/reload_url}"
        }'
-       tal:condition="view/available"
-       i18n:domain="collective.collectionfilter">
+       tal:condition="view/available">
 
   <header tal:content="view/title">Title</header>
   <div class="filterContent">
@@ -66,3 +74,6 @@
 
   </div>
 </aside>
+
+</body>
+</html>
