@@ -19,8 +19,8 @@ define([
         init: function() {
             this.$el.unbind('collectionfilter:reload');
             this.$el.on('collectionfilter:reload', function (e, data) {
-                if (data.noReloadSearch && this.$el.hasClass('portletCollectionSearch')) {
-                    // don't reload search portlet while typing.
+                if (data.noReloadSearch && this.$el.hasClass('collectionSearch')) {
+                    // don't reload search while typing.
                     return;
                 }
                 if (data.collectionUUID === this.options.collectionUUID) {
@@ -29,7 +29,7 @@ define([
             }.bind(this));
 
             // Collection Search
-            if (this.$el.hasClass('portletCollectionSearch')) {
+            if (this.$el.hasClass('collectionSearch')) {
                 // initialize collection search
                 $('button[type="submit"]', this.$el).hide();
                 $('form', this.$el).on('submit', function (e) {

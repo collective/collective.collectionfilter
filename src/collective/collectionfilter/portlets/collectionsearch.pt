@@ -1,4 +1,4 @@
-<aside class="portlet ${view/filterClassName} portletCollectionSearch pat-collectionfilter"
+<aside class="portlet ${view/filterClassName} collectionSearch pat-collectionfilter"
        data-pat-collectionfilter='{
            "collectionUUID": "${view/settings/target_collection}",
            "reloadURL": "${view/reload_url}",
@@ -7,11 +7,9 @@
        tal:condition="view/available"
        i18n:domain="collective.collectionfilter">
 
-  <header class="portletHeader"
-          tal:content="view/title">
-          Title
-  </header>
-  <div class="portletContent">
+  <tal:if condition="view/settings/target_collection">
+  <header tal:condition="view/title" tal:content="view/title">Title</header>
+  <div class="searchContent">
     <form method="get" name="searchForm" role="form"
         tal:attributes="action view/action_url">
         <input type="hidden" name="collectionfilter" value="1"/>
@@ -24,4 +22,5 @@
         <button type="submit" i18n:translate="button_search">Search</button>
     </form>
   </div>
+  </tal:if>
 </aside>
