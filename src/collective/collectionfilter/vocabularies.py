@@ -84,7 +84,8 @@ class GroupByCriteria():
                 'index': it,
                 'metadata': it,
                 'display_modifier': _,  # Allow to translate in this package domain per default.  # noqa
-                'index_modifier': index_modifier
+                'index_modifier': index_modifier,
+                'value_blacklist': None
             }
 
         modifiers = getAdapters((self, ), IGroupByModifier)

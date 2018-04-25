@@ -118,7 +118,12 @@ def get_filter_items(
     # Attribute name for getting filter value from brain
     metadata_attr = groupby_criteria[group_by]['metadata']
     # Optional modifier to set title from filter value
-    display_modifier = groupby_criteria[group_by]['display_modifier']
+    display_modifier = groupby_criteria[group_by].get('display_modifier', None)
+    # Value blacklist
+    value_blacklist = groupby_criteria[group_by].get('value_blacklist', None)
+    # Allow value_blacklist to be callables for runtime-evaluation
+    value_blacklist = value_blacklist() if callable(value_blacklist) else value_blacklist  # noqa
+
     grouped_results = {}
     for brain in catalog_results:
 
@@ -134,8 +139,11 @@ def get_filter_items(
         for filter_value in val:
             if not filter_value:
                 continue
-            # Add counter, if filter value is already present
+            if value_blacklist and filter_value in value_blacklist:
+                # Do not include blacklisted
+                continue
             if filter_value in grouped_results:
+                # Add counter, if filter value is already present
                 grouped_results[filter_value]['count'] += 1
                 continue
 

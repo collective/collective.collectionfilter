@@ -15,10 +15,12 @@ Breaking changes:
 
 New:
 
+- Add filter and search tiles.
+
 - Add a ``index_modifier`` key to the IQueryModifier indexes dict to allow transforming of index search values.
   For ``KeywordIndex`` indices the index_modifier is automatically set to encode the value to utf-8.
 
-- Add filter and search tiles.
+- Add a ``value_blacklist`` key to the IQueryModifier indexes dict to allow blacklisting of individual index values.
 
 - Add ``view_name`` configuration parameter to call a special result listing view.
   This can be used to call a tile instead to call the whole context view.

@@ -21,10 +21,11 @@ It uses a data structure like this::
 
     self._groupby = {
         it: {                   # Index name
-            'index': it,           # Name of the index to use
-            'metadata': it,        # Name of the metadata column to use
-            'display_modifier': _  # Function to prepare the metadata column value for displaying
+            'index': it,            # Name of the index to use
+            'metadata': it,         # Name of the metadata column to use
+            'display_modifier': _   # Function to prepare the metadata column value for displaying
             'index_modifier': None  # Function to transform the index search value.
+            'value_blacklist': []   # Blacklist of index values, which should not included in the filter selection. Can be a callable.
         }
         for it in metadata
     }
