@@ -15,6 +15,12 @@
        }'
        tal:condition="view/available">
 
+  <a
+      tal:define="edit_url view/edit_url"
+      tal:condition="edit_url"
+      href="${edit_url}"
+      class="pat-plone-modal">edit</a>
+
   <header tal:content="view/title">Title</header>
   <div class="searchContent">
     <form method="get" name="searchForm" role="form"

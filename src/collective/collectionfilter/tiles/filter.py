@@ -6,6 +6,8 @@ from plone.supermodel.model import Schema
 from plone.tiles.tile import PersistentTile
 from zope.interface import implementer
 
+import plone.api
+
 
 class IFilterTile(Schema, ICollectionFilterSchema):
     pass
@@ -13,6 +15,15 @@ class IFilterTile(Schema, ICollectionFilterSchema):
 
 @implementer(IFilterTile)
 class FilterTile(PersistentTile, BaseFilterView):
+
+    @property
+    def edit_url(self):
+        if not plone.api.user.has_permission(
+            'cmf.ModifyPortalContent',
+            obj=self.context
+        ):
+            return None
+        return self.url.replace('@@', '@@edit-tile/')
 
     @property
     def settings(self):
