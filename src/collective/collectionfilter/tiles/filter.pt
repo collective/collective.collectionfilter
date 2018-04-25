@@ -22,12 +22,13 @@
       href="${edit_url}"
       class="pat-plone-modal">edit</a>
 
-  <header tal:content="view/title">Title</header>
-  <div class="filterContent">
+  <tal:if condition="view/settings/target_collection">
+  <header tal:condition="view/title" tal:content="view/title">Title</header>
+  <div class="filterContent" tal:define="results view/results">
 
         <tal:if condition="python:input_type in ('checkbox', 'radio')">
         <ul>
-          <tal:items repeat="group view/results">
+          <tal:items repeat="group results">
           <li tal:attributes="class python:'selected filterItem' if group['selected'] else 'filterItem'">
             <label>
               <input type="checkbox" class="filterControl filteritem"
@@ -49,7 +50,7 @@
 
         <tal:if condition="python:view.input_type == 'dropdown'">
           <select class="filteritem" tal:attributes="name view/filter_id">
-          <tal:items repeat="group view/results">
+          <tal:items repeat="group results">
             <option tal:attributes="
                 value group/value;
                 selected python:'selected' if group['selected'] else None;
@@ -65,7 +66,7 @@
 
         <tal:if condition="python:view.input_type == 'link'">
         <ul>
-          <tal:items repeat="group view/results">
+          <tal:items repeat="group results">
           <li tal:attributes="class python:'selected filterItem' if group['selected'] else 'filterItem'">
             <a rel="nofollow"
                class="filteritem"
@@ -80,6 +81,7 @@
         </tal:if>
 
   </div>
+  </tal:if>
 </aside>
 
 </body>
