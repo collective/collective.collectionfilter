@@ -24,6 +24,7 @@ It uses a data structure like this::
             'index': it,           # Name of the index to use
             'metadata': it,        # Name of the metadata column to use
             'display_modifier': _  # Function to prepare the metadata column value for displaying
+            'index_modifier': None  # Function to transform the index search value.
         }
         for it in metadata
     }

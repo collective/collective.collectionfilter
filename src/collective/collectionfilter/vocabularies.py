@@ -2,6 +2,7 @@
 from . import _
 from .interfaces import IGroupByCriteria
 from .interfaces import IGroupByModifier
+from .utils import safe_encode
 from zope.component import getAdapters
 from zope.component import getUtility
 from zope.interface import implementer
@@ -66,20 +67,25 @@ class GroupByCriteria():
             # The groupby criteria are used at each IBeforeTraverseEvent - so
             # on each request. This has to be fast, so exit early.
             return self._groupby
+        self._groupby = {}
 
         cat = plone.api.portal.get_tool('portal_catalog')
         # get catalog metadata schema, but filter out items which cannot be
         # used for grouping
         metadata = filter(lambda it: it not in GROUPBY_BLACKLIST, cat.schema())
 
-        self._groupby = {
-            it: {
+        for it in metadata:
+            index_modifier = None
+            idx = cat._catalog.indexes.get(it)
+            if getattr(idx, 'meta_type', None) == 'KeywordIndex':
+                index_modifier = safe_encode  # KeywordIndex accepts only utf-8 encoded values.  # noqa
+
+            self._groupby[it] = {
                 'index': it,
                 'metadata': it,
-                'display_modifier': _  # Allow to translate in this package domain per default.  # noqa
+                'display_modifier': _,  # Allow to translate in this package domain per default.  # noqa
+                'index_modifier': index_modifier
             }
-            for it in metadata
-        }
 
         modifiers = getAdapters((self, ), IGroupByModifier)
         for name, modifier in sorted(modifiers, key=lambda it: it[0]):

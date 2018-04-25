@@ -15,6 +15,9 @@ Breaking changes:
 
 New:
 
+- Add a ``index_modifier`` key to the IQueryModifier indexes dict to allow transforming of index search values.
+  For ``KeywordIndex`` indices the index_modifier is automatically set to encode the value to utf-8.
+
 - Add filter and search tiles.
 
 - Add ``view_name`` configuration parameter to call a special result listing view.
