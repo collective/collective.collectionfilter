@@ -1,8 +1,8 @@
-webcouturier.dropdownmenu
-=========================
+collective.collectionfilter
+===========================
 
 Less Compilation
-----
+----------------
 
 To udpate/generate css from less, use the following snippet
 

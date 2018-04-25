@@ -10,10 +10,5 @@ def set_content_filter(context, event):
     if 'collectionfilter' not in req.form:
         return
     del req.form['collectionfilter']
-    print(
-        "CALLED set_content_filter URL: %s, ACTUAL_URL: %s" % (
-            req['URL'], req['ACTUAL_URL']
-        )
-    )
     content_filter = make_query(req.form)
     event.request['contentFilter'] = content_filter
