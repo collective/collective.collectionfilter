@@ -147,7 +147,6 @@ class ICollectionSearchSchema(ICollectionFilterBaseSchema):
     """
 
 
-
 class IGroupByCriteria(Interface):
     """Interface for the GroupByCriteria utility.
 
@@ -155,10 +154,12 @@ class IGroupByCriteria(Interface):
 
         GROUPBY_CRITERIA = {
             'Subject': {
-                'index': 'Subject',     # Index for querying.
-                'metadata': 'Subject',  # Metadata name for fast access.
-                'display_modifier': _,  # Function for modifying list items
-                                        # for display. Gets the item passed
+                'index': 'Subject',      # Index for querying.
+                'metadata': 'Subject',   # Metadata name for fast access.
+                'display_modifier': _,   # Function for modifying list items
+                                         # for display. Gets the item passed
+                'index_modifier': None,  # Change index values before querying
+                'value_blacklist': None  # Exclude index values from display
             },
         }
     """
