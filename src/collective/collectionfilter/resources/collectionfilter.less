@@ -1,59 +1,82 @@
+.collectionSearch,
 .collectionFilter {
+  position: relative;
   background: white;
-  .filterContent {
-    padding: 1em;
-    > ul {
-      padding: 0;
-      list-style: none;
-      position: relative;
-      > li {
-        list-style-type: none;
-        padding: 2px;
-        label {
-          display: table;
-          .filterControl, .filterLabel{
-              display: table-cell;
-              vertical-align: top;
-          }
-          input[type="radio"], input[type="checkbox"] {
-            margin: 0.3em 0.5em 0 0;
-            line-height: normal;
-          }
-          .filterControl {
-              margin-right: 0.5em;
-          }
-          .filterLabel{
-            -webkit-hyphens: auto;
-            -moz-hyphens: auto;
-            hyphens: auto;
-          }
-        }
-      > a {
-        padding: 0 0 0 1em;
-        display: block;
-        border: 0;
-        position: relative;
-        z-index: 1;
-        &:before {
-            left: 2px;
-        }
-      }
-      }
-      li.selected a {
-          font-weight: bold;
-      }
-      ul {
-          padding-left:15px;
-          list-style: none;
-      }
+  .edit-link {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+}
+.horizontal {
+  .collectionSearch,
+  .collectionFilter {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    & > header {
+      font-weight: bold;
     }
-    label {
-      display: block;
-      margin: 0;
-    }
-    select {
-      padding: 0 0.5em;
+    .edit-link {
+      right: unset;
+      left: 0;
     }
   }
 }
 
+.collectionSearch .searchContent,
+.collectionFilter .filterContent {
+  padding: 1em;
+  > ul {
+    padding: 0;
+    list-style: none;
+    position: relative;
+    > li {
+      list-style-type: none;
+      padding: 2px;
+      label {
+        display: table;
+        .filterControl, .filterLabel{
+            display: table-cell;
+            vertical-align: top;
+        }
+        input[type="radio"], input[type="checkbox"] {
+          margin: 0.3em 0.5em 0 0;
+          line-height: normal;
+        }
+        .filterControl {
+            margin-right: 0.5em;
+        }
+        .filterLabel{
+          -webkit-hyphens: auto;
+          -moz-hyphens: auto;
+          hyphens: auto;
+        }
+      }
+    > a {
+      padding: 0 0 0 1em;
+      display: block;
+      border: 0;
+      position: relative;
+      z-index: 1;
+      &:before {
+          left: 2px;
+      }
+    }
+    }
+    li.selected a {
+        font-weight: bold;
+    }
+    ul {
+        padding-left:15px;
+        list-style: none;
+    }
+  }
+  label {
+    display: block;
+    margin: 0;
+  }
+  select {
+    padding: 0 0.5em;
+  }
+}

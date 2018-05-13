@@ -19,7 +19,7 @@
       tal:define="edit_url view/edit_url"
       tal:condition="edit_url"
       href="${edit_url}"
-      class="pat-plone-modal">edit</a>
+      class="pat-plone-modal edit-link">edit</a>
 
   <tal:if condition="view/settings/target_collection">
   <header tal:condition="view/title" tal:content="view/title">Title</header>
