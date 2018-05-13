@@ -15,6 +15,9 @@ Breaking changes:
   All target collections must provide ``plone.app.contenttypes.behaviors.collection.ICollection`` interface.
   The ``result`` method will be callend on this behavior adapter.
 
+- There is a implicit dependency to Font Awesome for the filter tile edit links.
+  That has to be revisited to make it work out of the box.
+
 New:
 
 - Remove the view_name part when populating the browser history with filter changes.
