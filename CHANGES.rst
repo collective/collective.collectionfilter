@@ -17,6 +17,9 @@ Breaking changes:
 
 New:
 
+- Remove the view_name part when populating the browser history with filter changes.
+  The view_name part is for loading specific AJAX tiles, but should probably not be displayed.
+
 - Add filter and search tiles.
 
 - Add a ``index_modifier`` key to the IQueryModifier indexes dict to allow transforming of index search values.

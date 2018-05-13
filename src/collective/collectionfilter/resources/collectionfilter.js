@@ -135,6 +135,11 @@ define([
             });
             // TODO: remove this, once ``contentloader`` handles history
             // updates itself and adds ajax_load.
+            //
+            // Search for all @@ views in ajax calls and remove it before
+            // adding it to the browser history
+            re = /@@.*\//;
+            collectionURL = collectionURL.replace(re, '');
             window.history.replaceState(
                 {path: collectionURL},
                 '',
