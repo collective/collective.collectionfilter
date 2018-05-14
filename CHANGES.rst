@@ -37,6 +37,10 @@ New:
 
 - Ensure early exit on the content filter traverse handler if it is not needed to run.
 
+Bug fixes:
+
+- Sort the filter value list for filter title instead filter value.
+
 
 1.0.1 (2018-02-09)
 ------------------

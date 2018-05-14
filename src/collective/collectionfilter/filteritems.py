@@ -181,7 +181,7 @@ def get_filter_items(
             selected = filter_value in current_idx_value
 
             grouped_results[filter_value] = {
-                'sort_key': filter_value.lower(),
+                'sort_key': title.lower(),
                 'title': title,
                 'url': url,
                 'value': filter_value,
