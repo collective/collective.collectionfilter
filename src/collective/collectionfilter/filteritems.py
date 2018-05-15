@@ -71,7 +71,7 @@ def get_filter_items(
     custom_query = {}  # Additional query to filter the collection
 
     collection = uuidToObject(target_collection)
-    if not collection:
+    if not collection or not group_by:
         return None
     collection_url = collection.absolute_url()
     collection_layout = collection.getLayout()
