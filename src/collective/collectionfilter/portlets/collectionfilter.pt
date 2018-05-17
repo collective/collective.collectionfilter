@@ -14,18 +14,18 @@
 
         <tal:if condition="python:input_type in ('checkbox', 'radio')">
         <ul>
-          <tal:items repeat="group results">
-          <li tal:attributes="class python:'selected filterItem' if group['selected'] else 'filterItem'">
+          <tal:items repeat="item results">
+          <li tal:attributes="class python:'selected filterItem' if item['selected'] else 'filterItem'">
             <label>
               <input type="checkbox" class="filterControl filteritem"
                   tal:attributes="type input_type;
                                   name view/filter_id;
-                                  value group/value;
-                                  checked python:'checked' if group['selected'] else None;
-                                  data-url group/url"/>
+                                  value item/value;
+                                  checked python:'checked' if item['selected'] else None;
+                                  data-url item/url"/>
               <span class="filterLabel">
-                <span tal:replace="python:group['title'].replace('/', u'/\u00AD')">Group</span>
-                <tal:show_count condition="view/settings/show_count">(<span tal:replace="group/count" />)</tal:show_count>
+                <span tal:replace="python:item['title'].replace('/', u'/\u00AD')">Item</span>
+                <tal:show_count condition="view/settings/show_count">(<span tal:replace="item/count" />)</tal:show_count>
               </span>
 
             </label>
@@ -36,14 +36,14 @@
 
         <tal:if condition="python:view.input_type == 'dropdown'">
           <select class="filteritem" tal:attributes="name view/filter_id">
-          <tal:items repeat="group results">
+          <tal:items repeat="item results">
             <option tal:attributes="
-                value group/value;
-                selected python:'selected' if group['selected'] else None;
-                data-url group/url">
+                value item/value;
+                selected python:'selected' if item['selected'] else None;
+                data-url item/url">
               <span class="filterLabel">
-                <span tal:replace="python:group['title'].replace('/', u'/\u00AD')">Group</span>
-                <tal:show_count condition="view/settings/show_count">(<span tal:replace="group/count" />)</tal:show_count>
+                <span tal:replace="python:item['title'].replace('/', u'/\u00AD')">Item</span>
+                <tal:show_count condition="view/settings/show_count">(<span tal:replace="item/count" />)</tal:show_count>
               </span>
             </option>
           </tal:items>
@@ -52,14 +52,14 @@
 
         <tal:if condition="python:view.input_type == 'link'">
         <ul>
-          <tal:items repeat="group results">
-          <li tal:attributes="class python:'selected filterItem' if group['selected'] else 'filterItem'">
+          <tal:items repeat="item results">
+          <li tal:attributes="class python:'selected filterItem' if item['selected'] else 'filterItem'">
             <a rel="nofollow"
                class="filteritem"
-               tal:attributes="href group/url;
-                               title string:Count: ${group/count}">
-              <span tal:content="group/title">Group</span>
-              <tal:show_count condition="view/settings/show_count">(<span tal:replace="group/count" />)</tal:show_count>
+               tal:attributes="href item/url;
+                               title string:Count: ${item/count}">
+              <span tal:content="item/title">Item</span>
+              <tal:show_count condition="view/settings/show_count">(<span tal:replace="item/count" />)</tal:show_count>
             </a>
           </li>
           </tal:items>
