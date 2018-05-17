@@ -13,6 +13,7 @@ from plone.app.event.base import guess_date_from
 from plone.app.event.base import start_end_from_mode
 from plone.app.event.base import start_end_query
 from plone.app.uuid.utils import uuidToObject
+from plone.i18n.normalizer import idnormalizer
 from plone.memoize import ram
 from plone.memoize.volatile import DontCache
 from time import time
@@ -185,6 +186,7 @@ def get_filter_items(
                 'title': title,
                 'url': url,
                 'value': filter_value,
+                'css_class': idnormalizer.normalize(filter_value),
                 'count': 1,
                 'selected': selected
             }
@@ -202,6 +204,7 @@ def get_filter_items(
             urlencode(safe_encode(urlquery_all), doseq=True)
         ),
         'value': 'all',
+        'css_class': 'all',
         'count': len(catalog_results),
         'selected': idx not in request_params
     }]

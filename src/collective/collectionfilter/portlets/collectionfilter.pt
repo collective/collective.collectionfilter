@@ -9,13 +9,13 @@
        i18n:domain="collective.collectionfilter">
 
   <tal:if condition="view/settings/target_collection">
-  <header tal:condition="view/title" tal:content="view/title">Title</header>
-  <div class="filterContent" tal:define="results view/results">
+  <header class="portletHeader" tal:condition="view/title" tal:content="view/title">Title</header>
+  <div class="portletContent filterContent" tal:define="results view/results">
 
         <tal:if condition="python:input_type in ('checkbox', 'radio')">
         <ul>
           <tal:items repeat="item results">
-          <li tal:attributes="class python:'selected filterItem' if item['selected'] else 'filterItem'">
+          <li tal:attributes="class python:item['css_class'] + 'selected filterItem' if item['selected'] else item['css_class'] + 'filterItem'">
             <label>
               <input type="checkbox" class="filterControl filteritem"
                   tal:attributes="type input_type;
@@ -40,6 +40,7 @@
             <option tal:attributes="
                 value item/value;
                 selected python:'selected' if item['selected'] else None;
+                item['css_class'];
                 data-url item/url">
               <span class="filterLabel">
                 <span tal:replace="python:item['title'].replace('/', u'/\u00AD')">Item</span>
@@ -53,7 +54,7 @@
         <tal:if condition="python:view.input_type == 'link'">
         <ul>
           <tal:items repeat="item results">
-          <li tal:attributes="class python:'selected filterItem' if item['selected'] else 'filterItem'">
+          <li tal:attributes="class python:item['css_class'] + 'selected filterItem' if item['selected'] else item['css_class'] + 'filterItem'">
             <a rel="nofollow"
                class="filteritem"
                tal:attributes="href item/url;
