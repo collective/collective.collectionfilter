@@ -38,6 +38,7 @@ class Assignment(base.Assignment):
     input_type = 'links'
     narrow_down = False
     view_name = None
+    content_selector = None
     # list_scaling = None
 
     def __init__(
@@ -51,6 +52,7 @@ class Assignment(base.Assignment):
         input_type='links',
         narrow_down=False,
         view_name=None,
+        content_selector=None,
         # list_scaling=None
     ):
         self.header = header
@@ -62,6 +64,7 @@ class Assignment(base.Assignment):
         self.input_type = input_type
         self.narrow_down = narrow_down
         self.view_name = view_name
+        self.content_selector = content_selector
         # self.list_scaling = list_scaling
 
     @property
