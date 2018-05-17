@@ -87,13 +87,13 @@ class ICollectionFilterSchema(ICollectionFilterBaseSchema):
         required=False
     )
 
-    cache_time = schema.TextLine(
+    cache_time = schema.Int(
         title=_(u"label_cache_time", default=u"Cache Time (s)"),
         description=_(
             u'help_cache_time',
             default=u"Cache time in seconds. 0 for no caching."
         ),
-        default=u'60',
+        default=60,
         required=False,
     )
 
