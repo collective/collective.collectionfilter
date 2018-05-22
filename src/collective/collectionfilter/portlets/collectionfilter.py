@@ -1,17 +1,14 @@
 # -*- coding: utf-8 -*-
 from .. import _
-from ..filteritems import get_filter_items
+from ..baseviews import BaseFilterView
 from ..interfaces import ICollectionFilterSchema
 from ..vocabularies import DEFAULT_FILTER_TYPE
 from plone.app.portlets.portlets import base
-from plone.app.uuid.utils import uuidToCatalogBrain
-from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.portlets.interfaces import IPortletDataProvider
+from Products.CMFPlone.utils import get_top_request
 from Products.CMFPlone.utils import getFSVersionTuple
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from zope import schema
-from zope.component import queryUtility
-from zope.interface import implements
+from zope.interface import implementer
 
 
 PLONE5 = getFSVersionTuple()[0] >= 5
@@ -28,18 +25,9 @@ else:
 class ICollectionFilterPortlet(ICollectionFilterSchema, IPortletDataProvider):
     """Portlet interface based on ICollectionFilterSchema
     """
-    header = schema.TextLine(
-        title=_('label_header', default=u'Portlet header'),
-        description=_(
-            'help_header',
-            u'Title of the rendered portlet.'
-        ),
-        required=False,
-    )
 
-
+@implementer(ICollectionFilterPortlet)
 class Assignment(base.Assignment):
-    implements(ICollectionFilterPortlet)
 
     header = u""
     target_collection = None
@@ -49,6 +37,8 @@ class Assignment(base.Assignment):
     filter_type = DEFAULT_FILTER_TYPE
     input_type = 'links'
     narrow_down = False
+    view_name = None
+    content_selector = None
     # list_scaling = None
 
     def __init__(
@@ -61,6 +51,8 @@ class Assignment(base.Assignment):
         filter_type=DEFAULT_FILTER_TYPE,
         input_type='links',
         narrow_down=False,
+        view_name=None,
+        content_selector=None,
         # list_scaling=None
     ):
         self.header = header
@@ -71,6 +63,8 @@ class Assignment(base.Assignment):
         self.filter_type = filter_type
         self.input_type = input_type
         self.narrow_down = narrow_down
+        self.view_name = view_name
+        self.content_selector = content_selector
         # self.list_scaling = list_scaling
 
     @property
@@ -87,68 +81,25 @@ class Assignment(base.Assignment):
             return _(u'Collection Filter')
 
 
-class Renderer(base.Renderer):
+class Renderer(BaseFilterView, base.Renderer):
     render = ViewPageTemplateFile('collectionfilter.pt')
 
     @property
-    def available(self):
-        return True
-
-    @property
-    def id(self):
-        portlethash = self.request.form.get(
+    def filter_id(self):
+        request = get_top_request(self.request)
+        portlethash = request.form.get(
             'portlethash',
             getattr(self, '__portlet_metadata__', {}).get('hash', '')
         )
         return portlethash
 
     @property
-    def title(self):
-        title = self.data.header or\
-            uuidToCatalogBrain(self.data.target_collection).Title
-        return title
-
-    @property
-    def filterClassName(self):
-        if self.data.header:
-            name = queryUtility(IIDNormalizer).normalize(self.data.header)
-            return u'filter' + name.capitalize()
-        return ''
-
-    @property
     def reload_url(self):
         reload_url = '{0}/@@render-portlet?portlethash={1}'.format(
             self.context.absolute_url(),
-            self.id
+            self.filter_id
         )
         return reload_url
-
-    @property
-    def settings(self):
-        return self.data
-
-    @property
-    def input_type(self):
-        if self.data.input_type == 'links':
-            return 'link'
-        elif self.data.filter_type == 'single':
-            if self.data.input_type == 'checkboxes_radiobuttons':
-                return 'radio'
-            else:
-                return 'dropdown'
-        else:
-            return 'checkbox'
-
-    def results(self):
-        results = get_filter_items(
-            target_collection=self.data.target_collection,
-            group_by=self.data.group_by,
-            filter_type=self.data.filter_type,
-            narrow_down=self.data.narrow_down,
-            cache_time=self.data.cache_time,
-            request_params=self.request.form or {}
-        )
-        return results
 
 
 class AddForm(base_AddForm):

@@ -12,14 +12,15 @@ define([
         defaults: {
             collectionUUID: '',
             collectionURL: '',
-            reloadURL: ''
+            reloadURL: '',
+            contentSelector: '#content-core',
         },
 
         init: function() {
             this.$el.unbind('collectionfilter:reload');
             this.$el.on('collectionfilter:reload', function (e, data) {
-                if (data.noReloadSearch && this.$el.hasClass('portletCollectionSearch')) {
-                    // don't reload search portlet while typing.
+                if (data.noReloadSearch && this.$el.hasClass('collectionSearch')) {
+                    // don't reload search while typing.
                     return;
                 }
                 if (data.collectionUUID === this.options.collectionUUID) {
@@ -28,7 +29,7 @@ define([
             }.bind(this));
 
             // Collection Search
-            if (this.$el.hasClass('portletCollectionSearch')) {
+            if (this.$el.hasClass('collectionSearch')) {
                 // initialize collection search
                 $('button[type="submit"]', this.$el).hide();
                 $('form', this.$el).on('submit', function (e) {
@@ -128,12 +129,17 @@ define([
         reloadCollection: function (collectionURL) {
             var cl = new this.contentloader(this.$el, {
                 url: collectionURL + '&ajax_load=1',
-                target: '#content-core',
-                content: '#content-core',
+                target: this.options.contentSelector,
+                content: this.options.contentSelector,
                 trigger: 'immediate'
             });
             // TODO: remove this, once ``contentloader`` handles history
             // updates itself and adds ajax_load.
+            //
+            // Search for all @@ views in ajax calls and remove it before
+            // adding it to the browser history
+            re = /@@.*\//;
+            collectionURL = collectionURL.replace(re, '');
             window.history.replaceState(
                 {path: collectionURL},
                 '',

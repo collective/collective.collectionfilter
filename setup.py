@@ -2,7 +2,7 @@
 from setuptools import find_packages
 from setuptools import setup
 
-version = '1.0.2.dev0'
+version = '2.0.dev0'
 
 setup(
     name='collective.collectionfilter',
@@ -30,7 +30,8 @@ setup(
     zip_safe=False,
     install_requires=[
         'setuptools',
-        'Products.CMFPlone',
+        'Products.CMFPlone >= 5.1',  # need get_top_request
+        'plone.app.contenttypes',
     ],
     entry_points="""
     # -*- Entry points: -*-

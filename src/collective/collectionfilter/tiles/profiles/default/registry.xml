@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<registry>
+  <record name="plone.app.tiles">
+    <value purge="false">
+      <element>collective.collectionfilter.tiles.filter</element>
+      <element>collective.collectionfilter.tiles.search</element>
+    </value>
+  </record>
+
+  <records prefix="plone.app.mosaic.app_tiles.collective_collectionfilter_tiles_filter"
+           interface="plone.app.mosaic.interfaces.ITile">
+    <value key="name">collective.collectionfilter.tiles.filter</value>
+    <value key="label">Collection Filter</value>
+    <value key="category">structure</value>
+    <value key="tile_type">app</value>
+    <value key="default_value"></value>
+    <value key="read_only">false</value>
+    <value key="settings">true</value>
+    <value key="favorite">false</value>
+    <value key="rich_text">false</value>
+  </records>
+
+  <records prefix="plone.app.mosaic.app_tiles.collective_collectionfilter_tiles_search"
+           interface="plone.app.mosaic.interfaces.ITile">
+    <value key="name">collective.collectionfilter.tiles.search</value>
+    <value key="label">Collection Search</value>
+    <value key="category">structure</value>
+    <value key="tile_type">app</value>
+    <value key="default_value"></value>
+    <value key="read_only">false</value>
+    <value key="settings">true</value>
+    <value key="favorite">false</value>
+    <value key="rich_text">false</value>
+  </records>
+
+</registry>

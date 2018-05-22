@@ -8,7 +8,16 @@ from zope import schema
 from zope.interface import Interface
 
 
-class ICollectionFilterSchema(Interface):
+class ICollectionFilterBaseSchema(Interface):
+
+    header = schema.TextLine(
+        title=_('label_header', default=u'Filter title'),
+        description=_(
+            'help_header',
+            u'Title of the rendered filter.'
+        ),
+        required=False,
+    )
 
     target_collection = schema.Choice(
         title=_(u'label_target_collection', default=u'Target Collection'),
@@ -26,9 +35,38 @@ class ICollectionFilterSchema(Interface):
         pattern_options={
             'basePath': utils.target_collection_base_path,
             'recentlyUsed': True,
-            'selectableTypes': ['Collection'],
+            # 'selectableTypes': ['Collection'],
         }
     )
+
+    view_name = schema.TextLine(
+        title=_('label_view_name', default=u'Result listing view name'),
+        description=_(
+            'help_view_name',
+            default=u'Optional view name, if the result listing should be'
+            u' rendered with a special view. Can be used to direct the request'
+            u' to a tile.'
+        ),
+        required=False,
+        default=None
+    )
+
+    content_selector = schema.TextLine(
+        title=_('label_content_selector', default=u'Content Selector'),
+        description=_(
+            'help_content_selector',
+            default=u'Selector which is used to choose a DOM node from the'
+            u' source into the target. For source and target the same'
+            u' selectors are used.'
+        ),
+        required=True,
+        default=u'#content-core',
+    )
+
+
+class ICollectionFilterSchema(ICollectionFilterBaseSchema):
+    """Schema for the filter.
+    """
 
     group_by = schema.Choice(
         title=_('label_groupby', u'Group by'),
@@ -104,27 +142,9 @@ class ICollectionFilterSchema(Interface):
 #    )
 
 
-class ICollectionSearchSchema(Interface):
-
-    target_collection = schema.Choice(
-        title=_(u'label_target_collection', default=u'Target Collection'),
-        description=_(
-            u'help_target_collection',
-            default=u'The collection, which is the source for the filter '
-                    u'items and where the filter is applied.'
-        ),
-        required=True,
-        vocabulary='plone.app.vocabularies.Catalog',
-    )
-    widget(
-        'target_collection',
-        RelatedItemsFieldWidget,
-        pattern_options={
-            'basePath': utils.target_collection_base_path,
-            'recentlyUsed': True,
-            'selectableTypes': ['Collection'],
-        }
-    )
+class ICollectionSearchSchema(ICollectionFilterBaseSchema):
+    """Schema for the search filter.
+    """
 
 
 class IGroupByCriteria(Interface):
@@ -134,10 +154,12 @@ class IGroupByCriteria(Interface):
 
         GROUPBY_CRITERIA = {
             'Subject': {
-                'index': 'Subject',     # Index for querying.
-                'metadata': 'Subject',  # Metadata name for fast access.
-                'display_modifier': _,  # Function for modifying list items
-                                        # for display. Gets the item passed
+                'index': 'Subject',      # Index for querying.
+                'metadata': 'Subject',   # Metadata name for fast access.
+                'display_modifier': _,   # Function for modifying list items
+                                         # for display. Gets the item passed
+                'index_modifier': None,  # Change index values before querying
+                'value_blacklist': None  # Exclude index values from display
             },
         }
     """
