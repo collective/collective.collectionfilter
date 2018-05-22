@@ -50,6 +50,7 @@
       <element>mockup-patterns-autotoc</element>
       <element>mockup-patterns-backdrop</element>
       <element>mockup-patterns-base</element>
+      <element>mockup-patterns-contentloader</element>
       <element>mockup-patterns-modal</element>
       <element>mockup-patterns-moment</element>
       <element>mockup-patterns-pickadate</element>
