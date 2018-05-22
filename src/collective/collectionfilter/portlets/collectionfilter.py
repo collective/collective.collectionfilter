@@ -33,7 +33,7 @@ class Assignment(base.Assignment):
     target_collection = None
     group_by = u""
     show_count = False
-    cache_time = 60
+    cache_enabled = True
     filter_type = DEFAULT_FILTER_TYPE
     input_type = 'links'
     narrow_down = False
@@ -47,7 +47,7 @@ class Assignment(base.Assignment):
         target_collection=None,
         group_by=u"",
         show_count=False,
-        cache_time=60,
+        cache_enabled=True,
         filter_type=DEFAULT_FILTER_TYPE,
         input_type='links',
         narrow_down=False,
@@ -59,7 +59,7 @@ class Assignment(base.Assignment):
         self.target_collection = target_collection
         self.group_by = group_by
         self.show_count = show_count
-        self.cache_time = cache_time
+        self.cache_enabled = cache_enabled
         self.filter_type = filter_type
         self.input_type = input_type
         self.narrow_down = narrow_down

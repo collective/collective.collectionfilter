@@ -83,7 +83,7 @@ class BaseFilterView(BaseView):
             filter_type=self.settings.filter_type,
             narrow_down=self.settings.narrow_down,
             view_name=self.settings.view_name,
-            cache_time=int(self.settings.cache_time),
+            cache_enabled=self.settings.cache_enabled,
             request_params=self.top_request.form or {}
         )
         return results

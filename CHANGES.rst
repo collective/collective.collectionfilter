@@ -6,6 +6,7 @@ Changelog
 
 Breaking changes:
 
+- Remove the ``cache_time`` setting and replace it with ``cache_enabled``.
 - Depend on Products.CMFPlone >= 5.1 for using ``get_top_request``.
 - collectionsearch.pt: changed view attribute ``header_title`` to ``title``.
 
@@ -17,6 +18,8 @@ Breaking changes:
   That has to be revisited to make it work out of the box.
 
 New:
+
+- Optimize the cache key by including the current language, user roles instead of id and the database counter.
 
 - Remove the view_name part when populating the browser history with filter changes.
   The view_name part is for loading specific AJAX tiles, but should probably not be displayed.

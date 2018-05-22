@@ -39,12 +39,10 @@ def _results_cachekey(
         filter_type,
         narrow_down,
         view_name,
-        cache_time,
+        cache_enabled,
         request_params):
-    if not cache_time:
-        # Don't cache on cache_time = 0 or any other falsy value
+    if not cache_enabled:
         raise DontCache
-    timeout = time() // int(cache_time)
     cachekey = (
         target_collection,
         group_by,
@@ -52,9 +50,9 @@ def _results_cachekey(
         narrow_down,
         view_name,
         request_params,
-        # hash(frozenset(request_params.items())),
-        getattr(plone.api.user.get_current(), 'id', ''),
-        timeout
+        ' '.join(plone.api.user.get_roles()),
+        plone.api.portal.get_current_language(),
+        str(plone.api.portal.get_tool('portal_catalog').getCounter()),
     )
     return cachekey
 
@@ -66,7 +64,7 @@ def get_filter_items(
         filter_type=DEFAULT_FILTER_TYPE,
         narrow_down=False,
         view_name='',
-        cache_time=3600,
+        cache_enabled=True,
         request_params={}
 ):
     custom_query = {}  # Additional query to filter the collection

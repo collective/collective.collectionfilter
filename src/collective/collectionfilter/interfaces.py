@@ -87,13 +87,14 @@ class ICollectionFilterSchema(ICollectionFilterBaseSchema):
         required=False
     )
 
-    cache_time = schema.Int(
-        title=_(u"label_cache_time", default=u"Cache Time (s)"),
+    cache_enabled = schema.Bool(
+        title=_(u"label_cache_enabled", default=u"Enable Cache"),
         description=_(
-            u'help_cache_time',
-            default=u"Cache time in seconds. 0 for no caching."
+            u'help_cache_enabled',
+            default=u"Enable caching of filter items. The cache is cleared as"
+                    u" soon as the database has any changes."
         ),
-        default=60,
+        default=True,
         required=False,
     )
 
