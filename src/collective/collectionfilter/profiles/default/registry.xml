@@ -1,15 +1,6 @@
 <?xml version="1.0"?>
 <registry>
 
-  <!--records prefix="plone.resources/collectionfilter-react"
-            interface="Products.CMFPlone.interfaces.IResourceRegistry">
-      <value key="js">++resource++collective.collectionfilter/node_modules/react/dist/react</value>
-  </records>
-  <records prefix="plone.resources/collectionfilter-react-dom"
-            interface="Products.CMFPlone.interfaces.IResourceRegistry">
-      <value key="js">++resource++collective.collectionfilter/node_modules/react-dom/dist/react-dom</value>
-  </records-->
-
   <records prefix="plone.resources/collectionfilter"
            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++resource++collective.collectionfilter/collectionfilter.js</value>
@@ -37,7 +28,7 @@
     <value key="merge_with">default</value>
     <value key="jscompilation">++resource++collective.collectionfilter/collectionfilter-compiled.js</value>
     <value key="csscompilation">++resource++collective.collectionfilter/collectionfilter-compiled.css</value>
-    <value key="last_compilation">2018-01-24 11:30:00</value>
+    <value key="last_compilation">2018-05-30 01:40:00</value>
     <value key="stub_js_modules">
       <element>backbone</element>
       <element>bootstrap-dropdown</element>
