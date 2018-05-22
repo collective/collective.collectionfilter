@@ -15,14 +15,14 @@
         <tal:if condition="python:input_type in ('checkbox', 'radio')">
         <ul>
           <tal:items repeat="item results">
-          <li tal:attributes="class python:item['css_class'] + 'selected filterItem' if item['selected'] else item['css_class'] + 'filterItem'">
+          <li class="${item/css_class}">
             <label>
-              <input type="checkbox" class="filterControl filteritem"
-                  tal:attributes="type input_type;
-                                  name view/filter_id;
-                                  value item/value;
-                                  checked python:'checked' if item['selected'] else None;
-                                  data-url item/url"/>
+              <input
+                  name="${view/filter_id}"
+                  type="${input_type}"
+                  value="${item/value}"
+                  data-url="${item/url}"
+                  tal:attributes="checked python:'checked' if item['selected'] else None">
               <span class="filterLabel">
                 <span tal:replace="python:item['title'].replace('/', u'/\u00AD')">Item</span>
                 <tal:show_count condition="view/settings/show_count">(<span tal:replace="item/count" />)</tal:show_count>
@@ -35,13 +35,13 @@
         </tal:if>
 
         <tal:if condition="python:view.input_type == 'dropdown'">
-          <select class="filteritem" tal:attributes="name view/filter_id">
+          <select name="${view/filter_id}">
           <tal:items repeat="item results">
-            <option tal:attributes="
-                value item/value;
-                selected python:'selected' if item['selected'] else None;
-                item['css_class'];
-                data-url item/url">
+            <option
+                class="${item/css_class}"
+                value="${item/value}"
+                data-url="${item/url}"
+                tal:attributes="selected python:'selected' if item['selected'] else None">
               <span class="filterLabel">
                 <span tal:replace="python:item['title'].replace('/', u'/\u00AD')">Item</span>
                 <tal:show_count condition="view/settings/show_count">(<span tal:replace="item/count" />)</tal:show_count>
@@ -54,11 +54,11 @@
         <tal:if condition="python:view.input_type == 'link'">
         <ul>
           <tal:items repeat="item results">
-          <li tal:attributes="class python:item['css_class'] + 'selected filterItem' if item['selected'] else item['css_class'] + 'filterItem'">
-            <a rel="nofollow"
-               class="filteritem"
-               tal:attributes="href item/url;
-                               title string:Count: ${item/count}">
+          <li class="${item/css_class}">
+            <a
+                rel="nofollow"
+                href="${item/url}"
+                title="Count: ${item/count}">
               <span tal:content="item/title">Item</span>
               <tal:show_count condition="view/settings/show_count">(<span tal:replace="item/count" />)</tal:show_count>
             </a>

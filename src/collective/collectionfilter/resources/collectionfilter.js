@@ -53,10 +53,11 @@ define([
                         this.reloadCollection(collectionURL);
                     }.bind(this), 500);
                 }.bind(this));
+                return;  // no more action neccesarry.
             }
 
             // OPTION 1 - filter rendered as links
-            $('a.filteritem', this.$el).on('click', function (e) {
+            $('.filterContent a', this.$el).on('click', function (e) {
                 e.stopPropagation();
                 e.preventDefault();
                 // TODO: nextline: strange, it's not the anchor element itself,
@@ -76,7 +77,7 @@ define([
             }.bind(this));
 
             // OPTION 2 - filter rendered as checkboxes
-            $('input.filteritem', this.$el).on('change', function (e) {
+            $('.filterContent input', this.$el).on('change', function (e) {
                 var collectionURL = $(e.target).data('url');
 
                 $(this.trigger).trigger(
@@ -91,7 +92,7 @@ define([
             }.bind(this));
 
             // OPTION 3 - filter rendered as dropdowns
-            $('select.filteritem', this.$el).on('change', function (e) {
+            $('.filterContent select', this.$el).on('change', function (e) {
                 // See: https://stackoverflow.com/a/12750327/1337474
                 var option = $('option:selected', e.target);
                 var collectionURL = $(option).data('url');

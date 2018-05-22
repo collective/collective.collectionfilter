@@ -181,12 +181,17 @@ def get_filter_items(
             # Set selected state
             selected = filter_value in current_idx_value
 
+            css_class = 'filterItem {0}{1}'.format(
+                'filter_' + idnormalizer.normalize(filter_value),
+                ' selected' if selected else ''
+            )
+
             grouped_results[filter_value] = {
                 'sort_key': title.lower(),
                 'title': title,
                 'url': url,
                 'value': filter_value,
-                'css_class': idnormalizer.normalize(filter_value),
+                'css_class': css_class,
                 'count': 1,
                 'selected': selected
             }
