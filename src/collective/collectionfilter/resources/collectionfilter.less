@@ -1,5 +1,7 @@
 .collectionSearch,
-.collectionFilter {
+.portlet.collectionSearch,
+.collectionFilter,
+.portlet.collectionFilter {
   position: relative;
   background: white;
   .edit-link {
@@ -13,7 +15,9 @@
 }
 .horizontal {
   .collectionSearch,
-  .collectionFilter {
+  .portlet.collectionSearch,
+  .collectionFilter,
+  .portlet.collectionFilter {
     display: flex !important;
     justify-content: space-between;
     align-items: center;
@@ -28,7 +32,9 @@
 }
 
 .collectionSearch .searchContent,
-.collectionFilter .filterContent {
+.portlet.collectionSearch .searchContent,
+.collectionFilter .filterContent,
+.portlet.collectionFilter .filterContent {
   padding: 1em;
   > ul {
     padding: 0;
@@ -37,6 +43,7 @@
     > li {
       list-style-type: none;
       padding: 2px;
+
       label {
         display: table;
         .filterControl, .filterLabel{
@@ -56,17 +63,36 @@
           hyphens: auto;
         }
       }
-    > a {
-      padding: 0 0 0 1em;
-      display: block;
-      border: 0;
-      position: relative;
-      z-index: 1;
-      &:before {
-          left: 2px;
+      > a {
+        padding: 0;
+        display: block;
+        border: 0;
+        position: relative;
+        z-index: 1;
+        &:before {
+          // left: 2px;
+          font-size: 1.75em;
+          line-height: 0.5;
+          top: 0.15em;
+          left: 0.15em;
+          content: "•";
+          display: inline;
+          position: relative;
+        }
+        &:hover {
+          text-decoration: none;
+          border-bottom: 0;
+        }
+        > span {
+          padding-left: 0.5em;
+        }
+      }
+      &:hover {
+        background: transparent;
       }
     }
-    }
+
+
     li.selected a {
         font-weight: bold;
     }
