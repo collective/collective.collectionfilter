@@ -207,7 +207,7 @@ def get_filter_items(
             urlencode(safe_encode(urlquery_all), doseq=True)
         ),
         'value': 'all',
-        'css_class': 'all',
+        'css_class': 'filterItem filter_all',
         'count': len(catalog_results),
         'selected': idx not in request_params
     }]
