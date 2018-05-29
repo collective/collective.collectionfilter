@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2017-10-28 15:02+0000\n"
+"POT-Creation-Date: 2018-05-13 21:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,50 +17,49 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: collective.collectionfilter\n"
 
-#: collective/collectionfilter/portlets/collectionfilter.py:146
+#: collective/collectionfilter/portlets/collectionfilter.py:108
 msgid "Add Collection Filter Portlet"
 msgstr "Portlet zur Filterung von Kollektionen hinzufügen"
 
-#: collective/collectionfilter/portlets/collectionsearch.py:112
+#: collective/collectionfilter/portlets/collectionsearch.py:82
 msgid "Add Collection Search Portlet"
 msgstr "Portlet zur Suche in Kollektionen hinzufügen"
 
-#: collective/collectionfilter/portlets/collectionfilter.py:87
+#: collective/collectionfilter/portlets/collectionfilter.py:78
 msgid "Collection Filter"
 msgstr "Kollektionsfilter"
 
-#: collective/collectionfilter/portlets/collectionsearch.py:57
+#: collective/collectionfilter/portlets/collectionsearch.py:52
 msgid "Collection Search"
 msgstr "Kollektionssuche"
 
-#: collective/collectionfilter/portlets/collectionfilter.py:162
+#: collective/collectionfilter/portlets/collectionfilter.py:124
 msgid "Edit Collection Filter Portlet"
 msgstr "Portlet zur Filterung von Kollektionen bearbeiten"
 
-#: collective/collectionfilter/portlets/collectionsearch.py:127
+#: collective/collectionfilter/portlets/collectionsearch.py:97
 msgid "Edit Collection Search Portlet"
 msgstr "Portlet zur Suche in Kollektionen bearbeiten"
 
-#: collective/collectionfilter/configure.zcml:47
+#: collective/collectionfilter/configure.zcml:52
 #: collective/collectionfilter/portlets/configure.zcml:36
 msgid "Extension profile for Plone."
 msgstr ""
 
-#: collective/collectionfilter/portlets/collectionsearch.py:113
+#: collective/collectionfilter/portlets/collectionsearch.py:83
 msgid "This portlet allows fulltext search in collection results."
 msgstr "Dieses Portlet erlaubt eine Volltextsuche in Kollektionsergebnissen und schränkt diese weiter ein."
 
-#: collective/collectionfilter/portlets/collectionfilter.py:147
+#: collective/collectionfilter/portlets/collectionfilter.py:109
 msgid "This portlet shows grouped criteria of collection results and allows filtering of collection results."
 msgstr "Dieses Portlet zeigt Gruppierte Kollektionsergebnisse und erlaubt eine weitere Einschränkung der Ergebnisse durch Filter."
 
-#. Default: "Search"
-#: collective/collectionfilter/portlets/collectionsearch.pt:16
-msgid "button_search"
+#: collective/collectionfilter/configure.zcml:52
+msgid "collective.collectionfilter base"
 msgstr ""
 
-#: collective/collectionfilter/configure.zcml:47
-msgid "collective.collectionfilter base"
+#: collective/collectionfilter/configure.zcml:59
+msgid "collective.collectionfilter base uninstall"
 msgstr ""
 
 #: collective/collectionfilter/portlets/configure.zcml:36
@@ -71,101 +70,143 @@ msgstr ""
 msgid "collective.collectionfilter portlets uninstall"
 msgstr ""
 
-#: collective/collectionfilter/vocabularies.py:108
+#: collective/collectionfilter/vocabularies.py:115
 msgid "filtertype_and"
 msgstr ""
 
-#: collective/collectionfilter/vocabularies.py:109
+#: collective/collectionfilter/vocabularies.py:116
 msgid "filtertype_or"
 msgstr ""
 
-#: collective/collectionfilter/vocabularies.py:107
+#: collective/collectionfilter/vocabularies.py:114
 msgid "filtertype_single"
 msgstr ""
 
-#. Default: "Display filter items as checkboxes or radio buttons, according to the \"Additive Filter\" setting."
-#: collective/collectionfilter/interfaces.py:67
-msgid "help_as_input"
-msgstr "Die Filterkriterien werden als Checkboxen oder Radio Buttons dargestellt, je nach Einstellung in \"Additiver Filter\"."
-
 #. Default: "Cache time in seconds. 0 for no caching."
-#: collective/collectionfilter/interfaces.py:46
+#: collective/collectionfilter/interfaces.py:92
 msgid "help_cache_time"
 msgstr "Cache Zeit in Sekunden. 0 für kein Caching."
 
-#. Default: "Select if single or multiple criterias can be selected and if all (and) or any (or) of the selected criterias must be met.Some index types like ``FieldIndex`` (e.g. Type index) only support the any (or) criteria when set to multiple criterias and ignore, if all (and) is set."
+#. Default: "Selector which is used to choose a DOM node from the source into the target. For source and target the same selectors are used."
 #: collective/collectionfilter/interfaces.py:56
+msgid "help_content_selector"
+msgstr ""
+
+#. Default: "Select if single or multiple criterias can be selected and if all (and) or any (or) of the selected criterias must be met.Some index types like ``FieldIndex`` (e.g. Type index) only support the any (or) criteria when set to multiple criterias and ignore, if all (and) is set."
+#: collective/collectionfilter/interfaces.py:102
 msgid "help_filter_type"
 msgstr ""
 
 #. Default: "Select the criteria to group the collection results by."
-#: collective/collectionfilter/interfaces.py:27
+#: collective/collectionfilter/interfaces.py:73
 msgid "help_groupby"
 msgstr "Kriterium zur Gruppierung der Kollektionsergebnisse auswählen."
 
-#. Default: "Title of the rendered portlet."
-#: collective/collectionfilter/portlets/collectionfilter.py:33
-#: collective/collectionfilter/portlets/collectionsearch.py:30
+#. Default: "Title of the rendered filter."
+#: collective/collectionfilter/interfaces.py:15
+#, fuzzy
 msgid "help_header"
 msgstr "Titel des Portlets"
 
+#. Default: "Select how the UI of the collection filter should be rendered. Wether as links, as checkboxes and radiobuttons or checkboxes and dropdowns."
+#: collective/collectionfilter/interfaces.py:113
+msgid "help_input_type"
+msgstr ""
+
 #. Default: "Narrow down the filter options when a filter of this group is applied. Only options, which are available in the result set will then be displayed. Other filter groups can still narrow down this one, though."
-#: collective/collectionfilter/interfaces.py:76
+#: collective/collectionfilter/interfaces.py:124
 msgid "help_narrow_down"
 msgstr "Die Filteroptionen werden eingeschränkt, wenn ein Filterkriterium ausgewählt wird. Es werden nur jene Filterkriterien angezeigt, die im aktuellen Ergebnis vorkommen. Andere Filtergruppen können diese Filtergruppe jedoch trotzdem einschränken."
 
 #. Default: "Show the result count for each filter group."
-#: collective/collectionfilter/interfaces.py:37
+#: collective/collectionfilter/interfaces.py:83
 msgid "help_show_count"
 msgstr "Zeige die Anzahl der Ergebnisse für jede Filtergruppe."
 
 #. Default: "The collection, which is the source for the filter items and where the filter is applied."
-#: collective/collectionfilter/interfaces.py:14
+#: collective/collectionfilter/interfaces.py:24
 msgid "help_target_collection"
 msgstr "Bitte wählen Sie die Zielkollektion aus."
 
-#. Default: "Display as checkboxes or radio buttons"
-#: collective/collectionfilter/interfaces.py:66
-msgid "label_as_input"
-msgstr "Filterkriterien als Checkboxen oder Radio Buttons darstellen."
+#. Default: "Optional view name, if the result listing should be rendered with a special view. Can be used to direct the request to a tile."
+#: collective/collectionfilter/interfaces.py:44
+msgid "help_view_name"
+msgstr ""
+
+#: collective/collectionfilter/vocabularies.py:126
+msgid "inputtype_checkboxes_dropdowns"
+msgstr ""
+
+#: collective/collectionfilter/vocabularies.py:125
+msgid "inputtype_checkboxes_radiobuttons"
+msgstr ""
+
+#: collective/collectionfilter/vocabularies.py:124
+msgid "inputtype_links"
+msgstr ""
+
+#. Default: "edit"
+#: collective/collectionfilter/tiles/filter.pt:25
+msgid "label-edit-filter"
+msgstr ""
 
 #. Default: "Cache Time (s)"
-#: collective/collectionfilter/interfaces.py:45
+#: collective/collectionfilter/interfaces.py:91
 msgid "label_cache_time"
 msgstr "Cache Zeit (s)"
 
-#. Default: "Filter Type"
+#. Default: "Content Selector"
 #: collective/collectionfilter/interfaces.py:55
+msgid "label_content_selector"
+msgstr ""
+
+#. Default: "Filter Type"
+#: collective/collectionfilter/interfaces.py:101
 msgid "label_filter_type"
 msgstr ""
 
 #. Default: "Group by"
-#: collective/collectionfilter/interfaces.py:26
+#: collective/collectionfilter/interfaces.py:72
 msgid "label_groupby"
 msgstr "Gruppierungskriterium"
 
-#. Default: "Portlet header"
-#: collective/collectionfilter/portlets/collectionfilter.py:32
-#: collective/collectionfilter/portlets/collectionsearch.py:29
+#. Default: "Filter title"
+#: collective/collectionfilter/interfaces.py:14
+#, fuzzy
 msgid "label_header"
 msgstr "Portlet Titel"
 
+#. Default: "Input Type"
+#: collective/collectionfilter/interfaces.py:112
+msgid "label_input_type"
+msgstr ""
+
 #. Default: "Narrow down filter options"
-#: collective/collectionfilter/interfaces.py:75
+#: collective/collectionfilter/interfaces.py:123
 msgid "label_narrow_down"
 msgstr "Filterkriterien einschränken"
 
 #. Default: "Show count"
-#: collective/collectionfilter/interfaces.py:36
+#: collective/collectionfilter/interfaces.py:82
 msgid "label_show_count"
 msgstr "Anzahl zeigen"
 
 #. Default: "Target Collection"
-#: collective/collectionfilter/interfaces.py:13
+#: collective/collectionfilter/interfaces.py:23
 msgid "label_target_collection"
 msgstr "Ziel Kollektion"
 
+#. Default: "Result listing view name"
+#: collective/collectionfilter/interfaces.py:43
+msgid "label_view_name"
+msgstr ""
+
 #. Default: "All"
-#: collective/collectionfilter/filteritems.py:190
+#: collective/collectionfilter/filteritems.py:198
 msgid "subject_all"
 msgstr "Alle"
+
+#. Default: "edit filter"
+#: collective/collectionfilter/tiles/filter.pt:19
+msgid "title-edit-filter"
+msgstr "Filter editieren"

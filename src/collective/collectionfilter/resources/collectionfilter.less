@@ -1,61 +1,111 @@
-//*// PORTLETS //*//
-
-.portlet.portletCollectionFilter {
+.collectionSearch,
+.portlet.collectionSearch,
+.collectionFilter,
+.portlet.collectionFilter {
+  position: relative;
   background: white;
-  .portletContent {
-    padding: 1em;
-    > ul {
-      padding: 0;
-      list-style: none;
-      position: relative;
-      > li {
-        list-style-type: none;
-        padding: 2px;
-        label {
-          display: table;
-          .filterControl, .filterLabel{
-              display: table-cell;
-              vertical-align: top;
-          }
-          input[type="radio"], input[type="checkbox"] {
-            margin: 0.3em 0.5em 0 0;
-            line-height: normal;
-          }
-          .filterControl {
-              margin-right: 0.5em;
-          }
-          .filterLabel{
-            -webkit-hyphens: auto;
-            -moz-hyphens: auto;
-            hyphens: auto;
-          }
+  .edit-link {
+    position: absolute;
+    right: 0;
+    bottom: -0.5em;
+    label {
+        display: none;
+    }
+  }
+}
+.horizontal {
+  .collectionSearch,
+  .portlet.collectionSearch,
+  .collectionFilter,
+  .portlet.collectionFilter {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    & > header {
+      font-weight: bold;
+    }
+    .edit-link {
+      right: unset;
+      left: 0;
+    }
+  }
+}
+
+.collectionSearch .searchContent,
+.portlet.collectionSearch .searchContent,
+.collectionFilter .filterContent,
+.portlet.collectionFilter .filterContent {
+  padding: 1em;
+  > ul {
+    padding: 0;
+    list-style: none;
+    position: relative;
+    > li {
+      list-style-type: none;
+      padding: 2px;
+
+      label {
+        display: table;
+        .filterControl, .filterLabel{
+            display: table-cell;
+            vertical-align: top;
         }
+        input[type="radio"], input[type="checkbox"] {
+          margin: 0.3em 0.5em 0 0;
+          line-height: normal;
+        }
+        .filterControl {
+            margin-right: 0.5em;
+        }
+        .filterLabel{
+          -webkit-hyphens: auto;
+          -moz-hyphens: auto;
+          hyphens: auto;
+        }
+      }
       > a {
-        padding: 0 0 0 1em;
+        padding: 0;
         display: block;
         border: 0;
         position: relative;
         z-index: 1;
         &:before {
-            left: 2px;
+          // left: 2px;
+          font-size: 1.75em;
+          line-height: 0.5;
+          top: 0.15em;
+          left: 0.15em;
+          content: "•";
+          display: inline;
+          position: relative;
+        }
+        &:hover {
+          text-decoration: none;
+          border-bottom: 0;
+        }
+        > span {
+          padding-left: 0.5em;
         }
       }
-      }
-      li.selected a {
-          font-weight: bold;
-      }
-      ul {
-          padding-left:15px;
-          list-style: none;
+      &:hover {
+        background: transparent;
       }
     }
-    label {
-      display: block;
-      margin: 0;
+
+
+    li.selected a {
+        font-weight: bold;
     }
-    select {
-      padding: 0 0.5em;
+    ul {
+        padding-left:15px;
+        list-style: none;
     }
   }
+  label {
+    display: block;
+    margin: 0;
+  }
+  select {
+    padding: 0 0.5em;
+  }
 }
-

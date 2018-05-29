@@ -7,18 +7,20 @@ from .utils import safe_decode
 from .utils import safe_encode
 from .vocabularies import DEFAULT_FILTER_TYPE
 from .vocabularies import EMPTY_MARKER
+from plone.app.contenttypes.behaviors.collection import ICollection
 from plone.app.event.base import _prepare_range
 from plone.app.event.base import guess_date_from
 from plone.app.event.base import start_end_from_mode
 from plone.app.event.base import start_end_query
 from plone.app.uuid.utils import uuidToObject
+from plone.i18n.normalizer import idnormalizer
 from plone.memoize import ram
 from plone.memoize.volatile import DontCache
 from time import time
 from urllib import urlencode
 from zope.component import getUtility
-from zope.i18n import translate
 from zope.globalrequest import getRequest
+from zope.i18n import translate
 
 import plone.api
 
@@ -36,22 +38,21 @@ def _results_cachekey(
         group_by,
         filter_type,
         narrow_down,
-        cache_time,
+        view_name,
+        cache_enabled,
         request_params):
-    cache_time = int(cache_time)
-    if not cache_time:
-        # Don't cache on cache_time = 0 or any other falsy value
+    if not cache_enabled:
         raise DontCache
-    timeout = time() // int(cache_time)
     cachekey = (
         target_collection,
         group_by,
         filter_type,
         narrow_down,
+        view_name,
         request_params,
-        # hash(frozenset(request_params.items())),
-        getattr(plone.api.user.get_current(), 'id', ''),
-        timeout
+        ' '.join(plone.api.user.get_roles()),
+        plone.api.portal.get_current_language(),
+        str(plone.api.portal.get_tool('portal_catalog').getCounter()),
     )
     return cachekey
 
@@ -62,13 +63,14 @@ def get_filter_items(
         group_by,
         filter_type=DEFAULT_FILTER_TYPE,
         narrow_down=False,
-        cache_time=3600,
+        view_name='',
+        cache_enabled=True,
         request_params={}
 ):
     custom_query = {}  # Additional query to filter the collection
 
     collection = uuidToObject(target_collection)
-    if not collection:
+    if not collection or not group_by:
         return None
     collection_url = collection.absolute_url()
     collection_layout = collection.getLayout()
@@ -104,10 +106,11 @@ def get_filter_items(
 
     # Get all collection results with additional filter defined by urlquery
     custom_query.update(urlquery)
-    catalog_results = collection.results(
+    custom_query = make_query(custom_query)
+    catalog_results = ICollection(collection).results(
         batch=False,
         brains=True,
-        custom_query=make_query(custom_query)
+        custom_query=custom_query
     )
     if not catalog_results:
         return None
@@ -115,7 +118,12 @@ def get_filter_items(
     # Attribute name for getting filter value from brain
     metadata_attr = groupby_criteria[group_by]['metadata']
     # Optional modifier to set title from filter value
-    display_modifier = groupby_criteria[group_by]['display_modifier']
+    display_modifier = groupby_criteria[group_by].get('display_modifier', None)
+    # Value blacklist
+    value_blacklist = groupby_criteria[group_by].get('value_blacklist', None)
+    # Allow value_blacklist to be callables for runtime-evaluation
+    value_blacklist = value_blacklist() if callable(value_blacklist) else value_blacklist  # noqa
+
     grouped_results = {}
     for brain in catalog_results:
 
@@ -131,8 +139,11 @@ def get_filter_items(
         for filter_value in val:
             if not filter_value:
                 continue
-            # Add counter, if filter value is already present
+            if value_blacklist and filter_value in value_blacklist:
+                # Do not include blacklisted
+                continue
             if filter_value in grouped_results:
+                # Add counter, if filter value is already present
                 grouped_results[filter_value]['count'] += 1
                 continue
 
@@ -157,19 +168,28 @@ def get_filter_items(
                 _urlquery[idx + '_op'] = filter_type  # additive operator
             else:
                 _urlquery[idx] = filter_value
-            url = u'{0}/?{1}'.format(
+
+            query_param = urlencode(safe_encode(_urlquery), doseq=True)
+            url = u'/'.join([it for it in [
                 collection_url,
-                urlencode(safe_encode(_urlquery), doseq=True)
-            )
+                view_name,
+                '?' + query_param if query_param else None
+            ] if it])
 
             # Set selected state
             selected = filter_value in current_idx_value
 
+            css_class = 'filterItem {0}{1}'.format(
+                'filter_' + idnormalizer.normalize(filter_value),
+                ' selected' if selected else ''
+            )
+
             grouped_results[filter_value] = {
-                'sort_key': filter_value.lower(),
+                'sort_key': title.lower(),
                 'title': title,
                 'url': url,
                 'value': filter_value,
+                'css_class': css_class,
                 'count': 1,
                 'selected': selected
             }
@@ -179,12 +199,15 @@ def get_filter_items(
         k: v for k, v in urlquery.items() if k not in (idx, idx + '_op')
     }
     ret = [{
-        'title': translate(_('subject_all', default=u'All'), context=getRequest()),
+        'title': translate(
+            _('subject_all', default=u'All'), context=getRequest()
+        ),
         'url': u'{0}/?{1}'.format(
             collection_url,
             urlencode(safe_encode(urlquery_all), doseq=True)
         ),
         'value': 'all',
+        'css_class': 'filterItem filter_all',
         'count': len(catalog_results),
         'selected': idx not in request_params
     }]

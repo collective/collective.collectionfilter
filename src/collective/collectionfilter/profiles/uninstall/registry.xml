@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<registry>
+
+  <records remove="True" prefix="plone.resources/collectionfilter" interface='Products.CMFPlone.interfaces.IResourceRegistry'/>
+  <records remove="True" prefix="plone.resources/collectionfilter-bundle" interface='Products.CMFPlone.interfaces.IResourceRegistry'/>
+  <records remove="True" prefix="plone.bundles/collectionfilter-bundle" interface='Products.CMFPlone.interfaces.IBundleRegistry'/>
+
+</registry>

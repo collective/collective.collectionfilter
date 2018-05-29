@@ -8,6 +8,7 @@
 
   <i18n:registerTranslations directory="locales" />
   <include zcml:condition="installed plone.app.portlets" package=".portlets" />
+  <include zcml:condition="installed plone.tiles" package=".tiles" />
 
   <browser:resourceDirectory
       name="collective.collectionfilter"
@@ -46,6 +47,13 @@
       name="default"
       title="collective.collectionfilter base"
       directory="profiles/default"
+      description='Extension profile for Plone.'
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+  <genericsetup:registerProfile
+      name="uninstall"
+      title="collective.collectionfilter base uninstall"
+      directory="profiles/uninstall"
       description='Extension profile for Plone.'
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />

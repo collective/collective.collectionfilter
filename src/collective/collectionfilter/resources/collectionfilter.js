@@ -12,14 +12,15 @@ define([
         defaults: {
             collectionUUID: '',
             collectionURL: '',
-            reloadURL: ''
+            reloadURL: '',
+            contentSelector: '#content-core',
         },
 
         init: function() {
             this.$el.unbind('collectionfilter:reload');
             this.$el.on('collectionfilter:reload', function (e, data) {
-                if (data.noReloadSearch && this.$el.hasClass('portletCollectionSearch')) {
-                    // don't reload search portlet while typing.
+                if (data.noReloadSearch && this.$el.hasClass('collectionSearch')) {
+                    // don't reload search while typing.
                     return;
                 }
                 if (data.collectionUUID === this.options.collectionUUID) {
@@ -28,7 +29,7 @@ define([
             }.bind(this));
 
             // Collection Search
-            if (this.$el.hasClass('portletCollectionSearch')) {
+            if (this.$el.hasClass('collectionSearch')) {
                 // initialize collection search
                 $('button[type="submit"]', this.$el).hide();
                 $('form', this.$el).on('submit', function (e) {
@@ -52,10 +53,11 @@ define([
                         this.reloadCollection(collectionURL);
                     }.bind(this), 500);
                 }.bind(this));
+                return;  // no more action neccesarry.
             }
 
             // OPTION 1 - filter rendered as links
-            $('a.filteritem', this.$el).on('click', function (e) {
+            $('.filterContent a', this.$el).on('click', function (e) {
                 e.stopPropagation();
                 e.preventDefault();
                 // TODO: nextline: strange, it's not the anchor element itself,
@@ -75,7 +77,7 @@ define([
             }.bind(this));
 
             // OPTION 2 - filter rendered as checkboxes
-            $('input.filteritem', this.$el).on('change', function (e) {
+            $('.filterContent input', this.$el).on('change', function (e) {
                 var collectionURL = $(e.target).data('url');
 
                 $(this.trigger).trigger(
@@ -90,7 +92,7 @@ define([
             }.bind(this));
 
             // OPTION 3 - filter rendered as dropdowns
-            $('select.filteritem', this.$el).on('change', function (e) {
+            $('.filterContent select', this.$el).on('change', function (e) {
                 // See: https://stackoverflow.com/a/12750327/1337474
                 var option = $('option:selected', e.target);
                 var collectionURL = $(option).data('url');
@@ -128,12 +130,17 @@ define([
         reloadCollection: function (collectionURL) {
             var cl = new this.contentloader(this.$el, {
                 url: collectionURL + '&ajax_load=1',
-                target: '#content-core',
-                content: '#content-core',
+                target: this.options.contentSelector,
+                content: this.options.contentSelector,
                 trigger: 'immediate'
             });
             // TODO: remove this, once ``contentloader`` handles history
             // updates itself and adds ajax_load.
+            //
+            // Search for all @@ views in ajax calls and remove it before
+            // adding it to the browser history
+            re = /@@.*\//;
+            collectionURL = collectionURL.replace(re, '');
             window.history.replaceState(
                 {path: collectionURL},
                 '',

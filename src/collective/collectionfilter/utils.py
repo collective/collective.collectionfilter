@@ -61,4 +61,5 @@ def base_query(request_params={}, extra_ignores=[]):
     urlquery = {
         k: v for k, v in request_params.items() if k not in ignore_params
     }
+    urlquery.update({'collectionfilter': '1'})  # marker
     return urlquery

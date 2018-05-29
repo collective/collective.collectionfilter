@@ -16,12 +16,10 @@ def make_query(params_dict):
         idx = val['index']
         if idx in params_dict:
             crit = params_dict.get(idx) or EMPTY_MARKER
-            if idx == 'Subject':
-                # Subject does not accept unicode values
-                # https://github.com/plone/Products.CMFPlone/issues/470
-                crit = safe_encode(crit)
-            else:
-                crit = safe_decode(crit)
+
+            idx_mod = val.get('index_modifier', None)
+            crit = idx_mod(crit) if idx_mod else safe_decode(crit)
+
             # filter operator
             op = params_dict.get(idx + '_op', 'or')
             if op not in ['and', 'or']:
