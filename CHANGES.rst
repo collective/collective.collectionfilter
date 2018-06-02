@@ -40,6 +40,9 @@ New:
 
 Bug fixes:
 
+- Register the bundle compile files as ``collectionfilter-bundle-compiled.js`` and ``collectionfilter-bundle-compiled.css``, so that using ``plone-compile-resources`` results in the same files.
+  See: https://github.com/plone/Products.CMFPlone/issues/2437
+
 - Sort the filter value list for filter title instead filter value.
 
 
