@@ -13,6 +13,7 @@ from zope.schema.vocabulary import SimpleVocabulary
 
 import plone.api
 
+
 # Use this EMPTY_MARKER for your custom indexer to index empty criterions.
 EMPTY_MARKER = '__EMPTY__'
 TEXT_IDX = "SearchableText"
@@ -85,7 +86,8 @@ class GroupByCriteria():
                 'metadata': it,
                 'display_modifier': _,  # Allow to translate in this package domain per default.  # noqa
                 'index_modifier': index_modifier,
-                'value_blacklist': None
+                'value_blacklist': None,
+                'sort_key_function': lambda it: it['title'].lower(),  # sort key function. defaults to a lower-cased title.  # noqa
             }
 
         modifiers = getAdapters((self, ), IGroupByModifier)
