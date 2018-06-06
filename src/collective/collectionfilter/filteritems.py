@@ -150,11 +150,9 @@ def get_filter_items(
 
             # Set title from filter value with modifications,
             # e.g. uuid to title
-            title = _(safe_decode(
-                display_modifier(filter_value)
-                if display_modifier and filter_value is not EMPTY_MARKER
-                else filter_value
-            ))
+            title = filter_value
+            if filter_value is not EMPTY_MARKER and callable(display_modifier):
+                title = _(safe_decode(display_modifier(filter_value)))
 
             # Build filter url query
             _urlquery = urlquery.copy()
