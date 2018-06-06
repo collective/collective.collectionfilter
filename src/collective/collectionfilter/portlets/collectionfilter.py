@@ -81,7 +81,7 @@ class Assignment(base.Assignment):
             return _(u'Collection Filter')
 
 
-class Renderer(BaseFilterView, base.Renderer):
+class Renderer(base.Renderer, BaseFilterView):
     render = ViewPageTemplateFile('collectionfilter.pt')
 
     @property
