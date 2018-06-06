@@ -33,14 +33,14 @@ class Assignment(base.Assignment):
     header = u""
     target_collection = None
     view_name = None
-    content_selector = None
+    content_selector = '#content-core'
 
     def __init__(
         self,
         header=u"",
         target_collection=None,
         view_name=None,
-        content_selector=None,
+        content_selector='#content-core',
     ):
         self.header = header
         self.target_collection = target_collection
