@@ -111,7 +111,6 @@ define([
         },
 
         reload: function (filterURL) {
-
             var reloadURL = this.options.reloadURL;
             var urlParts = reloadURL.split('?');
             var query1 = urlParts[1] || [];
@@ -119,21 +118,27 @@ define([
             var query = [].concat(query1, query2).join('&');
             reloadURL = [].concat(urlParts[0], query).join('?');
 
-            var cl = new this.contentloader(this.$el, {
-                url: reloadURL,
-                target: this.$el,
-                content: 'aside',
-                trigger: 'immediate'
-            });
+            var cl = new this.contentloader(
+                this.$el,
+                {
+                    url: reloadURL,
+                    target: this.$el,
+                    content: 'aside',
+                    trigger: 'immediate'
+                }
+            );
         },
 
         reloadCollection: function (collectionURL) {
-            var cl = new this.contentloader(this.$el, {
-                url: collectionURL + '&ajax_load=1',
-                target: this.options.contentSelector,
-                content: this.options.contentSelector,
-                trigger: 'immediate'
-            });
+            var cl = new this.contentloader(
+                $(this.options.contentSelector).parent(),  // let base element for setting classes and triggering events be the parent, which isn't replaced.
+                {
+                    url: collectionURL + '&ajax_load=1',
+                    target: this.options.contentSelector,
+                    content: this.options.contentSelector,
+                    trigger: 'immediate'
+                }
+            );
             // TODO: remove this, once ``contentloader`` handles history
             // updates itself and adds ajax_load.
             //
