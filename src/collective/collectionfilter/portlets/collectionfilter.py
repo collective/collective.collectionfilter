@@ -38,7 +38,7 @@ class Assignment(base.Assignment):
     input_type = 'links'
     narrow_down = False
     view_name = None
-    content_selector = None
+    content_selector = '#content-core'
     # list_scaling = None
 
     def __init__(
@@ -52,7 +52,7 @@ class Assignment(base.Assignment):
         input_type='links',
         narrow_down=False,
         view_name=None,
-        content_selector=None,
+        content_selector='#content-core',
         # list_scaling=None
     ):
         self.header = header
