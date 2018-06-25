@@ -55,7 +55,7 @@ class Assignment(base.Assignment):
             return _(u'Collection Search')
 
 
-class Renderer(BaseSearchView, base.Renderer):
+class Renderer(base.Renderer, BaseSearchView):
     render = ViewPageTemplateFile('collectionsearch.pt')
 
     @property

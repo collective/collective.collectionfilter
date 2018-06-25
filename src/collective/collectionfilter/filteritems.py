@@ -123,6 +123,7 @@ def get_filter_items(
     value_blacklist = groupby_criteria[group_by].get('value_blacklist', None)
     # Allow value_blacklist to be callables for runtime-evaluation
     value_blacklist = value_blacklist() if callable(value_blacklist) else value_blacklist  # noqa
+    sort_key_function = groupby_criteria[group_by].get('sort_key_function', None)
 
     grouped_results = {}
     for brain in catalog_results:
@@ -149,11 +150,9 @@ def get_filter_items(
 
             # Set title from filter value with modifications,
             # e.g. uuid to title
-            title = _(safe_decode(
-                display_modifier(filter_value)
-                if display_modifier and filter_value is not EMPTY_MARKER
-                else filter_value
-            ))
+            title = filter_value
+            if filter_value is not EMPTY_MARKER and callable(display_modifier):
+                title = _(safe_decode(display_modifier(filter_value)))
 
             # Build filter url query
             _urlquery = urlquery.copy()
@@ -185,7 +184,6 @@ def get_filter_items(
             )
 
             grouped_results[filter_value] = {
-                'sort_key': title.lower(),
                 'title': title,
                 'url': url,
                 'value': filter_value,
@@ -212,9 +210,12 @@ def get_filter_items(
         'selected': idx not in request_params
     }]
 
-    ret += sorted(
-        grouped_results.values(),
-        key=lambda it: it['sort_key']
-    )
+    if callable(sort_key_function):
+        grouped_results = sorted(
+            grouped_results.values(),
+            key=sort_key_function
+        )
+
+    ret += grouped_results
 
     return ret

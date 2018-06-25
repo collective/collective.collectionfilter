@@ -21,11 +21,12 @@ It uses a data structure like this::
 
     self._groupby = {
         it: {                   # Index name
-            'index': it,            # Name of the index to use
-            'metadata': it,         # Name of the metadata column to use
-            'display_modifier': _   # Function to prepare the metadata column value for displaying
-            'index_modifier': None  # Function to transform the index search value.
-            'value_blacklist': []   # Blacklist of index values, which should not included in the filter selection. Can be a callable.
+            'index': it,             # Name of the index to use
+            'metadata': it,          # Name of the metadata column to use
+            'display_modifier': _ ,  # Function to prepare the metadata column value for displaying
+            'index_modifier': None,  # Function to transform the index search value.
+            'value_blacklist': [],   # Blacklist of index values, which should not included in the filter selection. Can be a callable.
+            'sort_key_function': lambda it: it['title'].lower(),  # sort key function. defaults to a lower-cased title
         }
         for it in metadata
     }
@@ -48,10 +49,24 @@ Write an adapter::
     from zope.interface import implementer
 
 
+    sort_map = {
+        'VALUE1': 3,
+        'VALUE2': 1,
+        'VALUE3': 2,
+    }
+
+
+    def subjectsort(it):
+        # Sorts the value after a fixed sort map
+        val = it['title']
+        return sort_map.get(val, 0)
+
+
     @implementer(IGroupByModifier)
     @adapter(IGroupByCriteria)
     def groupby_modifier(groupby):
         groupby._groupby['Subject']['display_modifier'] = lambda x: x.upper()
+        groupby._groupby['Subject']['sort_key_function'] = subjectsort
         groupby._groupby['my_new_index'] = {
             'index': 'my_new_index',
             'metadata': 'my_new_index_metadata_colum',

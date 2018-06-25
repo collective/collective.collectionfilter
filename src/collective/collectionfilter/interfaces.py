@@ -161,6 +161,7 @@ class IGroupByCriteria(Interface):
                                          # for display. Gets the item passed
                 'index_modifier': None,  # Change index values before querying
                 'value_blacklist': None  # Exclude index values from display
+                'sort_key_function': None,  # sort key function. defaults to a lower-cased title.  # noqa
             },
         }
     """
