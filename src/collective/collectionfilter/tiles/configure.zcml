@@ -4,6 +4,9 @@
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="plone">
 
+    <include package="plone.tiles" />
+    <include package="plone.tiles" file="meta.zcml"/>
+
     <plone:tile
         name="collective.collectionfilter.tiles.filter"
         title="Collection Filter Tile"
