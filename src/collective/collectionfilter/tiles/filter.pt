@@ -32,13 +32,14 @@
         <ul>
           <tal:items repeat="item results">
           <li class="${item/css_class}">
-            <label>
-              <input
-                  name="${view/filter_id}"
-                  type="${input_type}"
-                  value="${item/value}"
-                  data-url="${item/url}"
-                  checked="${python:'checked' if item['selected'] else None}">
+            <input
+                name="${view/filter_id}"
+                type="${input_type}"
+                value="${item/value}"
+                data-url="${item/url}"
+                checked="${python:'checked' if item['selected'] else None}"
+                tal:attributes="id string:${view/filterClassName}-${item/value}">
+            <label tal:attributes="for string:${view/filterClassName}-${item/value}">
               <span class="filterLabel">
                 <span tal:replace="python:item['title'].replace('/', u'/\u00AD')">Item</span>
                 <tal:show_count condition="view/settings/show_count">(<span tal:replace="item/count" />)</tal:show_count>

@@ -16,13 +16,6 @@
         <ul>
           <tal:items repeat="item results">
           <li class="${item/css_class}">
-            <label tal:attributes="for string:${view/filterClassName}-${item/value}">
-              <span class="filterLabel">
-                <span tal:replace="python:item['title'].replace('/', u'/\u00AD')">Item</span>
-                <tal:show_count condition="view/settings/show_count">(<span tal:replace="item/count" />)</tal:show_count>
-              </span>
-
-            </label>
             <input
                 name="${view/filter_id}"
                 type="${input_type}"
@@ -30,6 +23,13 @@
                 data-url="${item/url}"
                 tal:attributes="checked python:'checked' if item['selected'] else None;
                                 id string:${view/filterClassName}-${item/value}">
+            <label tal:attributes="for string:${view/filterClassName}-${item/value}">
+              <span class="filterLabel">
+                <span tal:replace="python:item['title'].replace('/', u'/\u00AD')">Item</span>
+                <tal:show_count condition="view/settings/show_count">(<span tal:replace="item/count" />)</tal:show_count>
+              </span>
+
+            </label>
           </li>
           </tal:items>
         </ul>

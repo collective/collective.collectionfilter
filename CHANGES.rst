@@ -17,6 +17,8 @@ Breaking changes:
 - There is a implicit dependency to Font Awesome for the filter tile edit links.
   That has to be revisited to make it work out of the box.
 
+- Modernized markup for easier styling
+
 New:
 
 - Optimize the cache key by including the current language, user roles instead of id and the database counter.
