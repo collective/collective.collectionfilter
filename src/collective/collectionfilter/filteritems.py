@@ -179,7 +179,7 @@ def get_filter_items(
             selected = filter_value in current_idx_value
 
             css_class = 'filterItem {0}{1}'.format(
-                'filter_' + idnormalizer.normalize(filter_value),
+                'filter-' + idnormalizer.normalize(filter_value),
                 ' selected' if selected else ''
             )
 
@@ -205,7 +205,7 @@ def get_filter_items(
             urlencode(safe_encode(urlquery_all), doseq=True)
         ),
         'value': 'all',
-        'css_class': 'filterItem filter_all',
+        'css_class': 'filterItem filter-all',
         'count': len(catalog_results),
         'selected': idx not in request_params
     }]
