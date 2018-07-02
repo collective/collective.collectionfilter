@@ -24,7 +24,7 @@
                 tal:attributes="checked python:'checked' if item['selected'] else None;
                                 id string:${view/filterClassName}-${item/value}">
             <label tal:attributes="for string:${view/filterClassName}-${item/value}">
-              <span class="filterLabel">
+              <span class="filterLabel ${input_type}">
                 <span tal:replace="python:item['title'].replace('/', u'/\u00AD')">Item</span>
                 <tal:show_count condition="view/settings/show_count">(<span tal:replace="item/count" />)</tal:show_count>
               </span>
