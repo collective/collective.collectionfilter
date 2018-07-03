@@ -15,7 +15,7 @@
         <tal:if condition="python:input_type in ('checkbox', 'radio')">
         <ul>
           <tal:items repeat="item results">
-          <li class="${item/css_class}">
+          <li class="${item/css_class} ${input_type}">
             <input
                 name="${view/filter_id}"
                 type="${input_type}"
@@ -24,7 +24,8 @@
                 tal:attributes="checked python:'checked' if item['selected'] else None;
                                 id string:${view/filterClassName}-${item/value}">
             <label tal:attributes="for string:${view/filterClassName}-${item/value}">
-              <span class="filterLabel ${input_type}">
+              <span class="indicator"></span>
+              <span class="filterLabel">
                 <span tal:replace="python:item['title'].replace('/', u'/\u00AD')">Item</span>
                 <tal:show_count condition="view/settings/show_count">(<span tal:replace="item/count" />)</tal:show_count>
               </span>
