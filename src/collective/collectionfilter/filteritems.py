@@ -32,28 +32,20 @@ except ImportError:
         pass
 
 
-def _results_cachekey(
-        method,
-        target_collection,
-        group_by,
-        filter_type,
-        narrow_down,
-        view_name,
-        cache_enabled,
-        request_params):
-    if not cache_enabled:
+def _results_cachekey(fun, self):
+    if not self.cache_enabled:
         raise DontCache
-    cachekey = (
-        target_collection,
-        group_by,
-        filter_type,
-        narrow_down,
-        view_name,
-        request_params,
+    cachekey = ' '.join(str(it) for it in (
+        self.target_collection,
+        self.group_by,
+        self.filter_type,
+        self.narrow_down,
+        self.view_name,
+        self.request_params,
         ' '.join(plone.api.user.get_roles()),
         plone.api.portal.get_current_language(),
-        str(plone.api.portal.get_tool('portal_catalog').getCounter()),
-    )
+        plone.api.portal.get_tool('portal_catalog').getCounter(),
+    ))
     return cachekey
 
 
@@ -65,8 +57,9 @@ def get_filter_items(
         narrow_down=False,
         view_name='',
         cache_enabled=True,
-        request_params={}
+        request_params=None
 ):
+    request_params = request_params or {}
     custom_query = {}  # Additional query to filter the collection
 
     collection = uuidToObject(target_collection)

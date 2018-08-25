@@ -46,7 +46,12 @@ def safe_encode(val):
 
 
 def base_query(request_params={}, extra_ignores=[]):
-    # Construct base url query.
+    """Construct base url query.
+    """
+
+    # Defaults
+    request_params = request_params or {}
+    extra_ignores = extra_ignores or []
 
     # These request params should be ignored.
     ignore_params = [
