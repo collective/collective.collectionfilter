@@ -31,21 +31,28 @@ except ImportError:
     class EventListing(object):
         pass
 
-
-def _results_cachekey(fun, self):
-    if not self.cache_enabled:
+def _results_cachekey(
+        method,
+        target_collection,
+        group_by,
+        filter_type,
+        narrow_down,
+        view_name,
+        cache_enabled,
+        request_params):
+    if not cache_enabled:
         raise DontCache
-    cachekey = ' '.join(str(it) for it in (
-        self.target_collection,
-        self.group_by,
-        self.filter_type,
-        self.narrow_down,
-        self.view_name,
-        self.request_params,
+    cachekey = (
+        target_collection,
+        group_by,
+        filter_type,
+        narrow_down,
+        view_name,
+        request_params,
         ' '.join(plone.api.user.get_roles()),
         plone.api.portal.get_current_language(),
-        plone.api.portal.get_tool('portal_catalog').getCounter(),
-    ))
+        str(plone.api.portal.get_tool('portal_catalog').getCounter()),
+    )
     return cachekey
 
 
