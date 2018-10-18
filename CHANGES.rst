@@ -52,6 +52,8 @@ Bug fixes:
 
 - Sort the filter value list for filter title instead filter value.
 
+- fix collectionsearch portlet
+  [petschki]
 
 1.0.1 (2018-02-09)
 ------------------
