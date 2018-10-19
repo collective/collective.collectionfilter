@@ -123,7 +123,9 @@ def get_filter_items(
     value_blacklist = groupby_criteria[group_by].get('value_blacklist', None)
     # Allow value_blacklist to be callables for runtime-evaluation
     value_blacklist = value_blacklist() if callable(value_blacklist) else value_blacklist  # noqa
-    sort_key_function = groupby_criteria[group_by].get('sort_key_function', None)
+    # fallback to title sorted values
+    sort_key_function = groupby_criteria[group_by].get(
+        'sort_key_function', lambda it: it['title'].lower())
 
     grouped_results = {}
     for brain in catalog_results:
@@ -210,11 +212,10 @@ def get_filter_items(
         'selected': idx not in request_params
     }]
 
+    grouped_results = grouped_results.values()
+
     if callable(sort_key_function):
-        grouped_results = sorted(
-            grouped_results.values(),
-            key=sort_key_function
-        )
+        grouped_results = sorted(grouped_results, key=sort_key_function)
 
     ret += grouped_results
 
