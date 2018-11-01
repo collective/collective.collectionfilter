@@ -30,7 +30,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'setuptools',
-        'Products.CMFPlone >= 5.1',  # need get_top_request
+        'Products.CMFPlone',  # need get_top_request
         'plone.app.contenttypes',
     ],
     entry_points="""

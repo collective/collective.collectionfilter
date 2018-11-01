@@ -6,7 +6,7 @@ from .utils import safe_encode
 from .vocabularies import TEXT_IDX
 from plone.app.uuid.utils import uuidToCatalogBrain
 from plone.i18n.normalizer.interfaces import IIDNormalizer
-from Products.CMFPlone.utils import get_top_request
+from .utils import get_top_request
 from Products.CMFPlone.utils import safe_unicode
 from urllib import urlencode
 from zope.component import queryUtility

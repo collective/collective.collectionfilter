@@ -4,7 +4,7 @@ from ..baseviews import BaseSearchView
 from ..interfaces import ICollectionSearchSchema
 from plone.app.portlets.portlets import base
 from plone.portlets.interfaces import IPortletDataProvider
-from Products.CMFPlone.utils import get_top_request
+from ..utils import get_top_request
 from Products.CMFPlone.utils import getFSVersionTuple
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import queryUtility

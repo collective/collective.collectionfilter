@@ -33,9 +33,8 @@ class ICollectionFilterBaseSchema(Interface):
         'target_collection',
         RelatedItemsFieldWidget,
         pattern_options={
-            'basePath': utils.target_collection_base_path,
             'recentlyUsed': True,
-            # 'selectableTypes': ['Collection'],
+             'selectableTypes': ['Collection'],
         }
     )
 
