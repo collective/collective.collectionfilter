@@ -59,7 +59,7 @@ class BaseView(object):
             self._collection = uuidToCatalogBrain(
                 self.settings.target_collection
             )
-        return self._collection.aq_inner
+        return self._collection
 
 
 class BaseFilterView(BaseView):
