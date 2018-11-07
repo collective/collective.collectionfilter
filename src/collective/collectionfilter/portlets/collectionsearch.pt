@@ -8,7 +8,7 @@
        i18n:domain="plone">
 
   <tal:if condition="view/settings/target_collection">
-  <header tal:condition="view/title" tal:content="view/title">Title</header>
+  <header class="portletHeader" tal:condition="view/title" tal:content="view/title">Title</header>
   <div class="searchContent">
     <form method="get" name="searchForm" role="form" action="${view/action_url}">
         <input type="hidden" name="collectionfilter" value="1"/>

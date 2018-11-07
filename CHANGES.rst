@@ -52,6 +52,12 @@ Bug fixes:
 
 - Sort the filter value list for filter title instead filter value.
 
+- fix collectionsearch portlet
+  [petschki]
+
+- when providing a custom `IGroupByCriteria` adapter, fallback to title sorted values if no sort_key_function is given.
+  [petschki]
+
 
 1.0.1 (2018-02-09)
 ------------------

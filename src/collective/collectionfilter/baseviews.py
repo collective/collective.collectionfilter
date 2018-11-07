@@ -4,6 +4,7 @@ from .utils import base_query
 from .utils import safe_decode
 from .utils import safe_encode
 from .vocabularies import TEXT_IDX
+from Acquisition import aq_inner
 from plone.app.uuid.utils import uuidToCatalogBrain
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from .utils import get_top_request
@@ -59,7 +60,7 @@ class BaseView(object):
             self._collection = uuidToCatalogBrain(
                 self.settings.target_collection
             )
-        return self._collection
+        return aq_inner(self._collection)
 
 
 class BaseFilterView(BaseView):
