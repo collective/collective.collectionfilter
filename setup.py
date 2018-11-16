@@ -14,6 +14,7 @@ setup(
     ),
     classifiers=[
         "Framework :: Plone",
+        "Framework :: Plone :: 5.0",
         "Framework :: Plone :: 5.1",
         "Programming Language :: Python",
         "Topic :: Software Development :: Libraries :: Python Modules",
@@ -30,7 +31,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'setuptools',
-        'Products.CMFPlone',  # need get_top_request
+        'Products.CMFPlone >= 5.0',
         'plone.app.contenttypes',
     ],
     entry_points="""

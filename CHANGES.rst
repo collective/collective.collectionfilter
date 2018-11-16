@@ -6,8 +6,10 @@ Changelog
 
 Breaking changes:
 
+- Depend on Products.CMFPlone >= 5.0
+
 - Remove the ``cache_time`` setting and replace it with ``cache_enabled``.
-- Depend on Products.CMFPlone >= 5.1 for using ``get_top_request``.
+
 - collectionsearch.pt: changed view attribute ``header_title`` to ``title``.
 
 - Depend on plone.app.contenttypes.

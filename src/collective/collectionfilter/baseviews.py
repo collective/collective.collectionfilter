@@ -7,10 +7,14 @@ from .vocabularies import TEXT_IDX
 from Acquisition import aq_inner
 from plone.app.uuid.utils import uuidToCatalogBrain
 from plone.i18n.normalizer.interfaces import IIDNormalizer
-from .utils import get_top_request
 from Products.CMFPlone.utils import safe_unicode
 from urllib import urlencode
 from zope.component import queryUtility
+
+try:
+    from Products.CMFPlone.utils import get_top_request
+except ImportError:
+    from collective.collectionfilter.utils import get_top_request
 
 
 class BaseView(object):

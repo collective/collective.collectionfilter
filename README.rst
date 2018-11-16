@@ -3,7 +3,7 @@ collective.collectionfilter
 
 Faceted navigation filter for collection results.
 
-This Plone addon allows you to filter collections results for additional catalog metadata.
+This Plone 5 addon allows you to filter collections results for additional catalog metadata.
 For example, you can add a subject filter, but also a filter for authors or portal types.
 This can also be used to build tag clouds.
 
