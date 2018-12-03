@@ -5,6 +5,7 @@ from collective.collectionfilter.utils import safe_encode
 from collective.collectionfilter.vocabularies import EMPTY_MARKER
 from collective.collectionfilter.vocabularies import TEXT_IDX
 from zope.component import getUtility
+import plone.api
 
 
 def make_query(params_dict):
@@ -29,5 +30,11 @@ def make_query(params_dict):
 
     if TEXT_IDX in params_dict:
         query_dict[TEXT_IDX] = safe_decode(params_dict.get(TEXT_IDX))
+
+    # Filter by path if passed in
+    if 'path' in params_dict:
+        additional_paths = params_dict['path'].split('/')
+        query_dict['path'] = {'query': '/'.join(
+            list(plone.api.portal.get().getPhysicalPath()) + additional_paths)}
 
     return query_dict
