@@ -235,3 +235,133 @@ def get_filter_items(
     ret += grouped_results
 
     return ret
+
+
+# TODO: implement caching
+def get_location_filter_items(
+        target_collection,
+        filter_type=DEFAULT_FILTER_TYPE,
+        narrow_down=False,
+        view_name='',
+        cache_enabled=True,
+        request_params=None
+):
+    request_params = request_params or {}
+    custom_query = {}  # Additional query to filter the collection
+
+    collection = uuidToObject(target_collection)
+    if not collection:
+        return None
+    collection_url = collection.absolute_url()
+    collection_layout = collection.getLayout()
+    default_view = collection.restrictedTraverse(collection_layout)
+
+    # Recursively transform all to unicode
+    request_params = safe_decode(request_params)
+
+    # Support for the Event Listing view from plone.app.event
+    if isinstance(default_view, EventListing):
+        mode = request_params.get('mode', 'future')
+        date = request_params.get('date', None)
+        date = guess_date_from(date) if date else None
+        start, end = start_end_from_mode(mode, date, collection)
+        start, end = _prepare_range(collection, start, end)
+        custom_query.update(start_end_query(start, end))
+        # TODO: expand events. better yet, let collection.results
+        #       do that
+
+    current_path_value = request_params.get('path')
+    urlquery = base_query(request_params)
+
+    # Get all collection results with additional filter defined by urlquery
+    custom_query.update(urlquery)
+    custom_query = make_query(custom_query)
+    catalog_results = ICollection(collection).results(
+        batch=False,
+        brains=True,
+        custom_query=custom_query
+    )
+    if not catalog_results:
+        return None
+
+    filtered_path = '/'.join(list(plone.api.portal.get().getPhysicalPath()) +
+                             (current_path_value and
+                             current_path_value.split('/') or []))
+    grouped_results = {}
+    for brain in catalog_results:
+
+        # Get path, remove portal root from path, remove leading /
+        path = brain.getPath()
+        if path.startswith(filtered_path):
+            path = path[len(filtered_path)+1:]
+
+        # If path is in the root, don't add anything to path
+        paths = path.split('/')
+        if len(paths) == 1:
+            continue
+
+        first_path = paths[0]
+        if first_path in grouped_results:
+            # Add counter, if path is already present
+            grouped_results[first_path]['count'] += 1
+
+        # TODO: get title
+        title = first_path
+
+        # Build filter url query
+        selected = first_path == current_path_value
+        _urlquery = urlquery.copy()
+        _urlquery['path'] = first_path
+        if selected is True and _urlquery.has_key('path'):
+            del _urlquery['path']
+
+        query_param = urlencode(safe_encode(_urlquery), doseq=True)
+        url = u'/'.join([it for it in [
+            collection_url,
+            view_name,
+            '?' + query_param if query_param else None
+        ] if it])
+
+
+
+        css_class = 'filterItem {0}{1}'.format(
+            'filter-' + idnormalizer.normalize(first_path),
+            ' selected' if selected else ''
+        )
+
+        grouped_results[first_path] = {
+            'title': title,
+            'url': url,
+            'value': first_path,
+            'css_class': css_class,
+            'count': 1,
+            'selected': selected
+        }
+
+    # Entry to clear all filters
+    urlquery_all = {
+        k: v for k, v in urlquery.items() if k != 'path'
+    }
+    ret = [{
+        'title': translate(
+            _('location_reset', default=u'Reset'), context=getRequest()
+        ),
+        'url': u'{0}/?{1}'.format(
+            collection_url,
+            urlencode(safe_encode(urlquery_all), doseq=True)
+        ),
+        'value': 'all',
+        'css_class': 'filterItem filter-all',
+        'count': len(catalog_results),
+        'selected': 'path' not in request_params
+    }]
+
+    grouped_results = grouped_results.values()
+
+    # TODO: sortable option
+    #if callable(sort_key_function):
+    #    grouped_results = sorted(grouped_results, key=sort_key_function)
+
+    ret += grouped_results
+
+    return ret

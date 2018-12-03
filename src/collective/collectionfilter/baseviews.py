@@ -6,6 +6,7 @@ from Products.CMFPlone.utils import get_top_request
 from Products.CMFPlone.utils import safe_unicode
 from collective.collectionfilter.filteritems import get_filter_items
 from collective.collectionfilter.query import make_query
+from collective.collectionfilter.filteritems import get_location_filter_items
 from collective.collectionfilter.utils import base_query
 from collective.collectionfilter.utils import safe_decode
 from collective.collectionfilter.utils import safe_encode
@@ -98,6 +99,44 @@ class BaseFilterView(BaseView):
             filter_type=self.settings.filter_type,
             narrow_down=self.settings.narrow_down,
             show_count=self.settings.show_count,
+            view_name=self.settings.view_name,
+            cache_enabled=self.settings.cache_enabled,
+            request_params=self.top_request.form or {}
+        )
+        return results
+
+
+class BaseLocationView(BaseView):
+
+    @property
+    def input_type(self):
+        if self.settings.input_type == 'links':
+            return 'link'
+        elif self.settings.filter_type == 'single':
+            if self.settings.input_type == 'checkboxes_radiobuttons':
+                return 'radio'
+            else:
+                return 'dropdown'
+        else:
+            return 'checkbox'
+
+    def paths(self):
+        paths = [{'title':'Home', 'level': 0}]
+        params = self.top_request.form or {}
+        path = params.get('path', None)
+        if path is None:
+            return paths
+        level = 0
+        for path in path.split('/'):
+            level += 1
+            paths.append({'title': path, 'level': level})
+        return paths
+
+    def results(self):
+        results = get_location_filter_items(
+            target_collection=self.settings.target_collection,
+            filter_type=self.settings.filter_type,
+            narrow_down=self.settings.narrow_down,
             view_name=self.settings.view_name,
             cache_enabled=self.settings.cache_enabled,
             request_params=self.top_request.form or {}

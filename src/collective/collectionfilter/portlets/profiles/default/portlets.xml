@@ -15,4 +15,9 @@
       title="Collection Maps"
       description="This portlet allows map filtering in collection results."
       />
+  <portlet
+      addview="collective.collectionfilter.portlets.CollectionLocationFilter"
+      title="Collection Location Filter"
+      description="This portlet allows filtering of collection results based on their position in the site."
+      />
 </portlets>
