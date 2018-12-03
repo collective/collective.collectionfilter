@@ -43,6 +43,18 @@
       edit_permission="plone.app.portlets.ManagePortlets"
       />
 
+  <plone:portlet
+      name="collective.collectionfilter.portlets.CollectionLocationFilter"
+      interface=".locationfilter.ICollectionLocationPortlet"
+      assignment=".locationfilter.Assignment"
+      renderer=".locationfilter.Renderer"
+      addview=".locationfilter.AddForm"
+      editview=".locationfilter.EditForm"
+      view_permission="zope2.View"
+      edit_permission="plone.app.portlets.ManagePortlets"
+      />
+
+
   <genericsetup:registerProfile
       name="default"
       title="collective.collectionfilter portlets"
