@@ -83,6 +83,10 @@ Done.
 
 Your adapter is called by ``collective.collectionfilter.vocabularies.GroupByCriteria.groupby``.
 
+Compatibility
+-------------
+
+This package is compatible with Plone 5 and above. Note that in 5.0 some functionality is reduced such as AJAX loading of search results.
 
 Author
 ------

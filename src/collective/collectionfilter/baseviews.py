@@ -5,6 +5,7 @@ from .utils import safe_decode
 from .utils import safe_encode
 from .vocabularies import TEXT_IDX
 from Acquisition import aq_inner
+from collective.collectionfilter import PLONE_VERSION
 from plone.app.uuid.utils import uuidToCatalogBrain
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from Products.CMFPlone.utils import safe_unicode
@@ -65,6 +66,12 @@ class BaseView(object):
                 self.settings.target_collection
             )
         return aq_inner(self._collection)
+
+    @property
+    def patCollectionFilter(self):
+        if PLONE_VERSION >= '5.1':
+            return 'pat-collectionfilter'
+        return ''
 
 
 class BaseFilterView(BaseView):
