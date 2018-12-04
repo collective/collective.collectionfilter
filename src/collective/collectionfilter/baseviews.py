@@ -162,8 +162,6 @@ class BaseLocationView(BaseView):
     def results(self):
         results = get_location_filter_items(
             target_collection=self.settings.target_collection,
-            filter_type=self.settings.filter_type,
-            narrow_down=self.settings.narrow_down,
             view_name=self.settings.view_name,
             cache_enabled=self.settings.cache_enabled,
             request_params=self.top_request.form or {}
