@@ -79,6 +79,9 @@ New:
 - Make backwards compatible with Plone 5.0
   [nngu6036, instification]
 
+- Add Location Filter portlet. Allows to filter results based on location in site.
+  [instification]
+
 Bug fixes:
 
 - When reloading the collection in JavaScript, use the content selector's parent as base to trigger events on.

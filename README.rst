@@ -9,7 +9,7 @@ This can also be used to build tag clouds.
 
 The filter types can be extended (see: ``collective.collectionfilter.vocabularies``).
 
-Besides the "Collection Filter" portlet/tile there is also a "Collection Search" portlet/tile for doing a fulltext search on the collection results.
+Besides the "Collection Filter" portlet/tile there is also a "Collection Search" portlet/tile for doing a fulltext search on the collection results and a "Location Filter" for filtering results based on their location in the site.
 
 
 Overloading GroupByCriteria
