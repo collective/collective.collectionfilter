@@ -288,7 +288,7 @@ def get_location_filter_items(
         #       do that
 
     current_path_value = request_params.get('path')
-    urlquery = base_query(request_params)
+    urlquery = base_query(request_params, ['path'])
 
     # Get all collection results with additional filter defined by urlquery
     custom_query.update(urlquery)
@@ -322,8 +322,9 @@ def get_location_filter_items(
         return ret
 
     portal = plone.api.portal.get()
+    portal_path = portal.getPhysicalPath()
     qspaths = current_path_value and current_path_value.split('/') or []
-    filtered_path = '/'.join(list(portal.getPhysicalPath()) + qspaths)
+    filtered_path = '/'.join(list(portal_path) + qspaths)
     grouped_results = {}
     level = len(qspaths) + 1
     for brain in catalog_results:
@@ -332,6 +333,8 @@ def get_location_filter_items(
         path = brain.getPath()
         if path.startswith(filtered_path):
             path = path[len(filtered_path)+1:]
+        else:
+            continue
 
         # If path is in the root, don't add anything to path
         paths = path.split('/')
@@ -387,6 +390,18 @@ def get_location_filter_items(
         item = item.get(path, None)
         if not item:
             break
+
+        # Get the results just in this subfolder
+        item_path = '/'.join(item.getPhysicalPath())[
+                    len('/'.join(portal_path))+1:]
+        custom_query = {'path': item_path}
+        custom_query.update(urlquery)
+        custom_query = make_query(custom_query)
+        catalog_results = ICollection(collection).results(
+            batch=False,
+            brains=True,
+            custom_query=custom_query
+        )
         level += 1
         _urlquery = urlquery.copy()
         _urlquery['path'] = '/'.join(qspaths[:qspaths.index(path) + 1])
