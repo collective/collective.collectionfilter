@@ -1,5 +1,4 @@
-<aside class="portlet ${view/filterClassName} collectionFilter pat-collectionfilter"
-       tal:define="input_type view/input_type"
+<aside class="portlet portletNavigationTree ${view/filterClassName}  locationFilter pat-collectionfilter"
        data-pat-collectionfilter='{
            "collectionUUID": "${view/settings/target_collection}",
            "reloadURL": "${view/reload_url}",
@@ -9,30 +8,27 @@
        i18n:domain="plone">
 
   <tal:if condition="view/settings/target_collection">
-  <header class="portletHeader" tal:condition="view/title" tal:content="view/title">Title</header>
-  <div class="portletContent filterContent" tal:define="results view/results">
+      <nav class="portletContent" tal:define="results view/results">
 
-
-      <ul>
-          <tal:items repeat="item view/paths">
-              <li tal:content="item/title" tal:attributes="style python:'margin-left: %sem' % item['level']"></li>
-          </tal:items>
-      </ul>
-
-        <ul>
-          <tal:items repeat="item results">
-          <li class="${item/css_class}">
-            <a
-                rel="nofollow"
-                href="${item/url}"
-                title="Count: ${item/count}">
-              <span tal:content="item/title">Item</span>
-              <tal:show_count condition="view/settings/show_count">(<span tal:replace="item/count" />)</tal:show_count>
-            </a>
-          </li>
-          </tal:items>
-        </ul>
-
-  </div>
+          <header class="portletHeader" tal:condition="view/title" tal:content="view/title">Title</header>
+          <ul class="navTree navTreeLevel0">
+              <tal:items repeat="item results">
+               <li  class="navTreeItem">
+                   <ul class="navTree navTreeLevel${item/level}">
+                          <li class="${item/css_class}">
+                            <a
+                                rel="nofollow"
+                                href="${item/url}"
+                                title="Count: ${item/count}"
+                                class="contenttype-${item/contenttype}">
+                              <span tal:content="item/title">Item</span>
+                              <tal:show_count condition="view/settings/show_count">(<span tal:replace="item/count" />)</tal:show_count>
+                            </a>
+                          </li>
+                   </ul>
+               </li>
+              </tal:items>
+          </ul>
+      </nav>
   </tal:if>
 </aside>

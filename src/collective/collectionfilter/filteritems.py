@@ -58,6 +58,25 @@ def _results_cachekey(
     return cachekey
 
 
+def _location_results_cachekey(
+        method,
+        target_collection,
+        view_name,
+        cache_enabled,
+        request_params):
+    if not cache_enabled:
+        raise DontCache
+    cachekey = (
+        target_collection,
+        view_name,
+        request_params,
+        ' '.join(plone.api.user.get_roles()),
+        plone.api.portal.get_current_language(),
+        str(plone.api.portal.get_tool('portal_catalog').getCounter()),
+    )
+    return cachekey
+
+
 @ram.cache(_results_cachekey)
 def get_filter_items(
         target_collection,
@@ -127,6 +146,8 @@ def get_filter_items(
         )
     if not catalog_results:
         return None
+
+    #import pdb; pdb.set_trace()
 
     # Attribute name for getting filter value from brain
     metadata_attr = groupby_criteria[group_by]['metadata']
@@ -237,11 +258,9 @@ def get_filter_items(
     return ret
 
 
-# TODO: implement caching
+@ram.cache(_location_results_cachekey)
 def get_location_filter_items(
         target_collection,
-        filter_type=DEFAULT_FILTER_TYPE,
-        narrow_down=False,
         view_name='',
         cache_enabled=True,
         request_params=None
@@ -281,13 +300,34 @@ def get_location_filter_items(
         brains=True,
         custom_query=custom_query
     )
-    if not catalog_results:
-        return None
 
-    filtered_path = '/'.join(list(plone.api.portal.get().getPhysicalPath()) +
-                             (current_path_value and
-                             current_path_value.split('/') or []))
+    # Entry to clear all filters
+    urlquery_all = {
+        k: v for k, v in urlquery.items() if k != 'path'
+    }
+    ret = [{
+        'title': translate(
+            _('location_home', default=u'Home'), context=getRequest()
+        ),
+        'url': u'{0}/?{1}'.format(
+            collection_url,
+            urlencode(safe_encode(urlquery_all), doseq=True)
+        ),
+        'value': 'all',
+        'css_class': 'navTreeItem filterItem filter-all selected',
+        'count': len(catalog_results),
+        'level': 0,
+        'contenttype': 'folder'
+    }]
+
+    if not catalog_results:
+        return ret
+
+    portal = plone.api.portal.get()
+    qspaths = current_path_value and current_path_value.split('/') or []
+    filtered_path = '/'.join(list(portal.getPhysicalPath()) + qspaths)
     grouped_results = {}
+    level = len(qspaths) + 1
     for brain in catalog_results:
 
         # Get path, remove portal root from path, remove leading /
@@ -304,17 +344,23 @@ def get_location_filter_items(
         if first_path in grouped_results:
             # Add counter, if path is already present
             grouped_results[first_path]['count'] += 1
+            continue
 
-        # TODO: get title
         title = first_path
+        ctype = 'folder'
+        container = portal.portal_catalog.searchResults({'path': {
+            'query': '/'.join(list(portal.getPhysicalPath()) +
+                              qspaths +
+                              [first_path]),
+            'depth': 0,
+        }})
+        if len(container) > 0:
+            title = container[0].Title
+            ctype = container[0].portal_type.lower()
 
         # Build filter url query
-        selected = first_path == current_path_value
         _urlquery = urlquery.copy()
-        _urlquery['path'] = first_path
-        if selected is True and _urlquery.has_key('path'):
-            del _urlquery['path']
-
+        _urlquery['path'] = '/'.join(qspaths + [first_path])
         query_param = urlencode(safe_encode(_urlquery), doseq=True)
         url = u'/'.join([it for it in [
             collection_url,
@@ -322,11 +368,8 @@ def get_location_filter_items(
             '?' + query_param if query_param else None
         ] if it])
 
-
-
-        css_class = 'filterItem {0}{1}'.format(
-            'filter-' + idnormalizer.normalize(first_path),
-            ' selected' if selected else ''
+        css_class = 'navTreeItem filterItem {0}'.format(
+            'filter-' + idnormalizer.normalize(first_path)
         )
 
         grouped_results[first_path] = {
@@ -335,30 +378,37 @@ def get_location_filter_items(
             'value': first_path,
             'css_class': css_class,
             'count': 1,
-            'selected': selected
+            'level': level,
+            'contenttype': ctype,
         }
 
-    # Entry to clear all filters
-    urlquery_all = {
-        k: v for k, v in urlquery.items() if k != 'path'
-    }
-    ret = [{
-        'title': translate(
-            _('location_reset', default=u'Reset'), context=getRequest()
-        ),
-        'url': u'{0}/?{1}'.format(
+    # Add the selected paths
+    item = portal
+    level = 0
+    for path in qspaths:
+        item = item.get(path, None)
+        if not item:
+            break
+        level += 1
+        _urlquery = urlquery.copy()
+        _urlquery['path'] = '/'.join(qspaths[:qspaths.index(path) + 1])
+        query_param = urlencode(safe_encode(_urlquery), doseq=True)
+        url = u'/'.join([it for it in [
             collection_url,
-            urlencode(safe_encode(urlquery_all), doseq=True)
-        ),
-        'value': 'all',
-        'css_class': 'filterItem filter-all',
-        'count': len(catalog_results),
-        'selected': 'path' not in request_params
-    }]
+            view_name,
+            '?' + query_param if query_param else None
+        ] if it])
+        ret.append({'title': item.Title(),
+                    'url': url,
+                    'value': path,
+                    'css_class': 'filter-%s selected' % idnormalizer.normalize(path),
+                    'count': len(catalog_results),
+                    'level': level,
+                    'contenttype': item.portal_type.lower()})
 
     grouped_results = grouped_results.values()
 
-    # TODO: sortable option
+    # TODO: sortable option, probably should just sort by position in container
     #if callable(sort_key_function):
     #    grouped_results = sorted(grouped_results, key=sort_key_function)
 
