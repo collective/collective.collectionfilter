@@ -134,8 +134,6 @@ def get_filter_items(
     if not catalog_results:
         return None
 
-    #import pdb; pdb.set_trace()
-
     # Attribute name for getting filter value from brain
     metadata_attr = groupby_criteria[group_by]['metadata']
     # Optional modifier to set title from filter value
