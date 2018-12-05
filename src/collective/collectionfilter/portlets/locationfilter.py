@@ -42,11 +42,15 @@ class Assignment(base.Assignment):
         target_collection=None,
         view_name=None,
         content_selector='#content-core',
+        show_count=False,
+        cache_enabled=True
     ):
         self.header = header
         self.target_collection = target_collection
         self.view_name = view_name
         self.content_selector = content_selector
+        self.show_count = show_count
+        self.cache_enabled = cache_enabled
 
     @property
     def title(self):
