@@ -7,7 +7,7 @@ Changelog
 Breaking changes:
 
 - Remove the ``cache_time`` setting and replace it with ``cache_enabled``.
-- Depend on Products.CMFPlone >= 5.1 for using ``get_top_request``.
+
 - collectionsearch.pt: changed view attribute ``header_title`` to ``title``.
 
 - Depend on plone.app.contenttypes.
@@ -41,6 +41,9 @@ New:
 - Add ``content_selector`` configuration parameter to choose a DOM node from the source to inject into the target.
 
 - Ensure early exit on the content filter traverse handler if it is not needed to run.
+
+- Make backwards compatible with Plone 5.0
+  [nngu6036, instification]
 
 Bug fixes:
 

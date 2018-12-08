@@ -5,26 +5,19 @@ from ..interfaces import ICollectionFilterSchema
 from ..vocabularies import DEFAULT_FILTER_TYPE
 from plone.app.portlets.portlets import base
 from plone.portlets.interfaces import IPortletDataProvider
-from Products.CMFPlone.utils import get_top_request
-from Products.CMFPlone.utils import getFSVersionTuple
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.interface import implementer
 
-
-PLONE5 = getFSVersionTuple()[0] >= 5
-
-if PLONE5:
-    base_AddForm = base.AddForm
-    base_EditForm = base.EditForm
-else:
-    from plone.app.portlets.browser.z3cformhelper import AddForm as base_AddForm  # noqa
-    from plone.app.portlets.browser.z3cformhelper import EditForm as base_EditForm  # noqa
-    from z3c.form import field
+try:
+    from Products.CMFPlone.utils import get_top_request
+except ImportError:
+    from collective.collectionfilter.utils import get_top_request
 
 
 class ICollectionFilterPortlet(ICollectionFilterSchema, IPortletDataProvider):
     """Portlet interface based on ICollectionFilterSchema
     """
+
 
 @implementer(ICollectionFilterPortlet)
 class Assignment(base.Assignment):
@@ -102,12 +95,9 @@ class Renderer(base.Renderer, BaseFilterView):
         return reload_url
 
 
-class AddForm(base_AddForm):
-    if PLONE5:
-        schema = ICollectionFilterPortlet
-    else:
-        fields = field.Fields(ICollectionFilterPortlet)
+class AddForm(base.AddForm):
 
+    schema = ICollectionFilterPortlet
     label = _(u"Add Collection Filter Portlet")
     description = _(
         u"This portlet shows grouped criteria of collection results and "
@@ -118,12 +108,9 @@ class AddForm(base_AddForm):
         return Assignment(**data)
 
 
-class EditForm(base_EditForm):
-    if PLONE5:
-        schema = ICollectionFilterPortlet
-    else:
-        fields = field.Fields(ICollectionFilterPortlet)
+class EditForm(base.EditForm):
 
+    schema = ICollectionFilterPortlet
     label = _(u"Edit Collection Filter Portlet")
     description = _(
         u"This portlet shows grouped criteria of collection results and "
