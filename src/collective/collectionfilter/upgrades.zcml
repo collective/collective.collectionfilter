@@ -1,0 +1,41 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="collective.collectionfilter">
+
+  <genericsetup:upgradeStep
+      source="1"
+      destination="2"
+      title="Portlet upgrade for new filter_type attribute"
+      description=""
+      profile="collective.collectionfilter:default"
+      handler=".upgrades.upgrade_portlet_input_type"
+      />
+  <genericsetup:upgradeSteps
+      source="2"
+      destination="3"
+      profile="collective.collectionfilter:default"
+      >
+    <genericsetup:upgradeDepends
+        title="Register bundle differently to avoid Select2 initialization error"
+        description=""
+        import_profile="collective.collectionfilter:default"
+        import_steps="plone.app.registry"
+        run_deps="false"
+        />
+  </genericsetup:upgradeSteps>
+
+  <genericsetup:upgradeStep
+      source="*"
+      destination="7"
+      title="Reapply profile to fix bundle registration"
+      description=""
+      profile="collective.collectionfilter:default"
+      handler=".upgrades.reapply_profile"
+      />
+
+
+</configure>

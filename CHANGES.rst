@@ -1,10 +1,11 @@
 Changelog
 =========
 
-2.1 (unreleased)
+2.0.1 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Fix upgrade steps and reapply profile to fix bundle registration
+  [agitator]
 
 
 2.0 (2018-12-08)
