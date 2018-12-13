@@ -1,3 +1,5 @@
+from collective.collectionfilter.portlets.collectionfilter import ICollectionFilterPortlet  # noqa
+from plone.app.upgrade.utils import loadMigrationProfile
 from plone.portlets.interfaces import ILocalPortletAssignable
 from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets.interfaces import IPortletManager
@@ -5,7 +7,6 @@ from Products.CMFCore.utils import getToolByName
 from zope.component import getMultiAdapter
 from zope.component import getUtilitiesFor
 from zope.component.hooks import getSite
-from collective.collectionfilter.portlets.collectionfilter import ICollectionFilterPortlet  # noqa
 
 import logging
 
@@ -13,7 +14,7 @@ logger = logging.getLogger(__file__)
 
 
 def upgrade_portlet_input_type(ctx):
-    # See: https://docs.plone.org/4/en/old-reference-manuals/portlets/appendix/schema_update.html 
+    # See: https://docs.plone.org/4/en/old-reference-manuals/portlets/appendix/schema_update.html
     context = getSite()
     cat = getToolByName(context, 'portal_catalog')
     query = {'object_provides': ILocalPortletAssignable.__identifier__}
@@ -39,3 +40,10 @@ def upgrade_portlet_input_type(ctx):
                     else:
                         logger.info(u"Set {0} input_type to ``links``".format(assignment))  # noqa
                         setattr(assignment, 'input_type', 'links')
+
+
+def reapply_profile(context):
+    loadMigrationProfile(
+        context,
+        'profile-collective.collectionfilter:default',
+    )

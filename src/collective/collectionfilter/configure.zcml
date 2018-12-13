@@ -10,6 +10,8 @@
   <include zcml:condition="installed plone.app.portlets" package=".portlets" />
   <include zcml:condition="installed plone.tiles" package=".tiles" />
 
+  <include file="upgrades.zcml" />
+
   <browser:resourceDirectory
       name="collective.collectionfilter"
       directory="resources"
@@ -57,26 +59,5 @@
       description='Extension profile for Plone.'
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
-  <genericsetup:upgradeStep
-      source="1"
-      destination="2"
-      title="Portlet upgrade for new filter_type attribute"
-      description=""
-      profile="collective.collectionfilter:default"
-      handler=".upgrades.upgrade_portlet_input_type"
-      />
-  <genericsetup:upgradeSteps
-      source="2"
-      destination="3"
-      profile="collective.collectionfilter:default"
-      >
-    <genericsetup:upgradeDepends
-        title="Register bundle differently to avoid Select2 initialization error"
-        description=""
-        import_profile="collective.collectionfilter:default"
-        import_steps="plone.app.registry"
-        run_deps="false"
-        />
-  </genericsetup:upgradeSteps>
 
 </configure>
