@@ -5,6 +5,7 @@ Changelog
 ----------------
 
 - Fix upgrade steps and reapply profile to fix bundle registration
+  Remove conditional reinitialization - caused problems with other patterns
   [agitator]
 
 
