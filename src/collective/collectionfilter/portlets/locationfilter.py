@@ -4,26 +4,17 @@ from ..baseviews import BaseLocationView
 from ..interfaces import ICollectionLocationFilterSchema
 from plone.app.portlets.portlets import base
 from plone.portlets.interfaces import IPortletDataProvider
-from Products.CMFPlone.utils import get_top_request
-from Products.CMFPlone.utils import getFSVersionTuple
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from zope.component import queryUtility
 from zope.interface import implementer
 
-
-PLONE5 = getFSVersionTuple()[0] >= 5
-
-if PLONE5:
-    base_AddForm = base.AddForm
-    base_EditForm = base.EditForm
-else:
-    from plone.app.portlets.browser.z3cformhelper import AddForm as base_AddForm  # noqa
-    from plone.app.portlets.browser.z3cformhelper import EditForm as base_EditForm  # noqa
-    from z3c.form import field
+try:
+    from Products.CMFPlone.utils import get_top_request
+except ImportError:
+    from collective.collectionfilter.utils import get_top_request
 
 
 class ICollectionLocationPortlet(ICollectionLocationFilterSchema,
-                                   IPortletDataProvider):
+                                 IPortletDataProvider):
     """Portlet interface based on ICollectionLocationFilterSchema
     """
 
@@ -81,12 +72,8 @@ class Renderer(base.Renderer, BaseLocationView):
         return reload_url
 
 
-class AddForm(base_AddForm):
-    if PLONE5:
-        schema = ICollectionLocationFilterSchema
-    else:
-        fields = field.Fields(ICollectionLocationFilterSchema)
-
+class AddForm(base.AddForm):
+    schema = ICollectionLocationFilterSchema
     label = _(u"Add Collection Location Filter Portlet")
     description = _(
         u"This portlet allows filtering of collection results based on their"
@@ -97,12 +84,8 @@ class AddForm(base_AddForm):
         return Assignment(**data)
 
 
-class EditForm(base_EditForm):
-    if PLONE5:
-        schema = ICollectionLocationFilterSchema
-    else:
-        fields = field.Fields(ICollectionLocationFilterSchema)
-
+class EditForm(base.EditForm):
+    schema = ICollectionLocationFilterSchema
     label = _(u"Edit Collection Location Filter Portlet")
     description = _(
         u"This portlet allows filtering of collection results based on their"

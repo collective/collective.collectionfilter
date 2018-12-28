@@ -1,4 +1,4 @@
-<aside class="portlet portletNavigationTree ${view/filterClassName}  locationFilter pat-collectionfilter"
+<aside class="portlet portletNavigationTree ${view/filterClassName}  locationFilter ${view/settings/patCollectionFilter}"
        data-pat-collectionfilter='{
            "collectionUUID": "${view/settings/target_collection}",
            "reloadURL": "${view/reload_url}",
