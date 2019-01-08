@@ -2,14 +2,14 @@ Changelog
 =========
 
 2.0.2.dev0 (unreleased)
-----------------
+-----------------------
 
 - Fix styles for long/multiline filter terms
   [agitator]
 
 
 2.0.1 (2018-12-13)
-----------------
+------------------
 
 - Fix upgrade steps and reapply profile to fix bundle registration
   Remove conditional reinitialization - caused problems with other patterns
