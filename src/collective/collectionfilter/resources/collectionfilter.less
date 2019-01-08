@@ -44,15 +44,16 @@
       list-style-type: none;
       padding: 2px;
 
+      input[type="radio"], input[type="checkbox"] {
+        margin: 0.3em 0.5em 0 0;
+        line-height: normal;
+        position: absolute;
+      }
       label {
         display: inline-block;
         .filterControl, .filterLabel{
             display: inline-block;
             vertical-align: top;
-        }
-        input[type="radio"], input[type="checkbox"] {
-          margin: 0.3em 0.5em 0 0;
-          line-height: normal;
         }
         .filterControl {
             margin-right: 0.5em;
@@ -61,6 +62,7 @@
           -webkit-hyphens: auto;
           -moz-hyphens: auto;
           hyphens: auto;
+          padding-left: 1.5em;
         }
       }
       > a {
@@ -77,14 +79,16 @@
           left: 0.15em;
           content: "•";
           display: inline;
-          position: relative;
+          position: absolute;
         }
         &:hover {
           text-decoration: none;
           border-bottom: 0;
         }
         > span {
-          padding-left: 0.5em;
+          padding-left: 1.5em;
+          display: inline-block;
+          hyphens: auto;
         }
       }
       &:hover {
