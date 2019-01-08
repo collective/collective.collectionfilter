@@ -1,8 +1,8 @@
 Changelog
 =========
 
-2.0.2.dev0 (unreleased)
------------------------
+2.0.2 (2019-01-08)
+------------------
 
 - Fix styles for long/multiline filter terms
   [agitator]
