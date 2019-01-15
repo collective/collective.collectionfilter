@@ -139,6 +139,21 @@ class ICollectionFilterSchema(ICollectionFilterBaseSchema):
         required=False
     )
 
+    notify_only = schema.Bool(
+        title=_(
+            u'label_notify_only',
+            default=u'Send JS event notification instead of reload',
+        ),
+        description=_(
+            u'help_notify_only',
+            default=u'Only send a JS event ("collectionfilter:notifyReload") '
+                    u'when a filter of this group is applied. No content '
+                    u'reload will take place.',
+        ),
+        default=False,
+        required=False
+    )
+
 #    list_scaling = schema.Choice(
 #        title=_('label_list_scaling', u'List scaling'),
 #        description=_(

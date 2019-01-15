@@ -32,6 +32,7 @@ class Assignment(base.Assignment):
     narrow_down = False
     view_name = None
     content_selector = '#content-core'
+    notify_only = False
     # list_scaling = None
 
     def __init__(
@@ -46,6 +47,7 @@ class Assignment(base.Assignment):
         narrow_down=False,
         view_name=None,
         content_selector='#content-core',
+        notify_only=False,
         # list_scaling=None
     ):
         self.header = header
@@ -58,6 +60,7 @@ class Assignment(base.Assignment):
         self.narrow_down = narrow_down
         self.view_name = view_name
         self.content_selector = content_selector
+        self.notify_only = notify_only
         # self.list_scaling = list_scaling
 
     @property
