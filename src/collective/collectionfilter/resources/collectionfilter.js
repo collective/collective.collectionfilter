@@ -14,6 +14,7 @@ define([
             collectionURL: '',
             reloadURL: '',
             contentSelector: '#content-core',
+            notifyOnly: false,
         },
 
         init: function() {
@@ -130,15 +131,26 @@ define([
         },
 
         reloadCollection: function (collectionURL) {
-            var cl = new this.contentloader(
-                $(this.options.contentSelector).parent(),  // let base element for setting classes and triggering events be the parent, which isn't replaced.
-                {
-                    url: collectionURL + '&ajax_load=1',
-                    target: this.options.contentSelector,
-                    content: this.options.contentSelector,
-                    trigger: 'immediate'
-                }
-            );
+            if(this.options.notifyOnly) {
+                $(this.trigger).trigger(
+                    'collectionfilter:notifyReload',
+                    {
+                        collectionUUID: this.options.collectionUUID,
+                        targetFilterURL: collectionURL,
+                        target: this.$el.parent().attr('data-portlethash')
+                    }
+                );
+            } else {
+                var cl = new this.contentloader(
+                    $(this.options.contentSelector).parent(),  // let base element for setting classes and triggering events be the parent, which isn't replaced.
+                    {
+                        url: collectionURL + '&ajax_load=1',
+                        target: this.options.contentSelector,
+                        content: this.options.contentSelector,
+                        trigger: 'immediate'
+                    }
+                );
+            }
             // TODO: remove this, once ``contentloader`` handles history
             // updates itself and adds ajax_load.
             //
