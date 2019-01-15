@@ -7,6 +7,9 @@ Changelog
 - Fix styles for long/multiline filter terms
   [agitator]
 
+- Add option to notify about content reload via JS event and not use contentloader.
+  [tmassman]
+
 
 2.0.1 (2018-12-13)
 ------------------
