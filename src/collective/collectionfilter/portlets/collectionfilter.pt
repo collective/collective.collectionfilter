@@ -1,10 +1,11 @@
 <aside class="portlet ${view/filterClassName} collectionFilter ${view/settings/patCollectionFilter}"
-       tal:define="input_type view/input_type"
+       tal:define="input_type view/input_type;
+                   notifyOnly python: view.settings.notify_only and 'true' or 'false'"
        data-pat-collectionfilter='{
           "collectionUUID": "${view/settings/target_collection}",
           "reloadURL": "${view/reload_url}",
           "contentSelector": "${view/settings/content_selector}",
-          "notifyOnly": "${view/settings/notify_only}"
+          "notifyOnly": ${notifyOnly}
        }'
        tal:condition="view/available"
        i18n:domain="collective.collectionfilter">
