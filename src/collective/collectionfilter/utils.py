@@ -2,6 +2,7 @@
 from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
 from Products.CMFCore.interfaces import IFolderish
 from Products.CMFPlone.utils import safe_unicode
+import six
 
 
 def target_collection_base_path(context):
@@ -40,7 +41,7 @@ def safe_encode(val):
         ret = [safe_encode(it) for it in val]
     elif isinstance(val, tuple):
         ret = (safe_encode(it) for it in val)
-    elif isinstance(val, basestring):
+    elif isinstance(val, six.string_types):
         ret = safe_unicode(val).encode('utf-8')
     return ret
 
@@ -64,7 +65,7 @@ def base_query(request_params={}, extra_ignores=[]):
     ] + extra_ignores
     # Now remove all to-be-ignored request parameters.
     urlquery = {
-        k: v for k, v in request_params.items() if k not in ignore_params
+        k: v for k, v in list(request_params.items()) if k not in ignore_params
     }
     urlquery.update({'collectionfilter': '1'})  # marker
     return urlquery

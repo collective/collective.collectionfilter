@@ -73,7 +73,7 @@ class GroupByCriteria():
         cat = plone.api.portal.get_tool('portal_catalog')
         # get catalog metadata schema, but filter out items which cannot be
         # used for grouping
-        metadata = filter(lambda it: it not in GROUPBY_BLACKLIST, cat.schema())
+        metadata = [it for it in cat.schema() if it not in GROUPBY_BLACKLIST]
 
         for it in metadata:
             index_modifier = None

@@ -1,8 +1,11 @@
 Changelog
 =========
 
-2.0.2.dev0 (unreleased)
------------------------
+2.1 (unreleased)
+----------------
+
+- Python 3 compatibility.
+  [thet]
 
 - Fix styles for long/multiline filter terms
   [agitator]

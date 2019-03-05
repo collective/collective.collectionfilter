@@ -9,7 +9,7 @@ from collective.collectionfilter import PLONE_VERSION
 from plone.app.uuid.utils import uuidToCatalogBrain
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from Products.CMFPlone.utils import safe_unicode
-from urllib import urlencode
+from six.moves.urllib.parse import urlencode
 from zope.component import queryUtility
 
 try:
