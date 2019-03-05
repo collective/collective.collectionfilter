@@ -17,7 +17,7 @@ from plone.i18n.normalizer import idnormalizer
 from plone.memoize import ram
 from plone.memoize.volatile import DontCache
 from time import time
-from urllib import urlencode
+from six.moves.urllib.parse import urlencode
 from zope.component import getUtility
 from zope.globalrequest import getRequest
 from zope.i18n import translate
@@ -196,7 +196,7 @@ def get_filter_items(
 
     # Entry to clear all filters
     urlquery_all = {
-        k: v for k, v in urlquery.items() if k not in (idx, idx + '_op')
+        k: v for k, v in list(urlquery.items()) if k not in (idx, idx + '_op')
     }
     ret = [{
         'title': translate(
@@ -212,7 +212,7 @@ def get_filter_items(
         'selected': idx not in request_params
     }]
 
-    grouped_results = grouped_results.values()
+    grouped_results = list(grouped_results.values())
 
     if callable(sort_key_function):
         grouped_results = sorted(grouped_results, key=sort_key_function)
