@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from .query import make_query
+from collective.collectionfilter.query import make_query
 
 
 def set_content_filter(context, event):

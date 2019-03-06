@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from . import DictDataWrapper
-from ..baseviews import BaseFilterView
-from ..interfaces import ICollectionFilterSchema
+from collective.collectionfilter.tiles.profiles import DictDataWrapper
+from collective.collectionfilter.baseviews import BaseFilterView
+from collective.collectionfilter.interfaces import ICollectionFilterSchema
 from plone.supermodel.model import Schema
 from plone.tiles.tile import PersistentTile
 from zope.interface import implementer

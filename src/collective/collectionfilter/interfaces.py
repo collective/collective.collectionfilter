@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-from . import _
-from . import utils
+from collective.collectionfilter import _
 from collective.collectionfilter import PLONE_VERSION
-from plone.app.vocabularies.catalog import CatalogSource
+from collective.collectionfilter import utils
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from plone.autoform.directives import widget
 from zope import schema
