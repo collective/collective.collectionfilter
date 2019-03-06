@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from .interfaces import IGroupByCriteria
-from .utils import safe_decode
-from .utils import safe_encode
-from .vocabularies import EMPTY_MARKER
-from .vocabularies import TEXT_IDX
+from collective.collectionfilter.interfaces import IGroupByCriteria
+from collective.collectionfilter.utils import safe_decode
+from collective.collectionfilter.utils import safe_encode
+from collective.collectionfilter.vocabularies import EMPTY_MARKER
+from collective.collectionfilter.vocabularies import TEXT_IDX
 from zope.component import getUtility
 
 

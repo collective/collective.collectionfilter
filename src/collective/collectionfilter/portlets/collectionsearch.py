@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from .. import _
-from ..baseviews import BaseSearchView
-from ..interfaces import ICollectionSearchSchema
+from collective.collectionfilter import _
+from collective.collectionfilter.baseviews import BaseSearchView
+from collective.collectionfilter.interfaces import ICollectionSearchSchema
 from plone.app.portlets.portlets import base
 from plone.portlets.interfaces import IPortletDataProvider
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from . import _
-from .interfaces import IGroupByCriteria
-from .interfaces import IGroupByModifier
-from .utils import safe_encode
+from collective.collectionfilter import _
+from collective.collectionfilter.interfaces import IGroupByCriteria
+from collective.collectionfilter.interfaces import IGroupByModifier
+from collective.collectionfilter.utils import safe_encode
 from zope.component import getAdapters
 from zope.component import getUtility
 from zope.interface import implementer

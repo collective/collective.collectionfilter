@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from .filteritems import get_filter_items
-from .utils import base_query
-from .utils import safe_decode
-from .utils import safe_encode
-from .vocabularies import TEXT_IDX
+from collective.collectionfilter.filteritems import get_filter_items
+from collective.collectionfilter.utils import base_query
+from collective.collectionfilter.utils import safe_decode
+from collective.collectionfilter.utils import safe_encode
+from collective.collectionfilter.vocabularies import TEXT_IDX
 from Acquisition import aq_inner
 from collective.collectionfilter import PLONE_VERSION
 from plone.app.uuid.utils import uuidToCatalogBrain
