@@ -4,8 +4,19 @@ Changelog
 2.1 (unreleased)
 ----------------
 
+Breaking changes:
+
+- add item here
+
+New features:
+
 - Python 3 compatibility.
-  [thet]
+  [agitator]
+
+Bug fixes:
+
+- patCollectionFilter is not in settings, it’s in view.
+  [agitator]
 
 - Fix styles for long/multiline filter terms
   [agitator]
