@@ -73,13 +73,13 @@ def get_filter_items(
     if not collection or not group_by:
         return None
     collection_url = collection.absolute_url()
-    collection_layout = collection.getLayout()
-    default_view = collection.restrictedTraverse(collection_layout)
 
     # Recursively transform all to unicode
     request_params = safe_decode(request_params)
 
     # Support for the Event Listing view from plone.app.event
+    collection_layout = collection.getLayout()
+    default_view = collection.restrictedTraverse(collection_layout)
     if isinstance(default_view, EventListing):
         mode = request_params.get('mode', 'future')
         date = request_params.get('date', None)
