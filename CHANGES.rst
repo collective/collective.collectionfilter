@@ -15,6 +15,9 @@ New features:
 
 Bug fixes:
 
+- Do not render an empty ``filterClassName``.
+  [thet]
+
 - patCollectionFilter is not in settings, it’s in view.
   [agitator]
 

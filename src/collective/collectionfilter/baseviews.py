@@ -46,8 +46,8 @@ class BaseView(object):
 
     @property
     def filterClassName(self):
-        name = queryUtility(IIDNormalizer).normalize(self.title)
-        return u'filter' + name.capitalize()
+        name = self.title and queryUtility(IIDNormalizer).normalize(self.title)
+        return u'filter' + name.capitalize() if name else ''
 
     @property
     def reload_url(self):
