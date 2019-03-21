@@ -33,6 +33,7 @@ setup(
         'setuptools',
         'Products.CMFPlone >= 5.0',
         'plone.app.contenttypes',
+        'plone.app.portlets >= 4.4.2',
     ],
     entry_points="""
     # -*- Entry points: -*-
