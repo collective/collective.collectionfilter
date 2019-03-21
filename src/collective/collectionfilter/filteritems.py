@@ -16,7 +16,6 @@ from plone.app.uuid.utils import uuidToObject
 from plone.i18n.normalizer import idnormalizer
 from plone.memoize import ram
 from plone.memoize.volatile import DontCache
-from time import time
 from six.moves.urllib.parse import urlencode
 from zope.component import getUtility
 from zope.globalrequest import getRequest
@@ -30,6 +29,7 @@ try:
 except ImportError:
     class EventListing(object):
         pass
+
 
 def _results_cachekey(
         method,
@@ -94,7 +94,7 @@ def get_filter_items(
     groupby_criteria = getUtility(IGroupByCriteria).groupby
     idx = groupby_criteria[group_by]['index']
     current_idx_value = request_params.get(idx)
-    if not getattr(current_idx_value, '__iter__', False):
+    if not isinstance(current_idx_value, list):
         current_idx_value = [current_idx_value] if current_idx_value else []
 
     extra_ignores = []

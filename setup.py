@@ -14,9 +14,12 @@ setup(
     ),
     classifiers=[
         "Framework :: Plone",
-        "Framework :: Plone :: 5.0",
         "Framework :: Plone :: 5.1",
+        "Framework :: Plone :: 5.2",
         "Programming Language :: Python",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
     keywords='plone collection filter faceted tagcloud tags',
@@ -31,7 +34,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'setuptools',
-        'Products.CMFPlone >= 5.0',
+        'Products.CMFPlone >= 5.1',
         'plone.app.contenttypes',
         'plone.app.portlets >= 4.4.2',
     ],

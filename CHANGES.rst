@@ -13,7 +13,7 @@ Changelog
 New features:
 
 - Python 3 compatibility.
-  [agitator]
+  [agitator, petschki]
 
 Bug fixes:
 

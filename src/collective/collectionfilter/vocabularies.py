@@ -12,6 +12,7 @@ from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 
 import plone.api
+import six
 
 
 # Use this EMPTY_MARKER for your custom indexer to index empty criterions.
@@ -78,8 +79,9 @@ class GroupByCriteria():
         for it in metadata:
             index_modifier = None
             idx = cat._catalog.indexes.get(it)
-            if getattr(idx, 'meta_type', None) == 'KeywordIndex':
-                index_modifier = safe_encode  # KeywordIndex accepts only utf-8 encoded values.  # noqa
+            if six.PY2 and getattr(idx, 'meta_type', None) == 'KeywordIndex':
+                # in Py2 KeywordIndex accepts only utf-8 encoded values.
+                index_modifier = safe_encode
 
             self._groupby[it] = {
                 'index': it,
