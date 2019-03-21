@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
+from Products.CMFPlone.utils import safe_unicode
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from collective.collectionfilter import _
 from collective.collectionfilter.baseviews import BaseFilterView
 from collective.collectionfilter.interfaces import ICollectionFilterSchema
 from collective.collectionfilter.vocabularies import DEFAULT_FILTER_TYPE
 from plone.app.portlets.portlets import base
 from plone.portlets.interfaces import IPortletDataProvider
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.interface import implementer
 
 try:
@@ -90,7 +91,7 @@ class Renderer(base.Renderer, BaseFilterView):
     def reload_url(self):
         reload_url = '{0}/@@render-portlet?portlethash={1}'.format(
             self.context.absolute_url(),
-            self.filter_id
+            safe_unicode(self.filter_id),
         )
         return reload_url
 

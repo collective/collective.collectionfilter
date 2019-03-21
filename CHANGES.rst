@@ -17,6 +17,9 @@ New features:
 
 Bug fixes:
 
+- fix bug in @@render-portlet for Python 3
+  [petschki]
+
 - Do not render an empty ``filterClassName``.
   [thet]
 
