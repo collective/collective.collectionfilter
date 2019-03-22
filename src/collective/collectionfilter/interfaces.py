@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-from collective.collectionfilter import _
 from collective.collectionfilter import PLONE_VERSION
+from collective.collectionfilter import _
 from collective.collectionfilter import utils
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from plone.autoform.directives import widget
 from zope import schema
 from zope.interface import Interface
+from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
 
 def pattern_options():
@@ -178,3 +179,7 @@ class IGroupByModifier(Interface):
     """Adapter interface for modifying the groupby criteria data structure,
     after it has been initially created.
     """
+
+
+class ICollectionFilterBrowserLayer(IDefaultBrowserLayer):
+    """Marker interface that defines a browser layer."""
