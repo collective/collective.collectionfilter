@@ -17,7 +17,8 @@ New features:
 
 Bug fixes:
 
-- fix bug in @@render-portlet for Python 3
+- fix bug in @@render-portlet for Python 3.
+  NOTE on Python 3: this required plone.app.portlets >= 4.4.2
   [petschki]
 
 - Do not render an empty ``filterClassName``.
