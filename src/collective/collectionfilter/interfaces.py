@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from collective.collectionfilter import PLONE_VERSION
 from collective.collectionfilter import _
 from collective.collectionfilter import utils
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
@@ -7,17 +6,6 @@ from plone.autoform.directives import widget
 from zope import schema
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
-
-
-def pattern_options():
-    options = {
-        'basePath': utils.target_collection_base_path,
-        'recentlyUsed': True,
-        # 'selectableTypes': ['Collection'],
-    }
-    if PLONE_VERSION < '5.1':
-        del options['basePath']
-    return options
 
 
 class ICollectionFilterBaseSchema(Interface):
@@ -44,7 +32,11 @@ class ICollectionFilterBaseSchema(Interface):
     widget(
         'target_collection',
         RelatedItemsFieldWidget,
-        pattern_options=pattern_options()
+        pattern_options={
+            'basePath': utils.target_collection_base_path,
+            'recentlyUsed': True,
+            # 'selectableTypes': ['Collection'],
+        },
     )
 
     view_name = schema.TextLine(

@@ -69,13 +69,3 @@ def base_query(request_params={}, extra_ignores=[]):
     }
     urlquery.update({'collectionfilter': '1'})  # marker
     return urlquery
-
-
-def get_top_request(request):
-    """Get highest request from a subrequest.
-    """
-
-    def _top_request(req):
-        parent_request = req.get('PARENT_REQUEST', None)
-        return _top_request(parent_request) if parent_request else req
-    return _top_request(request)

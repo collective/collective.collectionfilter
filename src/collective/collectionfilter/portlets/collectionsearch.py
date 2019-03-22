@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from Products.CMFPlone.utils import get_top_request
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from collective.collectionfilter import _
@@ -7,11 +8,6 @@ from collective.collectionfilter.interfaces import ICollectionSearchSchema
 from plone.app.portlets.portlets import base
 from plone.portlets.interfaces import IPortletDataProvider
 from zope.interface import implementer
-
-try:
-    from Products.CMFPlone.utils import get_top_request
-except ImportError:
-    from collective.collectionfilter.utils import get_top_request
 
 
 class ICollectionSearchPortlet(ICollectionSearchSchema, IPortletDataProvider):
