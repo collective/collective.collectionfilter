@@ -70,6 +70,7 @@ def base_query(request_params={}, extra_ignores=[]):
     urlquery.update({'collectionfilter': '1'})  # marker
     return urlquery
 
+
 def get_top_request(request):
     """Get highest request from a subrequest.
     """
