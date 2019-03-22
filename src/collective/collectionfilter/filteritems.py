@@ -22,7 +22,7 @@ from zope.globalrequest import getRequest
 from zope.i18n import translate
 
 import plone.api
-
+import six
 
 try:
     from plone.app.event.browser.event_listing import EventListing
@@ -94,8 +94,15 @@ def get_filter_items(
     groupby_criteria = getUtility(IGroupByCriteria).groupby
     idx = groupby_criteria[group_by]['index']
     current_idx_value = request_params.get(idx)
-    if not isinstance(current_idx_value, list):
-        current_idx_value = [current_idx_value] if current_idx_value else []
+    if isinstance(current_idx_value, six.string_types):
+        # do not expand a string to a list of chars
+        current_idx_value = [current_idx_value, ]
+    else:
+        try:
+            current_idx_value = list(current_idx_value)
+        except TypeError:
+            # int and other stuff
+            current_idx_value = [current_idx_value, ]
 
     extra_ignores = []
     if not narrow_down:
