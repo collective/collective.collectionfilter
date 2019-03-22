@@ -1,10 +1,27 @@
 Changelog
 =========
 
-2.2 (unreleased)
+3.0 (unreleased)
 ----------------
 
-- Nothing changed yet.
+Breaking changes:
+
+- Remove support for Plone < 5.1.
+  [petschki]
+
+New features:
+
+- Python 3 compatibility.
+  [petschki]
+
+- Test setup
+  [petschki]
+
+Bug fixes:
+
+- fix bug in @@render-portlet for Python 3.
+  NOTE on Python 3: this required plone.app.portlets >= 4.4.2
+  [petschki]
 
 
 2.1 (2019-03-22)

@@ -16,14 +16,13 @@ from plone.app.uuid.utils import uuidToObject
 from plone.i18n.normalizer import idnormalizer
 from plone.memoize import ram
 from plone.memoize.volatile import DontCache
-from time import time
 from six.moves.urllib.parse import urlencode
 from zope.component import getUtility
 from zope.globalrequest import getRequest
 from zope.i18n import translate
 
 import plone.api
-
+import six
 
 try:
     from plone.app.event.browser.event_listing import EventListing
@@ -31,15 +30,16 @@ except ImportError:
     class EventListing(object):
         pass
 
+
 def _results_cachekey(
         method,
         target_collection,
         group_by,
-        filter_type,
-        narrow_down,
-        view_name,
-        cache_enabled,
-        request_params):
+        filter_type=DEFAULT_FILTER_TYPE,
+        narrow_down=False,
+        view_name='',
+        cache_enabled=True,
+        request_params=None):
     if not cache_enabled:
         raise DontCache
     cachekey = (
@@ -94,8 +94,15 @@ def get_filter_items(
     groupby_criteria = getUtility(IGroupByCriteria).groupby
     idx = groupby_criteria[group_by]['index']
     current_idx_value = request_params.get(idx)
-    if not getattr(current_idx_value, '__iter__', False):
-        current_idx_value = [current_idx_value] if current_idx_value else []
+    if isinstance(current_idx_value, six.string_types):
+        # do not expand a string to a list of chars
+        current_idx_value = [current_idx_value, ]
+    else:
+        try:
+            current_idx_value = list(current_idx_value)
+        except TypeError:
+            # int and other stuff
+            current_idx_value = [current_idx_value, ]
 
     extra_ignores = []
     if not narrow_down:

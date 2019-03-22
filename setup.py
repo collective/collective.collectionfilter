@@ -2,7 +2,7 @@
 from setuptools import find_packages
 from setuptools import setup
 
-version = '2.2.dev0'
+version = '3.0.dev0'
 
 setup(
     name='collective.collectionfilter',
@@ -14,9 +14,12 @@ setup(
     ),
     classifiers=[
         "Framework :: Plone",
-        "Framework :: Plone :: 5.0",
         "Framework :: Plone :: 5.1",
+        "Framework :: Plone :: 5.2",
         "Programming Language :: Python",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
     keywords='plone collection filter faceted tagcloud tags',
@@ -31,9 +34,18 @@ setup(
     zip_safe=False,
     install_requires=[
         'setuptools',
-        'Products.CMFPlone >= 5.0',
+        'Products.CMFPlone >= 5.1',
         'plone.app.contenttypes',
     ],
+    extras_require={
+        'test': [
+            'plone.app.testing[robot]',
+            'plone.app.robotframework',
+            'plone.app.contenttypes',
+            'robotframework-selenium2library',
+            'robotframework-selenium2screenshots',
+        ]
+    },
     entry_points="""
     # -*- Entry points: -*-
     [z3c.autoinclude.plugin]

@@ -1,0 +1,13 @@
+[report]
+omit =
+    /home/*/.buildout/eggs/*
+    /home/travis/buildout-cache/eggs/*
+    /home/travis/virtualenv/*
+    /usr/*
+    bin/test
+    eggs/*
+    parts/*
+    src/collective/collectionfilter/tests/*
+    */lib/*
+    *.txt
+    *.rst
