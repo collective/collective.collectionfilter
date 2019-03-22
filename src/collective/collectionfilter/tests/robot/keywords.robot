@@ -5,6 +5,11 @@ Resource  plone/app/robotframework/selenium.robot
 Resource  plone/app/robotframework/keywords.robot
 
 
+*** Variables ***
+
+${BROWSER}  chrome
+
+
 *** Keywords *****************************************************************
 
 # --- Given ------------------------------------------------------------------
