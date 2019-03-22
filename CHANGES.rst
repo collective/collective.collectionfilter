@@ -1,19 +1,18 @@
 Changelog
 =========
 
-2.2 (unreleased)
+3.0 (unreleased)
 ----------------
 
-- Nothing changed yet.
+Breaking changes:
 
-
-2.1 (2019-03-22)
-----------------
+- Remove support for Plone < 5.1.
+  [petschki]
 
 New features:
 
 - Python 3 compatibility.
-  [agitator, petschki]
+  [petschki]
 
 - Test setup
   [petschki]
@@ -23,6 +22,17 @@ Bug fixes:
 - fix bug in @@render-portlet for Python 3.
   NOTE on Python 3: this required plone.app.portlets >= 4.4.2
   [petschki]
+
+
+2.1 (2019-03-22)
+----------------
+
+New features:
+
+- Python 3 compatibility.
+  [agitator]
+
+Bug fixes:
 
 - Do not render an empty ``filterClassName``.
   [thet]
