@@ -15,6 +15,9 @@ New features:
 - Python 3 compatibility.
   [agitator, petschki]
 
+- Test setup
+  [petschki]
+
 Bug fixes:
 
 - fix bug in @@render-portlet for Python 3.
