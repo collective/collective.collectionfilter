@@ -35,11 +35,11 @@ def _results_cachekey(
         method,
         target_collection,
         group_by,
-        filter_type,
-        narrow_down,
-        view_name,
-        cache_enabled,
-        request_params):
+        filter_type=DEFAULT_FILTER_TYPE,
+        narrow_down=False,
+        view_name='',
+        cache_enabled=True,
+        request_params=None):
     if not cache_enabled:
         raise DontCache
     cachekey = (
