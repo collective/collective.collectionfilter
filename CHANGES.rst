@@ -4,10 +4,6 @@ Changelog
 2.1 (unreleased)
 ----------------
 
-Breaking changes:
-
-- add item here
-
 New features:
 
 - Python 3 compatibility.
