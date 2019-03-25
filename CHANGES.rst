@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0 (unreleased)
+3.0 (2019-03-25)
 ----------------
 
 Breaking changes:
