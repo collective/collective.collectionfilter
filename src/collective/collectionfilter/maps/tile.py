@@ -78,15 +78,14 @@ class MapsTile(PersistentTile, BaseFilterView):
             return None
         return catalog_results
 
-    def popup_text(self, event, location):
+    def popup_text(self, brain):
         popup_text = u"""
 <header><a href="{0}">{1}</a></header>
-<p>{2}</p>
-            """.format(
-                event.absolute_url(),
-                event.title,
-                location.title,
-            )
+<p>{2}</p>""".format(
+            brain.getURL(),
+            brain.Title,
+            brain.Description,
+        )
         return popup_text
 
     @property
@@ -96,22 +95,18 @@ class MapsTile(PersistentTile, BaseFilterView):
         features = []
 
         for it in self.locations:
-            ob = it.getObject()
-            location_uid = getattr(ob, 'location_uid', None)
-            location = uuidToObject(location_uid) if location_uid else None
-            geo = IGeolocatable(location, None) if location else None
-            if not geo:
+            if not it.longitude or not it.latitude:
                 continue
 
             features.append({
                 'type': 'Feature',
-                'id': IUUID(ob),
-                'properties': {'popup': self.popup_text(ob, location)},
+                'id': it.UID,
+                'properties': {'popup': self.popup_text(it)},
                 'geometry': {
                     'type': 'Point',
                     'coordinates': [
-                        geo.geolocation.longitude,
-                        geo.geolocation.latitude,
+                        it.longitude,
+                        it.latitude,
                     ]
                 }
             })
