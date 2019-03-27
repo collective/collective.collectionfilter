@@ -4,10 +4,6 @@ import unittest
 
 from collective.collectionfilter.testing import COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING  # noqa
 from collective.collectionfilter.filteritems import get_filter_items
-from datetime import datetime
-from datetime import timedelta
-from plone import api
-from plone.app.textfield.value import RichTextValue
 
 
 def get_data_by_val(result, val):
@@ -23,38 +19,11 @@ class TestFilteritems(unittest.TestCase):
     def setUp(self):
         """Custom shared utility setup for tests."""
         self.portal = self.layer['portal']
+        self.collection = self.portal['testcollection']
+        self.collection_uid = self.collection.UID()
 
-        with api.env.adopt_roles(['Manager']):
-            self.portal.invokeFactory(
-                'Collection',
-                id='testcollection',
-                title=u'Test Collection',
-                query=[{
-                    'i': 'portal_type',
-                    'o': 'plone.app.querystring.operation.selection.any',
-                    'v': ['Document', 'Event']
-                }],
-            )
-            self.portal.invokeFactory(
-                'Event',
-                id='testevent',
-                title=u'Test Event',
-                start=datetime.now() + timedelta(days=1),
-                end=datetime.now() + timedelta(days=2),
-                subject=[u'Süper', u'Evänt'],
-            )
-            self.portal.invokeFactory(
-                'Document',
-                id='testdoc',
-                title=u'Test Document',
-                text=RichTextValue(u'Ein heißes Test Dokument'),
-                subject=[u'Süper', u'Dokumänt'],
-            )
-
-        self.collection_uid = self.portal['testcollection'].UID()
-
-    def test_subject_filter(self):
-        self.assertEqual(len(self.portal['testcollection'].results()), 2)
+    def test_filteritems(self):
+        self.assertEqual(len(self.collection.results()), 2)
 
         result = get_filter_items(
             self.collection_uid, 'Subject', cache_enabled=False)
