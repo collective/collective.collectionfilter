@@ -9,6 +9,7 @@
   <i18n:registerTranslations directory="locales" />
   <include zcml:condition="installed plone.app.portlets" package=".portlets" />
   <include zcml:condition="installed plone.tiles" package=".tiles" />
+  <include zcml:condition="installed collective.geolocationbehavior" package=".maps" />
 
   <include file="upgrades.zcml" />
 

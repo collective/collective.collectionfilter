@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<object
+    meta_type="Plone Catalog Tool"
+    name="portal_catalog">
+
+  <index
+      meta_type="FieldIndex"
+      name="latitude">
+    <indexed_attr value="latitude"/>
+  </index>
+  <index
+      meta_type="FieldIndex"
+      name="longitude">
+    <indexed_attr value="longitude" />
+  </index>
+
+  <column value="latitude" />
+  <column value="longitude" />
+
+</object>

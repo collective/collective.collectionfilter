@@ -4,6 +4,12 @@ Changelog
 3.1 (unreleased)
 ----------------
 
+New features:
+
+- Geolocation filter
+  [petschki]
+
+
 Bug fixes:
 
 - constrain ``target collection`` to a configurable registry value.
