@@ -117,14 +117,11 @@ class MapsTile(PersistentTile, BaseFilterView):
 
     @property
     def map_configuration(self):
-        map_layers = plone.api.portal.get_registry_record(
-            'collective.venue.map_layers') or []
         config = {
-            "default_map_layer": plone.api.portal.get_registry_record(
-                'collective.venue.default_map_layer'),
+            "default_map_layer": self.settings.default_map_layer,
             "map_layers": [
                 {"title": _(it), "id": it}
-                for it in map_layers
+                for it in self.settings.map_layers
             ],
         }
         return json.dumps(config)
