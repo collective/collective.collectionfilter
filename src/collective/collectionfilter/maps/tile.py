@@ -8,12 +8,10 @@ from collective.collectionfilter.query import make_query
 from collective.collectionfilter.tiles import DictDataWrapper
 from collective.collectionfilter.utils import base_query
 from collective.collectionfilter.utils import safe_decode
-from collective.geolocationbehavior.geolocation import IGeolocatable
 from plone.app.contenttypes.behaviors.collection import ICollection
 from plone.app.uuid.utils import uuidToObject
 from plone.supermodel.model import Schema
 from plone.tiles.tile import PersistentTile
-from plone.uuid.interfaces import IUUID
 from zope.interface import implementer
 
 import json
