@@ -67,14 +67,11 @@ class MapsTile(PersistentTile, BaseFilterView):
         # Get all collection results with additional filter defined by urlquery
         custom_query = base_query(request_params)
         custom_query = make_query(custom_query)
-        catalog_results = ICollection(collection).results(
+        return ICollection(collection).results(
             batch=False,
             brains=True,
             custom_query=custom_query
         )
-        if not catalog_results:
-            return None
-        return catalog_results
 
     def popup_text(self, brain):
         popup_text = u"""

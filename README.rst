@@ -9,8 +9,35 @@ This can also be used to build tag clouds.
 
 The filter types can be extended (see: ``collective.collectionfilter.vocabularies``).
 
-Besides the "Collection Filter" portlet/tile there is also a "Collection Search" portlet/tile for doing a fulltext search on the collection results.
+There are three portlets/tiles available for filtering:
 
+ - "Collection Filter" - a list with values (select, radio, checkbox, link) you can filter on
+ - "Collection Search" - a SearchableText input field to do a fulltextsearch on the collection results
+ - "Collection Maps" - a Leaflet map which shows and filters IGeolocation items on it
+   (this feature is available if ``collective.geolocationbehavior`` is installed)
+
+
+Filter Results with portlets
+----------------------------
+
+Add as many of the filter portlets above to any context you want (most likely the source collection)
+and assign a collection with results to it.
+
+When you select values from the filter the results are loaded asynchronously inside the container
+with the selector defined in the field ``Content Selector``. Make sure the selector exists on the
+source collection template and on the target page which shows the filtered results.
+
+
+Mosaic Integration
+------------------
+
+The three tiles can be added within the Mosaic editor multiple times. Just select them in the ``Insert`` menu
+and assign a collection to it. To show the results of the collection simply add a
+``Existing Content`` tile which links to the same collection your filter tiles are assigned with.
+
+TODO: right now the collection needs a default_view template, which wraps the result list with a unique selector
+inside the ``#content-core`` container. so the collectionfilter can load the filtered result correctly from
+the collection into the container inside the existing content tile.
 
 Overloading GroupByCriteria
 ---------------------------

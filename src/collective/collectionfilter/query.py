@@ -26,7 +26,7 @@ def make_query(params_dict):
             # add filter query
             query_dict[idx] = {'operator': op, 'query': crit}
 
-    if TEXT_IDX in params_dict:
+    if TEXT_IDX in params_dict and params_dict.get(TEXT_IDX):
         query_dict[TEXT_IDX] = safe_decode(params_dict.get(TEXT_IDX))
 
     return query_dict

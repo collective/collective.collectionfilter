@@ -38,6 +38,7 @@ define([
                 var delayTimer;
                 $('input[name="SearchableText"]', this.$el).on('keyup', function (e) {
                     clearTimeout(delayTimer);
+                    if($(e.target).val().length < 3) return;
                     delayTimer = setTimeout(function() {
                         var collectionURL = $(e.target).data('url');
                         var val = encodeURIComponent($(e.target).val());
