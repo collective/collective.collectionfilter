@@ -13,8 +13,9 @@ There are three portlets/tiles available for filtering:
 
  - "Collection Filter" - a list with values (select, radio, checkbox, link) you can filter on
  - "Collection Search" - a SearchableText input field to do a fulltextsearch on the collection results
- - "Collection Maps" - a Leaflet map which shows and filters IGeolocation items on it
-   (this feature is available if ``collective.geolocationbehavior`` is installed)
+ - "Collection Maps" - a Leaflet map which shows and filters ``IGeolocatable`` items on it
+   (this feature is available if ``collective.geolocationbehavior`` is installed and the behavior
+    is activated on a contenttype)
 
 
 Filter Results with portlets

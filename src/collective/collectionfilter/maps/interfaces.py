@@ -2,6 +2,7 @@
 from collective.collectionfilter import _
 from collective.collectionfilter.interfaces import ICollectionFilterBaseSchema
 from zope import schema
+from zope.interface import Interface
 
 default_map_layer = 'OpenStreetMap.Mapnik'
 
@@ -39,3 +40,7 @@ class ICollectionMapsSchema(ICollectionFilterBaseSchema):
         default=default_map_layers,
         missing_value=[],
         value_type=schema.Choice(vocabulary='collective.collectionfilter.map_layers'))  # noqa: E501
+
+
+class IGeojsonProperties(Interface):
+    """ adapter for determining geojson properties """
