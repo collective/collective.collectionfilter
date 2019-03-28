@@ -2,6 +2,7 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="plone">
 
     <!-- indexer -->
@@ -14,39 +15,47 @@
         name="longitude"
         />
 
-    <!-- geojson properties adapter -->
-    <adapter factory=".tile.GeojsonProperties" />
+    <configure zcml:condition="installed plone.tiles">
 
-    <utility
-        component=".vocabularies.MapLayers"
-        name="collective.collectionfilter.map_layers"/>
+        <include package="plone.tiles" />
+        <include package="plone.tiles" file="meta.zcml"/>
 
-    <plone:tile
-        name="collective.collectionfilter.tiles.maps"
-        title="Collection Maps Tile"
-        description="Show the collection maps tile."
-        add_permission="cmf.ModifyPortalContent"
-        class=".tile.MapsTile"
-        for="*"
-        permission="zope2.View"
-        schema=".tile.IMapsTile"
-        template="tile.pt"
-        />
+        <!-- geojson properties adapter -->
+        <adapter factory=".tile.GeojsonProperties" />
 
-    <genericsetup:registerProfile
-        name="default"
-        title="collective.collectionfilter.maps tiles"
-        directory="profiles/default"
-        description='Extension profile for Plone.'
-        provides="Products.GenericSetup.interfaces.EXTENSION"
-        />
+        <utility
+            component=".vocabularies.MapLayers"
+            name="collective.collectionfilter.map_layers"/>
 
-    <genericsetup:registerProfile
-        name="uninstall"
-        title="collective.collectionfilter.maps tiles uninstall"
-        directory="profiles/uninstall"
-        description='Extension profile for Plone.'
-        provides="Products.GenericSetup.interfaces.EXTENSION"
-        />
+        <plone:tile
+            name="collective.collectionfilter.tiles.maps"
+            title="Collection Maps Tile"
+            description="Show the collection maps tile."
+            add_permission="cmf.ModifyPortalContent"
+            class=".tile.MapsTile"
+            for="*"
+            permission="zope2.View"
+            schema=".tile.IMapsTile"
+            template="tile.pt"
+            />
+
+        <genericsetup:registerProfile
+            name="default"
+            title="collective.collectionfilter.maps tiles"
+            directory="profiles/default"
+            description='Extension profile for Plone.'
+            provides="Products.GenericSetup.interfaces.EXTENSION"
+            />
+
+        <genericsetup:registerProfile
+            name="uninstall"
+            title="collective.collectionfilter.maps tiles uninstall"
+            directory="profiles/uninstall"
+            description='Extension profile for Plone.'
+            provides="Products.GenericSetup.interfaces.EXTENSION"
+            />
+
+    </configure>
+
 
 </configure>
