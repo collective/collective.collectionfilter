@@ -38,6 +38,7 @@ define([
                 var delayTimer;
                 $('input[name="SearchableText"]', this.$el).on('keyup', function (e) {
                     clearTimeout(delayTimer);
+                    // minimum 3 characters before searching
                     if($(e.target).val().length < 3) return;
                     delayTimer = setTimeout(function() {
                         var collectionURL = $(e.target).data('url');
@@ -109,6 +110,23 @@ define([
                 this.reloadCollection(collectionURL);
             }.bind(this));
 
+            // OPTION4 - maps filter
+            if (this.$el.hasClass('collectionMaps')) {
+                $('.pat-leaflet', this.$el).on('moveend zoomend', function (e) {
+                    var collectionURL = $(e.target).data('url');
+
+                    $(this.trigger).trigger(
+                        'collectionfilter:reload',
+                        {
+                            collectionUUID: this.options.collectionUUID,
+                            targetFilterURL: collectionURL,
+                            noReloadSearch: true
+                        }
+                    );
+
+                    this.reloadCollection(collectionURL);
+                });
+            }
         },
 
         reload: function (filterURL) {
@@ -145,6 +163,11 @@ define([
             //
             // Search for all @@ views in ajax calls and remove it before
             // adding it to the browser history
+            //
+            // XXX: If we are not on the collection context this
+            // leads to wrong history urls and when you reload you're
+            // not on the original context anymore. (Mosaic Tile filtering)
+            // see
             re = /@@.*\//;
             collectionURL = collectionURL.replace(re, '');
             window.history.replaceState(

@@ -7,7 +7,7 @@
     i18n:domain="collective.collectionfilter">
 <body>
 
-<aside class="collectionFilterMaps ${view/filterClassName} pat-collectionfilter"
+<aside class="collectionMaps ${view/filterClassName} pat-collectionfilter"
        data-pat-collectionfilter='{
            "collectionUUID": "${view/settings/target_collection}",
            "reloadURL": "${view/reload_url}",
@@ -26,7 +26,7 @@
   <tal:if condition="view/settings/target_collection">
   <tal:def define="geojson view/data_geojson" tal:condition="geojson">
   <header tal:condition="view/title" tal:content="view/title">Title</header>
-  <div class="pat-leaflet" data-geojson='${geojson}' data-pat-leaflet='${view/map_configuration}' data-filterurl="view/filter_url"></div>
+  <div class="pat-leaflet" data-geojson='${geojson}' data-pat-leaflet='${view/map_configuration}' data-url="${view/collection_url}"></div>
   </tal:def>
   </tal:if>
 </aside>

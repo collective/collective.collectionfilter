@@ -12,6 +12,7 @@ from collective.collectionfilter.utils import safe_decode
 from collective.geolocationbehavior.geolocation import IGeolocatable
 from plone.app.contenttypes.behaviors.collection import ICollection
 from plone.app.uuid.utils import uuidToObject
+from plone.app.uuid.utils import uuidToURL
 from plone.supermodel.model import Schema
 from plone.tiles.tile import PersistentTile
 from zope.component import adapter
@@ -73,6 +74,9 @@ class MapsTile(PersistentTile, BaseFilterView):
     @property
     def reload_url(self):
         return self.url
+
+    def collection_url(self):
+        return uuidToURL(self.settings.target_collection)
 
     @property
     def locations(self):
