@@ -7,7 +7,7 @@ Changelog
 New features:
 
 - Geolocation filter
-  [petschki]
+  [petschki, thet]
 
 
 Bug fixes:
