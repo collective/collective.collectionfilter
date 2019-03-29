@@ -15,6 +15,7 @@ define([
             reloadURL: '',
             contentSelector: '#content-core',
         },
+        _zoomed: false,
 
         init: function() {
             this.$el.unbind('collectionfilter:reload');
@@ -112,20 +113,17 @@ define([
 
             // OPTION4 - maps filter
             if (this.$el.hasClass('collectionMaps')) {
-                $('.pat-leaflet', this.$el).on('moveend zoomend', function (e) {
+                $('.pat-leaflet', this.$el).on('leaflet.moveend leaflet.zoomend', function (e, le) {
+                    var levent = le['original_event'];
+                    // prevent double loading when zooming (because it's always a move too)
+                    if(levent.type === 'moveend' && this._zoomed) {
+                        this._zoomed = false;
+                        return
+                    }
+                    if(levent.type === 'zoomend') this._zoomed = true;
                     var collectionURL = $(e.target).data('url');
-
-                    $(this.trigger).trigger(
-                        'collectionfilter:reload',
-                        {
-                            collectionUUID: this.options.collectionUUID,
-                            targetFilterURL: collectionURL,
-                            noReloadSearch: true
-                        }
-                    );
-
                     this.reloadCollection(collectionURL);
-                });
+                }.bind(this));
             }
         },
 
