@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-03-29 09:05+0000\n"
+"POT-Creation-Date: 2019-04-01 10:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,14 +25,6 @@ msgstr "Portlet zur Filterung von Kollektionen hinzufügen"
 msgid "Add Collection Search Portlet"
 msgstr "Portlet zur Suche in Kollektionen hinzufügen"
 
-#: collective/collectionfilter/maps/vocabularies.py:41
-msgid "CartoDB.DarkMatter"
-msgstr ""
-
-#: collective/collectionfilter/maps/vocabularies.py:42
-msgid "CartoDB.DarkMatterNoLabels"
-msgstr ""
-
 #: collective/collectionfilter/portlets/collectionfilter.py:71
 msgid "Collection Filter"
 msgstr "Kollektionsfilter"
@@ -49,98 +41,10 @@ msgstr "Portlet zur Filterung von Kollektionen bearbeiten"
 msgid "Edit Collection Search Portlet"
 msgstr "Portlet zur Suche in Kollektionen bearbeiten"
 
-#: collective/collectionfilter/maps/vocabularies.py:32
-msgid "Esri.DeLorme"
-msgstr ""
-
-#: collective/collectionfilter/maps/vocabularies.py:39
-msgid "Esri.NatGeoWorldMap"
-msgstr ""
-
-#: collective/collectionfilter/maps/vocabularies.py:38
-msgid "Esri.OceanBasemap"
-msgstr ""
-
-#: collective/collectionfilter/maps/vocabularies.py:40
-msgid "Esri.WorldGrayCanvas"
-msgstr ""
-
-#: collective/collectionfilter/maps/vocabularies.py:34
-msgid "Esri.WorldImagery"
-msgstr ""
-
-#: collective/collectionfilter/maps/vocabularies.py:37
-msgid "Esri.WorldPhysical"
-msgstr ""
-
-#: collective/collectionfilter/maps/vocabularies.py:36
-msgid "Esri.WorldShadedRelief"
-msgstr ""
-
-#: collective/collectionfilter/maps/vocabularies.py:31
-msgid "Esri.WorldStreetMap"
-msgstr ""
-
-#: collective/collectionfilter/maps/vocabularies.py:35
-msgid "Esri.WorldTerrain"
-msgstr ""
-
-#: collective/collectionfilter/maps/vocabularies.py:33
-msgid "Esri.WorldTopoMap"
-msgstr ""
-
-#: collective/collectionfilter/configure.zcml:55
+#: collective/collectionfilter/configure.zcml:54
 #: collective/collectionfilter/portlets/configure.zcml:36
 #: collective/collectionfilter/tests/configure.zcml:15
 msgid "Extension profile for Plone."
-msgstr ""
-
-#: collective/collectionfilter/maps/vocabularies.py:43
-msgid "NASAGIBS.ViirsEarthAtNight2012"
-msgstr ""
-
-#: collective/collectionfilter/maps/vocabularies.py:17
-msgid "OpenStreetMap.BlackAndWhite"
-msgstr ""
-
-#: collective/collectionfilter/maps/vocabularies.py:18
-msgid "OpenStreetMap.DE"
-msgstr ""
-
-#: collective/collectionfilter/maps/vocabularies.py:19
-msgid "OpenStreetMap.France"
-msgstr ""
-
-#: collective/collectionfilter/maps/vocabularies.py:16
-msgid "OpenStreetMap.Mapnik"
-msgstr ""
-
-#: collective/collectionfilter/maps/vocabularies.py:28
-msgid "Stamen.Terrain"
-msgstr ""
-
-#: collective/collectionfilter/maps/vocabularies.py:29
-msgid "Stamen.TerrainBackground"
-msgstr ""
-
-#: collective/collectionfilter/maps/vocabularies.py:24
-msgid "Stamen.Toner"
-msgstr ""
-
-#: collective/collectionfilter/maps/vocabularies.py:25
-msgid "Stamen.TonerBackground"
-msgstr ""
-
-#: collective/collectionfilter/maps/vocabularies.py:26
-msgid "Stamen.TonerLite"
-msgstr ""
-
-#: collective/collectionfilter/maps/vocabularies.py:30
-msgid "Stamen.TopOSMRelief"
-msgstr ""
-
-#: collective/collectionfilter/maps/vocabularies.py:27
-msgid "Stamen.Watercolor"
 msgstr ""
 
 #: collective/collectionfilter/portlets/collectionsearch.py:71
@@ -151,27 +55,11 @@ msgstr "Dieses Portlet erlaubt eine Volltextsuche in Kollektionsergebnissen und 
 msgid "This portlet shows grouped criteria of collection results and allows filtering of collection results."
 msgstr "Dieses Portlet zeigt Gruppierte Kollektionsergebnisse und erlaubt eine weitere Einschränkung der Ergebnisse durch Filter."
 
-#: collective/collectionfilter/maps/vocabularies.py:20
-msgid "Thunderforest.OpenCycleMap"
-msgstr ""
-
-#: collective/collectionfilter/maps/vocabularies.py:23
-msgid "Thunderforest.Outdoors"
-msgstr ""
-
-#: collective/collectionfilter/maps/vocabularies.py:21
-msgid "Thunderforest.Transport"
-msgstr ""
-
-#: collective/collectionfilter/maps/vocabularies.py:22
-msgid "Thunderforest.TransportDark"
-msgstr ""
-
-#: collective/collectionfilter/configure.zcml:55
+#: collective/collectionfilter/configure.zcml:54
 msgid "collective.collectionfilter base"
 msgstr ""
 
-#: collective/collectionfilter/configure.zcml:62
+#: collective/collectionfilter/configure.zcml:61
 msgid "collective.collectionfilter base uninstall"
 msgstr ""
 
@@ -188,7 +76,7 @@ msgid "collective.collectionfilter testing"
 msgstr ""
 
 #. Default: "Default map layer"
-#: collective/collectionfilter/maps/interfaces.py:30
+#: collective/collectionfilter/tiles/maps.py:37
 msgid "default_map_layer"
 msgstr ""
 
@@ -215,7 +103,7 @@ msgid "help_content_selector"
 msgstr ""
 
 #. Default: "Set the default map layer"
-#: collective/collectionfilter/maps/interfaces.py:34
+#: collective/collectionfilter/tiles/maps.py:41
 msgid "help_default_map_layer"
 msgstr ""
 
@@ -241,7 +129,7 @@ msgid "help_input_type"
 msgstr ""
 
 #. Default: "Set the available map layers"
-#: collective/collectionfilter/maps/interfaces.py:45
+#: collective/collectionfilter/tiles/maps.py:52
 msgid "help_map_layers"
 msgstr ""
 
@@ -251,8 +139,8 @@ msgid "help_narrow_down"
 msgstr "Die Filteroptionen werden eingeschränkt, wenn ein Filterkriterium ausgewählt wird. Es werden nur jene Filterkriterien angezeigt, die im aktuellen Ergebnis vorkommen. Andere Filtergruppen können diese Filtergruppe jedoch trotzdem einschränken."
 
 #. Default: "Narrow down the result after zooming/moving the map."
-#: collective/collectionfilter/maps/interfaces.py:22
-msgid "help_narrow_down_result"
+#: collective/collectionfilter/tiles/maps.py:29
+msgid "help_narrow_down_results"
 msgstr ""
 
 #. Default: "Show the result count for each filter group."
@@ -283,8 +171,8 @@ msgid "inputtype_links"
 msgstr ""
 
 #. Default: "edit"
-#: collective/collectionfilter/maps/tile.pt:25
 #: collective/collectionfilter/tiles/filter.pt:25
+#: collective/collectionfilter/tiles/maps.pt:24
 msgid "label-edit-filter"
 msgstr ""
 
@@ -320,7 +208,7 @@ msgid "label_input_type"
 msgstr ""
 
 #. Default: "Map Layers"
-#: collective/collectionfilter/maps/interfaces.py:44
+#: collective/collectionfilter/tiles/maps.py:51
 msgid "label_map_layers"
 msgstr ""
 
@@ -330,7 +218,7 @@ msgid "label_narrow_down"
 msgstr "Filterkriterien einschränken"
 
 #. Default: "Narrow down result"
-#: collective/collectionfilter/maps/interfaces.py:21
+#: collective/collectionfilter/tiles/maps.py:28
 msgid "label_narrow_down_results"
 msgstr ""
 
@@ -355,7 +243,7 @@ msgid "subject_all"
 msgstr "Alle"
 
 #. Default: "edit filter"
-#: collective/collectionfilter/maps/tile.pt:19
 #: collective/collectionfilter/tiles/filter.pt:19
+#: collective/collectionfilter/tiles/maps.pt:18
 msgid "title-edit-filter"
 msgstr "Filter editieren"
