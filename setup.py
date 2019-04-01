@@ -2,15 +2,23 @@
 from setuptools import find_packages
 from setuptools import setup
 
+import os
+
 version = '3.1.dev0'
+
+
+def read(*rnames):
+    with open(os.path.join(os.path.dirname(__file__), *rnames)) as f:
+        return f.read()
+
 
 setup(
     name='collective.collectionfilter',
     version=version,
     description="Plone addon for filtering collection results.",
     long_description='{0}\n\n{1}'.format(
-        open("README.rst").read(),
-        open("CHANGES.rst").read()
+        read("README.rst"),
+        read("CHANGES.rst"),
     ),
     classifiers=[
         "Framework :: Plone",
@@ -46,7 +54,7 @@ setup(
             'plone.app.contenttypes',
             'robotframework-selenium2library',
             'robotframework-selenium2screenshots',
-        ]
+        ],
     },
     entry_points="""
     # -*- Entry points: -*-

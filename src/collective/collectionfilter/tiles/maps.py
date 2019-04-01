@@ -3,45 +3,59 @@ from Products.CMFPlone.resources import add_bundle_on_request
 from Products.CMFPlone.utils import get_top_request
 from collective.collectionfilter import _
 from collective.collectionfilter.baseviews import BaseFilterView
-from collective.collectionfilter.maps.interfaces import ICollectionMapsSchema
-from collective.collectionfilter.maps.interfaces import IGeojsonProperties
+from collective.collectionfilter.interfaces import ICollectionFilterBaseSchema
 from collective.collectionfilter.query import make_query
 from collective.collectionfilter.tiles import DictDataWrapper
 from collective.collectionfilter.utils import base_query
 from collective.collectionfilter.utils import safe_decode
-from collective.geolocationbehavior.geolocation import IGeolocatable
+from collective.geolocationbehavior.interfaces import IGeoJSONProperties
 from plone.app.contenttypes.behaviors.collection import ICollection
 from plone.app.uuid.utils import uuidToObject
 from plone.app.uuid.utils import uuidToURL
+from plone.formwidget.geolocation.vocabularies import default_map_layer
+from plone.formwidget.geolocation.vocabularies import default_map_layers
 from plone.supermodel.model import Schema
 from plone.tiles.tile import PersistentTile
-from zope.component import adapter
+from zope import schema
 from zope.interface import implementer
 
 import json
 import plone.api
 
 
-class IMapsTile(Schema, ICollectionMapsSchema):
-    pass
+class IMapsTile(Schema, ICollectionFilterBaseSchema):
+    narrow_down = schema.Bool(
+        title=_(u'label_narrow_down_results', default=u'Narrow down result'),
+        description=_(
+            u'help_narrow_down_results',
+            default=u'Narrow down the result after zooming/moving the map.'),
+        default=False,
+        required=False
+    )
 
+    default_map_layer = schema.Choice(
+        title=_(
+            u'default_map_layer',
+            u'Default map layer'
+        ),
+        description=_(
+            u'help_default_map_layer',
+            default=u'Set the default map layer'
+        ),
+        required=False,
+        default=default_map_layer,
+        vocabulary='plone.formwidget.geolocation.vocabularies.map_layers'
+    )
 
-@adapter(IGeolocatable)
-@implementer(IGeojsonProperties)
-class GeojsonProperties(object):
-
-    def __init__(self, context):
-        self.context = context
-
-    @property
-    def popup(self):
-        return u"""
-<header><a href="{0}">{1}</a></header>
-<p>{2}</p>""".format(
-            self.context.absolute_url(),
-            self.context.Title(),
-            self.context.Description(),
-        )
+    map_layers = schema.List(
+        title=_(u'label_map_layers', u'Map Layers'),
+        description=_(
+            u'help_map_layers',
+            default=u'Set the available map layers'),
+        required=False,
+        default=default_map_layers,
+        missing_value=[],
+        value_type=schema.Choice(vocabulary='plone.formwidget.geolocation.vocabularies.map_layers'))  # noqa: E501
 
 
 @implementer(IMapsTile)
@@ -108,7 +122,7 @@ class MapsTile(PersistentTile, BaseFilterView):
             if not it.longitude or not it.latitude:
                 continue
 
-            props = IGeojsonProperties(it.getObject())
+            props = IGeoJSONProperties(it.getObject())
 
             features.append({
                 'type': 'Feature',

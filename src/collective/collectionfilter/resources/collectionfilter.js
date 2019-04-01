@@ -114,6 +114,10 @@ define([
             // OPTION4 - maps filter
             if (this.$el.hasClass('collectionMaps')) {
                 $('.pat-leaflet', this.$el).on('leaflet.moveend leaflet.zoomend', function (e, le) {
+                    var narrow = $(e.target).data('narrow-down-result');
+                    // do nothing if not narrowing down result
+                    if(!narrow) return;
+
                     var levent = le['original_event'];
                     // prevent double loading when zooming (because it's always a move too)
                     if(levent.type === 'moveend' && this._zoomed) {
