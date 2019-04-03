@@ -107,6 +107,11 @@ def get_filter_items(
     # Get all collection results with additional filter defined by urlquery
     custom_query.update(urlquery)
     custom_query = make_query(custom_query)
+    # catalog_results_no_query returns the full results for the collection
+    catalog_results_no_query = ICollection(collection).results(
+        batch=False,
+        brains=True,
+    )
     catalog_results = ICollection(collection).results(
         batch=False,
         brains=True,
@@ -208,7 +213,7 @@ def get_filter_items(
         ),
         'value': 'all',
         'css_class': 'filterItem filter-all',
-        'count': len(catalog_results),
+        'count': len(catalog_results_no_query),
         'selected': idx not in request_params
     }]
 
