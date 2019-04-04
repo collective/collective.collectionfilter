@@ -23,7 +23,7 @@
       href="${edit_url}"
       class="pat-plone-modal edit-link"><span class="fa fa-pencil"/><label i18n:translate="label-edit-filter">edit</label></a>
 
-  <tal:if condition="view/settings/target_collection">
+  <tal:if condition="view/collection|nothing">
   <header tal:condition="view/title" tal:content="view/title">Title</header>
   <div class="searchContent">
     <form method="get" name="searchForm" role="form" action="${view/action_url}">
@@ -39,6 +39,9 @@
         <button type="submit" i18n:translate="button_search">Search</button>
     </form>
   </div>
+  </tal:if>
+  <tal:if condition="not:view/collection|nothing" i18n:translate="">
+    Collection not found or not public
   </tal:if>
 </aside>
 

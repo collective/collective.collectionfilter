@@ -23,11 +23,14 @@
       href="${edit_url}"
       class="pat-plone-modal edit-link"><span class="fa fa-pencil"/><label i18n:translate="label-edit-filter">edit</label></a>
 
-  <tal:if condition="view/settings/target_collection">
+  <tal:if condition="view/collection|nothing">
   <tal:def define="geojson view/data_geojson" tal:condition="geojson">
   <header tal:condition="view/title" tal:content="view/title">Title</header>
   <div class="pat-leaflet" data-geojson='${geojson}' data-pat-leaflet='${view/map_configuration}' data-url="${view/collection_url}" data-narrow-down-result="${view/settings/narrow_down}"></div>
   </tal:def>
+  </tal:if>
+  <tal:if condition="not:view/collection|nothing" i18n:translate="">
+    Collection not found or not public
   </tal:if>
 </aside>
 
