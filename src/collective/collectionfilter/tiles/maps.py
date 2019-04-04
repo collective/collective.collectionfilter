@@ -120,6 +120,8 @@ class MapsTile(PersistentTile, BaseFilterView):
 
         for it in self.locations:
             if not it.longitude or not it.latitude:
+                # these ``it`` are brains, so anything which got lat/lng
+                # indexed can be used.
                 continue
 
             props = IGeoJSONProperties(it.getObject())
