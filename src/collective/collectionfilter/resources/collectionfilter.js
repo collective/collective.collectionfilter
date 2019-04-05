@@ -114,9 +114,9 @@ define([
             // OPTION4 - maps filter
             if (this.$el.hasClass('collectionMaps')) {
                 $('.pat-leaflet', this.$el).on('leaflet.moveend leaflet.zoomend', function (e, le) {
-                    var narrow = $(e.target).data('narrow-down-result');
+                    var narrow_down = $(e.target).data('narrow-down-result');
                     // do nothing if not narrowing down result
-                    if(!narrow) return;
+                    if(narrow_down.toLowerCase() == 'false') return;
 
                     var levent = le['original_event'];
                     // prevent double loading when zooming (because it's always a move too)
@@ -125,7 +125,24 @@ define([
                         return
                     }
                     if(levent.type === 'zoomend') this._zoomed = true;
-                    var collectionURL = $(e.target).data('url');
+                    var collectionURL = $(e.target).data('url'),
+                        bounds = levent.target.getBounds(),
+                        center = levent.target.getCenter(),
+                        zoom = levent.target.getZoom();
+                    // generate bounds query
+                    var bounds_query = "latitude.query:list:record=" + bounds._northEast.lat + "&latitude.query:list:record=" + bounds._southWest.lat + "&latitude.range:record=minmax";
+                    bounds_query += "&longitude.query:list:record=" + bounds._northEast.lng + "&longitude.query:list:record=" + bounds._southWest.lng + "&longitude.range:record=minmax";
+                    bounds_query += "&map_center:list=" + center.lat + "&map_center:list=" + center.lng + "&zoom=" + zoom;
+                    collectionURL += (collectionURL.indexOf('?') != -1 ? "&" : "?") + bounds_query;
+
+                    $(this.trigger).trigger(
+                        'collectionfilter:reload',
+                        {
+                            collectionUUID: this.options.collectionUUID,
+                            targetFilterURL: collectionURL
+                        }
+                    );
+
                     this.reloadCollection(collectionURL);
                 }.bind(this));
             }
@@ -165,17 +182,12 @@ define([
             //
             // Search for all @@ views in ajax calls and remove it before
             // adding it to the browser history
-            //
-            // XXX: If we are not on the collection context this
-            // leads to wrong history urls and when you reload you're
-            // not on the original context anymore. (Mosaic Tile filtering)
-            // see
             re = /@@.*\//;
-            collectionURL = collectionURL.replace(re, '');
+            reloadURL = window.location.href.replace(re, '');
             window.history.replaceState(
-                {path: collectionURL},
+                {path: reloadURL},
                 '',
-                collectionURL
+                reloadURL
             );
         }
 

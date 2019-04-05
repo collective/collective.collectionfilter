@@ -82,7 +82,9 @@ def base_query(request_params={}, extra_ignores=[]):
         'batch',
         'sort_on',
         'limit',
-        'portlethash'
+        'portlethash',
+        'map_center',
+        'map_zoom',
     ] + extra_ignores
     # Now remove all to-be-ignored request parameters.
     urlquery = {
