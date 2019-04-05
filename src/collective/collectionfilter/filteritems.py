@@ -38,7 +38,7 @@ def _results_cachekey(
         method,
         target_collection,
         group_by,
-        fetch_human_readable_title,
+        fetch_human_readable_title=False,
         filter_type=DEFAULT_FILTER_TYPE,
         narrow_down=False,
         view_name='',
