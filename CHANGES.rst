@@ -4,7 +4,10 @@ Changelog
 3.1 (unreleased)
 ----------------
 
-- Nothing changed yet.
+Bug fixes:
+
+- constrain ``target collection`` to portal_type ``Collection``
+  [petschki]
 
 
 3.0 (2019-03-25)
