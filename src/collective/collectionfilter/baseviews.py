@@ -94,6 +94,7 @@ class BaseFilterView(BaseView):
         results = get_filter_items(
             target_collection=self.settings.target_collection,
             group_by=self.settings.group_by,
+            fetch_human_readable_title=self.settings.fetch_human_readable_title,
             filter_type=self.settings.filter_type,
             narrow_down=self.settings.narrow_down,
             view_name=self.settings.view_name,

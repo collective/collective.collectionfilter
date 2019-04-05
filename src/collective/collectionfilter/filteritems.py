@@ -14,6 +14,7 @@ from plone.app.event.base import guess_date_from
 from plone.app.event.base import start_end_from_mode
 from plone.app.event.base import start_end_query
 from plone.app.uuid.utils import uuidToObject
+from plone.dexterity.schema import SCHEMA_CACHE
 from plone.i18n.normalizer import idnormalizer
 from plone.memoize import ram
 from plone.memoize.volatile import DontCache
@@ -21,6 +22,8 @@ from six.moves.urllib.parse import urlencode
 from zope.component import getUtility
 from zope.globalrequest import getRequest
 from zope.i18n import translate
+from zope.schema.vocabulary import getVocabularyRegistry
+
 
 import plone.api
 
@@ -35,6 +38,7 @@ def _results_cachekey(
         method,
         target_collection,
         group_by,
+        fetch_human_readable_title,
         filter_type=DEFAULT_FILTER_TYPE,
         narrow_down=False,
         view_name='',
@@ -60,6 +64,7 @@ def _results_cachekey(
 def get_filter_items(
         target_collection,
         group_by,
+        fetch_human_readable_title,
         filter_type=DEFAULT_FILTER_TYPE,
         narrow_down=False,
         view_name='',
@@ -153,6 +158,11 @@ def get_filter_items(
             title = filter_value
             if filter_value is not EMPTY_MARKER and callable(display_modifier):
                 title = _(safe_decode(display_modifier(filter_value)))
+            if group_by in brain and fetch_human_readable_title and filter_value is not EMPTY_MARKER:
+                ctype_schema = SCHEMA_CACHE.get(brain.portal_type)
+                vocab_name = ctype_schema[group_by].vocabularyName
+                vocab = getVocabularyRegistry().get(collection, vocab_name)
+                title = vocab.getTerm(filter_value).title
 
             # Build filter url query
             _urlquery = urlquery.copy()
