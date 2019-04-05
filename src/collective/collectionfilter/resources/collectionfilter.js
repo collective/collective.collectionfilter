@@ -180,12 +180,16 @@ define([
             //
             // Search for all @@ views in ajax calls and remove it before
             // adding it to the browser history
+            //
+            // XXX: This leads to unwanted browser url when the context
+            // is not the collection for eg. a Mosaic Page with filter
+            // tiles.
             re = /@@.*\//;
-            reloadURL = window.location.href.replace(re, '');
+            collectionURL = collectionURL.replace(re, '');
             window.history.replaceState(
-                {path: reloadURL},
+                {path: collectionURL},
                 '',
-                reloadURL
+                collectionURL
             );
         }
 
