@@ -22,6 +22,7 @@ class Assignment(base.Assignment):
     header = u""
     target_collection = None
     group_by = u""
+    fetch_human_readable_title = False
     show_count = False
     cache_enabled = True
     filter_type = DEFAULT_FILTER_TYPE
@@ -36,6 +37,7 @@ class Assignment(base.Assignment):
         header=u"",
         target_collection=None,
         group_by=u"",
+        fetch_human_readable_title = False,
         show_count=False,
         cache_enabled=True,
         filter_type=DEFAULT_FILTER_TYPE,
@@ -48,6 +50,7 @@ class Assignment(base.Assignment):
         self.header = header
         self.target_collection = target_collection
         self.group_by = group_by
+        self.fetch_human_readable_title = fetch_human_readable_title
         self.show_count = show_count
         self.cache_enabled = cache_enabled
         self.filter_type = filter_type

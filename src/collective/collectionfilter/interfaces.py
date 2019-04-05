@@ -78,6 +78,15 @@ class ICollectionFilterSchema(ICollectionFilterBaseSchema):
         vocabulary='collective.collectionfilter.GroupByCriteria',
     )
 
+    fetch_human_readable_title = schema.Bool(
+        title=_(u'label_fetch_human_readable_title', default=u'Fetch human readable title'),
+        description=_(
+            u'help_fetch_human_readable_title',
+            default=u'Makes best effort to retrieve the human readable title. (Mostly useful if you defined a vocabulary through the web (TTW)).'),
+        default=False,
+        required=False
+    )
+    
     show_count = schema.Bool(
         title=_(u'label_show_count', default=u'Show count'),
         description=_(
