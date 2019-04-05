@@ -230,17 +230,4 @@ if HAS_GEOLOCATION:
                     for it in self.settings.map_layers
                 ],
             }
-            # if we get center and zoom from the request set it hard
-            # this is important if the user browses through the
-            # map and we reload the content correspondingly
-            if 'map_center' in self.top_request:
-                center = self.top_request.get('map_center')
-                config.update({
-                    'center': [float(center[0]), float(center[1])],
-                })
-            if 'map_zoom' in self.top_request:
-                zoom = self.top_request.get('map_zoom')
-                config.update({
-                    'center': int(zoom),
-                })
             return json.dumps(config)

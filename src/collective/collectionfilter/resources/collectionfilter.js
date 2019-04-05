@@ -20,8 +20,9 @@ define([
         init: function() {
             this.$el.unbind('collectionfilter:reload');
             this.$el.on('collectionfilter:reload', function (e, data) {
-                if (data.noReloadSearch && this.$el.hasClass('collectionSearch')) {
-                    // don't reload search while typing.
+                if ((data.noReloadSearch && this.$el.hasClass('collectionSearch')) ||
+                    (data.noReloadMap && this.$el.hasClass('collectionMaps'))) {
+                    // don't reload search while typing or map while move/zooming
                     return;
                 }
                 if (data.collectionUUID === this.options.collectionUUID) {
@@ -126,20 +127,17 @@ define([
                     }
                     if(levent.type === 'zoomend') this._zoomed = true;
                     var collectionURL = $(e.target).data('url'),
-                        bounds = levent.target.getBounds(),
-                        center = levent.target.getCenter(),
-                        zoom = levent.target.getZoom();
+                        bounds = levent.target.getBounds();
                     // generate bounds query
-                    var bounds_query = "latitude.query:list:record=" + bounds._northEast.lat + "&latitude.query:list:record=" + bounds._southWest.lat + "&latitude.range:record=minmax";
-                    bounds_query += "&longitude.query:list:record=" + bounds._northEast.lng + "&longitude.query:list:record=" + bounds._southWest.lng + "&longitude.range:record=minmax";
-                    bounds_query += "&map_center:list=" + center.lat + "&map_center:list=" + center.lng + "&zoom=" + zoom;
-                    collectionURL += (collectionURL.indexOf('?') != -1 ? "&" : "?") + bounds_query;
+                    collectionURL += "&latitude.query:list:record=" + bounds._northEast.lat + "&latitude.query:list:record=" + bounds._southWest.lat + "&latitude.range:record=minmax";
+                    collectionURL += "&longitude.query:list:record=" + bounds._northEast.lng + "&longitude.query:list:record=" + bounds._southWest.lng + "&longitude.range:record=minmax";
 
                     $(this.trigger).trigger(
                         'collectionfilter:reload',
                         {
                             collectionUUID: this.options.collectionUUID,
-                            targetFilterURL: collectionURL
+                            targetFilterURL: collectionURL,
+                            noReloadMap: true
                         }
                     );
 

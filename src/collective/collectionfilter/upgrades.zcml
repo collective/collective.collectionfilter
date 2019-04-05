@@ -38,7 +38,7 @@
       />
 
   <genericsetup:upgradeDepends
-      title="New Target Collection registry value"
+      title="New Target Collection registry value, Update Resources"
       description=""
       source="7"
       destination="8"
