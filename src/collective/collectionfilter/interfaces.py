@@ -7,6 +7,13 @@ from zope import schema
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
+try:
+    from plone.formwidget.geolocation.vocabularies import default_map_layer
+    from plone.formwidget.geolocation.vocabularies import default_map_layers
+    HAS_GEOLOCATION = True
+except ImportError:
+    HAS_GEOLOCATION = False
+
 
 class ICollectionFilterBaseSchema(Interface):
 
@@ -175,3 +182,42 @@ class IGroupByModifier(Interface):
 
 class ICollectionFilterBrowserLayer(IDefaultBrowserLayer):
     """Marker interface that defines a browser layer."""
+
+
+if HAS_GEOLOCATION:
+
+    class ICollectionMapsSchema(ICollectionFilterBaseSchema):
+        """ schema for maps filtering
+        """
+        narrow_down = schema.Bool(
+            title=_(u'label_narrow_down_results', default=u'Narrow down result'),
+            description=_(
+                u'help_narrow_down_results',
+                default=u'Narrow down the result after zooming/moving the map.'),
+            default=False,
+            required=False
+        )
+
+        default_map_layer = schema.Choice(
+            title=_(
+                u'default_map_layer',
+                u'Default map layer'
+            ),
+            description=_(
+                u'help_default_map_layer',
+                default=u'Set the default map layer'
+            ),
+            required=False,
+            default=default_map_layer,
+            vocabulary='plone.formwidget.geolocation.vocabularies.map_layers'
+        )
+
+        map_layers = schema.List(
+            title=_(u'label_map_layers', u'Map Layers'),
+            description=_(
+                u'help_map_layers',
+                default=u'Set the available map layers'),
+            required=False,
+            default=default_map_layers,
+            missing_value=[],
+            value_type=schema.Choice(vocabulary='plone.formwidget.geolocation.vocabularies.map_layers'))  # noqa: E501
