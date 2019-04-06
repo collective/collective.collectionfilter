@@ -47,6 +47,14 @@ setup(
         'plone.app.contenttypes',
     ],
     extras_require={
+        'geolocation': [
+            # support for latitude/longitude catalog index
+            'collective.geolocationbehavior >= 1.6.0',
+            # refactored map configuration
+            'plone.formwidget.geolocation >= 2.2.0',
+            # leaflet JS events for map filter
+            'plone.patternslib >= 1.0.1',
+        ],
         'test': [
             'collective.geolocationbehavior',
             'plone.app.testing[robot]',

@@ -13,9 +13,9 @@ There are three portlets/tiles available for filtering:
 
  - "Collection Filter" - a list with values (select, radio, checkbox, link) you can filter on
  - "Collection Search" - a SearchableText input field to do a fulltextsearch on the collection results
- - "Collection Maps" - a Leaflet map which shows and filters ``IGeolocatable`` items on it
+ - "Collection Maps" - a LeafletJS map which shows and filters ``IGeolocatable`` items on it
    (this feature is available if ``collective.geolocationbehavior`` is installed and the behavior
-    is activated on a contenttype)
+    is activated on a contenttype. See installation notes below)
 
 
 Filter Results with portlets
@@ -39,6 +39,25 @@ and assign a collection to it. To show the results of the collection simply add 
 TODO: right now the collection needs a default_view template, which wraps the result list with a unique selector
 inside the ``#content-core`` container. so the collectionfilter can load the filtered result correctly from
 the collection into the container inside the existing content tile.
+
+
+Geolocation filter support
+--------------------------
+
+If ``collective.geolocationbehavior`` is installed, this package provides a LeafletJS Maps tile/portlet
+which shows each item of a collection result if the ``IGeolocatable`` information is available.
+In addition you can activate the ``Narrow down results`` checkbox to narrow down the collection result and
+other available filter tiles/portlets if the user moves or zooms the map.
+
+We provide a package extra to install all required dependencies with their according versions.
+Simply do this somewhere in your buildout::
+
+    [buildout]
+    ...
+    eggs +=
+        collective.collectionfilter[geolocation]
+    ...
+
 
 Overloading GroupByCriteria
 ---------------------------
