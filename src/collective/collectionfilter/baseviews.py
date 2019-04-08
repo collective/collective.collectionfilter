@@ -202,6 +202,7 @@ if HAS_GEOLOCATION:
                     'id': it.UID,
                     'properties': {
                         'popup': props.popup,
+                        'color': props.color,
                     },
                     'geometry': {
                         'type': 'Point',
