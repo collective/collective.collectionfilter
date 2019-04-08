@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from plone import api
 from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
 from Products.CMFCore.interfaces import IFolderish
 from Products.CMFPlone.utils import safe_unicode
@@ -14,6 +15,15 @@ def target_collection_base_path(context):
             context = potential_context
             break
     return '/'.join(context.getPhysicalPath())
+
+
+def target_collection_types(context):
+    try:
+        return api.portal.get_registry_record(
+            'collective.collectionfilter.target_collection_types')
+    except api.exc.InvalidParameterError:
+        # catch unset value before upgrade
+        return ['Collection', ]
 
 
 def safe_decode(val):

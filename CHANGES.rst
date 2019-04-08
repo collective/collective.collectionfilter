@@ -6,7 +6,8 @@ Changelog
 
 Bug fixes:
 
-- constrain ``target collection`` to portal_type ``Collection``
+- constrain ``target collection`` to a configurable registry value.
+  the default is ``['Collection', ]``
   [petschki]
 
 
