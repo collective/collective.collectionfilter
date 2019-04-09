@@ -18,12 +18,9 @@ def target_collection_base_path(context):
 
 
 def target_collection_types(context):
-    try:
-        return api.portal.get_registry_record(
-            'collective.collectionfilter.target_collection_types')
-    except api.exc.InvalidParameterError:
-        # catch unset value before upgrade
-        return ['Collection', ]
+    return api.portal.get_registry_record(
+        'collective.collectionfilter.target_collection_types',
+        default=['Collection', ])
 
 
 def safe_decode(val):

@@ -34,6 +34,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'setuptools',
+        'plone.api >= 1.5.1',
         'Products.CMFPlone >= 5.1',
         'plone.app.contenttypes',
     ],
