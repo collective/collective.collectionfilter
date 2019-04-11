@@ -10,6 +10,9 @@ Bug fixes:
   the default is ``['Collection', ]``
   [petschki]
 
+- fix non-interable catalog metadata values for Python 3
+  [petschki]
+
 
 3.0 (2019-03-25)
 ----------------

@@ -53,6 +53,20 @@ def safe_encode(val):
     return ret
 
 
+def safe_iterable(value):
+    if isinstance(value, six.string_types):
+        # do not expand a string to a list of chars
+        return [value, ]
+    else:
+        try:
+            return list(value)
+        except TypeError:
+            # int and other stuff
+            return [value, ]
+    # could not convert
+    return []
+
+
 def base_query(request_params={}, extra_ignores=[]):
     """Construct base url query.
     """

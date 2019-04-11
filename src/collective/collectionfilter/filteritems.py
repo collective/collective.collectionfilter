@@ -5,6 +5,7 @@ from collective.collectionfilter.query import make_query
 from collective.collectionfilter.utils import base_query
 from collective.collectionfilter.utils import safe_decode
 from collective.collectionfilter.utils import safe_encode
+from collective.collectionfilter.utils import safe_iterable
 from collective.collectionfilter.vocabularies import DEFAULT_FILTER_TYPE
 from collective.collectionfilter.vocabularies import EMPTY_MARKER
 from plone.app.contenttypes.behaviors.collection import ICollection
@@ -22,7 +23,6 @@ from zope.globalrequest import getRequest
 from zope.i18n import translate
 
 import plone.api
-import six
 
 try:
     from plone.app.event.browser.event_listing import EventListing
@@ -93,16 +93,7 @@ def get_filter_items(
     # Get index in question and the current filter value of this index, if set.
     groupby_criteria = getUtility(IGroupByCriteria).groupby
     idx = groupby_criteria[group_by]['index']
-    current_idx_value = request_params.get(idx)
-    if isinstance(current_idx_value, six.string_types):
-        # do not expand a string to a list of chars
-        current_idx_value = [current_idx_value, ]
-    else:
-        try:
-            current_idx_value = list(current_idx_value)
-        except TypeError:
-            # int and other stuff
-            current_idx_value = [current_idx_value, ]
+    current_idx_value = safe_iterable(request_params.get(idx))
 
     extra_ignores = []
     if not narrow_down:
@@ -141,10 +132,10 @@ def get_filter_items(
         val = getattr(brain, metadata_attr, None)
         if callable(val):
             val = val()
-        # Make sure it's iterable, as it's the case for e.g. the subject index.
-        if not getattr(val, '__iter__', False):
-            val = [val]
+        # decode it to unicode
         val = safe_decode(val)
+        # Make sure it's iterable, as it's the case for e.g. the subject index.
+        val = safe_iterable(val)
 
         for filter_value in val:
             if not filter_value:
