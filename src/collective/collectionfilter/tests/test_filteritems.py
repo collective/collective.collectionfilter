@@ -10,6 +10,12 @@ from plone import api
 from plone.app.textfield.value import RichTextValue
 
 
+def get_data_by_val(result, val):
+    for r in result:
+        if r['value'] == val:
+            return r
+
+
 class TestFilteritems(unittest.TestCase):
 
     layer = COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING
@@ -47,23 +53,18 @@ class TestFilteritems(unittest.TestCase):
 
         self.collection_uid = self.portal['testcollection'].UID()
 
-    def test_filteritems(self):
+    def test_subject_filter(self):
         self.assertEqual(len(self.portal['testcollection'].results()), 2)
-
-        def _get_data_by_val(result, val):
-            for r in result:
-                if r['value'] == val:
-                    return r
 
         result = get_filter_items(
             self.collection_uid, 'Subject', cache_enabled=False)
 
         self.assertEqual(len(result), 4)
-        self.assertEqual(_get_data_by_val(result, 'all')['count'], 2)
-        self.assertEqual(_get_data_by_val(result, 'all')['selected'], True)
-        self.assertEqual(_get_data_by_val(result, u'Süper')['count'], 2)
-        self.assertEqual(_get_data_by_val(result, u'Evänt')['count'], 1)
-        self.assertEqual(_get_data_by_val(result, u'Dokumänt')['count'], 1)
+        self.assertEqual(get_data_by_val(result, 'all')['count'], 2)
+        self.assertEqual(get_data_by_val(result, 'all')['selected'], True)
+        self.assertEqual(get_data_by_val(result, u'Süper')['count'], 2)
+        self.assertEqual(get_data_by_val(result, u'Evänt')['count'], 1)
+        self.assertEqual(get_data_by_val(result, u'Dokumänt')['count'], 1)
 
         result = get_filter_items(
             self.collection_uid, 'Subject',
@@ -71,7 +72,7 @@ class TestFilteritems(unittest.TestCase):
             cache_enabled=False)
 
         self.assertEqual(len(result), 4)
-        self.assertEqual(_get_data_by_val(result, u'Süper')['selected'], True)
+        self.assertEqual(get_data_by_val(result, u'Süper')['selected'], True)
 
         result = get_filter_items(
             self.collection_uid, 'Subject',
@@ -79,7 +80,7 @@ class TestFilteritems(unittest.TestCase):
             cache_enabled=False)
 
         self.assertEqual(len(result), 4)
-        self.assertEqual(_get_data_by_val(result, u'Dokumänt')['selected'], True)  # noqa
+        self.assertEqual(get_data_by_val(result, u'Dokumänt')['selected'], True)  # noqa
 
         # test narrowed down results
         result = get_filter_items(
@@ -89,5 +90,35 @@ class TestFilteritems(unittest.TestCase):
             cache_enabled=False)
 
         self.assertEqual(len(result), 3)
-        self.assertEqual(_get_data_by_val(result, u'Dokumänt')['selected'], True)  # noqa
-        self.assertEqual(_get_data_by_val(result, u'all')['count'], 1)
+        self.assertEqual(get_data_by_val(result, u'Dokumänt')['selected'], True)  # noqa
+        self.assertEqual(get_data_by_val(result, u'all')['count'], 1)
+
+    def test_portal_type_filter(self):
+        self.assertEqual(len(self.portal['testcollection'].results()), 2)
+
+        result = get_filter_items(
+            self.collection_uid, 'portal_type', cache_enabled=False)
+
+        self.assertEqual(len(result), 3)
+        self.assertEqual(get_data_by_val(result, 'all')['count'], 2)
+        self.assertEqual(get_data_by_val(result, 'all')['selected'], True)
+        self.assertEqual(get_data_by_val(result, u'Event')['count'], 1)
+        self.assertEqual(get_data_by_val(result, u'Document')['count'], 1)
+
+        result = get_filter_items(
+            self.collection_uid, 'portal_type',
+            request_params={'portal_type': u'Event'},
+            cache_enabled=False)
+
+        self.assertEqual(len(result), 3)
+        self.assertEqual(get_data_by_val(result, u'Event')['selected'], True)
+
+        result = get_filter_items(
+            self.collection_uid, 'portal_type',
+            request_params={'portal_type': u'Event'},
+            narrow_down=True,
+            cache_enabled=False)
+
+        self.assertEqual(len(result), 2)
+        self.assertEqual(get_data_by_val(result, u'all')['count'], 1)
+        self.assertEqual(get_data_by_val(result, u'Event')['selected'], True)
