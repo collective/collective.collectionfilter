@@ -53,7 +53,7 @@ setup(
             # refactored map configuration
             'plone.formwidget.geolocation >= 2.2.0',
             # leaflet JS events for map filter
-            'plone.patternslib >= 1.0.1',
+            'plone.patternslib >= 1.1.0',
         ],
         'test': [
             'collective.geolocationbehavior',
