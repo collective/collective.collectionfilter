@@ -37,5 +37,15 @@
       handler=".upgrades.reapply_profile"
       />
 
+  <genericsetup:upgradeDepends
+      title="New Target Collection registry value"
+      description=""
+      source="7"
+      destination="8"
+      profile="collective.collectionfilter:default"
+      import_profile="collective.collectionfilter:default"
+      import_steps="plone.app.registry"
+      run_deps="false"
+      />
 
 </configure>
