@@ -63,7 +63,7 @@ class TestFilteritems(unittest.TestCase):
         self.assertEqual(get_data_by_val(result, u'all')['count'], 1)
 
     def test_portal_type_filter(self):
-        self.assertEqual(len(self.portal['testcollection'].results()), 2)
+        self.assertEqual(len(self.collection.results()), 2)
 
         result = get_filter_items(
             self.collection_uid, 'portal_type', cache_enabled=False)

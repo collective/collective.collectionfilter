@@ -6,17 +6,17 @@ Changelog
 
 New features:
 
-- Geolocation filter
+- Geolocation filter.
   [petschki, thet]
 
 
 Bug fixes:
 
-- constrain ``target collection`` to a configurable registry value.
-  the default is ``['Collection', ]``
+- Constrain ``target collection`` to a configurable registry value.
+  The default is ``['Collection', ]``.
   [petschki]
 
-- fix non-interable catalog metadata values for Python 3
+- Fix non-interable catalog metadata values for Python 3.
   [petschki]
 
 
