@@ -197,13 +197,10 @@ if HAS_GEOLOCATION:
 
                 props = IGeoJSONProperties(it.getObject())
 
-                features.append({
+                feature = {
                     'type': 'Feature',
                     'id': it.UID,
-                    'properties': {
-                        'popup': props.popup,
-                        'color': props.color,
-                    },
+                    'properties': {},
                     'geometry': {
                         'type': 'Point',
                         'coordinates': [
@@ -211,7 +208,15 @@ if HAS_GEOLOCATION:
                             it.latitude,
                         ]
                     }
-                })
+                }
+                if getattr(props, 'popup', None):
+                    feature['properties']['popup'] = props.popup
+                if getattr(props, 'color', None):
+                    feature['properties']['color'] = props.color
+                if getattr(props, 'extraClasses', None):
+                    feature['properties']['extraClasses'] = props.extraClasses
+
+                features.append(feature)
 
             if not features:
                 return
