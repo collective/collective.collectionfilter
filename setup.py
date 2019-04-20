@@ -2,15 +2,23 @@
 from setuptools import find_packages
 from setuptools import setup
 
+import os
+
 version = '3.1.dev0'
+
+
+def read(*rnames):
+    with open(os.path.join(os.path.dirname(__file__), *rnames)) as f:
+        return f.read()
+
 
 setup(
     name='collective.collectionfilter',
     version=version,
     description="Plone addon for filtering collection results.",
     long_description='{0}\n\n{1}'.format(
-        open("README.rst").read(),
-        open("CHANGES.rst").read()
+        read("README.rst"),
+        read("CHANGES.rst"),
     ),
     classifiers=[
         "Framework :: Plone",
@@ -39,13 +47,22 @@ setup(
         'plone.app.contenttypes',
     ],
     extras_require={
+        'geolocation': [
+            # support for latitude/longitude catalog index
+            'collective.geolocationbehavior >= 1.6.0',
+            # refactored map configuration
+            'plone.formwidget.geolocation >= 2.2.0',
+            # leaflet JS events for map filter
+            'plone.patternslib >= 1.1.0',
+        ],
         'test': [
+            'collective.geolocationbehavior',
             'plone.app.testing[robot]',
             'plone.app.robotframework',
             'plone.app.contenttypes',
             'robotframework-selenium2library',
             'robotframework-selenium2screenshots',
-        ]
+        ],
     },
     entry_points="""
     # -*- Entry points: -*-

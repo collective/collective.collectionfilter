@@ -2,6 +2,7 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="plone">
 
     <include package="plone.tiles" />
@@ -31,10 +32,33 @@
         template="search.pt"
         />
 
+    <plone:tile
+        zcml:condition="installed collective.geolocationbehavior"
+        name="collective.collectionfilter.tiles.maps"
+        title="Collection Maps Tile"
+        description="Show the collection maps tile."
+        add_permission="cmf.ModifyPortalContent"
+        class=".maps.MapsTile"
+        for="*"
+        permission="zope2.View"
+        schema=".maps.IMapsTile"
+        template="maps.pt"
+        />
+
     <genericsetup:registerProfile
+        zcml:condition="not-installed collective.geolocationbehavior"
         name="default"
         title="collective.collectionfilter tiles"
         directory="profiles/default"
+        description='Extension profile for Plone.'
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+
+    <genericsetup:registerProfile
+        zcml:condition="installed collective.geolocationbehavior"
+        name="default"
+        title="collective.collectionfilter tiles"
+        directory="profiles/default-geolocation"
         description='Extension profile for Plone.'
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />

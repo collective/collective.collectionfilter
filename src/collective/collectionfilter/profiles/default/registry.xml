@@ -39,7 +39,7 @@
     <value key="merge_with">default</value>
     <value key="jscompilation">++resource++collective.collectionfilter/collectionfilter-bundle-compiled.js</value>
     <value key="csscompilation">++resource++collective.collectionfilter/collectionfilter-bundle-compiled.css</value>
-    <value key="last_compilation">2018-12-13 17:21:00</value>
+    <value key="last_compilation">2019-04-05 21:15:00</value>
     <value key="stub_js_modules">
       <element>backbone</element>
       <element>bootstrap-dropdown</element>
@@ -65,6 +65,7 @@
       <element>pat-mockup-parser</element>
       <element>pat-registry</element>
       <element>pat-utils</element>
+      <element>pat-leaflet</element>
       <element>select2</element>
       <element>translate</element>
       <element>underscore</element>

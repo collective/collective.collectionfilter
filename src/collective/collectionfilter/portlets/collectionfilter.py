@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-from Products.CMFPlone.utils import get_top_request
-from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from collective.collectionfilter import _
 from collective.collectionfilter.baseviews import BaseFilterView
 from collective.collectionfilter.interfaces import ICollectionFilterSchema
+from collective.collectionfilter.portlets import BasePortletRenderer
 from collective.collectionfilter.vocabularies import DEFAULT_FILTER_TYPE
 from plone.app.portlets.portlets import base
 from plone.portlets.interfaces import IPortletDataProvider
@@ -71,25 +70,8 @@ class Assignment(base.Assignment):
             return _(u'Collection Filter')
 
 
-class Renderer(base.Renderer, BaseFilterView):
+class Renderer(BasePortletRenderer, BaseFilterView):
     render = ViewPageTemplateFile('collectionfilter.pt')
-
-    @property
-    def filter_id(self):
-        request = get_top_request(self.request)
-        portlethash = request.form.get(
-            'portlethash',
-            getattr(self, '__portlet_metadata__', {}).get('hash', '')
-        )
-        return portlethash
-
-    @property
-    def reload_url(self):
-        reload_url = '{0}/@@render-portlet?portlethash={1}'.format(
-            self.context.absolute_url(),
-            safe_unicode(self.filter_id),
-        )
-        return reload_url
 
 
 class AddForm(base.AddForm):

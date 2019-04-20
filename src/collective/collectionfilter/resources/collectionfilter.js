@@ -15,12 +15,14 @@ define([
             reloadURL: '',
             contentSelector: '#content-core',
         },
+        _zoomed: false,
 
         init: function() {
             this.$el.unbind('collectionfilter:reload');
             this.$el.on('collectionfilter:reload', function (e, data) {
-                if (data.noReloadSearch && this.$el.hasClass('collectionSearch')) {
-                    // don't reload search while typing.
+                if ((data.noReloadSearch && this.$el.hasClass('collectionSearch')) ||
+                    (data.noReloadMap && this.$el.hasClass('collectionMaps'))) {
+                    // don't reload search while typing or map while move/zooming
                     return;
                 }
                 if (data.collectionUUID === this.options.collectionUUID) {
@@ -38,6 +40,8 @@ define([
                 var delayTimer;
                 $('input[name="SearchableText"]', this.$el).on('keyup', function (e) {
                     clearTimeout(delayTimer);
+                    // minimum 3 characters before searching
+                    if($(e.target).val().length < 3) return;
                     delayTimer = setTimeout(function() {
                         var collectionURL = $(e.target).data('url');
                         var val = encodeURIComponent($(e.target).val());
@@ -108,6 +112,38 @@ define([
                 this.reloadCollection(collectionURL);
             }.bind(this));
 
+            // OPTION4 - maps filter
+            if (this.$el.hasClass('collectionMaps')) {
+                $('.pat-leaflet', this.$el).on('leaflet.moveend leaflet.zoomend', function (e, le) {
+                    var narrow_down = $(e.target).data('narrow-down-result');
+                    // do nothing if not narrowing down result
+                    if(narrow_down.toLowerCase() == 'false') return;
+
+                    var levent = le['original_event'];
+                    // prevent double loading when zooming (because it's always a move too)
+                    if(levent.type === 'moveend' && this._zoomed) {
+                        this._zoomed = false;
+                        return
+                    }
+                    if(levent.type === 'zoomend') this._zoomed = true;
+                    var collectionURL = $(e.target).data('url'),
+                        bounds = levent.target.getBounds();
+                    // generate bounds query
+                    collectionURL += "&latitude.query:list:record=" + bounds._northEast.lat + "&latitude.query:list:record=" + bounds._southWest.lat + "&latitude.range:record=minmax";
+                    collectionURL += "&longitude.query:list:record=" + bounds._northEast.lng + "&longitude.query:list:record=" + bounds._southWest.lng + "&longitude.range:record=minmax";
+
+                    $(this.trigger).trigger(
+                        'collectionfilter:reload',
+                        {
+                            collectionUUID: this.options.collectionUUID,
+                            targetFilterURL: collectionURL,
+                            noReloadMap: true
+                        }
+                    );
+
+                    this.reloadCollection(collectionURL);
+                }.bind(this));
+            }
         },
 
         reload: function (filterURL) {
@@ -144,6 +180,10 @@ define([
             //
             // Search for all @@ views in ajax calls and remove it before
             // adding it to the browser history
+            //
+            // XXX: This leads to unwanted browser url when the context
+            // is not the collection for eg. a Mosaic Page with filter
+            // tiles.
             re = /@@.*\//;
             collectionURL = collectionURL.replace(re, '');
             window.history.replaceState(

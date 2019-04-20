@@ -1,16 +1,28 @@
 # -*- coding: utf-8 -*-
+import json
+
 from Acquisition import aq_inner
 from Products.CMFPlone.utils import get_top_request
 from Products.CMFPlone.utils import safe_unicode
+from collective.collectionfilter import _
 from collective.collectionfilter.filteritems import get_filter_items
+from collective.collectionfilter.query import make_query
 from collective.collectionfilter.utils import base_query
 from collective.collectionfilter.utils import safe_decode
 from collective.collectionfilter.utils import safe_encode
 from collective.collectionfilter.vocabularies import TEXT_IDX
+from plone.app.contenttypes.behaviors.collection import ICollection
 from plone.app.uuid.utils import uuidToCatalogBrain
+from plone.app.uuid.utils import uuidToObject
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from six.moves.urllib.parse import urlencode
 from zope.component import queryUtility
+
+try:
+    from collective.geolocationbehavior.interfaces import IGeoJSONProperties
+    HAS_GEOLOCATION = True
+except ImportError:
+    HAS_GEOLOCATION = False
 
 
 class BaseView(object):
@@ -122,7 +134,6 @@ class BaseSearchView(BaseView):
     def ajax_url(self):
         # Recursively transform all to unicode
         request_params = safe_decode(self.top_request.form)
-        request_params.update({'x': 'y'})  # ensure at least one val is set
         urlquery = base_query(request_params, extra_ignores=['SearchableText'])
         query_param = urlencode(safe_encode(urlquery), doseq=True)
         ajax_url = u'/'.join([it for it in [
@@ -131,3 +142,98 @@ class BaseSearchView(BaseView):
             '?' + query_param if query_param else None
         ] if it])
         return ajax_url
+
+
+if HAS_GEOLOCATION:
+
+    class BaseMapsView(BaseView):
+
+        @property
+        def ajax_url(self):
+            # Recursively transform all to unicode
+            request_params = safe_decode(self.top_request.form)
+            urlquery = base_query(
+                request_params, extra_ignores=['latitude', 'longitude'])
+            query_param = urlencode(safe_encode(urlquery), doseq=True)
+            ajax_url = u'/'.join([it for it in [
+                self.collection.getURL(),
+                self.settings.view_name,
+                '?' + query_param if query_param else None
+            ] if it])
+            return ajax_url
+
+        @property
+        def locations(self):
+            custom_query = {}  # Additional query to filter the collection
+
+            collection = uuidToObject(self.settings.target_collection)
+            if not collection:
+                return None
+
+            # Recursively transform all to unicode
+            request_params = safe_decode(self.top_request.form or {})
+
+            # Get all collection results with additional filter
+            # defined by urlquery
+            custom_query = base_query(request_params)
+            custom_query = make_query(custom_query)
+            return ICollection(collection).results(
+                batch=False,
+                brains=True,
+                custom_query=custom_query
+            )
+
+        @property
+        def data_geojson(self):
+            """Return the geo location as GeoJSON string.
+            """
+            features = []
+
+            for it in self.locations:
+                if not it.longitude or not it.latitude:
+                    # these ``it`` are brains, so anything which got lat/lng
+                    # indexed can be used.
+                    continue
+
+                props = IGeoJSONProperties(it.getObject())
+
+                feature = {
+                    'type': 'Feature',
+                    'id': it.UID,
+                    'properties': {},
+                    'geometry': {
+                        'type': 'Point',
+                        'coordinates': [
+                            it.longitude,
+                            it.latitude,
+                        ]
+                    }
+                }
+                if getattr(props, 'popup', None):
+                    feature['properties']['popup'] = props.popup
+                if getattr(props, 'color', None):
+                    feature['properties']['color'] = props.color
+                if getattr(props, 'extraClasses', None):
+                    feature['properties']['extraClasses'] = props.extraClasses
+
+                features.append(feature)
+
+            if not features:
+                return
+
+            geo_json = json.dumps({
+                'type': 'FeatureCollection',
+                'features': features
+            })
+            return geo_json
+
+        @property
+        def map_configuration(self):
+            config = {
+                "default_map_layer": self.settings.default_map_layer,
+                "map_layers": [
+                    {"title": _(it), "id": it}
+                    for it in self.settings.map_layers
+                ],
+            }
+            return json.dumps(config)

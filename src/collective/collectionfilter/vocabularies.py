@@ -18,6 +18,10 @@ import six
 # Use this EMPTY_MARKER for your custom indexer to index empty criterions.
 EMPTY_MARKER = '__EMPTY__'
 TEXT_IDX = "SearchableText"
+GEOLOC_IDX = [
+    'latitude',
+    'longitude',
+]
 GROUPBY_BLACKLIST = [
     'CreationDate',
     'Date',
@@ -44,7 +48,7 @@ GROUPBY_BLACKLIST = [
     'start',
     'sync_uid',
     'total_comments',
-]
+] + GEOLOC_IDX  # latitude/longitude is handled as a range filter ... see query.py  # noqa
 DEFAULT_FILTER_TYPE = 'single'
 LIST_SCALING = ['No Scaling', 'Linear', 'Logarithmic']
 
