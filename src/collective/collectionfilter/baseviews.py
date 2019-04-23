@@ -4,7 +4,6 @@ import json
 from Acquisition import aq_inner
 from Products.CMFPlone.utils import get_top_request
 from Products.CMFPlone.utils import safe_unicode
-from collective.collectionfilter import _
 from collective.collectionfilter.filteritems import get_filter_items
 from collective.collectionfilter.query import make_query
 from collective.collectionfilter.utils import base_query
@@ -17,9 +16,11 @@ from plone.app.uuid.utils import uuidToObject
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from six.moves.urllib.parse import urlencode
 from zope.component import queryUtility
+from zope.i18n import translate
 
 try:
     from collective.geolocationbehavior.interfaces import IGeoJSONProperties
+    from plone.formwidget.geolocation.vocabularies import _
     HAS_GEOLOCATION = True
 except ImportError:
     HAS_GEOLOCATION = False
@@ -232,7 +233,7 @@ if HAS_GEOLOCATION:
             config = {
                 "default_map_layer": self.settings.default_map_layer,
                 "map_layers": [
-                    {"title": _(it), "id": it}
+                    {"title": translate(_(it), context=self.request), "id": it}
                     for it in self.settings.map_layers
                 ],
             }
