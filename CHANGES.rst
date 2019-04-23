@@ -19,6 +19,9 @@ Bug fixes:
 - Fix non-interable catalog metadata values for Python 3.
   [petschki]
 
+- Use Map Layer translations from plone.formwidget.geolocation
+  [petschki]
+
 
 3.0 (2019-03-25)
 ----------------
