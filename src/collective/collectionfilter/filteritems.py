@@ -110,7 +110,7 @@ def get_filter_items(
         brains=True,
         custom_query=custom_query
     )
-   if narrow_down:
+    if narrow_down:
         # we need the extra_ignores to get a true count
         # even when narrow_down filters the display of indexed values
         # count_query allows us to do that true count
