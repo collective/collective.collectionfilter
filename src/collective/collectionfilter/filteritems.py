@@ -107,16 +107,24 @@ def get_filter_items(
     # Get all collection results with additional filter defined by urlquery
     custom_query.update(urlquery)
     custom_query = make_query(custom_query)
-    # catalog_results_no_query returns the full results for the collection
-    catalog_results_no_query = ICollection(collection).results(
-        batch=False,
-        brains=True,
-    )
+
     catalog_results = ICollection(collection).results(
         batch=False,
         brains=True,
         custom_query=custom_query
     )
+    if narrow_down:
+        # we need the extra_ignores to get a true count
+        # even when narrow_down filters the display of indexed values
+        # count_query allows us to do that true count
+        count_query = {}
+        count_urlquery = base_query(request_params, [idx, idx + '_op'])
+        count_query.update(count_urlquery)
+        catalog_results_fullcount = ICollection(collection).results(
+            batch=False,
+            brains=True,
+            custom_query=count_query
+        )
     if not catalog_results:
         return None
 
@@ -203,6 +211,12 @@ def get_filter_items(
     urlquery_all = {
         k: v for k, v in list(urlquery.items()) if k not in (idx, idx + '_op')
     }
+
+    # if narrow_down is enabled we swap catalog_results for catalog_results_fullcount
+    # this gives us a true count, even when narrow_down is enabled
+    if narrow_down:
+        catalog_results = catalog_results_fullcount
+
     ret = [{
         'title': translate(
             _('subject_all', default=u'All'), context=getRequest()
@@ -213,7 +227,7 @@ def get_filter_items(
         ),
         'value': 'all',
         'css_class': 'filterItem filter-all',
-        'count': len(catalog_results_no_query),
+        'count': len(catalog_results),
         'selected': idx not in request_params
     }]
 
