@@ -60,9 +60,9 @@ class TestFilteritems(unittest.TestCase):
 
         self.assertEqual(len(result), 3)
         self.assertEqual(get_data_by_val(result, u'Dokumänt')['selected'], True,  # noqa
-            msg=u"Test that 'Dokumänt' is selected, matching the query")
+                         msg=u"Test that 'Dokumänt' is selected, matching the query") # noqa
         self.assertEqual(get_data_by_val(result, u'all')['count'], 2,
-            msg=u"Test that there are 2 Subjects")
+                         msg=u"Test that there are 2 Subjects")
 
     def test_portal_type_filter(self):
         self.assertEqual(len(self.collection.results()), 2)
@@ -92,6 +92,6 @@ class TestFilteritems(unittest.TestCase):
 
         self.assertEqual(len(result), 2)
         self.assertEqual(get_data_by_val(result, u'all')['count'], 2,
-            msg=u"Test that the number of portal_types in the collection is 2")
+                         msg=u"Test that the number of portal_types in the collection is 2") # noqa
         self.assertEqual(get_data_by_val(result, u'Event')['selected'], True,
-            msg=u"Test that Event portal_type is selected matching the query") 
+                         msg=u"Test that Event portal_type is selected matching the query") # noqa
