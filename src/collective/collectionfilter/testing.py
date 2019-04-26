@@ -11,7 +11,6 @@ from plone.app.testing import applyProfile
 from plone.app.textfield.value import RichTextValue
 from plone.testing import z2
 
-
 class CollectiveCollectionFilterLayer(PloneSandboxLayer):
 
     defaultBases = (PLONE_APP_CONTENTTYPES_FIXTURE,)
@@ -61,6 +60,7 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
             # doc.geolocation.latitude = 47.4048832
             # doc.geolocation.longitude = 9.7587760701108
             doc.reindexObject()
+
 
 
 COLLECTIVE_COLLECTIONFILTER_FIXTURE = CollectiveCollectionFilterLayer()
