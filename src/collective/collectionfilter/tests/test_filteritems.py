@@ -55,10 +55,21 @@ class TestFilteritems(unittest.TestCase):
         result = get_filter_items(
             self.collection_uid, 'Subject',
             request_params={'Subject': u'Dokumänt'},
+            cache_enabled=False)
+
+        narrowed_down_result = get_filter_items(
+            self.collection_uid, 'Subject',
+            request_params={'Subject': u'Dokumänt'},
             narrow_down=True,
             cache_enabled=False)
 
-        self.assertEqual(len(result), 3)
+        result_length = len(result)
+        narrowed_result_length = len(narrowed_down_result)
+
+        self.assertTrue(result_length > narrowed_result_length,
+                        msg =u"result should be greater in length than narrowed version") # noqa
+        self.assertEqual(narrowed_result_length, 3,
+                         msg=u"narrowed result length should be 3")
         self.assertEqual(get_data_by_val(result, u'Dokumänt')['selected'], True,  # noqa
                          msg=u"Test that 'Dokumänt' is selected, matching the query") # noqa
         self.assertEqual(get_data_by_val(result, u'all')['count'], 2,
