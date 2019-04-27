@@ -15,6 +15,7 @@ define([
             reloadURL: '',
             contentSelector: '#content-core',
         },
+        _initmap_cycles: 2,
         _zoomed: false,
 
         init: function() {
@@ -117,7 +118,14 @@ define([
                 $('.pat-leaflet', this.$el).on('leaflet.moveend leaflet.zoomend', function (e, le) {
                     var narrow_down = $(e.target).data('narrow-down-result');
                     // do nothing if not narrowing down result
-                    if(narrow_down.toLowerCase() == 'false') return;
+                    if(narrow_down.toLowerCase() === 'false') return;
+
+                    if (this._initmap_cycles > 0) {
+                        // Do not trigger filter when initializing the map.
+                        // One zoomend and one moveend events are thrown.
+                        this._initmap_cycles -= 1;
+                        return;
+                    }
 
                     var levent = le['original_event'];
                     // prevent double loading when zooming (because it's always a move too)
