@@ -40,9 +40,6 @@
     </form>
   </div>
   </tal:if>
-  <tal:if condition="not:view/collection|nothing" i18n:translate="">
-    Collection not found or not public
-  </tal:if>
 </aside>
 
 </body>
