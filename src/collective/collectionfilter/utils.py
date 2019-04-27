@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from plone import api
 from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
 from Products.CMFCore.interfaces import IFolderish
 from Products.CMFPlone.utils import safe_unicode
@@ -16,12 +17,18 @@ def target_collection_base_path(context):
     return '/'.join(context.getPhysicalPath())
 
 
+def target_collection_types(context):
+    return api.portal.get_registry_record(
+        'collective.collectionfilter.target_collection_types',
+        default=['Collection', ])
+
+
 def safe_decode(val):
     """Safely create unicode values.
     """
     ret = val
     if isinstance(val, dict):
-        ret = dict([(safe_decode(k), safe_decode(v)) for k, v in val.items()])
+        ret = dict([(safe_decode(k), safe_decode(v)) for k, v in val.items() if v])  # noqa
     elif isinstance(val, list):
         ret = [safe_decode(it) for it in val]
     elif isinstance(val, tuple):
@@ -36,7 +43,7 @@ def safe_encode(val):
     """
     ret = val
     if isinstance(val, dict):
-        ret = dict([(safe_encode(k), safe_encode(v)) for k, v in val.items()])
+        ret = dict([(safe_encode(k), safe_encode(v)) for k, v in val.items() if v])  # noqa
     elif isinstance(val, list):
         ret = [safe_encode(it) for it in val]
     elif isinstance(val, tuple):
@@ -44,6 +51,20 @@ def safe_encode(val):
     elif isinstance(val, six.string_types):
         ret = safe_unicode(val).encode('utf-8')
     return ret
+
+
+def safe_iterable(value):
+    if isinstance(value, six.string_types):
+        # do not expand a string to a list of chars
+        return [value, ]
+    else:
+        try:
+            return list(value)
+        except TypeError:
+            # int and other stuff
+            return [value, ]
+    # could not convert
+    return []
 
 
 def base_query(request_params={}, extra_ignores=[]):
@@ -61,7 +82,7 @@ def base_query(request_params={}, extra_ignores=[]):
         'batch',
         'sort_on',
         'limit',
-        'portlethash'
+        'portlethash',
     ] + extra_ignores
     # Now remove all to-be-ignored request parameters.
     urlquery = {
