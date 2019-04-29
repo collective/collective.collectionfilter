@@ -56,6 +56,7 @@ setup(
             'plone.patternslib >= 1.1.0',
         ],
         'test': [
+            'plone.app.tiles',
             'collective.geolocationbehavior',
             'plone.app.testing[robot]',
             'plone.app.robotframework',

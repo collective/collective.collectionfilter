@@ -49,31 +49,25 @@ class TestFilteritems(unittest.TestCase):
             cache_enabled=False)
 
         self.assertEqual(len(result), 4)
-        self.assertEqual(get_data_by_val(result, u'Dokumänt')['selected'], True)  # noqa
+        self.assertEqual(
+            get_data_by_val(result, u'Dokumänt')['selected'], True)
 
         # test narrowed down results
-        result = get_filter_items(
-            self.collection_uid, 'Subject',
-            request_params={'Subject': u'Dokumänt'},
-            cache_enabled=False)
-
         narrowed_down_result = get_filter_items(
             self.collection_uid, 'Subject',
             request_params={'Subject': u'Dokumänt'},
             narrow_down=True,
             cache_enabled=False)
 
-        result_length = len(result)
-        narrowed_result_length = len(narrowed_down_result)
-
-        self.assertTrue(result_length > narrowed_result_length,
-                        msg =u"result should be greater in length than narrowed version") # noqa
-        self.assertEqual(narrowed_result_length, 3,
-                         msg=u"narrowed result length should be 3")
-        self.assertEqual(get_data_by_val(result, u'Dokumänt')['selected'], True,  # noqa
-                         msg=u"Test that 'Dokumänt' is selected, matching the query") # noqa
-        self.assertEqual(get_data_by_val(result, u'all')['count'], 2,
-                         msg=u"Test that there are 2 Subjects")
+        self.assertEqual(
+            len(narrowed_down_result), 3,
+            msg=u"narrowed result length should be 3")
+        self.assertEqual(
+            get_data_by_val(narrowed_down_result, u'Dokumänt')['selected'], True,  # noqa
+            msg=u"Test that 'Dokumänt' is selected, matching the query")
+        self.assertEqual(
+            get_data_by_val(narrowed_down_result, u'all')['count'], 2,
+            msg=u"Test that there are 2 Subjects")
 
     def test_portal_type_filter(self):
         self.assertEqual(len(self.collection.results()), 2)
@@ -95,6 +89,7 @@ class TestFilteritems(unittest.TestCase):
         self.assertEqual(len(result), 3)
         self.assertEqual(get_data_by_val(result, u'Event')['selected'], True)
 
+        # test narrowed down results
         result = get_filter_items(
             self.collection_uid, 'portal_type',
             request_params={'portal_type': u'Event'},
@@ -102,7 +97,9 @@ class TestFilteritems(unittest.TestCase):
             cache_enabled=False)
 
         self.assertEqual(len(result), 2)
-        self.assertEqual(get_data_by_val(result, u'all')['count'], 2,
-                         msg=u"Test that the number of portal_types in the collection is 2") # noqa
-        self.assertEqual(get_data_by_val(result, u'Event')['selected'], True,
-                         msg=u"Test that Event portal_type is selected matching the query") # noqa
+        self.assertEqual(
+            get_data_by_val(result, u'all')['count'], 2,
+            msg=u"Test that the number of portal_types in the collection is 2")
+        self.assertEqual(
+            get_data_by_val(result, u'Event')['selected'], True,
+            msg=u"Test that Event portal_type is selected matching the query")
