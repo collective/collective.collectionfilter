@@ -34,8 +34,8 @@ Test Teardown  Close all browsers
 *** Test Cases ***************************************************************
 
 Scenario: As a member I want to be able to log into the website
-  [Documentation]  Example of a BDD-style (Behavior-driven development) test.
-  Given a login form
-   When I enter valid credentials
-   Then I am logged in
+    [Documentation]  Example of a BDD-style (Behavior-driven development) test.
+    Given a login form
+     When I enter valid credentials
+     Then I am logged in
 

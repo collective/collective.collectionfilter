@@ -6,6 +6,9 @@
     xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="collective.collectionfilter">
 
+    <include package="plone.app.tiles" />
+    <include package="collective.geolocationbehavior" />
+
     <genericsetup:registerProfile
         name="testing"
         title="collective.collectionfilter testing"
