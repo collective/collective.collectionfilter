@@ -20,6 +20,8 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
         # Load any other ZCML that is required for your tests.
         # The z3c.autoinclude feature is disabled in the Plone fixture base
         # layer.
+        import plone.app.mosaic
+        self.loadZCML(package=plone.app.mosaic)
         import collective.geolocationbehavior
         self.loadZCML(package=collective.geolocationbehavior)
         import collective.collectionfilter
@@ -27,6 +29,7 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
         self.loadZCML(package=collective.collectionfilter.tests)
 
     def setUpPloneSite(self, portal):
+        applyProfile(portal, 'plone.app.mosaic:default')
         applyProfile(portal, 'collective.geolocationbehavior:default')
         applyProfile(portal, 'collective.collectionfilter:default')
         applyProfile(portal, 'collective.collectionfilter.tests:testing')
