@@ -1,25 +1,3 @@
-# ============================================================================
-# EXAMPLE ROBOT TESTS
-# ============================================================================
-#
-# Run this robot test stand-alone:
-#
-#  $ bin/test -s collective.collectionfilter -t test_example.robot --all
-#
-# Run this robot test with robot server (which is faster):
-#
-# 1) Start robot server:
-#
-# $ bin/robot-server --reload-path src collective.collectionfilter.testing.COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING
-#
-# 2) Run robot tests:
-#
-# $ bin/robot src/collective/collectionfilter/tests/robot/test_example.robot
-#
-# See the http://docs.plone.org for further details (search for robot
-# framework).
-#
-# ============================================================================
 
 *** Settings *****************************************************************
 
