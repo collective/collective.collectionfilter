@@ -22,6 +22,9 @@ Bug fixes:
 - Use Map Layer translations from plone.formwidget.geolocation
   [petschki]
 
+- Fix ``None`` value in ``safe_interable``
+  [petschki]
+
 
 3.0 (2019-03-25)
 ----------------

@@ -54,6 +54,8 @@ def safe_encode(val):
 
 
 def safe_iterable(value):
+    if value is None:
+        return []
     if isinstance(value, six.string_types):
         # do not expand a string to a list of chars
         return [value, ]
