@@ -34,8 +34,10 @@ Scenario: Add filter portlets to collection
 
     Input text  css=.collectionSearch input[name='SearchableText']  Docu
     Wait until keyword succeeds  5s  1s  Xpath should match X times  //article[@class='entry']  1
+    # check for filtered subject checkbox list
+    Wait until keyword succeeds  5s  1s  Xpath should match X times  //div[contains(@class, 'filterContent')]//li[contains(@class, 'filterItem')]  3
 
-    # XXX fails right now ... needs to be fixed in JS
+    # the following doesn't work ... I think no 'keyup' event is fired
     #Clear element text  css=.collectionSearch input[name='SearchableText']
     #Wait until keyword succeeds  5s  1s  Xpath should match X times  //article[@class='entry']  2
-
+    #Wait until keyword succeeds  5s  1s  Xpath should match X times  //div[contains(@class, 'filterContent')]//li[contains(@class, 'filterItem')]  4

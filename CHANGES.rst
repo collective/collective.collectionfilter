@@ -25,6 +25,9 @@ Bug fixes:
 - Fix ``None`` value in ``safe_interable``
   [petschki]
 
+- Fix for empty SearchableText field (see #56)
+  [petschki]
+
 
 3.0 (2019-03-25)
 ----------------
