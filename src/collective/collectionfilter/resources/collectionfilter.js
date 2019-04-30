@@ -42,11 +42,13 @@ define([
                 $('input[name="SearchableText"]', this.$el).on('keyup', function (e) {
                     clearTimeout(delayTimer);
                     // minimum 3 characters before searching
-                    if($(e.target).val().length < 3) return;
+                    if(($(e.target).val().length > 0) && ($(e.target).val().length < 3)) return;
                     delayTimer = setTimeout(function() {
                         var collectionURL = $(e.target).data('url');
                         var val = encodeURIComponent($(e.target).val());
-                        collectionURL += '&' + $(e.target).attr('name') + '=' + val;
+                        if(val) {
+                            collectionURL += '&' + $(e.target).attr('name') + '=' + val;
+                        }
                         $(this.trigger).trigger(
                             'collectionfilter:reload',
                             {
