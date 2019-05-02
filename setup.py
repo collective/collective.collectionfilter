@@ -34,6 +34,14 @@ setup(
         'Products.CMFPlone >= 5.0',
         'plone.app.contenttypes',
     ],
+    extras_require={
+       'test': [
+            'plone.app.mosaic',
+            #'collective.geolocationbehavior',
+            'plone.app.upgrade',
+            'plone.app.testing',
+        ],
+        },
     entry_points="""
     # -*- Entry points: -*-
     [z3c.autoinclude.plugin]

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<metadata>
+  <version>1</version>
+  <dependencies>
+    <dependency>profile-collective.collectionfilter.portlets:default</dependency>
+    <dependency>profile-plone.app.tiles:default</dependency>
+    <dependency>profile-collective.collectionfilter.tiles:default</dependency>
+  </dependencies>
+</metadata>
