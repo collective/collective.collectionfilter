@@ -43,6 +43,16 @@ class TestFilteritems(unittest.TestCase):
         self.assertEqual(len(result), 4)
         self.assertEqual(get_data_by_val(result, u'Süper')['selected'], True)
 
+        # test additive filtering
+        result = get_filter_items(
+            self.collection_uid, 'Subject',
+            # request_params={'Subject': u'Dokumänt'},
+            filter_type='and',
+            cache_enabled=False)
+        items_with_subject_none = [item for item in result if 'Subject=None' in item['url']]
+        self.assertEqual(len(items_with_subject_none), 0,
+            msg=u"Subject=None should not be set on urls of links")
+
         result = get_filter_items(
             self.collection_uid, 'Subject',
             request_params={'Subject': u'Dokumänt'},
