@@ -12,6 +12,9 @@ New features:
 
 Bug fixes:
 
+- Remove dependency on plone.app.upgrade
+  [agitator]
+
 - Constrain ``target collection`` to a configurable registry value.
   The default is ``['Collection', ]``.
   [petschki]
