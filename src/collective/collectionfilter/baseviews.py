@@ -209,7 +209,12 @@ if HAS_GEOLOCATION:
                     }
                 }
 
-                props = IGeoJSONProperties(it.getObject(), None)
+                props = None
+                try:
+                    props = IGeoJSONProperties(it.getObject(), None)
+                except:
+                    # Hotfix bypass super weired ZODB Error
+                    pass
                 if getattr(props, 'popup', None):
                     feature['properties']['popup'] = props.popup
                 if getattr(props, 'color', None):
