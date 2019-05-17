@@ -196,8 +196,6 @@ if HAS_GEOLOCATION:
                     # indexed can be used.
                     continue
 
-                props = IGeoJSONProperties(it.getObject())
-
                 feature = {
                     'type': 'Feature',
                     'id': it.UID,
@@ -210,6 +208,8 @@ if HAS_GEOLOCATION:
                         ]
                     }
                 }
+
+                props = IGeoJSONProperties(it.getObject(), None)
                 if getattr(props, 'popup', None):
                     feature['properties']['popup'] = props.popup
                 if getattr(props, 'color', None):
