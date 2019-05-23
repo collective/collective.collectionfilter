@@ -4,7 +4,7 @@ Changelog
 3.3 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Backport for @petschki: #42 Incorrect count on "all" when "Narrow down filter options" enabled and viewing a filtered result. [pigeonflight, jensens]
 
 
 3.2 (2019-07-23)
