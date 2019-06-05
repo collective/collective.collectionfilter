@@ -10,6 +10,7 @@ from collective.collectionfilter.utils import base_query
 from collective.collectionfilter.utils import safe_decode
 from collective.collectionfilter.utils import safe_encode
 from collective.collectionfilter.vocabularies import TEXT_IDX
+from plone.api.portal import get_registry_record as getrec
 from plone.app.contenttypes.behaviors.collection import ICollection
 from plone.app.uuid.utils import uuidToCatalogBrain
 from plone.app.uuid.utils import uuidToObject
@@ -231,6 +232,10 @@ if HAS_GEOLOCATION:
         @property
         def map_configuration(self):
             config = {
+                "fullscreencontrol": getrec('geolocation.fullscreen_control'),
+                "locatecontrol": getrec('geolocation.locate_control'),
+                "zoomcontrol": getrec('geolocation.zoom_control'),
+                "minimap": getrec('geolocation.show_minimap'),
                 "default_map_layer": self.settings.default_map_layer,
                 "map_layers": [
                     {"title": translate(_(it), context=self.request), "id": it}
