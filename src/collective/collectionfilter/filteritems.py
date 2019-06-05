@@ -37,6 +37,7 @@ def _results_cachekey(
         group_by,
         filter_type=DEFAULT_FILTER_TYPE,
         narrow_down=False,
+        show_count=False,
         view_name='',
         cache_enabled=True,
         request_params=None):
@@ -47,6 +48,7 @@ def _results_cachekey(
         group_by,
         filter_type,
         narrow_down,
+        show_count,
         view_name,
         request_params,
         ' '.join(plone.api.user.get_roles()),
@@ -62,6 +64,7 @@ def get_filter_items(
         group_by,
         filter_type=DEFAULT_FILTER_TYPE,
         narrow_down=False,
+        show_count=False,
         view_name='',
         cache_enabled=True,
         request_params=None
@@ -110,7 +113,7 @@ def get_filter_items(
         brains=True,
         custom_query=custom_query
     )
-    if narrow_down:
+    if narrow_down and show_count:
         # we need the extra_ignores to get a true count
         # even when narrow_down filters the display of indexed values
         # count_query allows us to do that true count
@@ -208,7 +211,7 @@ def get_filter_items(
     urlquery_all = {
         k: v for k, v in list(urlquery.items()) if k not in (idx, idx + '_op')
     }
-    if narrow_down:
+    if narrow_down and show_count:
         catalog_results = catalog_results_fullcount
     ret = [{
         'title': translate(
