@@ -97,6 +97,7 @@ class BaseFilterView(BaseView):
             group_by=self.settings.group_by,
             filter_type=self.settings.filter_type,
             narrow_down=self.settings.narrow_down,
+            show_count=self.settings.show_count,
             view_name=self.settings.view_name,
             cache_enabled=self.settings.cache_enabled,
             request_params=self.top_request.form or {}

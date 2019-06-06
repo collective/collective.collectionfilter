@@ -57,6 +57,7 @@ class TestFilteritems(unittest.TestCase):
             self.collection_uid, 'Subject',
             request_params={'Subject': u'Dokumänt'},
             narrow_down=True,
+            show_count=True,
             cache_enabled=False)
 
         self.assertEqual(
@@ -94,6 +95,7 @@ class TestFilteritems(unittest.TestCase):
             self.collection_uid, 'portal_type',
             request_params={'portal_type': u'Event'},
             narrow_down=True,
+            show_count=True,
             cache_enabled=False)
 
         self.assertEqual(len(result), 2)
