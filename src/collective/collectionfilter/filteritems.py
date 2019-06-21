@@ -5,6 +5,7 @@ from collective.collectionfilter.query import make_query
 from collective.collectionfilter.utils import base_query
 from collective.collectionfilter.utils import safe_decode
 from collective.collectionfilter.utils import safe_encode
+from collective.collectionfilter.utils import safe_iterable
 from collective.collectionfilter.vocabularies import DEFAULT_FILTER_TYPE
 from collective.collectionfilter.vocabularies import EMPTY_MARKER
 from plone.app.contenttypes.behaviors.collection import ICollection
@@ -16,7 +17,6 @@ from plone.app.uuid.utils import uuidToObject
 from plone.i18n.normalizer import idnormalizer
 from plone.memoize import ram
 from plone.memoize.volatile import DontCache
-from time import time
 from six.moves.urllib.parse import urlencode
 from zope.component import getUtility
 from zope.globalrequest import getRequest
@@ -24,22 +24,22 @@ from zope.i18n import translate
 
 import plone.api
 
-
 try:
     from plone.app.event.browser.event_listing import EventListing
 except ImportError:
     class EventListing(object):
         pass
 
+
 def _results_cachekey(
         method,
         target_collection,
         group_by,
-        filter_type,
-        narrow_down,
-        view_name,
-        cache_enabled,
-        request_params):
+        filter_type=DEFAULT_FILTER_TYPE,
+        narrow_down=False,
+        view_name='',
+        cache_enabled=True,
+        request_params=None):
     if not cache_enabled:
         raise DontCache
     cachekey = (
@@ -47,6 +47,25 @@ def _results_cachekey(
         group_by,
         filter_type,
         narrow_down,
+        view_name,
+        request_params,
+        ' '.join(plone.api.user.get_roles()),
+        plone.api.portal.get_current_language(),
+        str(plone.api.portal.get_tool('portal_catalog').getCounter()),
+    )
+    return cachekey
+
+
+def _location_results_cachekey(
+        method,
+        target_collection,
+        view_name,
+        cache_enabled,
+        request_params):
+    if not cache_enabled:
+        raise DontCache
+    cachekey = (
+        target_collection,
         view_name,
         request_params,
         ' '.join(plone.api.user.get_roles()),
@@ -112,9 +131,7 @@ def get_filter_items(
     # Get index in question and the current filter value of this index, if set.
     groupby_criteria = getUtility(IGroupByCriteria).groupby
     idx = groupby_criteria[group_by]['index']
-    current_idx_value = request_params.get(idx)
-    if not getattr(current_idx_value, '__iter__', False):
-        current_idx_value = [current_idx_value] if current_idx_value else []
+    current_idx_value = safe_iterable(request_params.get(idx))
 
     extra_ignores = []
     if not narrow_down:
@@ -131,6 +148,18 @@ def get_filter_items(
         brains=True,
         custom_query=custom_query
     )
+    if narrow_down:
+        # we need the extra_ignores to get a true count
+        # even when narrow_down filters the display of indexed values
+        # count_query allows us to do that true count
+        count_query = {}
+        count_urlquery = base_query(request_params, [idx, idx + '_op'])
+        count_query.update(count_urlquery)
+        catalog_results_fullcount = ICollection(collection).results(
+            batch=False,
+            brains=True,
+            custom_query=count_query
+        )
     if not catalog_results:
         return None
 
@@ -153,10 +182,10 @@ def get_filter_items(
         val = getattr(brain, metadata_attr, None)
         if callable(val):
             val = val()
-        # Make sure it's iterable, as it's the case for e.g. the subject index.
-        if not getattr(val, '__iter__', False):
-            val = [val]
+        # decode it to unicode
         val = safe_decode(val)
+        # Make sure it's iterable, as it's the case for e.g. the subject index.
+        val = safe_iterable(val)
 
         for filter_value in val:
             if not filter_value:
@@ -217,6 +246,8 @@ def get_filter_items(
     urlquery_all = {
         k: v for k, v in list(urlquery.items()) if k not in (idx, idx + '_op')
     }
+    if narrow_down:
+        catalog_results = catalog_results_fullcount
     ret = [{
         'title': translate(
             _('subject_all', default=u'All'), context=getRequest()
