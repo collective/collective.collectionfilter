@@ -131,7 +131,7 @@ def get_filter_items(
     # Get index in question and the current filter value of this index, if set.
     groupby_criteria = getUtility(IGroupByCriteria).groupby
     idx = groupby_criteria[group_by]['index']
-    current_idx_value = safe_iterable(request_params.get(idx)) if request_params.get(idx) else []
+    current_idx_value = safe_iterable(request_params.get(idx))
     extra_ignores = []
     if not narrow_down:
         # Additive filtering is about adding other filter values of the same

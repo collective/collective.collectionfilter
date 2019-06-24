@@ -55,13 +55,14 @@ def safe_iterable(value):
         # do not expand a string to a list of chars
         return [value]
     else:
+        # empty value
+        if not value:
+            return []
         try:
             return list(value)
         except TypeError:
             # int and other stuff
             return [value]
-    # could not convert
-    return []
 
 
 def base_query(request_params={}, extra_ignores=[]):
