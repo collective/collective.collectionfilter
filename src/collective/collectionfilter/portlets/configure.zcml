@@ -6,6 +6,9 @@
     xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="collective.collectionfilter">
 
+  <include package="plone.app.portlets" />
+
+
   <plone:portlet
       name="collective.collectionfilter.portlets.CollectionFilter"
       interface=".collectionfilter.ICollectionFilterPortlet"

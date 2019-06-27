@@ -10,7 +10,7 @@ from collective.collectionfilter.vocabularies import TEXT_IDX
 from plone.api.portal import get_registry_record as getrec
 from plone.app.contenttypes.behaviors.collection import ICollection
 from Acquisition import aq_inner
-from collective.collectionfilter import PLONE_VERSION
+# from collective.collectionfilter import PLONE_VERSION
 from plone.app.uuid.utils import uuidToCatalogBrain
 from plone.app.uuid.utils import uuidToObject
 from plone.i18n.normalizer.interfaces import IIDNormalizer
@@ -76,12 +76,16 @@ class BaseView(object):
                 self.settings.target_collection
             )
         return aq_inner(self._collection)
+    #
+    # @property
+    # def patCollectionFilter(self):
+    #     #if PLONE_VERSION >= '5.1':
+    #         return pat-collectionfilter''
+    #     #return ''
 
     @property
     def patCollectionFilter(self):
-        if PLONE_VERSION >= '5.1':
-            return 'pat-collectionfilter'
-        return ''
+        return 'pat-collectionfilter'
 
 
 class BaseFilterView(BaseView):

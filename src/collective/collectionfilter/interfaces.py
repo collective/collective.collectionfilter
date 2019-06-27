@@ -26,6 +26,7 @@ def pattern_options():
     }
     if PLONE_VERSION < '5.1':
         del options['basePath']
+        del options['selectableTypes']
     return options
 
 
