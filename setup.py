@@ -43,7 +43,7 @@ setup(
     install_requires=[
         'setuptools',
         'plone.api >= 1.5.1',
-        'Products.CMFPlone >= 5.1',
+        'Products.CMFPlone >= 5.0',
         'plone.app.contenttypes',
     ],
     extras_require={
