@@ -16,9 +16,9 @@ Scenario: Add filter portlets to collection
     Log in as site owner
     Go to  ${PLONE_URL}/testcollection
 
-    Click link  link:Manage portlets
+    Click element  link=Manage portlets
     Element should be visible  css=#plone-contentmenu-portletmanager > ul
-    Click link  link:Right column
+    Click element  partial link=Right
 
     Add search portlet
     Add filter portlet  Subject  or  checkboxes_dropdowns

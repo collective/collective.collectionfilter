@@ -136,7 +136,7 @@ Your adapter is called by ``collective.collectionfilter.vocabularies.GroupByCrit
 Compatibility
 -------------
 
-This package is compatible with Plone 5.1 and above.
+This package is compatible with Plone 5 and above. Note that in 5.0 some functionality is reduced such as AJAX loading of search results.
 
 Author
 ------

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from collective.collectionfilter import PLONE_VERSION
 from collective.collectionfilter import _
 from collective.collectionfilter import utils
 from plone.api.portal import get_registry_record as getrec
@@ -15,6 +16,17 @@ try:
     HAS_GEOLOCATION = True
 except ImportError:
     HAS_GEOLOCATION = False
+
+
+def pattern_options():
+    options = {
+        'basePath': utils.target_collection_base_path,
+        'recentlyUsed': True,
+        'selectableTypes': utils.target_collection_types,
+    }
+    if PLONE_VERSION < '5.1':
+        del options['basePath']
+    return options
 
 
 class ICollectionFilterBaseSchema(Interface):
@@ -41,11 +53,7 @@ class ICollectionFilterBaseSchema(Interface):
     widget(
         'target_collection',
         RelatedItemsFieldWidget,
-        pattern_options={
-            'basePath': utils.target_collection_base_path,
-            'recentlyUsed': True,
-            'selectableTypes': utils.target_collection_types,
-        },
+        pattern_options=pattern_options()
     )
 
     view_name = schema.TextLine(

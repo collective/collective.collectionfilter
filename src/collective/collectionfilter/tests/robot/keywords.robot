@@ -52,7 +52,9 @@ Select related filter collection
 Add search portlet
     Wait until page contains element  css=select.add-portlet
     Select From List by label  css=select.add-portlet  Collection Search
+    Capture Page Screenshot
     Wait until element is visible  css=input#form-widgets-header
+    Capture Page Screenshot
 
     Input text  css=input#form-widgets-header  Searchable Text
     Select related filter collection
