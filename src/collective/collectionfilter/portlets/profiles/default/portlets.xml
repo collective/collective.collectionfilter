@@ -10,9 +10,9 @@
       title="Collection Search"
       description="This portlet allows fulltext search in collection results."
       />
-  <portlet
-      addview="collective.collectionfilter.portlets.CollectionMaps"
-      title="Collection Maps"
-      description="This portlet allows map filtering in collection results."
-      />
+  <!--<portlet-->
+      <!--addview="collective.collectionfilter.portlets.CollectionMaps"-->
+      <!--title="Collection Maps"-->
+      <!--description="This portlet allows map filtering in collection results."-->
+      <!--/>-->
 </portlets>

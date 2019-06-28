@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from plone import api
-from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
 from Products.CMFCore.interfaces import IFolderish
 from Products.CMFPlone.utils import safe_unicode
 import six
@@ -8,10 +7,12 @@ import six
 
 def target_collection_base_path(context):
     for potential_context in context.aq_chain:
-        if (
-            IFolderish.providedBy(potential_context) or
-            ISyndicatableCollection.providedBy(potential_context)
-        ):
+        if (IFolderish.providedBy(potential_context)):
+            # Actually makes no sense to pick the collection path as it means you have to go up
+            # to pick teh collection. Instead the collection should be the default
+            #    or
+            # ISyndicatableCollection.providedBy(potential_context
+            #                                   )
             context = potential_context
             break
     return '/'.join(context.getPhysicalPath())

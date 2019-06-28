@@ -7,6 +7,7 @@
     i18n_domain="collective.collectionfilter">
 
   <include package="plone.app.portlets" />
+  <include package="plone.app.portlets" file="meta.zcml"/>
 
 
   <plone:portlet
