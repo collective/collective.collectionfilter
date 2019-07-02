@@ -138,6 +138,7 @@ def get_filter_items(
         'sort_key_function', lambda it: it['title'].lower())
 
     grouped_results = {}
+    tmp = [i for i in catalog_results]
     for brain in catalog_results:
 
         # Get filter value
