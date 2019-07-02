@@ -163,13 +163,14 @@ define([
             var query2 = filterURL.split('?')[1] || [];
             var query = [].concat(query1, query2).join('&');
             reloadURL = [].concat(urlParts[0], query).join('?');
+            var firstChild = this.$el[0].children[0];
 
             var cl = new this.contentloader(
                 this.$el,
                 {
                     url: reloadURL,
-                    target: this.$el,
-                    content: 'aside',
+                    target: 'div.portletContent',
+                    content: 'div.portletContent',
                     trigger: 'immediate'
                 }
             );
