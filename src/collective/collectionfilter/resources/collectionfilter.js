@@ -172,8 +172,8 @@ define([
                 this.$el,
                 {
                     url: reloadURL,
-                    target: this.$el,
-                    content: 'aside',
+                    target: 'div.portletContent',
+                    content: 'div.portletContent',
                     trigger: 'immediate'
                 }
             );
