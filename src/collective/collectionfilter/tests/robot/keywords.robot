@@ -72,5 +72,6 @@ Add filter portlet
     Click element  css=input#form-widgets-show_count-0
     Select from List by value  css=select#form-widgets-filter_type  ${filter_type}
     Select from List by value  css=select#form-widgets-input_type  ${input_type}
+    Capture Page Screenshot
     Click element  css=.plone-modal-footer input#form-buttons-add
     Wait until page contains element  xpath=//div[contains(@class, 'portletAssignments')]//a[text()='${group_criteria}']

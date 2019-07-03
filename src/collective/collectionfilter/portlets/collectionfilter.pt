@@ -3,11 +3,17 @@
        data-pat-collectionfilter='{
           "collectionUUID": "${view/settings/target_collection}",
           "reloadURL": "${view/reload_url}",
+          "ajaxLoad": "${view/ajax_load}",
           "contentSelector": "${view/settings/content_selector}"
        }'
        tal:condition="view/available"
        i18n:domain="collective.collectionfilter">
 
+    <tal:if condition="view/settings/ajax_load_warning">
+        <tal:errors>
+            <span>AJAX loading is not supported in this Plone version</span>
+        </tal:errors>
+    </tal:if>
   <tal:if condition="view/settings/target_collection">
   <header class="portletHeader" tal:condition="view/title" tal:content="view/title">Title</header>
   <div class="portletContent filterContent" tal:define="results view/results">
