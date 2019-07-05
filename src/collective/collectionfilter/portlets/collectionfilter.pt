@@ -9,7 +9,7 @@
        tal:condition="view/available"
        i18n:domain="collective.collectionfilter">
 
-    <tal:if condition="view/settings/ajax_load_warning">
+    <tal:if condition="view/ajax_load_warning">
         <tal:errors>
             <span>AJAX loading is not supported in this Plone version</span>
         </tal:errors>
