@@ -1,4 +1,4 @@
-<aside class="portlet ${view/filterClassName} collectionSearch ${view/patCollectionFilter}"
+<aside class="portlet ${view/filterClassName} collectionSearch pat-collectionfilter"
        data-pat-collectionfilter='{
            "collectionUUID": "${view/settings/target_collection}",
            "reloadURL": "${view/reload_url}",

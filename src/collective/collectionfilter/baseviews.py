@@ -76,16 +76,6 @@ class BaseView(object):
                 self.settings.target_collection
             )
         return aq_inner(self._collection)
-    #
-    # @property
-    # def patCollectionFilter(self):
-    #     #if PLONE_VERSION >= '5.1':
-    #         return pat-collectionfilter''
-    #     #return ''
-
-    @property
-    def patCollectionFilter(self):
-        return 'pat-collectionfilter'
 
 
 class BaseFilterView(BaseView):

@@ -1,4 +1,4 @@
-<aside class="portlet ${view/filterClassName} collectionFilter ${view/patCollectionFilter}"
+<aside class="portlet ${view/filterClassName} collectionFilter pat-collectionfilter"
        tal:define="input_type view/input_type"
        data-pat-collectionfilter='{
           "collectionUUID": "${view/settings/target_collection}",
