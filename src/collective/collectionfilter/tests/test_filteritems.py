@@ -16,6 +16,16 @@ def get_data_by_val(result, val):
             return r
 
 
+def qs(result, index):
+    url = get_data_by_val(result, index)['url']
+    _, _, _, _, query, _ = urlparse(url)
+    result = parse_qs(query)
+    del result['collectionfilter']
+    # Quick hack to get single values back from being lists
+    result.update(dict([(k, v[0]) for k, v in result.items() if len(v) == 1]))
+    return result
+
+
 class TestFilteritems(unittest.TestCase):
 
     layer = COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING
@@ -124,18 +134,6 @@ class TestFilteritems(unittest.TestCase):
         self.assertEqual(get_data_by_val(result, u'Evänt')['count'], 1)
         self.assertEqual(get_data_by_val(result, u'Dokumänt')['count'], 2)
 
-
-
-        def qs(result, index):
-            url = get_data_by_val(result, index)['url']
-            _,_,_,_,query,_ = urlparse(url)
-            result = parse_qs(query)
-            del result['collectionfilter']
-            # Quick hack to get single values back from being lists
-            result.update(dict([(k,v[0]) for k,v in result.items() if len(v) == 1]))
-            return result
-
-
         # Test url
         self.assertEqual(qs(result, u'Süper'), {'Subject': 'S\xc3\xbcper'})
 
@@ -151,8 +149,6 @@ class TestFilteritems(unittest.TestCase):
             request_params={'Subject': u'Süper'},
             filter_type="and",
             cache_enabled=False)
-
-
 
         self.assertEqual(len(result), 4)
         self.assertEqual(get_data_by_val(result, 'all')['count'], 3)
@@ -197,7 +193,6 @@ class TestFilteritems(unittest.TestCase):
         self.assertEqual(qs(result, u'Süper'), {'Subject': 'Dokum\xc3\xa4nt'})
         self.assertEqual(qs(result, u'Dokumänt'), {'Subject': 'S\xc3\xbcper'})
         self.assertEqual(qs(result, u'Evänt'), {'Subject': ['S\xc3\xbcper', 'Dokum\xc3\xa4nt', 'Ev\xc3\xa4nt'], 'Subject_op': 'and'})
-
 
         # Clicking on Event we should get 0 results as none will be in common
         catalog_results = ICollection(self.collection).results(
