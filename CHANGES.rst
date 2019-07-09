@@ -10,6 +10,8 @@ Features:
   [djay, quang]
 - Make ajax loading of results and portlets a pattern option is themers can override it
   [quang]
+- change collection picker to show parent by default so you don't have to click backwards
+  [djay]
 
 Bug Fixes:
 
