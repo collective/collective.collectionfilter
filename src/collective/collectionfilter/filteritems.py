@@ -190,7 +190,6 @@ def get_filter_items(
                 '?' + query_param if query_param else None
             ] if it])
 
-
             # Set selected state
             selected = filter_value in current_idx_value
 

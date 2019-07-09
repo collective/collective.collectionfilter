@@ -7,6 +7,7 @@ from plone.api import env
 import json
 PLONE_VERSION = env.plone_version()
 
+
 class BasePortletRenderer(Renderer):
 
     @property
@@ -29,7 +30,7 @@ class BasePortletRenderer(Renderer):
     @property
     def ajax_load_warning(self):
         ajax_load = self.ajax_load
-        if (ajax_load=='1' or ajax_load=='yes') and PLONE_VERSION < '5.1':
+        if (ajax_load == '1' or ajax_load == 'yes') and PLONE_VERSION < '5.1':
             return True
         return False
 
@@ -48,5 +49,3 @@ class BasePortletRenderer(Renderer):
             if PLONE_VERSION < '5.1':
                 return '0'
             return '1'
-
-
