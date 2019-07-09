@@ -332,7 +332,7 @@ def get_location_filter_items(
         # Get path, remove portal root from path, remove leading /
         path = brain.getPath()
         if path.startswith(filtered_path):
-            path = path[len(filtered_path)+1:]
+            path = path[len(filtered_path) + 1:]
         else:
             continue
 
@@ -393,7 +393,7 @@ def get_location_filter_items(
 
         # Get the results just in this subfolder
         item_path = '/'.join(item.getPhysicalPath())[
-                    len('/'.join(portal_path))+1:]
+                    len('/'.join(portal_path)) + 1:]
         custom_query = {'path': item_path}
         custom_query.update(urlquery)
         custom_query = make_query(custom_query)
@@ -422,7 +422,7 @@ def get_location_filter_items(
     grouped_results = grouped_results.values()
 
     # TODO: sortable option, probably should just sort by position in container
-    #if callable(sort_key_function):
+    # if callable(sort_key_function):
     #    grouped_results = sorted(grouped_results, key=sort_key_function)
 
     ret += grouped_results
