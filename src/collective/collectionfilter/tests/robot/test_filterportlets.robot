@@ -24,15 +24,14 @@ Scenario: Add filter portlets to collection
     Add filter portlet  Subject  or  checkboxes_dropdowns
 
     Go to  ${PLONE_URL}/testcollection
-    Xpath should match X times  //article[@class='entry']  2
+    Xpath should match X times  //article[@class='entry']  3
 
     Click element  css=li.filter-dokumant.checkbox input
-    Wait until keyword succeeds  5s  1s  Xpath should match X times  //article[@class='entry']  1
+    Wait until keyword succeeds  5s  1s  Xpath should match X times  //article[@class='entry']  2
 
     Capture Page Screenshot
     Click element  css=li.filter-all.checkbox input
-    #Click element  partial link:All
-    Wait until keyword succeeds  5s  1s  Xpath should match X times  //article[@class='entry']  2
+    Wait until keyword succeeds  5s  1s  Xpath should match X times  //article[@class='entry']  3
 
     Input text  css=.collectionSearch input[name='SearchableText']  Docu
     Wait until keyword succeeds  5s  1s  Xpath should match X times  //article[@class='entry']  1
@@ -43,3 +42,36 @@ Scenario: Add filter portlets to collection
     #Clear element text  css=.collectionSearch input[name='SearchableText']
     #Wait until keyword succeeds  5s  1s  Xpath should match X times  //article[@class='entry']  2
     #Wait until keyword succeeds  5s  1s  Xpath should match X times  //div[contains(@class, 'filterContent')]//li[contains(@class, 'filterItem')]  4
+
+
+Scenario: Test Batching
+
+    Log in as site owner
+    Go to  ${PLONE_URL}/testcollection
+
+    Click element  link=Manage portlets
+    Element should be visible  css=#plone-contentmenu-portletmanager > ul
+    Click element  partial link=Right
+
+    Add filter portlet  Subject  or  checkboxes_dropdowns
+    Go to  ${PLONE_URL}/testcollection
+    Xpath should match X times  //article[@class='entry']  3
+
+    Set Batch Size  1
+
+    Xpath should match X times  //article[@class='entry']  1
+
+    Click element  css=li.filter-super.checkbox input
+    Wait until keyword succeeds  5s  1s  Xpath should match X times  //article[@class='entry']  1
+
+    capture page screenshot
+    Xpath should match X times  //nav[@class='pagination']//a  2
+
+    Click element  xpath=//nav[@class='pagination']//a[1]
+    Wait until keyword succeeds  5s  1s  Xpath should match X times  //article[@class='entry']  1
+    capture page screenshot
+
+    Xpath should match X times  //nav[@class='pagination']//a  2
+
+    ${loc}=  get location
+    should contain  ${loc}  collectionfilter=1

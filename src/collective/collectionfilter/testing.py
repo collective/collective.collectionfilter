@@ -60,6 +60,13 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
                 text=RichTextValue(u'Ein heißes Test Dokument'),
                 subject=[u'Süper', u'Dokumänt'],
             )
+            portal.invokeFactory(
+                'Document',
+                id='testdoc2',
+                title=u'Page 😉',
+                text=RichTextValue(u'Ein heißes Test Dokument'),
+                subject=[u'Dokumänt'],
+            )
             doc = portal['testdoc']
             # doc.geolocation.latitude = 47.4048832
             # doc.geolocation.longitude = 9.7587760701108

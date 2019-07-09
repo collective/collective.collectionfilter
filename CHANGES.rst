@@ -16,6 +16,8 @@ Features:
 Bug Fixes:
 - Fix bug where portlets didn't work without GeoLocation dependencies
   [djay]
+- Fix bug where filter urls was getting utf encoded then made into unicode again
+  [djay]
 
 3.1 (2019-06-06)
 ----------------
