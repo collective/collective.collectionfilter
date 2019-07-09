@@ -6,6 +6,7 @@ from collective.collectionfilter.vocabularies import GEOLOC_IDX
 from collective.collectionfilter.vocabularies import TEXT_IDX
 from logging import getLogger
 from zope.component import getUtility
+import plone.api
 
 logger = getLogger('collective.collectionfilter')
 
@@ -51,5 +52,11 @@ def make_query(params_dict):
 
     if TEXT_IDX in params_dict and params_dict.get(TEXT_IDX):
         query_dict[TEXT_IDX] = safe_decode(params_dict.get(TEXT_IDX))
+
+    # Filter by path if passed in
+    if 'path' in params_dict:
+        additional_paths = params_dict['path'].split('/')
+        query_dict['path'] = {'query': '/'.join(
+            list(plone.api.portal.get().getPhysicalPath()) + additional_paths)}
 
     return query_dict
