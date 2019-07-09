@@ -24,11 +24,15 @@ def make_query(params_dict):
             crit = idx_mod(crit) if idx_mod else safe_decode(crit)
 
             # filter operator
-            op = params_dict.get(idx + '_op', 'or')
-            if op not in ['and', 'or']:
-                op = 'or'
-            # add filter query
-            query_dict[idx] = {'operator': op, 'query': crit}
+            op = params_dict.get(idx + '_op', None)
+            if op is None:
+                # add filter query
+                query_dict[idx] = {'query': crit}
+            else:
+                if op not in ['and', 'or']:
+                    op = 'or'
+                # add filter query
+                query_dict[idx] = {'operator': op, 'query': crit}
 
     for idx in GEOLOC_IDX:
         if idx in params_dict:
