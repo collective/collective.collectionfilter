@@ -19,7 +19,6 @@ from plone.i18n.normalizer.interfaces import IIDNormalizer
 from six.moves.urllib.parse import urlencode
 from zope.component import queryUtility
 from zope.i18n import translate
-import plone.api
 
 try:
     from collective.geolocationbehavior.interfaces import IGeoJSONProperties

@@ -2,8 +2,8 @@
 from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
 from Products.CMFCore.interfaces import IFolderish
 from Products.CMFPlone.utils import safe_unicode
-
 import six
+from plone import api
 
 
 def target_collection_base_path(context):
@@ -14,6 +14,12 @@ def target_collection_base_path(context):
             context = potential_context
             break
     return '/'.join(context.getPhysicalPath())
+
+
+def target_collection_types(context):
+    return api.portal.get_registry_record(
+        'collective.collectionfilter.target_collection_types',
+        default=['Collection', ])
 
 
 def safe_decode(val):
