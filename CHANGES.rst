@@ -4,8 +4,14 @@ Changelog
 3.2 (unreleased)
 ----------------
 
-- Nothing changed yet.
+Features:
 
+- Restore 5.0.x compatibility
+  [djay, quang]
+- Make ajax loading of results and portlets a pattern option is themers can override it
+  [quang]
+
+Bug Fixes:
 
 3.1 (2019-06-06)
 ----------------

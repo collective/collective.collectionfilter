@@ -206,7 +206,6 @@ def get_filter_items(
                 'count': 1,
                 'selected': selected
             }
-            print url
 
     # Entry to clear all filters
     urlquery_all = {
