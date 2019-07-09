@@ -5,6 +5,7 @@ Changelog
 ----------------
 
 Features:
+- Backport for @petschki: #42 Incorrect count on "all" when "Narrow down filter options" enabled and viewing a filtered result. [pigeonflight, jensens]
 
 - Restore 5.0.x compatibility
   [djay, quang]
@@ -146,6 +147,9 @@ New:
 
 - Make backwards compatible with Plone 5.0
   [nngu6036, instification]
+
+- Add Location Filter portlet. Allows to filter results based on location in site.
+  [instification]
 
 Bug fixes:
 

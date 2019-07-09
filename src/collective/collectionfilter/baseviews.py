@@ -3,6 +3,7 @@ import json
 
 from collective.collectionfilter.filteritems import get_filter_items
 from collective.collectionfilter.query import make_query
+from collective.collectionfilter.filteritems import get_location_filter_items
 from collective.collectionfilter.utils import base_query
 from collective.collectionfilter.utils import safe_decode
 from collective.collectionfilter.utils import safe_encode
@@ -99,6 +100,18 @@ class BaseFilterView(BaseView):
             filter_type=self.settings.filter_type,
             narrow_down=self.settings.narrow_down,
             show_count=self.settings.show_count,
+            view_name=self.settings.view_name,
+            cache_enabled=self.settings.cache_enabled,
+            request_params=self.top_request.form or {}
+        )
+        return results
+
+
+class BaseLocationView(BaseView):
+
+    def results(self):
+        results = get_location_filter_items(
+            target_collection=self.settings.target_collection,
             view_name=self.settings.view_name,
             cache_enabled=self.settings.cache_enabled,
             request_params=self.top_request.form or {}
