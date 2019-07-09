@@ -11,6 +11,7 @@ from plone.app.contenttypes.interfaces import ICollection
 from collective.collectionfilter.query import make_query
 from collective.collectionfilter.testing import COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING  # noqa
 from collective.collectionfilter.filteritems import get_filter_items
+from collective.collectionfilter.utils import safe_decode
 
 
 def get_data_by_val(result, val):
@@ -26,7 +27,7 @@ def qs(result, index):
     del result['collectionfilter']
     # Quick hack to get single values back from being lists
     result.update(dict([(k, v[0]) for k, v in result.items() if len(v) == 1]))
-    return result
+    return safe_decode(result)
 
 
 class TestFilteritems(unittest.TestCase):
@@ -138,7 +139,7 @@ class TestFilteritems(unittest.TestCase):
         self.assertEqual(get_data_by_val(result, u'Dokumänt')['count'], 2)
 
         # Test url
-        self.assertEqual(qs(result, u'Süper'), {'Subject': 'S\xc3\xbcper'})
+        self.assertEqual(qs(result, u'Süper'), {'Subject': u'Süper'})
 
         catalog_results = ICollection(self.collection).results(
             batch=False,
@@ -165,8 +166,8 @@ class TestFilteritems(unittest.TestCase):
         self.assertEqual(get_data_by_val(result, u'Süper')['selected'], True)
 
         self.assertEqual(qs(result, u'Süper'), {})
-        self.assertEqual(qs(result, u'Dokumänt'), {'Subject_op': 'and', 'Subject': ['S\xc3\xbcper', 'Dokum\xc3\xa4nt']})
-        self.assertEqual(qs(result, u'Evänt'), {'Subject_op': 'and', 'Subject': ['S\xc3\xbcper', 'Ev\xc3\xa4nt']})
+        self.assertEqual(qs(result, u'Dokumänt'), {'Subject_op': 'and', 'Subject': [u'Süper', u'Dokumänt']})
+        self.assertEqual(qs(result, u'Evänt'), {'Subject_op': 'and', 'Subject': [u'Süper', u'Evänt']})
 
         # Narrow down by 2
 
@@ -193,9 +194,9 @@ class TestFilteritems(unittest.TestCase):
         self.assertEqual(get_data_by_val(result, u'Süper')['selected'], True)
         self.assertEqual(get_data_by_val(result, u'Dokumänt')['selected'], True)
 
-        self.assertEqual(qs(result, u'Süper'), {'Subject': 'Dokum\xc3\xa4nt'})
-        self.assertEqual(qs(result, u'Dokumänt'), {'Subject': 'S\xc3\xbcper'})
-        self.assertEqual(qs(result, u'Evänt'), {'Subject': ['S\xc3\xbcper', 'Dokum\xc3\xa4nt', 'Ev\xc3\xa4nt'], 'Subject_op': 'and'})
+        self.assertEqual(qs(result, u'Süper'), {'Subject': u'Dokumänt'})
+        self.assertEqual(qs(result, u'Dokumänt'), {'Subject': u'Süper'})
+        self.assertEqual(qs(result, u'Evänt'), {'Subject': [u'Süper', u'Dokumänt', u'Evänt'], 'Subject_op': 'and'})
 
         # Clicking on Event we should get 0 results as none will be in common
         catalog_results = ICollection(self.collection).results(
