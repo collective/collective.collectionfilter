@@ -84,3 +84,12 @@ Set Batch Size
     Go to  ${PLONE_URL}/testcollection
 
 
+Should be ${X} filter checkboxes
+    Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//div[contains(@class, 'filterContent')]//li[contains(@class, 'filterItem')]  limit=${X}
+
+Should be ${X} collection results
+    Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//article[@class='entry']  limit=${X}
+
+Should be ${X} pages
+    ${X}=  evaluate  ${X} + 1  # need we have next or previous
+    Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//nav[@class='pagination']//a  limit=${X}
