@@ -53,6 +53,15 @@
       />
 
   <genericsetup:registerProfile
+      zcml:condition="installed collective.geolocationbehavior"
+      name="portlets_with_maps"
+      title="collective.collectionfilter portlets"
+      directory="profiles/portlets_with_maps"
+      description='Extension profile for Plone.'
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <genericsetup:registerProfile
       name="uninstall"
       title="collective.collectionfilter portlets uninstall"
       directory="profiles/uninstall"
