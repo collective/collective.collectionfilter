@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 """Setup tests for this package."""
 import unittest
-from urlparse import urlparse, parse_qs
+try:
+    from urllib.parse import urlparse, parse_qs
+except:
+    from urlparse import urlparse, parse_qs
 
 from plone.app.contenttypes.interfaces import ICollection
 
