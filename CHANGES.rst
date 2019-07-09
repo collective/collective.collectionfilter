@@ -4,7 +4,10 @@ Changelog
 3.2 (unreleased)
 ----------------
 
-- Nothing changed yet.
+Bug fixes:
+
+- Fix unfiltered results appearing in next page of batch
+  [djay]
 
 
 3.1 (2019-06-06)
