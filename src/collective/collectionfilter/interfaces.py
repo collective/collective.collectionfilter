@@ -26,7 +26,7 @@ def pattern_options():
     }
     if PLONE_VERSION < '5.1':
         del options['basePath']
-        del options['selectableTypes']
+        options['selectableTypes'] = ['Collection', ]
     return options
 
 
@@ -50,6 +50,7 @@ class ICollectionFilterBaseSchema(Interface):
         ),
         required=True,
         vocabulary='plone.app.vocabularies.Catalog',
+        defaultFactory=utils.target_collection_default,
     )
     widget(
         'target_collection',

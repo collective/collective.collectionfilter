@@ -50,12 +50,10 @@ Select related filter collection
 Add search portlet
     Wait until page contains element  css=select.add-portlet
     Select From List by label  css=select.add-portlet  Collection Search
-    Capture Page Screenshot
     Wait until element is visible  css=input#form-widgets-header
-    Capture Page Screenshot
 
     Input text  css=input#form-widgets-header  Searchable Text
-    Select related filter collection
+    #Select related filter collection
     Click element  css=.plone-modal-footer input#form-buttons-add
     Wait until page contains element  xpath=//div[@class='portletAssignments']//a[text()='Searchable Text']
 
@@ -67,7 +65,7 @@ Add filter portlet
     Wait until element is visible  css=input#form-widgets-header
 
     Input text  css=input#form-widgets-header  ${group_criteria}
-    Select related filter collection
+    #Select related filter collection
     Select from List by value  css=select#form-widgets-group_by  ${group_criteria}
     Click element  css=input#form-widgets-show_count-0
     Select from List by value  css=select#form-widgets-filter_type  ${filter_type}
