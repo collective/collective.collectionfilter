@@ -1,11 +1,6 @@
 <aside class="portlet ${view/filterClassName} collectionFilter pat-collectionfilter"
        tal:define="input_type view/input_type"
-       data-pat-collectionfilter='{
-          "collectionUUID": "${view/settings/target_collection}",
-          "reloadURL": "${view/reload_url}",
-          "ajaxLoad": "${view/ajax_load}",
-          "contentSelector": "${view/settings/content_selector}"
-       }'
+       data-pat-collectionfilter='${view/pat_options}'
        tal:condition="view/available"
        i18n:domain="collective.collectionfilter">
 

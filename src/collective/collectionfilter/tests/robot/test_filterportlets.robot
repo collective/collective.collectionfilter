@@ -33,8 +33,10 @@ Scenario: Add filter portlets to collection
     Click element  css=li.filter-all.checkbox input
     Should be 3 collection results
 
-    Input text  css=.collectionSearch input[name='SearchableText']  Docu
-    Should be 1 collection results
+    # TODO: Restore this to partial quicksearch test only for ajaxLoad scenarios and Plone > 5.0
+    Input text  css=.collectionSearch input[name='SearchableText']  Document
+    Click Element  css=.collectionSearch button[type='submit']
+    Wait until keyword succeeds  5s  1s  Xpath should match X times  //article[@class='entry']  1
     # check for filtered subject checkbox list
     Should be 3 filter checkboxes
 
