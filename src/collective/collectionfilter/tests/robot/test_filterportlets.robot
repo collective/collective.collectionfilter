@@ -36,7 +36,7 @@ Scenario: Add filter portlets to collection
 
     # TODO: Restore this to partial quicksearch test only for ajaxLoad scenarios and Plone > 5.0
     Input text  css=.collectionSearch input[name='SearchableText']  Document
-    Click Element  css=.searchForm button
+    Click Element  css=.collectionSearch button[type='submit']
     Wait until keyword succeeds  5s  1s  Xpath should match X times  //article[@class='entry']  1
     # check for filtered subject checkbox list
     Wait until keyword succeeds  5s  1s  Xpath should match X times  //div[contains(@class, 'filterContent')]//li[contains(@class, 'filterItem')]  3
