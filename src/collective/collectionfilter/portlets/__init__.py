@@ -30,7 +30,7 @@ class BasePortletRenderer(Renderer):
     @property
     def ajax_load_warning(self):
         ajax_load = self.ajax_load
-        if (ajax_load == '1' or ajax_load == 'yes') and PLONE_VERSION < '5.1':
+        if (ajax_load) and PLONE_VERSION < '5.1':
             return True
         return False
 
@@ -41,11 +41,14 @@ class BasePortletRenderer(Renderer):
             filterOptions = json.loads(values['collectionfilter'])
             if 'ajaxLoad' in filterOptions:
                 return filterOptions['ajaxLoad']
-            else:
-                if PLONE_VERSION < '5.1':
-                    return '0'
-                return '1'
-        else:
-            if PLONE_VERSION < '5.1':
-                return '0'
-            return '1'
+        return not PLONE_VERSION < '5.1'
+
+    @property
+    def pat_options(self):
+
+        return json.dumps({
+            "collectionUUID": self.settings.target_collection,
+            "reloadURL": self.reload_url,
+            "ajaxLoad": self.ajax_load,
+            "contentSelector": self.settings.content_selector
+        })

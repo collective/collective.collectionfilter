@@ -13,7 +13,7 @@ define([
             collectionUUID: '',
             collectionURL: '',
             reloadURL: '',
-            ajaxLoad: '',
+            ajaxLoad: true,
             contentSelector: '#content-core',
         },
         _initmap_cycles: 2,
@@ -33,8 +33,9 @@ define([
             }.bind(this));
 
             // Collection Search
-            if (this.$el.hasClass('collectionSearch')) {
+            if (this.$el.hasClass('collectionSearch') && this.ajaxLoad) {
                 // initialize collection search
+
                 $('button[type="submit"]', this.$el).hide();
                 $('form', this.$el).on('submit', function (e) {
                     e.preventDefault();
@@ -158,7 +159,7 @@ define([
         },
 
         reload: function (filterURL) {
-            if (this.ajaxLoad!='1') {
+            if (!this.ajaxLoad) {
                 window.location.href = filterURL;
                 return
             }
@@ -180,7 +181,7 @@ define([
         },
 
         reloadCollection: function (collectionURL) {
-            if (this.ajaxLoad!='1')
+            if (!this.ajaxLoad)
                 return;
             var cl = new this.contentloader(
                 $(this.options.contentSelector).parent(),  // let base element for setting classes and triggering events be the parent, which isn't replaced.
