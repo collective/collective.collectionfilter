@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-from .. import _
-from ..baseviews import BaseLocationView
-from ..interfaces import ICollectionLocationFilterSchema
+from collective.collectionfilter import _
+from collective.collectionfilter.baseviews import BaseLocationView
+from collective.collectionfilter.interfaces import ICollectionLocationFilterSchema
+from collective.collectionfilter.portlets import BasePortletRenderer
 from plone.app.portlets.portlets import base
 from plone.portlets.interfaces import IPortletDataProvider
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -51,7 +52,7 @@ class Assignment(base.Assignment):
             return _(u'Collection Location Filter')
 
 
-class Renderer(base.Renderer, BaseLocationView):
+class Renderer(BasePortletRenderer, BaseLocationView):
     render = ViewPageTemplateFile('locationfilter.pt')
 
     @property
