@@ -52,7 +52,7 @@ class Assignment(base.Assignment):
             return _(u'Collection Location Filter')
 
 
-class Renderer(base.Renderer, BaseLocationView):
+class Renderer(BasePortletRenderer, BaseLocationView):
     render = ViewPageTemplateFile('locationfilter.pt')
 
     @property
