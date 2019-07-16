@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from collective.collectionfilter import _
 from collective.collectionfilter.baseviews import BaseLocationView
-from collective.collectionfilter.interfaces import ICollectionLocationFilterSchema
-from collective.collectionfilter.portlets import BasePortletRenderer
+from collective.collectionfilter.interfaces import \
+    ICollectionLocationFilterSchema
 from plone.app.portlets.portlets import base
 from plone.portlets.interfaces import IPortletDataProvider
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.interface import implementer
 
 try:
