@@ -85,3 +85,11 @@ Should be ${X} collection results
 Should be ${X} pages
     ${X}=  evaluate  ${X} + 1  # need we have next or previous
     Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//nav[@class='pagination']//a  limit=${X}
+
+Set Batch Size
+    [Arguments]   ${batch_size}
+
+    Go to  ${PLONE_URL}/testcollection/edit
+    Input text  css=input#form-widgets-ICollection-item_count  ${batch_size}
+    Click element  css=input#form-buttons-save
+    Go to  ${PLONE_URL}/testcollection
