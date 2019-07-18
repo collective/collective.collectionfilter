@@ -12,6 +12,8 @@ Bug fixes:
   [djay]
 - Fix unfiltered results appearing in next page of batch
   [djay]
+- Fix bug where portlets didn't work without GeoLocation dependencies
+  [djay]
 
 
 3.1 (2019-06-06)

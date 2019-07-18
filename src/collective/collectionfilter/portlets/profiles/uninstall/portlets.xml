@@ -8,4 +8,9 @@
       remove="True"
       addview="collective.collectionfilter.portlets.CollectionSearch"
       />
+  <portlet
+      rempve="True"
+      addview="collective.collectionfilter.portlets.CollectionMaps"
+      />
+
 </portlets>
