@@ -73,3 +73,22 @@ Add filter portlet
     Capture Page Screenshot
     Click element  css=.plone-modal-footer input#form-buttons-add
     Wait until page contains element  xpath=//div[contains(@class, 'portletAssignments')]//a[text()='${group_criteria}']
+
+
+Should be ${X} filter checkboxes
+    Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//div[contains(@class, 'filterContent')]//li[contains(@class, 'filterItem')]  limit=${X}
+
+Should be ${X} collection results
+    Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//article[@class='entry']  limit=${X}
+
+Should be ${X} pages
+    ${X}=  evaluate  ${X} + 1  # need we have next or previous
+    Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//nav[@class='pagination']//a  limit=${X}
+
+Set Batch Size
+    [Arguments]   ${batch_size}
+
+    Go to  ${PLONE_URL}/testcollection/edit
+    Input text  css=input#form-widgets-ICollection-item_count  ${batch_size}
+    Click element  css=input#form-buttons-save
+    Go to  ${PLONE_URL}/testcollection

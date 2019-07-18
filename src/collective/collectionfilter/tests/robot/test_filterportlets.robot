@@ -24,24 +24,53 @@ Scenario: Add filter portlets to collection
     Add filter portlet  Subject  or  checkboxes_dropdowns
 
     Go to  ${PLONE_URL}/testcollection
-    Xpath should match X times  //article[@class='entry']  2
+    Should be 3 collection results
 
     Click element  css=li.filter-dokumant.checkbox input
-    Wait until keyword succeeds  5s  1s  Xpath should match X times  //article[@class='entry']  1
+    Should be 2 collection results
 
     Capture Page Screenshot
     Click element  css=li.filter-all.checkbox input
-    #Click element  partial link:All
-    Wait until keyword succeeds  5s  1s  Xpath should match X times  //article[@class='entry']  2
+    Should be 3 collection results
 
     # TODO: Restore this to partial quicksearch test only for ajaxLoad scenarios and Plone > 5.0
     Input text  css=.collectionSearch input[name='SearchableText']  Document
     Click Element  css=.collectionSearch button[type='submit']
-    Wait until keyword succeeds  5s  1s  Xpath should match X times  //article[@class='entry']  1
+    Should be 1 collection results
+
     # check for filtered subject checkbox list
-    Wait until keyword succeeds  5s  1s  Xpath should match X times  //div[contains(@class, 'filterContent')]//li[contains(@class, 'filterItem')]  3
+    Should be 3 filter checkboxes
 
     # the following doesn't work ... I think no 'keyup' event is fired
-    #Clear element text  css=.collectionSearch input[name='SearchableText']
-    #Wait until keyword succeeds  5s  1s  Xpath should match X times  //article[@class='entry']  2
-    #Wait until keyword succeeds  5s  1s  Xpath should match X times  //div[contains(@class, 'filterContent')]//li[contains(@class, 'filterItem')]  4
+    # Clear element text  css=.collectionSearch input[name='SearchableText']
+    # Should be 2 collection results
+    # Should be 4 filter checkboxes
+
+
+Scenario: Test Batching
+
+    Log in as site owner
+    Go to  ${PLONE_URL}/testcollection
+
+    Click element  link=Manage portlets
+    Element should be visible  css=#plone-contentmenu-portletmanager > ul
+    Click element  partial link=Right
+
+    Add filter portlet  Subject  or  checkboxes_dropdowns
+    Go to  ${PLONE_URL}/testcollection
+    Should be 3 collection results
+
+    Set Batch Size  1
+
+    Should be 1 collection results
+
+    Click element  css=li.filter-super.checkbox input
+    Should be 1 collection results
+    Should be 1 pages
+
+    Click element  xpath=//nav[@class='pagination']//a[1]
+    Should be 1 collection results
+    Should be 1 pages
+
+    ${loc}=  get location
+    should contain  ${loc}  collectionfilter=1

@@ -9,7 +9,6 @@
   <include package="plone.app.portlets" />
   <include package="plone.app.portlets" file="meta.zcml"/>
 
-
   <plone:portlet
       name="collective.collectionfilter.portlets.CollectionFilter"
       interface=".collectionfilter.ICollectionFilterPortlet"
@@ -48,6 +47,15 @@
       name="default"
       title="collective.collectionfilter portlets"
       directory="profiles/default"
+      description='Extension profile for Plone.'
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <genericsetup:registerProfile
+      zcml:condition="installed collective.geolocationbehavior"
+      name="portlets_with_maps"
+      title="collective.collectionfilter portlets"
+      directory="profiles/portlets_with_maps"
       description='Extension profile for Plone.'
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
