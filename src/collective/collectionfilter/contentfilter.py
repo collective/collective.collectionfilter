@@ -7,7 +7,7 @@ def set_content_filter(context, event):
     parameters to narrow the results of the collection.
     """
     req = event.request
-    if 'collectionfilter' not in req.form or 'contentFilter' in req:
+    if 'collectionfilter' not in req.form:
         return
     del req.form['collectionfilter']
     content_filter = make_query(req.form)
