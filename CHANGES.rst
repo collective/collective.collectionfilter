@@ -4,9 +4,12 @@ Changelog
 3.2 (unreleased)
 ----------------
 
+- Fix bug where filter urls was getting utf encoded then made into unicode again
+  [djay]
+- Fix 5.2 where operators should not be used on all index types
+  [djay]
 - Fix bug where portlets didn't work without GeoLocation dependencies
   [djay]
-
 
 3.1 (2019-06-06)
 ----------------

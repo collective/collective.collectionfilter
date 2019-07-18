@@ -184,7 +184,7 @@ def get_filter_items(
                 _urlquery[idx] = filter_value
 
             query_param = urlencode(safe_encode(_urlquery), doseq=True)
-            url = u'/'.join([it for it in [
+            url = '/'.join([it for it in [
                 collection_url,
                 view_name,
                 '?' + query_param if query_param else None
