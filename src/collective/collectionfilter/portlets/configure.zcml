@@ -6,7 +6,7 @@
     xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="collective.collectionfilter">
 
-    <include package="plone.app.portlets" />
+  <include package="plone.app.portlets" />
 
   <plone:portlet
       name="collective.collectionfilter.portlets.CollectionFilter"
@@ -46,6 +46,15 @@
       name="default"
       title="collective.collectionfilter portlets"
       directory="profiles/default"
+      description='Extension profile for Plone.'
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <genericsetup:registerProfile
+      zcml:condition="installed collective.geolocationbehavior"
+      name="portlets_with_maps"
+      title="collective.collectionfilter portlets"
+      directory="profiles/portlets_with_maps"
       description='Extension profile for Plone.'
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />

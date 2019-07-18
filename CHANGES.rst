@@ -8,7 +8,8 @@ Changelog
   [djay]
 - Fix 5.2 where operators should not be used on all index types
   [djay]
-
+- Fix bug where portlets didn't work without GeoLocation dependencies
+  [djay]
 
 3.1 (2019-06-06)
 ----------------
