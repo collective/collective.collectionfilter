@@ -75,12 +75,4 @@ Add filter portlet
     Click element  css=.plone-modal-footer input#form-buttons-add
     Wait until page contains element  xpath://div[contains(@class, 'portletAssignments')]//a[text()='${group_criteria}']
 
-Set Batch Size
-    [Arguments]   ${batch_size}
-
-    Go to  ${PLONE_URL}/testcollection/edit
-    Input text  css=input#form-widgets-ICollection-item_count  ${batch_size}
-    Click element  css=input#form-buttons-save
-    Go to  ${PLONE_URL}/testcollection
-
 

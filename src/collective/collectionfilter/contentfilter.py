@@ -9,6 +9,6 @@ def set_content_filter(context, event):
     req = event.request
     if 'collectionfilter' not in req.form or 'contentFilter' in req:
         return
-    # We leave collectionfilter=1 in req.form so that it gets put into batch links
+    del req.form['collectionfilter']
     content_filter = make_query(req.form)
     event.request['contentFilter'] = content_filter
