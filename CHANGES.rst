@@ -6,6 +6,10 @@ Changelog
 
 Bug fixes:
 
+- Fix bug where filter urls was getting utf encoded then made into unicode again
+  [djay]
+- Fix 5.2 where operators should not be used on all index types
+  [djay]
 - Fix unfiltered results appearing in next page of batch
   [djay]
 

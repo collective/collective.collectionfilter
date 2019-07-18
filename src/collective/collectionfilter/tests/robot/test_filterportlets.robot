@@ -38,9 +38,9 @@ Scenario: Add filter portlets to collection
     Should be 3 filter checkboxes
 
     # the following doesn't work ... I think no 'keyup' event is fired
-    #Clear element text  css=.collectionSearch input[name='SearchableText']
-    #Should be 2 collection results
-    #Should be 4 filter checkboxes
+    # Clear element text  css=.collectionSearch input[name='SearchableText']
+    # Should be 2 collection results
+    # Should be 4 filter checkboxes
 
 
 Scenario: Test Batching
