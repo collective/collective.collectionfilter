@@ -116,6 +116,7 @@ def GroupByCriteriaVocabulary(context):
     return SimpleVocabulary(items)
 
 
+# TODO: this should depend on the index type, or be validated against it
 @provider(IVocabularyFactory)
 def FilterTypeVocabulary(context):
     items = [

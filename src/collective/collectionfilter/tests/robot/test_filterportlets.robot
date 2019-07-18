@@ -23,14 +23,14 @@ Scenario: Add filter portlets to collection
     Add search portlet
     Add filter portlet  Subject  or  checkboxes_dropdowns
 
-    Click link  css=a.link-parent
-    Xpath should match X times  //article[@class='entry']  2
+    Go to  ${PLONE_URL}/testcollection
+    Xpath should match X times  //article[@class='entry']  3
 
     Click element  css=li.filter-dokumant.checkbox input
-    Wait until keyword succeeds  5s  1s  Xpath should match X times  //article[@class='entry']  1
+    Wait until keyword succeeds  5s  1s  Xpath should match X times  //article[@class='entry']  2
 
     Click element  css=li.filter-all.checkbox input
-    Wait until keyword succeeds  5s  1s  Xpath should match X times  //article[@class='entry']  2
+    Wait until keyword succeeds  5s  1s  Xpath should match X times  //article[@class='entry']  3
 
     Input text  css=.collectionSearch input[name='SearchableText']  Docu
     Wait until keyword succeeds  5s  1s  Xpath should match X times  //article[@class='entry']  1
