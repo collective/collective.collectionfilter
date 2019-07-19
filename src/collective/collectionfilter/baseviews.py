@@ -103,13 +103,6 @@ class BaseView(object):
                 return filterOptions['ajaxLoad']
         return True
 
-    @property
-    def ajax_load_warning(self):
-        ajax_load = self.ajax_load
-        if (ajax_load) and PLONE_VERSION < '5.1':
-            return True
-        return False
-
 
 class BaseFilterView(BaseView):
 
