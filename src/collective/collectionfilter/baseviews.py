@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 import json
 
+from plone import api
+
+from collective.collectionfilter import PLONE_VERSION
 from collective.collectionfilter.filteritems import get_filter_items
 from collective.collectionfilter.query import make_query
 from collective.collectionfilter.utils import base_query
@@ -76,6 +79,36 @@ class BaseView(object):
                 self.settings.target_collection
             )
         return aq_inner(self._collection)
+
+    @property
+    def pat_options(self):
+
+        return json.dumps({
+            "collectionUUID": self.settings.target_collection,
+            "reloadURL": self.reload_url,
+            "ajaxLoad": self.ajax_load,
+            "contentSelector": self.settings.content_selector
+        })
+
+    @property
+    def ajax_load(self):
+        if PLONE_VERSION < '5.1':
+            # Due to bug in AJAX load pattern makes it hard to make it work in 5.0.x
+            return False
+
+        values = api.portal.get_registry_record('plone.patternoptions')
+        if 'collectionfilter' in values:
+            filterOptions = json.loads(values['collectionfilter'])
+            if 'ajaxLoad' in filterOptions:
+                return filterOptions['ajaxLoad']
+        return True
+
+    @property
+    def ajax_load_warning(self):
+        ajax_load = self.ajax_load
+        if (ajax_load) and PLONE_VERSION < '5.1':
+            return True
+        return False
 
 
 class BaseFilterView(BaseView):
