@@ -42,6 +42,15 @@ I am logged in
 
 # --- MISC
 
+Click Input "${label}"
+    Click Element  xpath=//input[@id=//label[.//*[text()='${label}'] or text()='${label}']/@for]
+
+Manage Portlets
+    Click link  link:Manage portlets
+    Element should be visible  css=#plone-contentmenu-portletmanager > ul
+    Click link  link:Right column
+
+
 Select related filter collection
     Click element  css=div.pattern-relateditems-container input.select2-input
     Wait until page contains element  xpath://ul[@class='select2-results']//a[@data-path='/']
@@ -69,7 +78,7 @@ Add filter portlet
     Input text  css=input#form-widgets-header  ${group_criteria}
     Select related filter collection
     Select from List by value  css=select#form-widgets-group_by  ${group_criteria}
-    Click element  css=input#form-widgets-show_count-0
+    Click Input "Show count"
     Select from List by value  css=select#form-widgets-filter_type  ${filter_type}
     Select from List by value  css=select#form-widgets-input_type  ${input_type}
     Click element  css=.plone-modal-footer input#form-buttons-add
@@ -92,4 +101,12 @@ Set Batch Size
     Go to  ${PLONE_URL}/testcollection/edit
     Input text  css=input#form-widgets-ICollection-item_count  ${batch_size}
     Click element  css=input#form-buttons-save
+    Go to  ${PLONE_URL}/testcollection
+
+Set Hide "${title}"
+    Click Link  ${title}
+    Click Input "Hide if empty"
+    Click element  css=.plone-modal-footer input#form-buttons-apply
+    #click element  xpath=//*[contains(@value,'Save')]
+    Wait until page contains element  xpath://div[contains(@class, 'portletAssignments')]//a[text()='${title}']
     Go to  ${PLONE_URL}/testcollection

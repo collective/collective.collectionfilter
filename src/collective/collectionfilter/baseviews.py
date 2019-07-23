@@ -104,6 +104,17 @@ class BaseFilterView(BaseView):
         )
         return results
 
+    @property
+    def is_available(self):
+        # TODO: maybe need to cache the results?
+        if not self.settings.hide_if_empty:
+            return True
+        results = self.results()
+        if results is None or len(results) <= 2:
+            # TODO: we want to show it when narrowing down even if only 1 option
+            return False
+        return True
+
 
 class BaseSearchView(BaseView):
 

@@ -140,6 +140,17 @@ class ICollectionFilterSchema(ICollectionFilterBaseSchema):
         required=False
     )
 
+    hide_if_empty = schema.Bool(
+        title=_(u'label_hide_if_empty', default=u'Hide if empty'),  # noqa
+        description=_(
+            u'help_hide_if_empty',
+            default=u'Don\'t display if there is only 1 option'  # noqa
+        ),
+        default=False,
+        required=False
+    )
+
+
 #    list_scaling = schema.Choice(
 #        title=_('label_list_scaling', u'List scaling'),
 #        description=_(

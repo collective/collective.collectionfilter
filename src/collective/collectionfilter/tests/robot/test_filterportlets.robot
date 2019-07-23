@@ -16,10 +16,7 @@ Scenario: Add filter portlets to collection
     Log in as site owner
     Go to  ${PLONE_URL}/testcollection
 
-    Click link  link:Manage portlets
-    Element should be visible  css=#plone-contentmenu-portletmanager > ul
-    Click link  link:Right column
-
+    Manage portlets
     Add search portlet
     Add filter portlet  Subject  or  checkboxes_dropdowns
 
@@ -48,10 +45,7 @@ Scenario: Test Batching
     Log in as site owner
     Go to  ${PLONE_URL}/testcollection
 
-    Click element  link=Manage portlets
-    Element should be visible  css=#plone-contentmenu-portletmanager > ul
-    Click element  partial link=Right
-
+    Manage portlets
     Add filter portlet  Subject  or  checkboxes_dropdowns
     Go to  ${PLONE_URL}/testcollection
     Should be 3 collection results
@@ -70,3 +64,21 @@ Scenario: Test Batching
 
     ${loc}=  get location
     should contain  ${loc}  collectionfilter=1
+
+Scenario: Hide when no options
+
+    Log in as site owner
+    Go to  ${PLONE_URL}/testcollection
+
+    Manage portlets
+    Add filter portlet  author_name  or  checkboxes_dropdowns
+    Go to  ${PLONE_URL}/testcollection
+    Should be 3 collection results
+
+    Should be 1 filter checkboxes
+
+    Manage portlets
+    Set Hide "author_name"
+    Should be 0 filter checkboxes
+
+
