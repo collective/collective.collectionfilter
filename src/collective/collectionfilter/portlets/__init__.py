@@ -2,6 +2,8 @@
 from Products.CMFPlone.utils import get_top_request
 from Products.CMFPlone.utils import safe_unicode
 from plone.app.portlets.portlets.base import Renderer
+from plone.api import env
+PLONE_VERSION = env.plone_version()
 
 
 class BasePortletRenderer(Renderer):

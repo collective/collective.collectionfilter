@@ -8,11 +8,7 @@
 <body>
 
 <aside class="collectionMaps ${view/filterClassName} pat-collectionfilter"
-       data-pat-collectionfilter='{
-           "collectionUUID": "${view/settings/target_collection}",
-           "reloadURL": "${view/reload_url}",
-           "contentSelector": "${view/settings/content_selector}"
-       }'
+       data-pat-collectionfilter='${view/pat_options}'
        tal:condition="view/available">
 
   <a

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """Setup tests for this package."""
+from Products.CMFCore.utils import getToolByName
+
 from collective.collectionfilter.testing import COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING  # noqa
 from plone import api
 from plone.app.testing import setRoles
@@ -12,7 +14,17 @@ no_get_installer = False
 try:
     from Products.CMFPlone.utils import get_installer
 except Exception:
-    no_get_installer = True
+    # Quick shim for 5.1 api change
+
+    class get_installer(object):
+        def __init__(self, portal, request):
+            self.installer = getToolByName(portal, 'portal_quickinstaller')
+
+        def is_product_installed(self, name):
+            return self.installer.isProductInstalled(name)
+
+        def uninstall_product(self, name):
+            return self.installer.uninstallProducts([name])
 
 
 class TestSetup(unittest.TestCase):

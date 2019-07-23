@@ -16,9 +16,9 @@ Scenario: Add filter portlets to collection
     Log in as site owner
     Go to  ${PLONE_URL}/testcollection
 
-    Click link  link:Manage portlets
+    Click element  link=Manage portlets
     Element should be visible  css=#plone-contentmenu-portletmanager > ul
-    Click link  link:Right column
+    Click element  partial link=Right
 
     Add search portlet
     Add filter portlet  Subject  or  checkboxes_dropdowns
@@ -29,11 +29,15 @@ Scenario: Add filter portlets to collection
     Click element  css=li.filter-dokumant.checkbox input
     Should be 2 collection results
 
+    Capture Page Screenshot
     Click element  css=li.filter-all.checkbox input
     Should be 3 collection results
 
-    Input text  css=.collectionSearch input[name='SearchableText']  Docu
+    # TODO: Restore this to partial quicksearch test only for ajaxLoad scenarios and Plone > 5.0
+    Input text  css=.collectionSearch input[name='SearchableText']  Document
+    Click Element  css=.collectionSearch button[type='submit']
     Should be 1 collection results
+
     # check for filtered subject checkbox list
     Should be 3 filter checkboxes
 
