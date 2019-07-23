@@ -137,8 +137,8 @@ class BaseFilterView(BaseView):
         if not self.settings.hide_if_empty:
             return True
         results = self.results()
-        if results is None or len(results) <= 2:
-            # TODO: we want to show it when narrowing down even if only 1 option
+        if results is None or len(results) <= 2:  # 2 becayse we include "All"
+            # TODO: we want to show it when narrowing down even if only 1 option?
             return False
         return True
 
@@ -183,6 +183,10 @@ class BaseSearchView(BaseView):
             '?' + query_param if query_param else None
         ] if it])
         return ajax_url
+
+    @property
+    def is_available(self):
+        return True
 
 
 if HAS_GEOLOCATION:
