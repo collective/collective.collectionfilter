@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import json
 
-from Acquisition import aq_inner
-from Products.CMFPlone.utils import get_top_request
-from Products.CMFPlone.utils import safe_unicode
+from plone import api
+
+from collective.collectionfilter import PLONE_VERSION
 from collective.collectionfilter.filteritems import get_filter_items
 from collective.collectionfilter.query import make_query
 from collective.collectionfilter.utils import base_query
@@ -12,12 +12,16 @@ from collective.collectionfilter.utils import safe_encode
 from collective.collectionfilter.vocabularies import TEXT_IDX
 from plone.api.portal import get_registry_record as getrec
 from plone.app.contenttypes.behaviors.collection import ICollection
+from Acquisition import aq_inner
+# from collective.collectionfilter import PLONE_VERSION
 from plone.app.uuid.utils import uuidToCatalogBrain
 from plone.app.uuid.utils import uuidToObject
 from plone.i18n.normalizer.interfaces import IIDNormalizer
+from Products.CMFPlone.utils import safe_unicode
 from six.moves.urllib.parse import urlencode
 from zope.component import queryUtility
 from zope.i18n import translate
+from Products.CMFPlone.utils import get_top_request
 
 try:
     from collective.geolocationbehavior.interfaces import IGeoJSONProperties
@@ -75,6 +79,29 @@ class BaseView(object):
                 self.settings.target_collection
             )
         return aq_inner(self._collection)
+
+    @property
+    def pat_options(self):
+
+        return json.dumps({
+            "collectionUUID": self.settings.target_collection,
+            "reloadURL": self.reload_url,
+            "ajaxLoad": self.ajax_load,
+            "contentSelector": self.settings.content_selector
+        })
+
+    @property
+    def ajax_load(self):
+        if PLONE_VERSION < '5.1':
+            # Due to bug in AJAX load pattern makes it hard to make it work in 5.0.x
+            return False
+
+        values = api.portal.get_registry_record('plone.patternoptions')
+        if 'collectionfilter' in values:
+            filterOptions = json.loads(values['collectionfilter'])
+            if 'ajaxLoad' in filterOptions:
+                return filterOptions['ajaxLoad']
+        return True
 
 
 class BaseFilterView(BaseView):

@@ -1,8 +1,23 @@
 Changelog
 =========
 
-3.2 (unreleased)
+3.3 (unreleased)
 ----------------
+
+- Nothing changed yet.
+
+
+3.2 (2019-07-23)
+----------------
+
+Features:
+
+- Restore 5.0.x compatibility
+  [djay, quang]
+- Make ajax loading of results and portlets a pattern option is themers can override it
+  [quang]
+- change collection picker to show parent by default so you don't have to click backwards
+  [djay]
 
 Bug fixes:
 

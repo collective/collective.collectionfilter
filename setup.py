@@ -4,7 +4,7 @@ from setuptools import setup
 
 import os
 
-version = '3.2.dev0'
+version = '3.3.dev0'
 
 
 def read(*rnames):
@@ -22,6 +22,7 @@ setup(
     ),
     classifiers=[
         "Framework :: Plone",
+        "Framework :: Plone :: 5.0",
         "Framework :: Plone :: 5.1",
         "Framework :: Plone :: 5.2",
         "Programming Language :: Python",
@@ -43,7 +44,7 @@ setup(
     install_requires=[
         'setuptools',
         'plone.api >= 1.5.1',
-        'Products.CMFPlone >= 5.1',
+        'Products.CMFPlone >= 5.0',
         'plone.app.contenttypes',
     ],
     extras_require={

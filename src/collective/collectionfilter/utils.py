@@ -1,17 +1,22 @@
 # -*- coding: utf-8 -*-
 from plone import api
-from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
 from Products.CMFCore.interfaces import IFolderish
 from Products.CMFPlone.utils import safe_unicode
 import six
+from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
+from plone.uuid.interfaces import IUUID
+from zope.interface import provider
+from zope.schema.interfaces import IContextAwareDefaultFactory
 
 
 def target_collection_base_path(context):
     for potential_context in context.aq_chain:
-        if (
-            IFolderish.providedBy(potential_context) or
-            ISyndicatableCollection.providedBy(potential_context)
-        ):
+        if (IFolderish.providedBy(potential_context)):
+            # Actually makes no sense to pick the collection path as it means you have to go up
+            # to pick teh collection. Instead the collection should be the default
+            #    or
+            # ISyndicatableCollection.providedBy(potential_context
+            #                                   )
             context = potential_context
             break
     return '/'.join(context.getPhysicalPath())
@@ -21,6 +26,14 @@ def target_collection_types(context):
     return api.portal.get_registry_record(
         'collective.collectionfilter.target_collection_types',
         default=['Collection', ])
+
+
+@provider(IContextAwareDefaultFactory)
+def target_collection_default(context):
+    for potential_context in context.aq_chain:
+        if ISyndicatableCollection.providedBy(potential_context):
+            return IUUID(potential_context, None)
+    return None
 
 
 def safe_decode(val):
@@ -92,3 +105,13 @@ def base_query(request_params={}, extra_ignores=[]):
     }
     urlquery.update({'collectionfilter': '1'})  # marker
     return urlquery
+
+
+def get_top_request(request):
+    """Get highest request from a subrequest.
+    """
+
+    def _top_request(req):
+        parent_request = req.get('PARENT_REQUEST', None)
+        return _top_request(parent_request) if parent_request else req
+    return _top_request(request)
