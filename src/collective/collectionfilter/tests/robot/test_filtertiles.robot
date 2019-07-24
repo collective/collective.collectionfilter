@@ -8,6 +8,11 @@ Library  Remote  ${PLONE_URL}/RobotRemote
 Test Setup  Open test browser
 Test Teardown  Close all browsers
 
+*** Variables ***
+
+${COLLECTION_NAME}  testcollection
+
+
 *** Test Cases ***************************************************************
 
 Scenario: Add filter tiles to page for collection
@@ -30,8 +35,24 @@ Scenario: Add filter tiles to page for collection
     Element should be visible  css=.mosaic-button-customizelayout
     Click element  css=.mosaic-button-customizelayout
 
-    Add filter tile  testcollection  Subject  checkboxes_dropdowns
-    Capture Page screenshot  _screenshots/collection-filter-tile-on-page.png
+    Add filter tile  ${COLLECTION_NAME}  Subject  checkboxes_dropdowns
+    Add search tile  ${COLLECTION_NAME}
+
+    # Save changes
+    Wait Until Element Is Visible  css=.mosaic-button-save
+    Click button  css=.mosaic-button-save
+    Wait until page contains  Changes saved
+    Go to  ${PLONE_URL}/testdoc
+    Capture Page screenshot
+
+    # Check clicking collection filter filters collection
     Select from List by value  xpath=//*[@class = 'filterContent']//select  Dokumänt
     Should be 2 collection results
-    Capture Page Screenshot  _screenshots/filtered-results-by-document.png
+    Capture Page Screenshot
+
+    # Check colleciton search filters collection
+    Go to  ${PLONE_URL}/testdoc
+    Input text  css=.collectionSearch input[name='SearchableText']  Document
+    Click Element  css=.collectionSearch button[type='submit']
+    Should be 1 collection results
+    Capture Page Screenshot

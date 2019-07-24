@@ -95,6 +95,13 @@ Set Batch Size
 
 
 # --- Tiles -------------------------------------------------------------------
+Drag tile
+    Wait until page contains element  css=.mosaic-helper-tile-new
+    Wait until element is visible  css=.mosaic-helper-tile-new
+    Update element style  css=.mosaic-IDublinCore-description-tile .mosaic-divider-bottom  display  block
+    Mouse over  css=.mosaic-IDublinCore-description-tile .mosaic-divider-bottom
+    Click element  css=.mosaic-selected-divider
+
 Add filter tile
     [Arguments]   ${collection_name}  ${filter_type}  ${input_type}
 
@@ -115,14 +122,24 @@ Add filter tile
     Select from List by value  css=select#collective-collectionfilter-tiles-filter-input_type  ${input_type}
     Click element  css=.pattern-modal-buttons #buttons-save
 
-    # Drag tile into place
-    Wait until page contains element  css=.mosaic-helper-tile-new
-    Wait until element is visible  css=.mosaic-helper-tile-new
-    Update element style  css=.mosaic-IDublinCore-description-tile .mosaic-divider-bottom  display  block
-    Mouse over  css=.mosaic-IDublinCore-description-tile .mosaic-divider-bottom
-    Click element  css=.mosaic-selected-divider
+    Drag tile
 
-    # Save changes
-    Wait Until Element Is Visible  css=.mosaic-button-save
-    Click button  css=.mosaic-button-save
-    Wait until page contains  Changes saved
+Add search tile
+    [Arguments]   ${collection_name}
+
+    # Insert collection search
+    Wait Until Element Is Visible  css=.mosaic-toolbar
+    Click element  css=.select2-container.mosaic-menu-insert a
+    Wait until element is visible  xpath=//li[contains(@class, "select2-result-selectable") and div/text() = "Collection Search"]
+    Click element  xpath=//li[contains(@class, "select2-result-selectable") and div/text() = "Collection Search"]
+
+    # Complete filter form
+    Wait until element is visible  css=.plone-modal-content
+    Wait until element is visible  css=#collective-collectionfilter-tiles-search-header
+    Input text  css=#collective-collectionfilter-tiles-search-header  ${collection_name}
+    Click element  xpath=//div[@id='formfield-collective-collectionfilter-tiles-search-target_collection']//ul[@class='select2-choices']
+    Wait until element is visible  xpath=//div[@id='select2-drop']//a[.//text() = '/${collection_name}']
+    Click element  xpath=//div[@id='select2-drop']//a[.//text() = '/${collection_name}']
+    Click element  css=.pattern-modal-buttons #buttons-save
+
+    Drag tile
