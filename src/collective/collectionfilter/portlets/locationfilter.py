@@ -7,6 +7,7 @@ from collective.collectionfilter.interfaces import \
 from plone.app.portlets.portlets import base
 from plone.portlets.interfaces import IPortletDataProvider
 from zope.interface import implementer
+from collective.collectionfilter.portlets import BasePortletRenderer
 
 try:
     from Products.CMFPlone.utils import get_top_request

@@ -148,7 +148,7 @@ class BaseLocationView(BaseView):
             return 'checkbox'
 
     def paths(self):
-        paths = [{'title':'Home', 'level': 0}]
+        paths = [{'title': 'Home', 'level': 0}]
         params = self.top_request.form or {}
         path = params.get('path', None)
         if path is None:
