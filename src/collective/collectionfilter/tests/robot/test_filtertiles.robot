@@ -11,6 +11,7 @@ Test Teardown  Close all browsers
 *** Variables ***
 
 ${COLLECTION_NAME}  testcollection
+${TEST_PAGE}  ${PLONE_URL}/testdoc
 
 
 *** Test Cases ***************************************************************
@@ -18,41 +19,32 @@ ${COLLECTION_NAME}  testcollection
 Scenario: Add filter tiles to page for collection
 
     Log in as site owner
-    Go to  ${PLONE_URL}/testdoc
+    Go to  ${TEST_PAGE}
 
-    # Setup Mosaic display and open editor
-    Click element  css=#plone-contentmenu-display
-    Click element  css=#plone-contentmenu-display-layout_view
-    Go to  ${PLONE_URL}/testdoc/edit
-    Wait Until Element Is Visible  css=.mosaic-select-layout
-    Wait until Page contains element  jquery=a[data-value="default/basic.html"]
-    Click element  jquery=a[data-value="default/basic.html"]
-    Capture Page Screenshot  _screenshots/default-page.png
+    # Setup full mosaic display and open editor
+    Enable mosaic layout for page  ${TEST_PAGE}
+    Capture Page Screenshot
 
-    # Enable mosaic layout editing
-    Wait Until Element Is Visible  css=.mosaic-toolbar
-    Click element  css=.mosaic-button-layout
-    Element should be visible  css=.mosaic-button-customizelayout
-    Click element  css=.mosaic-button-customizelayout
-
+    # Add tiles to page
+    Go to  ${TEST_PAGE}/edit
     Add filter tile  ${COLLECTION_NAME}  Subject  checkboxes_dropdowns
     Add search tile  ${COLLECTION_NAME}
-
-    # Save changes
-    Wait Until Element Is Visible  css=.mosaic-button-save
-    Click button  css=.mosaic-button-save
-    Wait until page contains  Changes saved
-    Go to  ${PLONE_URL}/testdoc
+    Save mosaic page
+    Go to  ${TEST_PAGE}
     Capture Page screenshot
 
-    # Check clicking collection filter filters collection
-    Select from List by value  xpath=//*[@class = 'filterContent']//select  Dokumänt
+    # Check collection filter filters collections
+    Go to  ${TEST_PAGE}
+    Filter by  Dokumänt
     Should be 2 collection results
     Capture Page Screenshot
+    # Filtering by all with checkboxes_dropdowns without ajax results in no page change
 
-    # Check colleciton search filters collection
-    Go to  ${PLONE_URL}/testdoc
-    Input text  css=.collectionSearch input[name='SearchableText']  Document
-    Click Element  css=.collectionSearch button[type='submit']
+    # Check collection search filters collections
+    Go to  ${TEST_PAGE}
+    Search for  Dokumänt
     Should be 1 collection results
     Capture Page Screenshot
+    Go to  ${TEST_PAGE}
+    Search for  ${EMPTY}
+    Should be 3 collection results
