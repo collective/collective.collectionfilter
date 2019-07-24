@@ -46,10 +46,9 @@ Click Input "${label}"
     Click Element  xpath=//input[@id=//label[.//*[text()='${label}'] or text()='${label}']/@for]
 
 Manage Portlets
-    Click link  link:Manage portlets
+    Click element  link=Manage portlets
     Element should be visible  css=#plone-contentmenu-portletmanager > ul
-    Click link  link:Right column
-
+    Click element  partial link=Right
 
 Select related filter collection
     Click element  css=div.pattern-relateditems-container input.select2-input
@@ -107,5 +106,5 @@ Set Hide "${title}"
     Click Input "Hide if empty"
     Click element  css=.plone-modal-footer input#form-buttons-apply
     #click element  xpath=//*[contains(@value,'Save')]
-    Wait until page contains element  xpath://div[contains(@class, 'portletAssignments')]//a[text()='${title}']
+    Wait until page contains element  xpath=//div[contains(@class, 'portletAssignments')]//a[text()='${title}']
     Go to  ${PLONE_URL}/testcollection
