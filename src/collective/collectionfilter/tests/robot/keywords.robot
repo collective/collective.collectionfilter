@@ -108,6 +108,7 @@ Add filter tile
     Wait until element is visible  css=.plone-modal-content
     Input text  css=#collective-collectionfilter-tiles-filter-header  ${collection_name}
     Click element  xpath=//div[@id='formfield-collective-collectionfilter-tiles-filter-target_collection']//ul[@class='select2-choices']
+    Wait until element is visible  xpath=//div[@id='select2-drop']//a[.//text() = '/${collection_name}']
     Click element  xpath=//div[@id='select2-drop']//a[.//text() = '/${collection_name}']
     Click element  css=#collective-collectionfilter-tiles-filter-group_by
     Select from List by value  css=select#collective-collectionfilter-tiles-filter-group_by  ${filter_type}
