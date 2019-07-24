@@ -76,12 +76,16 @@ Scenario: Hide when no options
     Manage portlets
     Add filter portlet  author_name  or  checkboxes_dropdowns
     Go to  ${PLONE_URL}/testcollection
-    Should be 3 collection results
 
+    Should be 3 collection results
     Should be 1 filter checkboxes
 
     Manage portlets
     Set Hide "author_name"
+    Go to  ${PLONE_URL}/testcollection
+    Capture Page Screenshot
+    Log Source
+    Should be 3 collection results
     Should be 0 filter checkboxes
 
 
