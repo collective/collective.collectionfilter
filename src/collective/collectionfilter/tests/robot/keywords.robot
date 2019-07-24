@@ -43,7 +43,15 @@ I am logged in
 # --- MISC
 
 Click Input "${label}"
-    Click Element  xpath=//input[@id=//label[.//*[text()='${label}'] or text()='${label}']/@for]
+    Click Element  xpath=//input[@id=//label[.//*[normalize-space(text())='${label}'] or normalize-space(text()) ='${label}']/@for]
+
+Click Button with text
+    [Arguments]  ${text}  ${pos}=1
+    Click Element  xpath=(//*[@type="submit" and (normalize-space(@value)='${text}' or normalize-space(text())='${text}')])[${pos}]
+
+Input text with placeholder
+    [Arguments ]  ${placeholder}  ${text}  ${pos}=1
+    Input text  xpath=(//input[@placeholder='${placeholder}'])[${pos}]  ${text}
 
 Manage Portlets
     Click element  link=Manage portlets
@@ -108,3 +116,6 @@ Set Hide "${title}"
     #click element  xpath=//*[contains(@value,'Save')]
     Wait until page contains element  xpath=//div[contains(@class, 'portletAssignments')]//a[text()='${title}']
     Go to  ${PLONE_URL}/testcollection
+
+Click Page "${page}"
+    Click element  xpath=//nav[@class='pagination']//a[${page}]

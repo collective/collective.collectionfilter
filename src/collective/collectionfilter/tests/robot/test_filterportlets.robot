@@ -23,16 +23,15 @@ Scenario: Add filter portlets to collection
     Go to  ${PLONE_URL}/testcollection
     Should be 3 collection results
 
-    Click element  css=li.filter-dokumant.checkbox input
+    Click Input "Dokumänt (2)"
     Should be 2 collection results
 
-    Capture Page Screenshot
-    Click element  css=li.filter-all.checkbox input
+    Click Input "All (3)"
     Should be 3 collection results
 
     # TODO: Restore this to partial quicksearch test only for ajaxLoad scenarios and Plone > 5.0
-    Input text  css=.collectionSearch input[name='SearchableText']  Document
-    Click Element  css=.collectionSearch button[type='submit']
+    Input text with placeholder  Search  Document
+    Click Button with text  Search  pos=2
     Should be 1 collection results
 
     # check for filtered subject checkbox list
@@ -58,11 +57,11 @@ Scenario: Test Batching
 
     Should be 1 collection results
 
-    Click element  css=li.filter-super.checkbox input
+    Click Input "Süper (2)"
     Should be 1 collection results
     Should be 1 pages
 
-    Click element  xpath=//nav[@class='pagination']//a[1]
+    Click Page "1"
     Should be 1 collection results
     Should be 1 pages
 
