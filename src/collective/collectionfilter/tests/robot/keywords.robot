@@ -117,7 +117,6 @@ Add filter tile
     Click element  xpath=//div[@id='formfield-collective-collectionfilter-tiles-filter-target_collection']//ul[@class='select2-choices']
     Wait until element is visible  xpath=//div[@id='select2-drop']//a[.//text() = '/${collection_name}']
     Click element  xpath=//div[@id='select2-drop']//a[.//text() = '/${collection_name}']
-    Click element  css=#collective-collectionfilter-tiles-filter-group_by
     Select from List by value  css=select#collective-collectionfilter-tiles-filter-group_by  ${filter_type}
     Select from List by value  css=select#collective-collectionfilter-tiles-filter-input_type  ${input_type}
     Click element  css=.pattern-modal-buttons #buttons-save
