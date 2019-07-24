@@ -167,7 +167,7 @@ class ICollectionSearchSchema(ICollectionFilterBaseSchema):
     """
 
 
-class ICollectionLocationFilterSchema(ICollectionFilterBaseSchema):
+class ICollectionSectionFilterSchema(ICollectionFilterBaseSchema):
     """Schema for the navigation filter.
     """
 

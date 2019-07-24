@@ -61,7 +61,7 @@ Simply do this somewhere in your buildout::
         collective.collectionfilter[geolocation]
     ...
 
-Besides the "Collection Filter" portlet/tile there is also a "Collection Search" portlet/tile for doing a fulltext search on the collection results and a "Location Filter" for filtering results based on their location in the site.
+Besides the "Collection Filter" portlet/tile there is also a "Collection Search" portlet/tile for doing a fulltext search on the collection results and a "Section Filter" for filtering results based on their location in the site.
 
 
 Overloading GroupByCriteria

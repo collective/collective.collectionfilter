@@ -1,4 +1,4 @@
-<aside class="portlet portletNavigationTree ${view/filterClassName}  locationFilter"
+<aside class="portlet portletNavigationTree ${view/filterClassName}  sectionFilter"
        data-pat-collectionfilter='${view/pat_options}'
        tal:condition="view/available"
        i18n:domain="plone">

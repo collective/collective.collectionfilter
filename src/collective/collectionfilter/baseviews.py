@@ -6,7 +6,7 @@ from plone import api
 from collective.collectionfilter import PLONE_VERSION
 from collective.collectionfilter.filteritems import get_filter_items
 from collective.collectionfilter.query import make_query
-from collective.collectionfilter.filteritems import get_location_filter_items
+from collective.collectionfilter.filteritems import get_section_filter_items
 from collective.collectionfilter.utils import base_query
 from collective.collectionfilter.utils import safe_decode
 from collective.collectionfilter.utils import safe_encode
@@ -128,13 +128,12 @@ class BaseFilterView(BaseView):
             show_count=self.settings.show_count,
             view_name=self.settings.view_name,
             cache_enabled=self.settings.cache_enabled,
-            request_params=self.top_request.form or {}
+            request_params=self.top_request.form or {},
         )
         return results
 
 
-class BaseLocationView(BaseView):
-
+class BaseSectionView(BaseView):
     @property
     def input_type(self):
         if self.settings.input_type == 'links':
@@ -160,7 +159,7 @@ class BaseLocationView(BaseView):
         return paths
 
     def results(self):
-        results = get_location_filter_items(
+        results = get_section_filter_items(
             target_collection=self.settings.target_collection,
             view_name=self.settings.view_name,
             cache_enabled=self.settings.cache_enabled,

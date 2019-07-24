@@ -58,7 +58,7 @@ def _results_cachekey(
     return cachekey
 
 
-def _location_results_cachekey(
+def _section_results_cachekey(
         method,
         target_collection,
         view_name,
@@ -256,12 +256,9 @@ def get_filter_items(
     return ret
 
 
-@ram.cache(_location_results_cachekey)
-def get_location_filter_items(
-        target_collection,
-        view_name='',
-        cache_enabled=True,
-        request_params=None
+@ram.cache(_section_results_cachekey)
+def get_section_filter_items(
+    target_collection, view_name="", cache_enabled=True, request_params=None
 ):
     request_params = request_params or {}
     custom_query = {}  # Additional query to filter the collection

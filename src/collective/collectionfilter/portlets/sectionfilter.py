@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from collective.collectionfilter import _
-from collective.collectionfilter.baseviews import BaseLocationView
+from collective.collectionfilter.baseviews import BaseSectionView
 from collective.collectionfilter.interfaces import \
-    ICollectionLocationFilterSchema
+    ICollectionSectionFilterSchema
 from plone.app.portlets.portlets import base
 from plone.portlets.interfaces import IPortletDataProvider
 from zope.interface import implementer
@@ -15,13 +15,13 @@ except ImportError:
     from collective.collectionfilter.utils import get_top_request
 
 
-class ICollectionLocationPortlet(ICollectionLocationFilterSchema,
+class ICollectionSectionPortlet(ICollectionSectionFilterSchema,
                                  IPortletDataProvider):
-    """Portlet interface based on ICollectionLocationFilterSchema
+    """Portlet interface based on ICollectionSectionFilterSchema
     """
 
 
-@implementer(ICollectionLocationPortlet)
+@implementer(ICollectionSectionPortlet)
 class Assignment(base.Assignment):
 
     header = u""
@@ -50,11 +50,11 @@ class Assignment(base.Assignment):
         if self.header:
             return self.header
         else:
-            return _(u'Collection Location Filter')
+            return _(u'Collection Section Filter')
 
 
-class Renderer(BasePortletRenderer, BaseLocationView):
-    render = ViewPageTemplateFile('locationfilter.pt')
+class Renderer(BasePortletRenderer, BaseSectionView):
+    render = ViewPageTemplateFile('sectionfilter.pt')
 
     @property
     def filter_id(self):
@@ -75,8 +75,8 @@ class Renderer(BasePortletRenderer, BaseLocationView):
 
 
 class AddForm(base.AddForm):
-    schema = ICollectionLocationFilterSchema
-    label = _(u"Add Collection Location Filter Portlet")
+    schema = ICollectionSectionFilterSchema
+    label = _(u"Add Collection Section Filter Portlet")
     description = _(
         u"This portlet allows filtering of collection results based on their"
         u"position in the site."
@@ -87,8 +87,8 @@ class AddForm(base.AddForm):
 
 
 class EditForm(base.EditForm):
-    schema = ICollectionLocationFilterSchema
-    label = _(u"Edit Collection Location Filter Portlet")
+    schema = ICollectionSectionFilterSchema
+    label = _(u"Edit Collection Section Filter Portlet")
     description = _(
         u"This portlet allows filtering of collection results based on their"
         u"position in the site."
