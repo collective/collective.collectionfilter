@@ -16,7 +16,7 @@ except ImportError:
 
 
 class ICollectionSectionPortlet(ICollectionSectionFilterSchema,
-                                 IPortletDataProvider):
+                                IPortletDataProvider):
     """Portlet interface based on ICollectionSectionFilterSchema
     """
 
