@@ -5,16 +5,15 @@ Resource  keywords.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 
-Test Setup  Open test browser
+Test Setup  View Test Collection
 Test Teardown  Close all browsers
+
+
 
 
 *** Test Cases ***************************************************************
 
 Scenario: Add filter portlets to collection
-
-    Log in as site owner
-    Go to  ${PLONE_URL}/testcollection
 
     Manage portlets
     Add search portlet
@@ -45,9 +44,6 @@ Scenario: Add filter portlets to collection
 
 Scenario: Test Batching
 
-    Log in as site owner
-    Go to  ${PLONE_URL}/testcollection
-
     Manage portlets
     Add filter portlet  Subject  or  checkboxes_dropdowns
     Go to  ${PLONE_URL}/testcollection
@@ -70,9 +66,6 @@ Scenario: Test Batching
 
 Scenario: Hide when no options
 
-    Log in as site owner
-    Go to  ${PLONE_URL}/testcollection
-
     Manage portlets
     Add filter portlet  author_name  or  checkboxes_dropdowns
     Go to  ${PLONE_URL}/testcollection
@@ -81,11 +74,29 @@ Scenario: Hide when no options
     Should be 1 filter checkboxes
 
     Manage portlets
-    Set Hide "author_name"
+    Set portlet "author_name" "Hide if empty"
     Go to  ${PLONE_URL}/testcollection
-    Capture Page Screenshot
-    Log Source
     Should be 3 collection results
     Should be 0 filter checkboxes
 
 
+Scenario: show hidden filter if just narrowed down
+
+    Given Manage portlets
+      and Add filter portlet  Type  and  checkboxes_dropdowns
+      and Set portlet "Type" "Narrow down filter options"
+      and Go to  ${PLONE_URL}/testcollection
+      and Should be 3 filter checkboxes
+
+      and Click Input "Event (1)"
+      and Should be 2 filter checkboxes
+
+     When Manage portlets
+      and Set portlet "Type" "Hide if empty"
+      and Go to  ${PLONE_URL}/testcollection
+      and Should be 3 filter checkboxes
+
+    # But if we filter it down it shouldn't disappear as then we have no way to click "All" to get back
+      and Click Input "Event (1)"
+      and Capture Page Screenshot
+     Then Should be 2 filter checkboxes

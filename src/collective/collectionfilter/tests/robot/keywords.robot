@@ -42,6 +42,12 @@ I am logged in
 
 # --- MISC
 
+View Test Collection
+    Open test browser
+    Log in as site owner
+    Go to  ${PLONE_URL}/testcollection
+
+
 Click Input "${label}"
     Wait until page contains element  xpath=//input[@id=//label[.//*[normalize-space(text())='${label}'] or normalize-space(text()) ='${label}']/@for]
     Click Element  xpath=//input[@id=//label[.//*[normalize-space(text())='${label}'] or normalize-space(text()) ='${label}']/@for]
@@ -110,13 +116,12 @@ Set Batch Size
     Click element  css=input#form-buttons-save
     Go to  ${PLONE_URL}/testcollection
 
-Set Hide "${title}"
+Set portlet "${title}" "${checkbox}"
     Click Link  ${title}
-    Click Input "Hide if empty"
+    Click Input "${checkbox}"
     Click element  css=.plone-modal-footer input#form-buttons-apply
     #click element  xpath=//*[contains(@value,'Save')]
     Wait until page contains element  xpath=//div[contains(@class, 'portletAssignments')]//a[text()='${title}']
-    Go to  ${PLONE_URL}/testcollection
 
 Click Page "${page}"
     Click element  xpath=//nav[@class='pagination']//a[${page}]
