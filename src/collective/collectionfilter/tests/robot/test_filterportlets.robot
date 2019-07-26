@@ -34,12 +34,12 @@ Scenario: Add filter portlets to collection
     Should be 1 collection results
 
     # check for filtered subject checkbox list
-    Should be 3 filter checkboxes
+    Should be 3 filter options
 
     # the following doesn't work ... I think no 'keyup' event is fired
     # Clear element text  css=.collectionSearch input[name='SearchableText']
     # Should be 2 collection results
-    # Should be 4 filter checkboxes
+    # Should be 4 filter options
 
 
 Scenario: Test Batching
@@ -71,32 +71,33 @@ Scenario: Hide when no options
     Go to  ${PLONE_URL}/testcollection
 
     Should be 3 collection results
-    Should be 1 filter checkboxes
+    Should be 1 filter options
 
     Manage portlets
     Set portlet "author_name" "Hide if empty"
     Go to  ${PLONE_URL}/testcollection
     Should be 3 collection results
-    Should be 0 filter checkboxes
+    Should be 0 filter options
 
 
 Scenario: show hidden filter if just narrowed down
 
     Given Manage portlets
-      and Add filter portlet  Type  and  checkboxes_dropdowns
+      and Add filter portlet  Type  single  checkboxes_dropdowns
       and Set portlet "Type" "Narrow down filter options"
       and Go to  ${PLONE_URL}/testcollection
-      and Should be 3 filter checkboxes
+      log source
+      and Should be 3 filter options
 
-      and Click Input "Event (1)"
-      and Should be 2 filter checkboxes
+      and Select Filter Option "Event (1)"
+      and Should be 2 filter options
 
      When Manage portlets
       and Set portlet "Type" "Hide if empty"
       and Go to  ${PLONE_URL}/testcollection
-      and Should be 3 filter checkboxes
+      and Should be 3 filter options
 
     # But if we filter it down it shouldn't disappear as then we have no way to click "All" to get back
-      and Click Input "Event (1)"
+      and Select Filter Option "Event (1)"
       and Capture Page Screenshot
-     Then Should be 2 filter checkboxes
+     Then Should be 2 filter options

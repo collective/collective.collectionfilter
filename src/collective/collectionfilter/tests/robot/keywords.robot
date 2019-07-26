@@ -57,6 +57,9 @@ Click Button with text
     Wait until page contains element  xpath=(//*[@type="submit" and (normalize-space(@value)='${text}' or normalize-space(text())='${text}')])[${pos}]
     Click Element  xpath=(//*[@type="submit" and (normalize-space(@value)='${text}' or normalize-space(text())='${text}')])[${pos}]
 
+Select Filter Option "${text}"
+    select from list by label  xpath=//div[contains(@class, 'filterContent')]//select  ${text}
+
 Input text with placeholder
     [Arguments ]  ${placeholder}  ${text}  ${pos}=1
     Input text  xpath=(//input[@placeholder='${placeholder}'])[${pos}]  ${text}
@@ -98,8 +101,8 @@ Add filter portlet
     Wait until page contains element  xpath=//div[contains(@class, 'portletAssignments')]//a[text()='${group_criteria}']
 
 
-Should be ${X} filter checkboxes
-    Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//div[contains(@class, 'filterContent')]//li[contains(@class, 'filterItem')]  limit=${X}
+Should be ${X} filter options
+    Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//div[contains(@class, 'filterContent')]//*[contains(@class, 'filterItem')]  limit=${X}
 
 Should be ${X} collection results
     Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//article[@class='entry']  limit=${X}
