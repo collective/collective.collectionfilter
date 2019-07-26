@@ -101,4 +101,6 @@ Scenario: show hidden filter if just narrowed down
 
     # But if we filter it down it shouldn't disappear as then we have no way to click "All" to get back
       and Select Filter Option "Event (1)"
+      Log source
+      capture page screenshot
      Then Should be 2 filter options

@@ -54,7 +54,7 @@ script:
   - python --version 2> /dev/stdout | grep 3.6 || bin/code-analysis
   - bin/test --all $TEST_OPTIONS
   - bin/createcoverage -t '--all $TEST_OPTIONS'
+  - find parts/test/ -name output.xml | xargs -n 1 bin/popt
 after_success:
   - pip install -q coveralls
   - coveralls
-  - cat parts/test/test_filterportlets/Scenario_Hide_when_no_options/log.html 
