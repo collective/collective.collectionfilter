@@ -6,8 +6,9 @@ from plone.memoize.view import memoize
 
 from collective.collectionfilter import PLONE_VERSION
 from collective.collectionfilter.filteritems import get_filter_items
+from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.query import make_query
-from collective.collectionfilter.utils import base_query
+from collective.collectionfilter.utils import base_query, safe_iterable
 from collective.collectionfilter.utils import safe_decode
 from collective.collectionfilter.utils import safe_encode
 from collective.collectionfilter.vocabularies import TEXT_IDX
@@ -20,7 +21,7 @@ from plone.app.uuid.utils import uuidToObject
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from Products.CMFPlone.utils import safe_unicode
 from six.moves.urllib.parse import urlencode
-from zope.component import queryUtility
+from zope.component import queryUtility, getUtility
 from zope.i18n import translate
 from Products.CMFPlone.utils import get_top_request
 
@@ -138,10 +139,16 @@ class BaseFilterView(BaseView):
         if not self.settings.hide_if_empty:
             return True
         results = self.results()
-        if results is None or len(results) <= 2:  # 2 becayse we include "All"
-            # TODO: we want to show it when narrowing down even if only 1 option?
-            return False
-        return True
+
+        if self.settings.narrow_down:
+            groupby_criteria = getUtility(IGroupByCriteria).groupby
+            idx = groupby_criteria[self.settings.group_by]['index']
+            request_params = safe_decode(self.top_request.form)
+            current_idx_value = safe_iterable(request_params.get(idx))
+            if current_idx_value:
+                return True
+
+        return not (results is None or len(results) <= 2)  # 2 becayse we include "All"
 
 
 class BaseSearchView(BaseView):
