@@ -77,6 +77,9 @@ Scenario: Hide when no options
     Set portlet "author_name" "Hide if empty"
     Go to  ${PLONE_URL}/testcollection
     Should be 3 collection results
+    # No idea why intermittently we get 1 filter option below instead of 0
+    log source
+    capture page screenshot
     Should be 0 filter options
 
 
@@ -86,7 +89,6 @@ Scenario: show hidden filter if just narrowed down
       and Add filter portlet  Type  single  checkboxes_dropdowns
       and Set portlet "Type" "Narrow down filter options"
       and Go to  ${PLONE_URL}/testcollection
-      log source
       and Should be 3 filter options
 
       and Select Filter Option "Event (1)"
@@ -99,5 +101,4 @@ Scenario: show hidden filter if just narrowed down
 
     # But if we filter it down it shouldn't disappear as then we have no way to click "All" to get back
       and Select Filter Option "Event (1)"
-      and Capture Page Screenshot
      Then Should be 2 filter options

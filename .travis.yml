@@ -57,3 +57,4 @@ script:
 after_success:
   - pip install -q coveralls
   - coveralls
+  - cat parts/test/test_filterportlets/Scenario_Hide_when_no_options/log.html 

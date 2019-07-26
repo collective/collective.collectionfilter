@@ -138,7 +138,6 @@ class BaseFilterView(BaseView):
     def is_available(self):
         if not self.settings.hide_if_empty:
             return True
-        results = self.results()
 
         if self.settings.narrow_down:
             groupby_criteria = getUtility(IGroupByCriteria).groupby
@@ -148,6 +147,7 @@ class BaseFilterView(BaseView):
             if current_idx_value:
                 return True
 
+        results = self.results()
         return not (results is None or len(results) <= 2)  # 2 becayse we include "All"
 
 
