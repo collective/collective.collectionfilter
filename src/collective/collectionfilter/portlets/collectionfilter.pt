@@ -1,13 +1,12 @@
 <aside class="portlet ${view/filterClassName} collectionFilter pat-collectionfilter"
-       tal:define="input_type view/input_type;
-                    results view/results"
+       tal:define="input_type view/input_type"
        data-pat-collectionfilter='${view/pat_options}'
        tal:condition="view/available"
        i18n:domain="collective.collectionfilter">
 
   <tal:if condition="view/settings/target_collection">
   <header class="portletHeader" tal:condition="view/title" tal:content="view/title">Title</header>
-  <div class="portletContent filterContent">
+  <div class="portletContent filterContent" tal:define="results view/results">
 
         <tal:if condition="python:input_type in ('checkbox', 'radio')">
         <ul>

@@ -76,11 +76,11 @@ Scenario: Hide when no options
     Manage portlets
     Set portlet "author_name" "Hide if empty"
     Go to  ${PLONE_URL}/testcollection
-    Should be 3 collection results
     # No idea why intermittently we get 1 filter option below instead of 0
     log source
     capture page screenshot
     Should be 0 filter options
+    Should be 3 collection results
 
 
 Scenario: show hidden filter if just narrowed down
