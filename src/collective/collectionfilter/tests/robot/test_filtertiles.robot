@@ -42,7 +42,7 @@ Scenario: Add filter tiles to page for collection
 
     # Check collection search filters collections
     Go to  ${TEST_PAGE}
-    Search for  Dokumänt
+    Search for  Document
     Should be 1 collection results
     Capture Page Screenshot
     Go to  ${TEST_PAGE}
