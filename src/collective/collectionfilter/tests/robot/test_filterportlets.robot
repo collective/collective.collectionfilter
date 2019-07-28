@@ -8,6 +8,9 @@ Library  Remote  ${PLONE_URL}/RobotRemote
 Test Setup  Open test browser
 Test Teardown  Close all browsers
 
+*** Variables ***
+${collection_page}  ${PLONE_URL}/testcollection
+
 
 *** Test Cases ***************************************************************
 
@@ -45,6 +48,47 @@ Scenario: Add filter portlets to collection
     # Clear element text  css=.collectionSearch input[name='SearchableText']
     # Should be 2 collection results
     # Should be 4 filter checkboxes
+
+
+Scenario: Add section filter portlet to collection
+    Log in as site owner
+    Go to  ${collection_page}
+
+    Click element  link=Manage portlets
+    Element should be visible  css=#plone-contentmenu-portletmanager > ul
+    Click element  partial link=Right
+
+    Add section filter portlet
+
+    # Check home displays correct number of folders and all results
+    Go to  ${collection_page}
+    Capture Page Screenshot
+    Section filter should be hidden  Test Folder3
+    Should be 3 section results
+    Should be 6 collection results
+    
+    # Check opening a folder with a single document shows one result
+    Click section filter  Test Folder2
+    Capture Page Screenshot
+    Should be 2 section results
+    Should be 1 collection results
+    Click section filter  Home
+
+    # Check sub-folders and their contents are correctly shown
+    Click section filter  Test Folder
+    Capture Page Screenshot
+    # Intermittent bug causing non-existent section to show
+    # Should be 3 section results
+    Should be 2 collection results
+
+    Click section filter  Test Sub-Folder
+    Should be 3 section results
+    Should be 1 collection results
+
+    # Check returning to home returns all collection results
+    Click section filter  Home
+    Should be 3 section results
+    Should be 6 collection results
 
 
 Scenario: Test Batching

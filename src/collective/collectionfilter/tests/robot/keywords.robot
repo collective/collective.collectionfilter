@@ -92,3 +92,23 @@ Set Batch Size
     Input text  css=input#form-widgets-ICollection-item_count  ${batch_size}
     Click element  css=input#form-buttons-save
     Go to  ${PLONE_URL}/testcollection
+
+# --- Section Portlet --------------------------------------------------------
+Add section filter portlet
+    Wait until page contains element  css=select.add-portlet
+    Select From List by label  css=select.add-portlet  Collection Section Filter
+    Wait until element is visible  css=input#form-widgets-header
+    Click element  css=.plone-modal-footer input#form-buttons-add
+
+Should be ${X} section results
+    Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//nav[@class='portletContent']//a[@class='contenttype-folder']  limit=${X}
+
+Click section filter
+    [Arguments]   ${filter_item_name}
+    Element should be visible  xpath=//nav[@class='portletContent']//a[@class='contenttype-folder']
+    Click element  xpath=//nav[@class='portletContent']//a[@class='contenttype-folder']/span[text()='${filter_item_name}']
+    Wait until page contains element  css=#content
+
+Section filter should be hidden
+    [Arguments]   ${filter_item_name}
+    Wait Until Element Is Not Visible  xpath=//nav[@class='portletContent']//a[@class='contenttype-folder']/span[text()='${filter_item_name}']
