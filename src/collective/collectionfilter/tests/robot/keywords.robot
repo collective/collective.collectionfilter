@@ -112,3 +112,6 @@ Click section filter
 Section filter should be hidden
     [Arguments]   ${filter_item_name}
     Wait Until Element Is Not Visible  xpath=//nav[@class='portletContent']//a[@class='contenttype-folder']/span[text()='${filter_item_name}']
+
+Check section filter named ${filter_item_name} has indtentation level ${indentation_level}
+    Wait until element is visible  xpath=//nav[@class='portletContent']//li[@class='navTreeItem']/ul[contains(@class, 'navTreeLevel${indentation_level}')]
