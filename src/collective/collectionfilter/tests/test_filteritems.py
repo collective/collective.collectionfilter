@@ -41,13 +41,13 @@ class TestFilteritems(unittest.TestCase):
         self.collection_uid = self.collection.UID()
 
     def test_filteritems(self):
-        self.assertEqual(len(self.collection.results()), 3)
+        self.assertEqual(len(self.collection.results()), 6)
 
         result = get_filter_items(
             self.collection_uid, 'Subject', cache_enabled=False)
 
         self.assertEqual(len(result), 4)
-        self.assertEqual(get_data_by_val(result, 'all')['count'], 3)
+        self.assertEqual(get_data_by_val(result, 'all')['count'], 6)
         self.assertEqual(get_data_by_val(result, 'all')['selected'], True)
         self.assertEqual(get_data_by_val(result, u'Süper')['count'], 2)
         self.assertEqual(get_data_by_val(result, u'Evänt')['count'], 1)
@@ -85,20 +85,20 @@ class TestFilteritems(unittest.TestCase):
             get_data_by_val(narrowed_down_result, u'Dokumänt')['selected'], True,  # noqa
             msg=u"Test that 'Dokumänt' is selected, matching the query")
         self.assertEqual(
-            get_data_by_val(narrowed_down_result, u'all')['count'], 3,
-            msg=u"Test that there are 3 results if unselected")
+            get_data_by_val(narrowed_down_result, u'all')['count'], 6,
+            msg=u"Test that there are 6 results if unselected")
 
     def test_portal_type_filter(self):
-        self.assertEqual(len(self.collection.results()), 3)
+        self.assertEqual(len(self.collection.results()), 6)
 
         result = get_filter_items(
             self.collection_uid, 'portal_type', cache_enabled=False)
 
         self.assertEqual(len(result), 3)
-        self.assertEqual(get_data_by_val(result, 'all')['count'], 3)
+        self.assertEqual(get_data_by_val(result, 'all')['count'], 6)
         self.assertEqual(get_data_by_val(result, 'all')['selected'], True)
         self.assertEqual(get_data_by_val(result, u'Event')['count'], 1)
-        self.assertEqual(get_data_by_val(result, u'Document')['count'], 2)
+        self.assertEqual(get_data_by_val(result, u'Document')['count'], 5)
 
         result = get_filter_items(
             self.collection_uid, 'portal_type',
@@ -118,21 +118,21 @@ class TestFilteritems(unittest.TestCase):
 
         self.assertEqual(len(result), 2)
         self.assertEqual(
-            get_data_by_val(result, u'all')['count'], 3,
-            msg=u"Test that the number of results if unselected is 3")
+            get_data_by_val(result, u'all')['count'], 6,
+            msg=u"Test that the number of results if unselected is 6")
 
         self.assertEqual(
             get_data_by_val(result, u'Event')['selected'], True,
             msg=u"Test that Event portal_type is selected matching the query")
 
     def test_and_filter_type(self):
-        self.assertEqual(len(self.collection.results()), 3)
+        self.assertEqual(len(self.collection.results()), 6)
 
         result = get_filter_items(
             self.collection_uid, 'Subject', cache_enabled=False)
 
         self.assertEqual(len(result), 4)
-        self.assertEqual(get_data_by_val(result, 'all')['count'], 3)
+        self.assertEqual(get_data_by_val(result, 'all')['count'], 6)
         self.assertEqual(get_data_by_val(result, 'all')['selected'], True)
         self.assertEqual(get_data_by_val(result, u'Süper')['count'], 2)
         self.assertEqual(get_data_by_val(result, u'Evänt')['count'], 1)
@@ -155,7 +155,7 @@ class TestFilteritems(unittest.TestCase):
             cache_enabled=False)
 
         self.assertEqual(len(result), 4)
-        self.assertEqual(get_data_by_val(result, 'all')['count'], 3)
+        self.assertEqual(get_data_by_val(result, 'all')['count'], 6)
 
         # TODO: I'm not sure these counts are correct. It should represent how many results you will get if you click so should be smaller than this
         # but I guess you need to turn on narrow down for that?
@@ -185,7 +185,7 @@ class TestFilteritems(unittest.TestCase):
             cache_enabled=False)
 
         self.assertEqual(len(result), 4)
-        self.assertEqual(get_data_by_val(result, 'all')['count'], 3)
+        self.assertEqual(get_data_by_val(result, 'all')['count'], 6)
         self.assertEqual(get_data_by_val(result, u'Süper')['count'], 2)
 
         self.assertEqual(get_data_by_val(result, u'Evänt')['count'], 1)

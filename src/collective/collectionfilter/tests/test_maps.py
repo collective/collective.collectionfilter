@@ -15,4 +15,4 @@ class TestFilteritems(unittest.TestCase):
         self.collection = self.portal['testcollection']
 
     def test_locationfilter(self):
-        self.assertEqual(len(self.portal['testcollection'].results()), 3)
+        self.assertEqual(len(self.portal['testcollection'].results()), 6)
