@@ -87,9 +87,9 @@ Scenario: Add section filter portlet to collection
     Should be 1 collection results
 
     # Check section filters are indented to the correct level
-    Check section filter named Home has indtentation level 0
-    Check section filter named Test Folder has indtentation level 1
-    Check section filter named Test Sub-Folder has indtentation level 2
+    Check section filter named Home has indentation level 0
+    Check section filter named Test Folder has indentation level 1
+    Check section filter named Test Sub-Folder has indentation level 2
 
     # Check returning to home returns all collection results
     Click section filter  Home
