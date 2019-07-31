@@ -123,8 +123,7 @@ Set portlet "${title}" "${checkbox}"
     Click Link  ${title}
     Click Input "${checkbox}"
     Click element  css=.plone-modal-footer input#form-buttons-apply
-    #click element  xpath=//*[contains(@value,'Save')]
-    Wait until page contains element  xpath=//div[contains(@class, 'portletAssignments')]//a[text()='${title}']
+    Wait until page does not contain element  css=.plone-modal-dialog
 
 Click Page "${page}"
     Click element  xpath=//nav[@class='pagination']//a[${page}]
