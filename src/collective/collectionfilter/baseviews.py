@@ -8,20 +8,21 @@ from collective.collectionfilter import PLONE_VERSION
 from collective.collectionfilter.filteritems import get_filter_items
 from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.query import make_query
-from collective.collectionfilter.utils import base_query, safe_iterable
+from collective.collectionfilter.utils import base_query
+from collective.collectionfilter.utils import safe_iterable
 from collective.collectionfilter.utils import safe_decode
 from collective.collectionfilter.utils import safe_encode
 from collective.collectionfilter.vocabularies import TEXT_IDX
 from plone.api.portal import get_registry_record as getrec
 from plone.app.contenttypes.behaviors.collection import ICollection
 from Acquisition import aq_inner
-# from collective.collectionfilter import PLONE_VERSION
 from plone.app.uuid.utils import uuidToCatalogBrain
 from plone.app.uuid.utils import uuidToObject
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from Products.CMFPlone.utils import safe_unicode
 from six.moves.urllib.parse import urlencode
-from zope.component import queryUtility, getUtility
+from zope.component import queryUtility
+from zope.component import getUtility
 from zope.i18n import translate
 from Products.CMFPlone.utils import get_top_request
 

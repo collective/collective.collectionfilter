@@ -154,7 +154,7 @@ class ICollectionFilterSchema(ICollectionFilterBaseSchema):
         title=_(u'label_hide_if_empty', default=u'Hide if empty'),  # noqa
         description=_(
             u'help_hide_if_empty',
-            default=u'Don\'t display if there is only 1 option'  # noqa
+            default=u'Don\'t display if there is 1 or no options without selecting a filter yet.'
         ),
         default=False,
         required=False
