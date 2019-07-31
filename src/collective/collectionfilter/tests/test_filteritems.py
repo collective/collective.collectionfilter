@@ -205,3 +205,67 @@ class TestFilteritems(unittest.TestCase):
             custom_query=make_query(qs(result, u'Evänt'))
         )
         self.assertEqual(len(catalog_results), 0)
+
+    def test_sectionfilter(self):
+        def is_filter_selected(result, val):
+            filter = get_data_by_val(result, val)
+            if "selected" in filter["css_class"]:
+                return True
+
+            return False
+
+        self.assertEqual(len(self.collection.results()), 6)
+
+        result_all = get_section_filter_items(
+            self.collection_uid, "", cache_enabled=False, request_params=None
+        )
+
+        self.assertEqual(len(result_all), 3)
+        self.assertEqual(get_data_by_val(result_all, "all")["count"], 6)
+        self.assertEqual(get_data_by_val(result_all, "all")["level"], 0)
+        self.assertEqual(get_data_by_val(result_all, "all")["title"], "Home")
+        self.assertEqual(is_filter_selected(result_all, "all"), True)
+        self.assertEqual(get_data_by_val(result_all, "testfolder")["count"], 2)
+        self.assertEqual(get_data_by_val(result_all, "testfolder")["level"], 1)
+        self.assertEqual(
+            get_data_by_val(result_all, "testfolder")["title"], "Test Folder"
+        )
+        self.assertEqual(is_filter_selected(result_all, "testfolder"), False)
+        self.assertEqual(get_data_by_val(result_all, "testfolder2")["count"], 1)
+        self.assertEqual(get_data_by_val(result_all, "testfolder2")["level"], 1)
+        self.assertEqual(
+            get_data_by_val(result_all, "testfolder2")["title"], "Test Folder2"
+        )
+        self.assertEqual(is_filter_selected(result_all, "testfolder2"), False)
+
+        result_folder = get_section_filter_items(
+            self.collection_uid,
+            "",
+            cache_enabled=False,
+            request_params={"path": "testfolder"},
+        )
+
+        # Todo: Bug causing empty section filter to display.
+        # self.assertEqual(len(result_folder), 3)
+        self.assertEqual(is_filter_selected(result_folder, "testfolder"), True)
+
+        result_subfolder = get_section_filter_items(
+            self.collection_uid,
+            "",
+            cache_enabled=False,
+            request_params={"path": "testfolder/testsubfolder"},
+        )
+
+        self.assertEqual(len(result_subfolder), 3)
+        self.assertEqual(get_data_by_val(result_subfolder, "testsubfolder")["level"], 2)
+        self.assertEqual(is_filter_selected(result_subfolder, "testsubfolder"), True)
+
+        result_folder2 = get_section_filter_items(
+            self.collection_uid,
+            "",
+            cache_enabled=False,
+            request_params={"path": "testfolder2"},
+        )
+
+        self.assertEqual(len(result_folder2), 2)
+        self.assertEqual(is_filter_selected(result_folder2, "testfolder2"), True)
