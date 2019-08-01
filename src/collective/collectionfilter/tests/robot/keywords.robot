@@ -101,14 +101,14 @@ Add section filter portlet
     Click element  css=.plone-modal-footer input#form-buttons-add
 
 Should be ${X} section results
-    Wait until element is visible  css=#content-core
+    Wait until element is visible  css=#content-core .entries
     Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//nav[@class='portletContent']//a[@class='contenttype-folder']  limit=${X}
 
 Click section filter
     [Arguments]   ${filter_item_name}
     Element should be visible  xpath=//nav[@class='portletContent']//a[@class='contenttype-folder']
     Click element  xpath=//nav[@class='portletContent']//a[@class='contenttype-folder']/span[text()='${filter_item_name}']
-    Wait until page contains element  css=#content
+    Wait until page contains element  css=#content-core .entries
 
 Section filter should be hidden
     [Arguments]   ${filter_item_name}
