@@ -10,7 +10,7 @@ from plone.app.contenttypes.interfaces import ICollection
 
 from collective.collectionfilter.query import make_query
 from collective.collectionfilter.testing import COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING  # noqa
-from collective.collectionfilter.filteritems import get_filter_items
+from collective.collectionfilter.filteritems import get_filter_items, get_section_filter_items
 from collective.collectionfilter.utils import safe_decode
 
 
