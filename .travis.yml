@@ -40,7 +40,7 @@ before_install:
   - echo "eggs-directory = $HOME/buildout-cache/eggs" >> $HOME/.buildout/default.cfg
   - pip install zc.buildout
   - cp test-$PLONE_VERSION.cfg buildout.cfg
-  - pip2.7 install --user  popt
+  - pip2.7 install popt || pip2.7 install --user  popt
 install:
   - buildout -N annotate
   - buildout -N
