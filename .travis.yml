@@ -40,6 +40,7 @@ before_install:
   - echo "eggs-directory = $HOME/buildout-cache/eggs" >> $HOME/.buildout/default.cfg
   - pip install zc.buildout
   - cp test-$PLONE_VERSION.cfg buildout.cfg
+  - pip2.7 install popt
 install:
   - buildout -N annotate
   - buildout -N
@@ -53,9 +54,9 @@ script:
 # Run code-analysis, except on Python 3.6, which mysteriously fails to find zc.buildout.
   - python --version 2> /dev/stdout | grep 3.6 || bin/code-analysis
   - bin/test --all $TEST_OPTIONS
-  - grep  --include=output.xml -Rl  FAIL parts/test | xargs --no-run-if-empty -n 1 python2.7 bin/popt
+  - grep  --include=output.xml -Rl  FAIL parts/test | xargs --no-run-if-empty -n 1 popt
   - bin/createcoverage -t '--all $TEST_OPTIONS'
-  - grep  --include=output.xml -Rl  FAIL parts/test | xargs --no-run-if-empty -n 1 python2.7 bin/popt
+  - grep  --include=output.xml -Rl  FAIL parts/test | xargs --no-run-if-empty -n 1 popt
 after_success:
   - pip install -q coveralls
   - coveralls
