@@ -99,6 +99,7 @@ Add section filter portlet
     Select From List by label  css=select.add-portlet  Collection Section Filter
     Wait until element is visible  css=input#form-widgets-header
     Click element  css=.plone-modal-footer input#form-buttons-add
+    Wait until page does not contain element  css=.plone-modal-dialog
 
 Should be ${X} section results
     Wait until element is visible  css=#content-core .entries
