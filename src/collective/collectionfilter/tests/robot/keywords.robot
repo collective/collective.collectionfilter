@@ -102,6 +102,7 @@ Add section filter portlet
 
 Should be ${X} section results
     Wait until element is visible  css=#content-core .entries
+    Log source
     Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//nav[@class='portletContent']//a[@class='contenttype-folder']  limit=${X}
 
 Click section filter

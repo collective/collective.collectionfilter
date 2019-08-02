@@ -62,6 +62,7 @@ Scenario: Add section filter portlet to collection
 
     # Check home displays correct number of folders and all results
     Go to  ${collection_page}
+    Log source
     Capture Page Screenshot
     Section filter should be hidden  Test Folder3
     Should be 3 section results
@@ -83,6 +84,7 @@ Scenario: Add section filter portlet to collection
 
     # Check sub folder displays one result
     Click section filter  Test Sub-Folder
+    Log source
     Should be 3 section results
     Should be 1 collection results
 
@@ -93,6 +95,7 @@ Scenario: Add section filter portlet to collection
 
     # Check returning to home returns all collection results
     Click section filter  Home
+    Log source
     Should be 3 section results
     Should be 6 collection results
 
