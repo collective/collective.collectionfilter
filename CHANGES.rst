@@ -21,6 +21,8 @@ Features:
 
 Bug fixes:
 
+- Fix double display of portlets profile
+  [agitator]
 - Fix bug where filter urls was getting utf encoded then made into unicode again
   [djay]
 - Fix 5.2 where operators should not be used on all index types
