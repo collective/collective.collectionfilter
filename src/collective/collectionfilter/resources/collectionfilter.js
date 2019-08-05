@@ -33,7 +33,7 @@ define([
             }.bind(this));
 
             // Collection Search
-            if (this.$el.hasClass('collectionSearch') && this.ajaxLoad) {
+            if (this.$el.hasClass('collectionSearch') && this.options.ajaxLoad) {
                 // initialize collection search
 
                 $('button[type="submit"]', this.$el).hide();
@@ -159,7 +159,7 @@ define([
         },
 
         reload: function (filterURL) {
-            if (!this.ajaxLoad) {
+            if (!this.options.ajaxLoad) {
                 window.location.href = filterURL;
                 return
             }
@@ -181,7 +181,7 @@ define([
         },
 
         reloadCollection: function (collectionURL) {
-            if (!this.ajaxLoad)
+            if (!this.options.ajaxLoad)
                 return;
             var cl = new this.contentloader(
                 $(this.options.contentSelector).parent(),  // let base element for setting classes and triggering events be the parent, which isn't replaced.
