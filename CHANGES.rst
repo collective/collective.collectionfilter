@@ -4,7 +4,10 @@ Changelog
 3.3 (unreleased)
 ----------------
 
-- Nothing changed yet.
+Bug fixes:
+
+- fix bug introduced with pattern option ``ajaxLoad``
+  [petschki]
 
 
 3.2 (2019-07-23)
