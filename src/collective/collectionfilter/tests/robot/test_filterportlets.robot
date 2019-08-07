@@ -28,9 +28,8 @@ Scenario: Add filter portlets to collection
     Click Input "All (3)"
     Should be 3 collection results
 
-    # TODO: Restore this to partial quicksearch test only for ajaxLoad scenarios and Plone > 5.0
-    Input text with placeholder  Search  Document
-    Click Button with text  Search  pos=2
+    Input text  css=.collectionSearch input[name='SearchableText']  Document
+    # Text input is reloaded live ... wait a bit
     Should be 1 collection results
 
     # check for filtered subject checkbox list
@@ -40,7 +39,7 @@ Scenario: Add filter portlets to collection
     # Clear element text  css=.collectionSearch input[name='SearchableText']
     # Should be 2 collection results
     # Should be 4 filter options
-
+    
 
 Scenario: Test Batching
 

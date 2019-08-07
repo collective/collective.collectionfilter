@@ -7,6 +7,15 @@ Changelog
 - Nothing changed yet.
 
 
+3.2.1 (2019-08-07)
+------------------
+
+Bug fixes:
+
+- fix bug introduced with pattern option ``ajaxLoad``
+  [petschki]
+
+
 3.2 (2019-07-23)
 ----------------
 
@@ -21,6 +30,8 @@ Features:
 
 Bug fixes:
 
+- Fix double display of portlets profile
+  [agitator]
 - Fix bug where filter urls was getting utf encoded then made into unicode again
   [djay]
 - Fix 5.2 where operators should not be used on all index types

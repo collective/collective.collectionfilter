@@ -68,5 +68,16 @@
       run_deps="false"
       />
 
+  <genericsetup:upgradeDepends
+      title="Update Resources"
+      description=""
+      source="9"
+      destination="10"
+      profile="collective.collectionfilter:default"
+      import_profile="collective.collectionfilter:default"
+      import_steps="plone.app.registry"
+      run_deps="false"
+      />
+
 
 </configure>
