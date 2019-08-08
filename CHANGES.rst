@@ -4,7 +4,8 @@ Changelog
 3.3 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Added css_modifier to extend css class of a filter item
+  [agitator]
 
 
 3.2.1 (2019-08-07)

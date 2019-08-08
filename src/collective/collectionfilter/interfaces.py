@@ -178,6 +178,7 @@ class IGroupByCriteria(Interface):
                 'metadata': 'Subject',   # Metadata name for fast access.
                 'display_modifier': _,   # Function for modifying list items
                                          # for display. Gets the item passed
+                'css_modifier': None,    # Change css class of filter item
                 'index_modifier': None,  # Change index values before querying
                 'value_blacklist': None  # Exclude index values from display
                 'sort_key_function': None,  # sort key function. defaults to a lower-cased title.  # noqa
