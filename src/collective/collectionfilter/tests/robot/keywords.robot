@@ -3,7 +3,7 @@
 
 Resource  plone/app/robotframework/selenium.robot
 Resource  plone/app/robotframework/keywords.robot
-
+Resource  Selenium2Screenshots/keywords.robot
 
 *** Variables ***
 
@@ -92,3 +92,89 @@ Set Batch Size
     Input text  css=input#form-widgets-ICollection-item_count  ${batch_size}
     Click element  css=input#form-buttons-save
     Go to  ${PLONE_URL}/testcollection
+
+
+# --- Tiles -------------------------------------------------------------------
+Enable mosaic layout for page
+    [Arguments]  ${page}
+
+    # Setup Mosaic display and open editor
+    Click element  link=Display
+    Element should be visible  css=#plone-contentmenu-portletmanager > ul
+    Element should be visible  css=#plone-contentmenu-display-layout_view
+    Click element  link=Mosaic layout
+    Go to  ${page}/edit
+
+    # Create default layout
+    Wait Until Element Is Visible  css=.mosaic-select-layout
+    Wait until Page contains element  xpath=//a[@data-value='default/basic.html']
+    Click element  xpath=//a[@data-value='default/basic.html']
+
+    # Enable layout editing
+    Wait Until Element Is Visible  css=.mosaic-toolbar
+    Click element  css=.mosaic-button-layout
+    Element should be visible  css=.mosaic-button-customizelayout
+    Click element  css=.mosaic-button-customizelayout
+
+    Save mosaic page
+
+Save mosaic page
+    Wait Until Element Is Visible  css=.mosaic-button-save
+    Click button  css=.mosaic-button-save
+    Wait until page contains  Changes saved
+
+Add filter tile
+    [Arguments]   ${collection_name}  ${filter_type}  ${input_type}
+
+    # Insert content filter
+    Wait Until Element Is Visible  css=.mosaic-toolbar
+    Click element  css=.select2-container.mosaic-menu-insert a
+    Wait until element is visible  xpath=//li[contains(@class, "select2-result-selectable") and div/text() = "Collection Filter"]
+    Click element  xpath=//li[contains(@class, "select2-result-selectable") and div/text() = "Collection Filter"]
+
+    # Complete filter form
+    Wait until element is visible  xpath=//div[@class='plone-modal-dialog' and .//*[contains(text(), 'Collection')]]
+    Click element  xpath=//div[@id='formfield-collective-collectionfilter-tiles-filter-target_collection']//ul[@class='select2-choices']
+    Wait until element is visible  xpath=//div[@id='select2-drop']//a[.//text() = '/${collection_name}']
+    Click element  xpath=//div[@id='select2-drop']//a[.//text() = '/${collection_name}']
+    Select from List by value  css=select#collective-collectionfilter-tiles-filter-group_by  ${filter_type}
+    Select from List by value  css=select#collective-collectionfilter-tiles-filter-input_type  ${input_type}
+    Click element  css=.pattern-modal-buttons #buttons-save
+
+    Drag tile
+
+Add search tile
+    [Arguments]   ${collection_name}
+
+    # Insert collection search
+    Wait Until Element Is Visible  css=.mosaic-toolbar
+    Click element  css=.select2-container.mosaic-menu-insert a
+    Wait until element is visible  xpath=//li[contains(@class, "select2-result-selectable") and div/text() = "Collection Search"]
+    Click element  xpath=//li[contains(@class, "select2-result-selectable") and div/text() = "Collection Search"]
+
+    # Complete filter form
+    Wait until element is visible  xpath=//div[@class='plone-modal-dialog' and .//*[contains(text(), 'Collection')]]
+    Wait until element is visible  css=#collective-collectionfilter-tiles-search-header
+    Click element  xpath=//div[@id='formfield-collective-collectionfilter-tiles-search-target_collection']//ul[@class='select2-choices']
+    Wait until element is visible  xpath=//div[@id='select2-drop']//a[.//text() = '/${collection_name}']
+    Click element  xpath=//div[@id='select2-drop']//a[.//text() = '/${collection_name}']
+    Click element  css=.pattern-modal-buttons #buttons-save
+
+    Drag tile
+
+Drag tile
+    Wait until page contains element  css=.mosaic-helper-tile-new
+    Wait until element is visible  css=.mosaic-helper-tile-new
+    Update element style  css=.mosaic-IDublinCore-description-tile .mosaic-divider-bottom  display  block
+    Mouse over  css=.mosaic-IDublinCore-description-tile .mosaic-divider-bottom
+    Click element  css=.mosaic-selected-divider
+
+Filter by
+    [Arguments]  ${filter}
+    Wait until element is visible  css=.filterContent
+    Select from List by value  xpath=//div[@class = 'filterContent']//select  ${filter}
+
+Search for
+    [Arguments]  ${document}
+    Input text  css=.collectionSearch input[name='SearchableText']  ${document}
+    Click Element  css=.collectionSearch button[type='submit']
