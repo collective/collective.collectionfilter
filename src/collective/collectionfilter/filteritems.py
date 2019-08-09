@@ -132,6 +132,8 @@ def get_filter_items(
     metadata_attr = groupby_criteria[group_by]['metadata']
     # Optional modifier to set title from filter value
     display_modifier = groupby_criteria[group_by].get('display_modifier', None)
+    # CSS modifier to set class on filter item
+    css_modifier = groupby_criteria[group_by].get('css_modifier', None)
     # Value blacklist
     value_blacklist = groupby_criteria[group_by].get('value_blacklist', None)
     # Allow value_blacklist to be callables for runtime-evaluation
@@ -192,10 +194,10 @@ def get_filter_items(
 
             # Set selected state
             selected = filter_value in current_idx_value
-
-            css_class = 'filterItem {0}{1}'.format(
+            css_class = 'filterItem {0}{1} {2}'.format(
                 'filter-' + idnormalizer.normalize(filter_value),
-                ' selected' if selected else ''
+                ' selected' if selected else '',
+                css_modifier(filter_value) if css_modifier else '',
             )
 
             grouped_results[filter_value] = {

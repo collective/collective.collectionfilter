@@ -91,6 +91,7 @@ class GroupByCriteria():
                 'index': it,
                 'metadata': it,
                 'display_modifier': _,  # Allow to translate in this package domain per default.  # noqa
+                'css_modifier': None,
                 'index_modifier': index_modifier,
                 'value_blacklist': None,
                 'sort_key_function': lambda it: it['title'].lower(),  # sort key function. defaults to a lower-cased title.  # noqa
