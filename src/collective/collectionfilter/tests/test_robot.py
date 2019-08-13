@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
-from collective.collectionfilter.testing import COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING  # noqa
+from collective.collectionfilter.testing import (
+    COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED,
+    COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED,
+)  # noqa
 from plone.app.testing import ROBOT_TEST_LEVEL
 from plone.testing import layered
 
@@ -17,12 +20,25 @@ def test_suite():
         if doc.endswith('.robot') and doc.startswith('test_')
     ]
     for robot_test in robot_tests:
-        robottestsuite = robotsuite.RobotTestSuite(robot_test)
-        robottestsuite.level = ROBOT_TEST_LEVEL
-        suite.addTests([
-            layered(
-                robottestsuite,
-                layer=COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING,
-            ),
-        ])
+        robottestsuite_ajax_enabled = robotsuite.RobotTestSuite(robot_test)
+        robottestsuite_ajax_enabled.level = ROBOT_TEST_LEVEL
+        suite.addTests(
+            [
+                layered(
+                    robottestsuite_ajax_enabled,
+                    layer=COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED,
+                )
+            ]
+        )
+        robottestsuite_ajax_disabled = robotsuite.RobotTestSuite(robot_test)
+        robottestsuite_ajax_disabled.level = ROBOT_TEST_LEVEL
+        suite.addTests(
+            [
+                layered(
+                    robottestsuite_ajax_disabled,
+                    layer=COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED,
+                )
+            ]
+        )
+
     return suite
