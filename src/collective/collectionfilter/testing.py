@@ -12,6 +12,12 @@ from plone.app.textfield.value import RichTextValue
 from plone.testing import z2
 import json
 
+try:
+    # Python 2: "unicode" is built-in
+    unicode
+except NameError:
+    unicode = str
+
 
 def _set_ajax_enabled(should_enable_ajax):
     pattern_options = api.portal.get_registry_record("plone.patternoptions")
