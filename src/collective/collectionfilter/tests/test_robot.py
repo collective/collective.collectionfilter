@@ -22,14 +22,18 @@ def test_suite():
         if doc.endswith('.robot') and doc.startswith('test_')
     ]
     for robot_test in robot_tests:
-        if "ajaxenabled" in robot_test and api.env.plone_version() > '5.0':
-            test_layer = (
-                COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED
-            )
+        if "ajaxenabled" in robot_test:
+            if api.env.plone_version() < '5.1':
+                break
+            else:
+                test_layer = (
+                    COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED
+                )
         elif "ajaxdisabled" in robot_test:
             test_layer = (
                 COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED
             )
+
         else:
             test_layer = COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING
 
