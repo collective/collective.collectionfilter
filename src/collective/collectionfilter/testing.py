@@ -95,6 +95,15 @@ COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING = IntegrationTesting(
     name='CollectiveCollectionFilterLayer:IntegrationTesting',
 )
 
+COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING = FunctionalTesting(
+    bases=(
+        COLLECTIVE_COLLECTIONFILTER_FIXTURE,
+        REMOTE_LIBRARY_BUNDLE_FIXTURE,
+        z2.ZSERVER_FIXTURE,
+    ),
+    name='CollectiveCollectionFilterLayer:AcceptanceTesting',
+)
+
 
 class CollectiveCollectionFilterAjaxEnabledLayer(CollectiveCollectionFilterLayer):
     def setUpPloneSite(self, portal):
