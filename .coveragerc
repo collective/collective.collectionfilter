@@ -7,6 +7,7 @@ omit =
     bin/test
     eggs/*
     parts/*
+    src/collective/collectionfilter/testing.py
     src/collective/collectionfilter/tests/*
     */lib/*
     *.txt
