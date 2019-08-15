@@ -3,7 +3,7 @@
 
 Resource  keywords.robot
 
-Library  Remote  ${PLONE_URL}/RobotRemote
+# Library  Remote  ${PLONE_URL}/RobotRemote
 
 Test Setup  Open test browser
 Test Teardown  Close all browsers
@@ -34,17 +34,18 @@ Scenario: Add filter tiles to page for collection
     Capture Page screenshot
 
     # Check collection filter filters collections
+    # Broken when running with AJAX enabled
     Go to  ${TEST_PAGE}
     Filter by  Dokumänt
     Should be 2 collection results
     Capture Page Screenshot
-    # Filtering by all with checkboxes_dropdowns without ajax results in no page change
-
+    
     # Check collection search filters collections
-    Go to  ${TEST_PAGE}
-    Search for  Document
-    Should be 1 collection results
-    Capture Page Screenshot
-    Go to  ${TEST_PAGE}
-    Search for  ${EMPTY}
-    Should be 3 collection results
+    Given go to  ${TEST_PAGE}
+    When I search for Document and click search
+    Then should be 1 collection results
+      and Capture Page Screenshot
+
+    Given Go to  ${TEST_PAGE}
+    When I search for ${EMPTY} and click search
+    Then should be 3 collection results

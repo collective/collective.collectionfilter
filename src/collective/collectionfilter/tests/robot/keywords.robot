@@ -93,6 +93,43 @@ Set Batch Size
     Click element  css=input#form-buttons-save
     Go to  ${PLONE_URL}/testcollection
 
+Ajax has completed
+    Wait For Condition	return jQuery.active == 0  timeout=5 sec
+
+# --- Setup -------------------------------------------------------------------
+I've got a site with a collection
+    Log in as site owner
+    Go to  ${PLONE_URL}/testcollection
+
+My collection has a collection search portlet
+    Go to  ${PLONE_URL}/testcollection
+    Click element  link=Manage portlets
+    Element should be visible  css=#plone-contentmenu-portletmanager > ul
+    Click element  partial link=Right
+    Add search portlet
+
+My collection has a collection filter portlet
+    Go to  ${PLONE_URL}/testcollection
+    Click element  link=Manage portlets
+    Element should be visible  css=#plone-contentmenu-portletmanager > ul
+    Click element  partial link=Right
+    Add filter portlet  Subject  or  checkboxes_dropdowns
+
+I'm viewing the collection
+    Go to  ${PLONE_URL}/testcollection
+    Should be 3 collection results
+
+
+# --- Core Functionality ------------------------------------------------------
+I search for ${document} with ajax
+    Wait until element is not visible  css=.collectionSearch button[type='submit']  timeout=5 sec
+    Input text  css=.collectionSearch input[name='SearchableText']  ${document}
+    Wait until keyword succeeds  5s  1s  Ajax has completed
+
+I search for ${document} and click search
+    Wait until element is visible  css=.collectionSearch button[type='submit']
+    Input text  css=.collectionSearch input[name='SearchableText']  ${document}
+    Click Element  css=.collectionSearch button[type='submit']
 
 # --- Tiles -------------------------------------------------------------------
 Enable mosaic layout for page
@@ -173,8 +210,3 @@ Filter by
     [Arguments]  ${filter}
     Wait until element is visible  css=.filterContent
     Select from List by value  xpath=//div[@class = 'filterContent']//select  ${filter}
-
-Search for
-    [Arguments]  ${document}
-    Input text  css=.collectionSearch input[name='SearchableText']  ${document}
-    Click Element  css=.collectionSearch button[type='submit']
