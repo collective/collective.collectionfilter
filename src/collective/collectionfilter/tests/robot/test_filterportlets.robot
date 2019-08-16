@@ -3,7 +3,7 @@
 
 Resource  keywords.robot
 
-Library  Remote  ${PLONE_URL}/RobotRemote
+# Library  Remote  ${PLONE_URL}/RobotRemote
 
 Test Setup  View Test Collection
 Test Teardown  Close all browsers
@@ -27,19 +27,6 @@ Scenario: Add filter portlets to collection
 
     Click Input "All (3)"
     Should be 3 collection results
-
-    Input text  css=.collectionSearch input[name='SearchableText']  Document
-    # Text input is reloaded live ... wait a bit
-    Should be 1 collection results
-
-    # check for filtered subject checkbox list
-    Should be 3 filter options
-
-    # the following doesn't work ... I think no 'keyup' event is fired
-    # Clear element text  css=.collectionSearch input[name='SearchableText']
-    # Should be 2 collection results
-    # Should be 4 filter options
-    
 
 Scenario: Test Batching
 
