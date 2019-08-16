@@ -42,6 +42,33 @@ I am logged in
 
 # --- MISC
 
+View Test Collection
+    Open test browser
+    Log in as site owner
+    Go to  ${PLONE_URL}/testcollection
+
+
+Click Input "${label}"
+    Wait until page contains element  xpath=//input[@id=//label[.//*[normalize-space(text())='${label}'] or normalize-space(text()) ='${label}']/@for]
+    Click Element  xpath=//input[@id=//label[.//*[normalize-space(text())='${label}'] or normalize-space(text()) ='${label}']/@for]
+
+Click Button with text
+    [Arguments]  ${text}  ${pos}=1
+    Wait until page contains element  xpath=(//*[@type="submit" and (normalize-space(@value)='${text}' or normalize-space(text())='${text}')])[${pos}]
+    Click Element  xpath=(//*[@type="submit" and (normalize-space(@value)='${text}' or normalize-space(text())='${text}')])[${pos}]
+
+Select Filter Option "${text}"
+    select from list by label  xpath=//div[contains(@class, 'filterContent')]//select  ${text}
+
+Input text with placeholder
+    [Arguments ]  ${placeholder}  ${text}  ${pos}=1
+    Input text  xpath=(//input[@placeholder='${placeholder}'])[${pos}]  ${text}
+
+Manage Portlets
+    Click element  link=Manage portlets
+    Element should be visible  css=#plone-contentmenu-portletmanager > ul
+    Click element  partial link=Right
+
 Select related filter collection
     Click element  css=div.pattern-relateditems-container input.select2-input
     Wait until page contains element  partial link=Test Collection
@@ -67,16 +94,15 @@ Add filter portlet
     Input text  css=input#form-widgets-header  ${group_criteria}
     #Select related filter collection
     Select from List by value  css=select#form-widgets-group_by  ${group_criteria}
-    Click element  css=input#form-widgets-show_count-0
+    Click Input "Show count"
     Select from List by value  css=select#form-widgets-filter_type  ${filter_type}
     Select from List by value  css=select#form-widgets-input_type  ${input_type}
-    Capture Page Screenshot
     Click element  css=.plone-modal-footer input#form-buttons-add
     Wait until page contains element  xpath=//div[contains(@class, 'portletAssignments')]//a[text()='${group_criteria}']
 
 
-Should be ${X} filter checkboxes
-    Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//div[contains(@class, 'filterContent')]//li[contains(@class, 'filterItem')]  limit=${X}
+Should be ${X} filter options
+    Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//div[contains(@class, 'filterContent')]//*[contains(@class, 'filterItem')]  limit=${X}
 
 Should be ${X} collection results
     Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//article[@class='entry']  limit=${X}
@@ -92,6 +118,15 @@ Set Batch Size
     Input text  css=input#form-widgets-ICollection-item_count  ${batch_size}
     Click element  css=input#form-buttons-save
     Go to  ${PLONE_URL}/testcollection
+
+Set portlet "${title}" "${checkbox}"
+    Click Link  ${title}
+    Click Input "${checkbox}"
+    Click element  css=.plone-modal-footer input#form-buttons-apply
+    Wait until page does not contain element  css=.plone-modal-dialog
+
+Click Page "${page}"
+    Click element  xpath=//nav[@class='pagination']//a[${page}]
 
 Ajax has completed
     Wait For Condition	return jQuery.active == 0  timeout=5 sec
