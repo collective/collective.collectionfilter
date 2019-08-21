@@ -2,7 +2,7 @@
 import json
 
 from plone import api
-from plone.memoize.view import memoize
+from plone.memoize import instance
 
 from collective.collectionfilter import PLONE_VERSION
 from collective.collectionfilter.filteritems import get_filter_items
@@ -121,7 +121,7 @@ class BaseFilterView(BaseView):
         else:
             return 'checkbox'
 
-    @memoize  # because we need to call this for is_available below
+    @instance.memoize  # because we need to call this for is_available below
     def results(self):
         results = get_filter_items(
             target_collection=self.settings.target_collection,
