@@ -121,7 +121,9 @@ class BaseFilterView(BaseView):
         else:
             return 'checkbox'
 
-    @instance.memoize  # because we need to call this for is_available below
+    # results is called twice inside the template in view/available and view/results.  But its expensive so we cache it
+    # but just the the lifetime of the view
+    @instance.memoize
     def results(self):
         results = get_filter_items(
             target_collection=self.settings.target_collection,
