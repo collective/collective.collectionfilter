@@ -144,11 +144,13 @@ My collection has a collection search portlet
     Add search portlet
 
 My collection has a collection filter portlet
+    [Arguments]  ${group_by}=Subject
+
     Go to  ${PLONE_URL}/testcollection
     Click element  link=Manage portlets
     Element should be visible  css=#plone-contentmenu-portletmanager > ul
     Click element  partial link=Right
-    Add filter portlet  Subject  or  checkboxes_dropdowns
+    Add filter portlet  ${group_by}  or  checkboxes_dropdowns
 
 I'm viewing the collection
     Go to  ${PLONE_URL}/testcollection
@@ -165,6 +167,14 @@ I search for ${document} and click search
     Wait until element is visible  css=.collectionSearch button[type='submit']
     Input text  css=.collectionSearch input[name='SearchableText']  ${document}
     Click Element  css=.collectionSearch button[type='submit']
+
+I should have a portlet titled "${filter_title}" with ${number_of_results} filter options
+    ${portlet_title_xpath}  Convert to string  header[@class='portletHeader' and contains(text(), '${filter_title}')]
+    ${filter_item_xpath}  Convert to string  div[contains(@class, 'filterContent')]//li[contains(@class, 'filterItem')]
+
+    Page Should Contain Element  xpath=//${portlet_title_xpath}
+    Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//${portlet_title_xpath}/parent::*[contains(@class, 'collectionFilter')]//${filter_item_xpath}  limit=${number_of_results}
+
 
 # --- Tiles -------------------------------------------------------------------
 Enable mosaic layout for page

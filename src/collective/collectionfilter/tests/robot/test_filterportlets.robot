@@ -90,3 +90,12 @@ Scenario: show hidden filter if just narrowed down
       Log source
       capture page screenshot
      Then Should be 2 filter options
+
+
+Scenario: Displaying multiple collection filters on a single page
+    Given I've got a site with a collection
+      and my collection has a collection filter portlet
+      and my collection has a collection filter portlet  group_by=Type
+    When I'm viewing the collection
+    Then I should have a portlet titled "Subject" with 4 filter options
+      and I should have a portlet titled "Type" with 3 filter options
