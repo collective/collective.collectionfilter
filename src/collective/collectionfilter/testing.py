@@ -10,6 +10,20 @@ from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import applyProfile
 from plone.app.textfield.value import RichTextValue
 from plone.testing import z2
+import json
+
+try:
+    # Python 2: "unicode" is built-in
+    unicode
+except NameError:
+    unicode = str
+
+
+def _set_ajax_enabled(should_enable_ajax):
+    pattern_options = api.portal.get_registry_record("plone.patternoptions")
+    data = {"collectionfilter": unicode(json.dumps({"ajaxLoad": should_enable_ajax}))}
+    pattern_options.update(data)
+    api.portal.set_registry_record("plone.patternoptions", pattern_options)
 
 
 class CollectiveCollectionFilterLayer(PloneSandboxLayer):
@@ -116,13 +130,6 @@ COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING = IntegrationTesting(
     name='CollectiveCollectionFilterLayer:IntegrationTesting',
 )
 
-
-COLLECTIVE_COLLECTIONFILTER_FUNCTIONAL_TESTING = FunctionalTesting(
-    bases=(COLLECTIVE_COLLECTIONFILTER_FIXTURE,),
-    name='CollectiveCollectionFilterLayer:FunctionalTesting',
-)
-
-
 COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING = FunctionalTesting(
     bases=(
         COLLECTIVE_COLLECTIONFILTER_FIXTURE,
@@ -130,4 +137,37 @@ COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING = FunctionalTesting(
         z2.ZSERVER_FIXTURE,
     ),
     name='CollectiveCollectionFilterLayer:AcceptanceTesting',
+)
+
+
+class CollectiveCollectionFilterAjaxEnabledLayer(CollectiveCollectionFilterLayer):
+    def setUpPloneSite(self, portal):
+        _set_ajax_enabled(True)
+        super(CollectiveCollectionFilterAjaxEnabledLayer, self).setUpPloneSite(portal)
+
+AJAX_ENABLED_FIXTURE = CollectiveCollectionFilterAjaxEnabledLayer()
+COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED = FunctionalTesting(
+    bases=(
+        AJAX_ENABLED_FIXTURE,
+        REMOTE_LIBRARY_BUNDLE_FIXTURE,
+        z2.ZSERVER_FIXTURE,
+    ),
+    name='CollectiveCollectionFilterLayer:AcceptanceTesting_AjaxEnabled',
+)
+
+
+class CollectiveCollectionFilterAjaxDisabledLayer(CollectiveCollectionFilterLayer):
+    def setUpPloneSite(self, portal):
+        _set_ajax_enabled(False)
+        super(CollectiveCollectionFilterAjaxDisabledLayer, self).setUpPloneSite(portal)
+
+
+AJAX_DISABLED_FIXTURE = CollectiveCollectionFilterAjaxDisabledLayer()
+COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED = FunctionalTesting(
+    bases=(
+        AJAX_DISABLED_FIXTURE,
+        REMOTE_LIBRARY_BUNDLE_FIXTURE,
+        z2.ZSERVER_FIXTURE,
+    ),
+    name='CollectiveCollectionFilterLayer:AcceptanceTesting_AjaxDisabled',
 )

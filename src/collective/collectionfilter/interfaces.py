@@ -150,6 +150,17 @@ class ICollectionFilterSchema(ICollectionFilterBaseSchema):
         required=False
     )
 
+    hide_if_empty = schema.Bool(
+        title=_(u'label_hide_if_empty', default=u'Hide if empty'),  # noqa
+        description=_(
+            u'help_hide_if_empty',
+            default=u'Don\'t display if there is 1 or no options without selecting a filter yet.'
+        ),
+        default=False,
+        required=False
+    )
+
+
 #    list_scaling = schema.Choice(
 #        title=_('label_list_scaling', u'List scaling'),
 #        description=_(
@@ -203,6 +214,7 @@ class IGroupByCriteria(Interface):
                 'metadata': 'Subject',   # Metadata name for fast access.
                 'display_modifier': _,   # Function for modifying list items
                                          # for display. Gets the item passed
+                'css_modifier': None,    # Change css class of filter item
                 'index_modifier': None,  # Change index values before querying
                 'value_blacklist': None  # Exclude index values from display
                 'sort_key_function': None,  # sort key function. defaults to a lower-cased title.  # noqa

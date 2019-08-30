@@ -24,3 +24,7 @@ class BasePortletRenderer(Renderer):
             safe_unicode(self.filter_id),
         )
         return reload_url
+
+    @property
+    def available(self):
+        return self.is_available

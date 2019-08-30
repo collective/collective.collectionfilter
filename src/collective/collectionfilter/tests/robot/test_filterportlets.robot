@@ -3,124 +3,99 @@
 
 Resource  keywords.robot
 
-Library  Remote  ${PLONE_URL}/RobotRemote
+# Library  Remote  ${PLONE_URL}/RobotRemote
 
-Test Setup  Open test browser
+Test Setup  View Test Collection
 Test Teardown  Close all browsers
 
-*** Variables ***
-${collection_page}  ${PLONE_URL}/testcollection
+
 
 
 *** Test Cases ***************************************************************
 
 Scenario: Add filter portlets to collection
 
-    Log in as site owner
-    Go to  ${PLONE_URL}/testcollection
-
-    Click element  link=Manage portlets
-    Element should be visible  css=#plone-contentmenu-portletmanager > ul
-    Click element  partial link=Right
-
+    Manage portlets
     Add search portlet
     Add filter portlet  Subject  or  checkboxes_dropdowns
 
     Go to  ${PLONE_URL}/testcollection
-    Should be 6 collection results
+    Should be 3 collection results
 
-    Click element  css=li.filter-dokumant.checkbox input
+    Click Input "Dokumänt (2)"
     Should be 2 collection results
 
-    Capture Page Screenshot
-    Click element  css=li.filter-all.checkbox input
-    Should be 6 collection results
-
-    # TODO: Restore this to partial quicksearch test only for ajaxLoad scenarios and Plone > 5.0
-    Input text  css=.collectionSearch input[name='SearchableText']  Document
-    Click Element  css=.collectionSearch button[type='submit']
-    Should be 4 collection results
-
-    # check for filtered subject checkbox list
-    Should be 3 filter checkboxes
-
-    # the following doesn't work ... I think no 'keyup' event is fired
-    # Clear element text  css=.collectionSearch input[name='SearchableText']
-    # Should be 2 collection results
-    # Should be 4 filter checkboxes
-
-
-Scenario: Add section filter portlet to collection
-    Log in as site owner
-    Go to  ${collection_page}
-
-    Click element  link=Manage portlets
-    Element should be visible  css=#plone-contentmenu-portletmanager > ul
-    Click element  partial link=Right
-
-    Add section filter portlet
-
-    # Check home displays correct number of folders and all results
-    Go to  ${collection_page}
-    Capture Page Screenshot
-    Section filter should be hidden  Test Folder3
-    Should be 3 section results
-    Should be 6 collection results
-    
-    # Check opening a folder with a single document shows one result
-    Click section filter  Test Folder2
-    Capture Page Screenshot
-    Should be 2 section results
-    Should be 1 collection results
-    Click section filter  Home
-
-    # Check sub-folders and their contents are correctly shown
-    Click section filter  Test Folder
-    Capture Page Screenshot
-    # Intermittent bug causing non-existent section to show
-    # Should be 3 section results
-    Should be 2 collection results
-
-    # Check sub folder displays one result
-    Click section filter  Test Sub-Folder
-    Should be 3 section results
-    Should be 1 collection results
-
-    # Check section filters are indented to the correct level
-    Check section filter named Home has indentation level 0
-    Check section filter named Test Folder has indentation level 1
-    Check section filter named Test Sub-Folder has indentation level 2
-
-    # Check returning to home returns all collection results
-    Click section filter  Home
-    Should be 3 section results
-    Should be 6 collection results
-
+    Click Input "All (3)"
+    Should be 3 collection results
 
 Scenario: Test Batching
 
-    Log in as site owner
-    Go to  ${PLONE_URL}/testcollection
-
-    Click element  link=Manage portlets
-    Element should be visible  css=#plone-contentmenu-portletmanager > ul
-    Click element  partial link=Right
-
+    Manage portlets
     Add filter portlet  Subject  or  checkboxes_dropdowns
     Go to  ${PLONE_URL}/testcollection
-    Should be 6 collection results
+    Should be 3 collection results
 
     Set Batch Size  1
 
     Should be 1 collection results
 
-    Click element  css=li.filter-super.checkbox input
+    Click Input "Süper (2)"
     Should be 1 collection results
     Should be 1 pages
 
-    Click element  xpath=//nav[@class='pagination']//a[1]
+    Click Page "1"
     Should be 1 collection results
     Should be 1 pages
 
     ${loc}=  get location
     should contain  ${loc}  collectionfilter=1
+
+Scenario: Hide when no options
+
+    Manage portlets
+    Add filter portlet  author_name  or  checkboxes_dropdowns
+    Go to  ${PLONE_URL}/testcollection
+
+    Should be 3 collection results
+    Should be 1 filter options
+
+    Manage portlets
+    Set portlet "author_name" "Hide if empty"
+    Go to  ${PLONE_URL}/testcollection
+    # No idea why intermittently we get 1 filter option below instead of 0
+    log source
+    capture page screenshot
+    Should be 0 filter options
+    Should be 3 collection results
+
+
+Scenario: show hidden filter if just narrowed down
+
+    Given Manage portlets
+      and Add filter portlet  Type  single  checkboxes_dropdowns
+      and Set portlet "Type" "Narrow down filter options"
+      and Go to  ${PLONE_URL}/testcollection
+      and Should be 3 filter options
+
+      and Select Filter Option "Event (1)"
+      and Should be 2 filter options
+
+     When Manage portlets
+      and Set portlet "Type" "Hide if empty"
+      and Go to  ${PLONE_URL}/testcollection
+      and Should be 3 filter options
+
+    # But if we filter it down it shouldn't disappear as then we have no way to click "All" to get back
+      and Select Filter Option "Event (1)"
+      Log source
+      capture page screenshot
+     Then Should be 2 filter options
+
+
+Scenario: Displaying multiple collection filters on a single page
+    Given I've got a site with a collection
+      and my collection has a collection filter portlet
+      and my collection has a collection filter portlet  group_by=Type
+    When I'm viewing the collection
+    Then I should have a portlet titled "Subject" with 4 filter options
+      and I should have a portlet titled "Type" with 3 filter options

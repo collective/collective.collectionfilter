@@ -4,7 +4,19 @@ Changelog
 3.3 (unreleased)
 ----------------
 
-- Backport for @petschki: #42 Incorrect count on "all" when "Narrow down filter options" enabled and viewing a filtered result. [pigeonflight, jensens]
+- Added css_modifier to extend css class of a filter item
+  [agitator]
+- Add Location Filter portlet. Allows to filter results based on location in site.
+[instification]
+
+
+3.2.1 (2019-08-07)
+------------------
+
+Bug fixes:
+
+- fix bug introduced with pattern option ``ajaxLoad``
+  [petschki]
 
 
 3.2 (2019-07-23)
@@ -21,6 +33,8 @@ Features:
 
 Bug fixes:
 
+- Fix double display of portlets profile
+  [agitator]
 - Fix bug where filter urls was getting utf encoded then made into unicode again
   [djay]
 - Fix 5.2 where operators should not be used on all index types
@@ -156,9 +170,6 @@ New:
 
 - Make backwards compatible with Plone 5.0
   [nngu6036, instification]
-
-- Add Location Filter portlet. Allows to filter results based on location in site.
-  [instification]
 
 Bug fixes:
 
