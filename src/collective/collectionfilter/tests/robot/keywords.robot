@@ -154,7 +154,7 @@ My collection has a collection filter portlet
 
 I'm viewing the collection
     Go to  ${PLONE_URL}/testcollection
-    Should be 3 collection results
+    Should be 6 collection results
 
 
 # --- Core Functionality ------------------------------------------------------

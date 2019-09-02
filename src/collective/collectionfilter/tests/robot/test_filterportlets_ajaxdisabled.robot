@@ -17,7 +17,7 @@ Scenario: Searching through a portlet with ajax disabled
       and my collection has a collection filter portlet
       and I'm viewing the collection
     When I search for Document and click search
-    Then should be 1 collection results
+    Then should be 4 collection results
       and should be 3 filter options
 
     # the following doesn't work ... I think no 'keyup' event is fired
