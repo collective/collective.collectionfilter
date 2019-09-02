@@ -138,6 +138,21 @@ class BaseFilterView(BaseView):
         )
         return results
 
+    @property
+    def is_available(self):
+        if not self.settings.hide_if_empty:
+            return True
+        if self.settings.narrow_down:
+            groupby_criteria = getUtility(IGroupByCriteria).groupby
+            idx = groupby_criteria[self.settings.group_by]['index']
+            request_params = safe_decode(self.top_request.form)
+            current_idx_value = safe_iterable(request_params.get(idx))
+            if current_idx_value:
+                return True
+
+        results = self.results()
+        return not (results is None or len(results) <= 2)  # 2 becayse we include "All"
+
 
 class BaseSectionView(BaseView):
     @property
@@ -151,6 +166,10 @@ class BaseSectionView(BaseView):
                 return 'dropdown'
         else:
             return 'checkbox'
+
+    @property
+    def is_available(self):
+        return True
 
     def paths(self):
         paths = [{'title': 'Home', 'level': 0}]
@@ -172,22 +191,6 @@ class BaseSectionView(BaseView):
             request_params=self.top_request.form or {}
         )
         return results
-
-    @property
-    def is_available(self):
-        if not self.settings.hide_if_empty:
-            return True
-
-        if self.settings.narrow_down:
-            groupby_criteria = getUtility(IGroupByCriteria).groupby
-            idx = groupby_criteria[self.settings.group_by]['index']
-            request_params = safe_decode(self.top_request.form)
-            current_idx_value = safe_iterable(request_params.get(idx))
-            if current_idx_value:
-                return True
-
-        results = self.results()
-        return not (results is None or len(results) <= 2)  # 2 becayse we include "All"
 
 
 class BaseSearchView(BaseView):
