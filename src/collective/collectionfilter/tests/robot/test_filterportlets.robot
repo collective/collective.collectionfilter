@@ -73,7 +73,7 @@ Scenario: show hidden filter if just narrowed down
       and Add filter portlet  Type  single  checkboxes_dropdowns
       and Set portlet "Type" "Narrow down filter options"
       and Go to  ${PLONE_URL}/testcollection
-      and Should be 4 filter options
+      and Should be 3 filter options
 
       and Select Filter Option "Event (1)"
       and Should be 2 filter options
