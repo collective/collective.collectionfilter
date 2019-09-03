@@ -10,6 +10,7 @@ from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import applyProfile
 from plone.app.textfield.value import RichTextValue
 from plone.testing import z2
+import transaction
 import json
 
 try:
@@ -120,6 +121,8 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
             # doc.geolocation.latitude = 47.4048832
             # doc.geolocation.longitude = 9.7587760701108
             doc.reindexObject()
+
+            transaction.commit()
 
 
 COLLECTIVE_COLLECTIONFILTER_FIXTURE = CollectiveCollectionFilterLayer()
