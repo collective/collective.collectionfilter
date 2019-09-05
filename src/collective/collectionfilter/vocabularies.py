@@ -3,6 +3,7 @@ from collective.collectionfilter import _
 from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.interfaces import IGroupByModifier
 from collective.collectionfilter.utils import safe_encode
+from plone.memoize import ram
 from zope.component import getAdapters
 from zope.component import getUtility
 from zope.interface import implementer
@@ -53,6 +54,20 @@ DEFAULT_FILTER_TYPE = 'single'
 LIST_SCALING = ['No Scaling', 'Linear', 'Logarithmic']
 
 
+# Function for determining the cache key used by GroupByCreteria.
+# There should be a separate cache for each site and the cache should be
+# invalidated by modification to portal_catalog (changes to the indexes rather
+# than changes to cataloged items).
+def _groupby_cache_key(method, self):
+    portal = plone.api.portal.get()
+    cat = plone.api.portal.get_tool('portal_catalog')
+    site_path = '/'.join(portal.getPhysicalPath())
+    cat_changed = cat.undoable_transactions()[:1]
+    cat_changed = len(cat_changed) > 0 and cat_changed[0]['time'] or ''
+    cache_key = site_path + str(cat_changed)
+    return cache_key
+
+
 @implementer(IGroupByCriteria)
 class GroupByCriteria():
     """Global utility for retrieving and manipulating groupby criterias.
@@ -63,17 +78,12 @@ class GroupByCriteria():
 
     """
 
-    _groupby = None
+    _groupby = {}
     groupby_modify = {}
 
     @property
+    @ram.cache(_groupby_cache_key)
     def groupby(self):
-
-        if self._groupby is not None:
-            # The groupby criteria are used at each IBeforeTraverseEvent - so
-            # on each request. This has to be fast, so exit early.
-            return self._groupby
-        self._groupby = {}
 
         cat = plone.api.portal.get_tool('portal_catalog')
         # get catalog metadata schema, but filter out items which cannot be
