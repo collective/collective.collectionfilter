@@ -9,7 +9,7 @@ This can also be used to build tag clouds.
 
 The filter types can be extended (see: ``collective.collectionfilter.vocabularies``).
 
-There are three portlets/tiles available for filtering:
+There are four portlets/tiles available for filtering:
 
 ``Collection Filter``
     a list with values (select, radio, checkbox, link) you can filter on
@@ -19,6 +19,8 @@ There are three portlets/tiles available for filtering:
     a LeafletJS map which shows and filters ``IGeolocatable`` items on it
     (this feature is available if ``collective.geolocationbehavior`` is installed and the behavior
     is activated on a contenttype. See installation notes below)
+``Section Filter``
+    a list of site sections (folders) you can filter on
 
 
 Filter Results with portlets
@@ -35,7 +37,7 @@ source collection template and on the target page which shows the filtered resul
 Mosaic Integration
 ------------------
 
-The three tiles can be added within the Mosaic editor multiple times. Just select them in the ``Insert`` menu
+The tiles can be added within the Mosaic editor multiple times. Just select them in the ``Insert`` menu
 and assign a collection to it. To show the results of the collection simply add a
 ``Existing Content`` tile which links to the same collection your filter tiles are assigned with.
 
@@ -60,8 +62,6 @@ Simply do this somewhere in your buildout::
     eggs +=
         collective.collectionfilter[geolocation]
     ...
-
-Besides the "Collection Filter" portlet/tile there is also a "Collection Search" portlet/tile for doing a fulltext search on the collection results and a "Section Filter" for filtering results based on their location in the site.
 
 
 Overloading GroupByCriteria
