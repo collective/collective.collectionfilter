@@ -7,6 +7,11 @@ Changelog
 - Added css_modifier to extend css class of a filter item
   [agitator]
 
+Bug fixes:
+
+ - Use plone.memoize to cache groupby criteria
+   [instification]
+
 
 3.2.1 (2019-08-07)
 ------------------
