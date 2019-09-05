@@ -60,11 +60,13 @@ LIST_SCALING = ['No Scaling', 'Linear', 'Logarithmic']
 # than changes to cataloged items).
 def _groupby_cache_key(method, self):
     portal = plone.api.portal.get()
-    cat = plone.api.portal.get_tool('portal_catalog')
     site_path = '/'.join(portal.getPhysicalPath())
-    cat_changed = cat.undoable_transactions()[:1]
-    cat_changed = len(cat_changed) > 0 and cat_changed[0]['time'] or ''
-    cache_key = site_path + str(cat_changed)
+    cache_key = site_path
+    # TODO: clear cache if portal_catalog is modified
+    # cat = portal.portal_catalog
+    # cat_changed = cat.undoable_transactions()[:1]
+    # cat_changed = len(cat_changed) > 0 and cat_changed[0]['time'] or ''
+    # cache_key = site_path + str(cat_changed)
     return cache_key
 
 
