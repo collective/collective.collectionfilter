@@ -90,4 +90,13 @@
       import_steps="portlets"
       />
 
+    <genericsetup:upgradeDepends
+      title="Install new Section Filter portlet"
+      source="2"
+      destination="3"
+      profile="collective.collectionfilter.portlets:default"
+      import_profile="collective.collectionfilter.portlets:default"
+      import_steps="portlets"
+      />
+
 </configure>
