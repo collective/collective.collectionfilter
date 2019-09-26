@@ -205,3 +205,52 @@ class TestFilteritems(unittest.TestCase):
             custom_query=make_query(qs(result, u'Evänt'))
         )
         self.assertEqual(len(catalog_results), 0)
+
+    def test_boolean_filter(self):
+        """Validate boolean fields are shown with all values."""
+        self.assertEqual(len(self.collection.results()), 3)
+
+        result = get_filter_items(
+            self.collection_uid, 'exclude_from_nav', cache_enabled=False)
+
+        self.assertEqual(len(result), 3)
+        self.assertEqual(get_data_by_val(result, 'all')['count'], 3)
+        self.assertEqual(get_data_by_val(result, 'all')['selected'], True)
+        self.assertEqual(get_data_by_val(result, True)['count'], 1)
+        self.assertEqual(get_data_by_val(result, False)['count'], 2)
+
+        # test narrowed down results
+        narrowed_down_result = get_filter_items(
+            self.collection_uid, 'exclude_from_nav',
+            request_params={'exclude_from_nav': True},
+            narrow_down=True,
+            show_count=True,
+            cache_enabled=False)
+
+        self.assertEqual(
+            len(narrowed_down_result), 2,
+            msg=u"narrowed result length should be 2")
+        self.assertEqual(
+            get_data_by_val(narrowed_down_result, True)['selected'], True,  # noqa
+            msg=u"Test that 'Yes' is selected, matching the query")
+        self.assertEqual(
+            get_data_by_val(narrowed_down_result, u'all')['count'], 3,
+            msg=u"Test that there are 3 results if unselected")
+
+        # test narrowed down results
+        narrowed_down_result = get_filter_items(
+            self.collection_uid, 'exclude_from_nav',
+            request_params={'exclude_from_nav': False},
+            narrow_down=True,
+            show_count=True,
+            cache_enabled=False)
+
+        self.assertEqual(
+            len(narrowed_down_result), 2,
+            msg=u"narrowed result length should be 2")
+        self.assertEqual(
+            get_data_by_val(narrowed_down_result, False)['selected'], True,  # noqa
+            msg=u"Test that 'No' is selected, matching the query")
+        self.assertEqual(
+            get_data_by_val(narrowed_down_result, u'all')['count'], 3,
+            msg=u"Test that there are 3 results if unselected")
