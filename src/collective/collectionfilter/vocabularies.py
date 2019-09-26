@@ -5,6 +5,8 @@ from collective.collectionfilter.interfaces import IGroupByModifier
 from collective.collectionfilter.utils import safe_encode
 from zope.component import getAdapters
 from zope.component import getUtility
+from zope.globalrequest import getRequest
+from zope.i18n import translate
 from zope.interface import implementer
 from zope.interface import provider
 from zope.schema.interfaces import IVocabularyFactory
@@ -73,6 +75,20 @@ def make_bool(value):
         return False
 
 
+def yes_no(value):
+    """Return i18n message for a value."""
+    if value:
+        return _(u'Yes')
+    else:
+        return _(u'No')
+
+
+def get_yes_no_title(item):
+    """Return a readable representation of a boolean value."""
+    value = yes_no(item)
+    return translate(value, context=getRequest())
+
+
 @implementer(IGroupByCriteria)
 class GroupByCriteria():
     """Global utility for retrieving and manipulating groupby criterias.
@@ -102,6 +118,7 @@ class GroupByCriteria():
 
         for it in metadata:
             index_modifier = None
+            display_modifier = _  # Allow to translate in this package domain per default.  # noqa
             idx = cat._catalog.indexes.get(it)
             if six.PY2 and getattr(idx, 'meta_type', None) == 'KeywordIndex':
                 # in Py2 KeywordIndex accepts only utf-8 encoded values.
@@ -109,11 +126,12 @@ class GroupByCriteria():
 
             if getattr(idx, 'meta_type', None) == 'BooleanIndex':
                 index_modifier = make_bool
+                display_modifier = get_yes_no_title
 
             self._groupby[it] = {
                 'index': it,
                 'metadata': it,
-                'display_modifier': _,  # Allow to translate in this package domain per default.  # noqa
+                'display_modifier': display_modifier,
                 'css_modifier': None,
                 'index_modifier': index_modifier,
                 'value_blacklist': None,
