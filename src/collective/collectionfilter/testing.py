@@ -66,6 +66,7 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
                 start=datetime.now() + timedelta(days=1),
                 end=datetime.now() + timedelta(days=2),
                 subject=[u'Süper', u'Evänt'],
+                exclude_from_nav=False,
             )
             portal.invokeFactory(
                 'Document',
@@ -73,6 +74,7 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
                 title=u'Test Document 😉',
                 text=RichTextValue(u'Ein heißes Test Dokument'),
                 subject=[u'Süper', u'Dokumänt'],
+                exclude_from_nav=False,
             )
             portal.invokeFactory(
                 'Document',
@@ -80,6 +82,7 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
                 title=u'Page 😉',
                 text=RichTextValue(u'Ein heißes Test Dokument'),
                 subject=[u'Dokumänt'],
+                exclude_from_nav=True,
             )
             doc = portal['testdoc']
             # doc.geolocation.latitude = 47.4048832
