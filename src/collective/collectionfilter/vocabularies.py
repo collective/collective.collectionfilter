@@ -53,6 +53,26 @@ DEFAULT_FILTER_TYPE = 'single'
 LIST_SCALING = ['No Scaling', 'Linear', 'Logarithmic']
 
 
+def make_bool(value):
+    """Transform into a boolean value."""
+    truthy = [
+        safe_encode('true'),
+        safe_encode('1'),
+        safe_encode('t'),
+        safe_encode('yes'),
+    ]
+    if value is None:
+        return
+    if isinstance(value, bool):
+        return value
+    value = safe_encode(value)
+    value = value.lower()
+    if value in truthy:
+        return True
+    else:
+        return False
+
+
 @implementer(IGroupByCriteria)
 class GroupByCriteria():
     """Global utility for retrieving and manipulating groupby criterias.
@@ -86,6 +106,9 @@ class GroupByCriteria():
             if six.PY2 and getattr(idx, 'meta_type', None) == 'KeywordIndex':
                 # in Py2 KeywordIndex accepts only utf-8 encoded values.
                 index_modifier = safe_encode
+
+            if getattr(idx, 'meta_type', None) == 'BooleanIndex':
+                index_modifier = make_bool
 
             self._groupby[it] = {
                 'index': it,
