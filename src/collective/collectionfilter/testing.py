@@ -10,6 +10,7 @@ from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import applyProfile
 from plone.app.textfield.value import RichTextValue
 from plone.testing import z2
+from Products.PluginIndexes.BooleanIndex.BooleanIndex import BooleanIndex
 import json
 
 try:
@@ -48,6 +49,13 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
         applyProfile(portal, 'collective.collectionfilter:default')
         applyProfile(portal, 'collective.collectionfilter.tests:testing')
 
+        catalog = api.portal.get_tool(name='portal_catalog')
+        if 'exclude_from_nav' not in catalog.indexes():
+            catalog.addIndex(
+                'exclude_from_nav',
+                BooleanIndex('exclude_from_nav'),
+            )
+
         with api.env.adopt_roles(['Manager']):
             portal.invokeFactory(
                 'Collection',
@@ -66,6 +74,7 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
                 start=datetime.now() + timedelta(days=1),
                 end=datetime.now() + timedelta(days=2),
                 subject=[u'Süper', u'Evänt'],
+                exclude_from_nav=False,
             )
             portal.invokeFactory(
                 'Document',
@@ -73,6 +82,7 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
                 title=u'Test Document 😉',
                 text=RichTextValue(u'Ein heißes Test Dokument'),
                 subject=[u'Süper', u'Dokumänt'],
+                exclude_from_nav=False,
             )
             portal.invokeFactory(
                 'Document',
@@ -80,6 +90,7 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
                 title=u'Page 😉',
                 text=RichTextValue(u'Ein heißes Test Dokument'),
                 subject=[u'Dokumänt'],
+                exclude_from_nav=True,
             )
             doc = portal['testdoc']
             # doc.geolocation.latitude = 47.4048832

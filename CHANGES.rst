@@ -6,6 +6,8 @@ Changelog
 
 - Added css_modifier to extend css class of a filter item
   [agitator]
+- Fix check for boolean values.
+  [tmassman]
 
 
 3.2.1 (2019-08-07)
