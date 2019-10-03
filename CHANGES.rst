@@ -6,9 +6,11 @@ Changelog
 
 - Added css_modifier to extend css class of a filter item
   [agitator]
+- Fix check for boolean values.
+  [tmassman]
 - Add Section Filter portlet. Allows to filter results based on location in site.
   [instification, JeffersonBledsoe]
-
+  
 
 3.2.1 (2019-08-07)
 ------------------

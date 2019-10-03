@@ -41,7 +41,7 @@ def safe_decode(val):
     """
     ret = val
     if isinstance(val, dict):
-        ret = dict([(safe_decode(k), safe_decode(v)) for k, v in val.items() if v])  # noqa
+        ret = dict([(safe_decode(k), safe_decode(v)) for k, v in val.items() if v is not None])  # noqa
     elif isinstance(val, list):
         ret = [safe_decode(it) for it in val]
     elif isinstance(val, tuple):
@@ -56,7 +56,7 @@ def safe_encode(val):
     """
     ret = val
     if isinstance(val, dict):
-        ret = dict([(safe_encode(k), safe_encode(v)) for k, v in val.items() if v])  # noqa
+        ret = dict([(safe_encode(k), safe_encode(v)) for k, v in val.items() if v is not None])  # noqa
     elif isinstance(val, list):
         ret = [safe_encode(it) for it in val]
     elif isinstance(val, tuple):
