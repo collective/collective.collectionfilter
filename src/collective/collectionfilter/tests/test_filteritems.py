@@ -272,16 +272,16 @@ class TestFilteritems(unittest.TestCase):
 
     def test_boolean_filter(self):
         """Validate boolean fields are shown with all values."""
-        self.assertEqual(len(self.collection.results()), 3)
+        self.assertEqual(len(self.collection.results()), 6)
 
         result = get_filter_items(
             self.collection_uid, 'exclude_from_nav', cache_enabled=False)
 
         self.assertEqual(len(result), 3)
-        self.assertEqual(get_data_by_val(result, 'all')['count'], 3)
+        self.assertEqual(get_data_by_val(result, 'all')['count'], 6)
         self.assertEqual(get_data_by_val(result, 'all')['selected'], True)
         self.assertEqual(get_data_by_val(result, True)['count'], 1)
-        self.assertEqual(get_data_by_val(result, False)['count'], 2)
+        self.assertEqual(get_data_by_val(result, False)['count'], 5)
 
         # test narrowed down results
         narrowed_down_result = get_filter_items(
@@ -298,8 +298,8 @@ class TestFilteritems(unittest.TestCase):
             get_data_by_val(narrowed_down_result, True)['selected'], True,  # noqa
             msg=u"Test that 'Yes' is selected, matching the query")
         self.assertEqual(
-            get_data_by_val(narrowed_down_result, u'all')['count'], 3,
-            msg=u"Test that there are 3 results if unselected")
+            get_data_by_val(narrowed_down_result, u'all')['count'], 6,
+            msg=u"Test that there are 6 results if unselected")
 
         # test narrowed down results
         narrowed_down_result = get_filter_items(
@@ -316,5 +316,5 @@ class TestFilteritems(unittest.TestCase):
             get_data_by_val(narrowed_down_result, False)['selected'], True,  # noqa
             msg=u"Test that 'No' is selected, matching the query")
         self.assertEqual(
-            get_data_by_val(narrowed_down_result, u'all')['count'], 3,
-            msg=u"Test that there are 3 results if unselected"
+            get_data_by_val(narrowed_down_result, u'all')['count'], 6,
+            msg=u"Test that there are 6 results if unselected")
