@@ -124,9 +124,9 @@ class GroupByCriteria():
             index_modifier = None
             display_modifier = translate_value  # Allow to translate in this package domain per default.  # noqa
             idx = cat._catalog.indexes.get(it)
-            if six.PY2 and getattr(idx, 'meta_type', '') == 'KeywordIndex':
+            if six.PY2 and getattr(idx, 'meta_type', None) == 'KeywordIndex':
                 # in Py2 KeywordIndex accepts only utf-8 encoded values.
-                index_modifier = lambda val: translate_value(safe_encode(val))  # noqa
+                index_modifier = safe_encode
 
             if getattr(idx, 'meta_type', None) == 'BooleanIndex':
                 index_modifier = make_bool
