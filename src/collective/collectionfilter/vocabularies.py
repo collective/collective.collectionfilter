@@ -55,6 +55,10 @@ DEFAULT_FILTER_TYPE = 'single'
 LIST_SCALING = ['No Scaling', 'Linear', 'Logarithmic']
 
 
+def translate_value(value):
+    return translate(_(value), context=getRequest())
+
+
 def make_bool(value):
     """Transform into a boolean value."""
     truthy = [
@@ -118,11 +122,11 @@ class GroupByCriteria():
 
         for it in metadata:
             index_modifier = None
-            display_modifier = _  # Allow to translate in this package domain per default.  # noqa
+            display_modifier = translate_value  # Allow to translate in this package domain per default.  # noqa
             idx = cat._catalog.indexes.get(it)
-            if six.PY2 and getattr(idx, 'meta_type', None) == 'KeywordIndex':
+            if six.PY2 and getattr(idx, 'meta_type', '') == 'KeywordIndex':
                 # in Py2 KeywordIndex accepts only utf-8 encoded values.
-                index_modifier = safe_encode
+                index_modifier = lambda val: translate_value(safe_encode(val))  # noqa
 
             if getattr(idx, 'meta_type', None) == 'BooleanIndex':
                 index_modifier = make_bool
