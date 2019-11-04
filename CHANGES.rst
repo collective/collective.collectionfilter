@@ -4,6 +4,8 @@ Changelog
 3.3 (unreleased)
 ----------------
 
+- Add support for bootstrap-select plugin
+  [agitator]
 - Added css_modifier to extend css class of a filter item
   [agitator]
 - Fix check for boolean values.
