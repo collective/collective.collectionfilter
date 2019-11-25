@@ -80,6 +80,8 @@ Add search portlet
     Wait until element is visible  css=input#form-widgets-header
 
     Input text  css=input#form-widgets-header  Searchable Text
+    Input text  css=input#form-widgets-search_button_title  Click to search
+    Input text  css=input#form-widgets-search_input_placeholder  Enter some keyword
     #Select related filter collection
     Click element  css=.plone-modal-footer input#form-buttons-add
     Wait until page contains element  xpath=//div[@class='portletAssignments']//a[text()='Searchable Text']
