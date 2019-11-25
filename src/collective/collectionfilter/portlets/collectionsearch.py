@@ -7,6 +7,7 @@ from collective.collectionfilter.portlets import BasePortletRenderer
 from plone.app.portlets.portlets import base
 from plone.portlets.interfaces import IPortletDataProvider
 from zope.interface import implementer
+from collective.collectionfilter import _
 
 
 class ICollectionSearchPortlet(ICollectionSearchSchema, IPortletDataProvider):
@@ -21,9 +22,8 @@ class Assignment(base.Assignment):
     target_collection = None
     view_name = None
     content_selector = '#content-core'
-    search_button_title = 'Search'
-    search_input_placeholder = 'Search keyword'
-
+    button_text = _(u"Search")
+    placeholder = _(u"Search keyword")
 
     def __init__(
         self,
@@ -31,15 +31,15 @@ class Assignment(base.Assignment):
         target_collection=None,
         view_name=None,
         content_selector='#content-core',
-        search_button_title = 'Search',
-        search_input_placeholder = 'Search keyword'
+        button_text=_(u"Search"),
+        placeholder=_(u"Search")
     ):
         self.header = header
         self.target_collection = target_collection
         self.view_name = view_name
         self.content_selector = content_selector
-        self.search_button_title =  search_button_title
-        self.search_input_placeholder = search_input_placeholder
+        self.button_text = button_text
+        self.placeholder = placeholder
 
     @property
     def title(self):
