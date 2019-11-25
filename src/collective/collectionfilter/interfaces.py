@@ -176,6 +176,25 @@ class ICollectionFilterSchema(ICollectionFilterBaseSchema):
 class ICollectionSearchSchema(ICollectionFilterBaseSchema):
     """Schema for the search filter.
     """
+    search_button_title = schema.TextLine(
+        title=_('label_search_button', default=u'Search button title'),
+        description=_(
+            'help_header',
+            u'Title of the search button.'
+        ),
+        required=False,
+        default=u'Search'
+    )
+
+    search_input_placeholder = schema.TextLine(
+        title=_('label_search_input', default=u'Search input placeholder'),
+        description=_(
+            'help_header',
+            u'Placeholder of the search input.'
+        ),
+        required=False,
+        default=u'Search keyword'
+    )
 
 
 class IGroupByCriteria(Interface):
