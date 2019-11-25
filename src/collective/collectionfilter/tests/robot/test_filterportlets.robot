@@ -99,3 +99,11 @@ Scenario: Displaying multiple collection filters on a single page
     When I'm viewing the collection
     Then I should have a portlet titled "Subject" with 4 filter options
       and I should have a portlet titled "Type" with 3 filter options
+
+Scenario: Arial label of search input is set
+
+    Manage portlets
+    Add search portlet
+
+    Go to  ${PLONE_URL}/testcollection
+    Wait Until Element Is Visible  //input[@name='SearchableText' and @aria-label='Search']
