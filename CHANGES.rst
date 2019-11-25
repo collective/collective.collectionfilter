@@ -12,7 +12,8 @@ Changelog
   [tmassman]
 - fix translation of ``filter_value``
   [petschki]
-
+- add aria-label to search input
+  [nngu6036]
 
 3.2.1 (2019-08-07)
 ------------------
