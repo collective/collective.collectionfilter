@@ -7,7 +7,6 @@ from collective.collectionfilter.portlets import BasePortletRenderer
 from plone.app.portlets.portlets import base
 from plone.portlets.interfaces import IPortletDataProvider
 from zope.interface import implementer
-from collective.collectionfilter import _
 
 
 class ICollectionSearchPortlet(ICollectionSearchSchema, IPortletDataProvider):
