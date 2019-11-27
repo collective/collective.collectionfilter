@@ -1,6 +1,7 @@
 Integration tests
 =================
 
+    >>> import transaction
     >>> browser = get_browser(layer)
     >>> portal = layer['portal']
     >>> memberName = 'siteManager'
@@ -11,6 +12,7 @@ Integration tests
     ...         '',
     ...         {'fullname': 'Site Manager', 'email': memberName+'@dummy.fr',}
     ...         )
+    >>> transaction.commit()
 
 Log in with Site Manager access rights:
 
