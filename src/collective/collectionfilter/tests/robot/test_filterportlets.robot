@@ -17,7 +17,6 @@ Scenario: Add filter portlets to collection
 
     Manage portlets
     Add search portlet
-    Pause
     Add filter portlet  Subject  or  checkboxes_dropdowns
 
     Go to  ${PLONE_URL}/testcollection
