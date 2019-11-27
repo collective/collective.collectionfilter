@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 from collective.collectionfilter.testing import COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING
-from plone import api
 from plone.testing import layered
 from plone.testing.z2 import Browser
 
 import doctest
 import re
 import six
-import transaction
 import unittest
 
 optionflags = (
