@@ -50,6 +50,10 @@ class BaseView(object):
         return True
 
     @property
+    def is_available(self):
+        return True
+
+    @property
     def filter_id(self):
         raise NotImplementedError
 
@@ -221,11 +225,6 @@ class BaseSearchView(BaseView):
             '?' + query_param if query_param else None
         ] if it])
         return ajax_url
-
-    @property
-    def is_available(self):
-        return True
-
 
 if HAS_GEOLOCATION:
 
