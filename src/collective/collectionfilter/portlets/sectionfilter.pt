@@ -4,9 +4,8 @@
        i18n:domain="plone">
 
   <tal:if condition="view/settings/target_collection">
-      <nav class="portletContent" tal:define="results view/results">
-
-          <header class="portletHeader" tal:condition="view/title" tal:content="view/title">Title</header>
+    <header class="portletHeader" tal:condition="view/title" tal:content="view/title">Title</header>
+    <nav class="portletContent" tal:define="results view/results">
           <ul class="navTree navTreeLevel0">
               <tal:items repeat="item results">
                <li  class="navTreeItem">
@@ -25,6 +24,6 @@
                </li>
               </tal:items>
           </ul>
-      </nav>
+    </nav>
   </tal:if>
 </aside>
