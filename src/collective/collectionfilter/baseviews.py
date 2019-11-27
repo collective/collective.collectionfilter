@@ -8,7 +8,6 @@ from collective.collectionfilter import PLONE_VERSION
 from collective.collectionfilter.filteritems import get_filter_items
 from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.query import make_query
-from collective.collectionfilter.filteritems import get_section_filter_items
 from collective.collectionfilter.utils import base_query
 from collective.collectionfilter.utils import safe_iterable
 from collective.collectionfilter.utils import safe_decode
@@ -170,27 +169,6 @@ class BaseSectionView(BaseView):
     @property
     def is_available(self):
         return True
-
-    def paths(self):
-        paths = [{'title': 'Home', 'level': 0}]
-        params = self.top_request.form or {}
-        path = params.get('path', None)
-        if path is None:
-            return paths
-        level = 0
-        for path in path.split('/'):
-            level += 1
-            paths.append({'title': path, 'level': level})
-        return paths
-
-    def results(self):
-        results = get_section_filter_items(
-            target_collection=self.settings.target_collection,
-            view_name=self.settings.view_name,
-            cache_enabled=self.settings.cache_enabled,
-            request_params=self.top_request.form or {}
-        )
-        return results
 
 
 class BaseSearchView(BaseView):
