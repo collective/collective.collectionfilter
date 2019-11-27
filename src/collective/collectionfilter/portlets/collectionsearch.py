@@ -22,7 +22,7 @@ class Assignment(base.Assignment):
     view_name = None
     content_selector = '#content-core'
     button_text = _(u"Search")
-    placeholder = _(u"Search")
+    placeholder = _(u"Search keyword")
 
     def __init__(
         self,
