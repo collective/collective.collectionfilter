@@ -157,7 +157,12 @@ My collection has a collection filter portlet
 I'm viewing the collection
     Go to  ${PLONE_URL}/testcollection
     Should be 3 collection results
+    
+I should see the search portlet placeholder displays the text "${placeholder_text}"
+    Wait Until Element Is Visible  xpath=//input[@name='SearchableText' and @placeholder='${placeholder_text}']
 
+I should see the search portlet search button displays the text "${button_text}"
+    Wait Until Element Is Visible  xpath=//button[@type='submit' and text()='${button_text}']
 
 # --- Core Functionality ------------------------------------------------------
 I search for ${document} with ajax

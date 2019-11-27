@@ -99,11 +99,3 @@ Scenario: Displaying multiple collection filters on a single page
     When I'm viewing the collection
     Then I should have a portlet titled "Subject" with 4 filter options
       and I should have a portlet titled "Type" with 3 filter options
-
-Scenario: Customize search porlet text
-
-    Manage portlets
-    Add search portlet
-    Go to  ${PLONE_URL}/testcollection
-    Wait Until Element Is Visible  xpath=//button[@type='submit' and text()='Click to search']
-    Wait Until Element Is Visible  xpath=//input[@name='SearchableText' and @placeholder='Enter some keyword']
