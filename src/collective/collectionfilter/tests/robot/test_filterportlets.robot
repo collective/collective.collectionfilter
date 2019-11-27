@@ -97,3 +97,9 @@ Scenario: Displaying multiple collection filters on a single page
     When I'm viewing the collection
     Then I should have a portlet titled "Subject" with 4 filter options
       and I should have a portlet titled "portal_type" with 3 filter options
+
+Scenario: Add a section filter to a collection
+  Given I've got a site with a collection
+      and my collection has a collection section portlet
+  When I'm viewing the collection
+  Then I should have a portlet titled "My Section Filter" with 3 filter options

@@ -100,6 +100,17 @@ Add filter portlet
     Click element  css=.plone-modal-footer input#form-buttons-add
     Wait until page contains element  xpath=//div[contains(@class, 'portletAssignments')]//a[text()='${group_criteria}']
 
+Add section portlet titled "${filter_title}"
+    Wait until page contains element  css=select.add-portlet
+    Select From List by label  css=select.add-portlet  Collection Section Filter
+    Wait until element is visible  css=input#form-widgets-header
+
+    Input text  css=input#form-widgets-header  ${filter_title}
+    #Select related filter collection
+    Click Input "Show count"
+    Click element  css=.plone-modal-footer input#form-buttons-add
+    Wait until page contains element  xpath=//div[contains(@class, 'portletAssignments')]//a[text()='${filter_title}']
+
 
 Should be ${X} filter options
     Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//div[contains(@class, 'filterContent')]//*[contains(@class, 'filterItem')]  limit=${X}
@@ -152,6 +163,11 @@ My collection has a collection filter portlet
     Click element  partial link=Right
     Add filter portlet  ${group_by}  or  checkboxes_dropdowns
 
+My collection has a collection section portlet
+    Go to  ${PLONE_URL}/testcollection
+    Manage Portlets
+    Add section portlet titled "My Section Filter"
+
 I'm viewing the collection
     Go to  ${PLONE_URL}/testcollection
     Should be 6 collection results
@@ -170,10 +186,10 @@ I search for ${document} and click search
 
 I should have a portlet titled "${filter_title}" with ${number_of_results} filter options
     ${portlet_title_xpath}  Convert to string  header[@class='portletHeader' and contains(text(), '${filter_title}')]
-    ${filter_item_xpath}  Convert to string  div[contains(@class, 'filterContent')]//li[contains(@class, 'filterItem')]
+    ${filter_item_xpath}  Convert to string  *[contains(@class, 'portletContent')]//li[contains(@class, 'filterItem')]
 
     Page Should Contain Element  xpath=//${portlet_title_xpath}
-    Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//${portlet_title_xpath}/parent::*[contains(@class, 'collectionFilter')]//${filter_item_xpath}  limit=${number_of_results}
+    Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//${portlet_title_xpath}/parent::*[contains(@class, 'portlet')]//${filter_item_xpath}  limit=${number_of_results}
 
 
 # --- Tiles -------------------------------------------------------------------
