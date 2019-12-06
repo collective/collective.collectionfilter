@@ -24,12 +24,46 @@ from zope.globalrequest import getRequest
 from zope.i18n import translate
 
 import plone.api
+import sys
 
 try:
     from plone.app.event.browser.event_listing import EventListing
 except ImportError:
     class EventListing(object):
         pass
+
+
+MULTISPACE = u'\u3000'
+if sys.version_info[0] == 2:
+    MULTISPACE = u'\u3000'.encode('utf-8')
+BAD_CHARS = ('?', '-', '+', '*', MULTISPACE)
+
+
+def quote_unsafe_chars(s):
+    # We need to quote parentheses when searching text indices
+    if '(' in s:
+        s = s.replace('(', '"("')
+    if ')' in s:
+        s = s.replace(')', '")"')
+    if MULTISPACE in s:
+        s = s.replace(MULTISPACE, ' ')
+    return s
+
+
+def quote_keywords(term):
+    # The terms and, or and not must be wrapped in quotes to avoid
+    # being parsed as logical query atoms.
+    if term.lower() in ('and', 'or', 'not'):
+        term = '"%s"' % term
+    return term
+
+
+def sanitise_search_query(query):
+        for char in BAD_CHARS:
+            query = query.replace(char, ' ')
+        clean_query = map(quote_keywords, query.split())
+        clean_query = quote_unsafe_chars(clean_query)
+        return clean_query
 
 
 def _results_cachekey(
@@ -109,6 +143,10 @@ def get_filter_items(
     # Get all collection results with additional filter defined by urlquery
     custom_query.update(urlquery)
     custom_query = make_query(custom_query)
+
+    if custom_query.get("SearchableText"):
+        custom_query["SearchableText"] = sanitise_search_query(custom_query["SearchableText"])
+
     catalog_results = ICollection(collection).results(
         batch=False,
         brains=True,
