@@ -6,11 +6,10 @@ from collective.collectionfilter.vocabularies import GEOLOC_IDX
 from collective.collectionfilter.vocabularies import TEXT_IDX
 from logging import getLogger
 from zope.component import getUtility
-import sys
 
 
 logger = getLogger('collective.collectionfilter')
-MULTISPACE = u'\u3000'.encode('utf-8') if sys.version_info[0] == 2 else u'\u3000'
+MULTISPACE = u'\u3000'
 BAD_CHARS = ('?', '-', '+', '*', MULTISPACE)
 
 
@@ -34,11 +33,12 @@ def quote_keywords(term):
 
 
 def sanitise_search_query(query):
-        for char in BAD_CHARS:
-            query = query.replace(char, ' ')
-        clean_query = map(quote_keywords, query.split())
-        clean_query = quote_unsafe_chars(clean_query)
-        return " ".join(clean_query)
+    for char in BAD_CHARS:
+        query = query.replace(char, u" ")
+    clean_query = map(quote_keywords, query.split())
+    clean_query = quote_unsafe_chars(clean_query)
+    return u" ".join(clean_query)
+
 
 def make_query(params_dict):
     """Make a query from a dictionary of parameters, like a request form.
@@ -80,8 +80,8 @@ def make_query(params_dict):
                     params_dict[idx])
 
     if TEXT_IDX in params_dict and params_dict.get(TEXT_IDX):
-        clean_searchable_text = sanitise_search_query(params_dict.get(TEXT_IDX))
-        safe_searchable_text = safe_decode(clean_searchable_text)
-        query_dict[TEXT_IDX] = safe_searchable_text
+        safe_text = safe_decode(params_dict.get(TEXT_IDX))
+        clean_searchable_text = sanitise_search_query(safe_text)
+        query_dict[TEXT_IDX] = clean_searchable_text
 
     return query_dict
