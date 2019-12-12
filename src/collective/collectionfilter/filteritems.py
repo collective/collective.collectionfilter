@@ -111,9 +111,6 @@ def get_filter_items(
     custom_query.update(urlquery)
     custom_query = make_query(custom_query)
 
-    if custom_query.get("SearchableText"):
-        custom_query["SearchableText"] = sanitise_search_query(custom_query["SearchableText"])
-
     catalog_results = ICollection(collection).results(
         batch=False,
         brains=True,
