@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import json
-import sys
 
 from plone import api
 from plone.memoize import instance
@@ -33,37 +32,6 @@ try:
     HAS_GEOLOCATION = True
 except ImportError:
     HAS_GEOLOCATION = False
-
-
-MULTISPACE = u'\u3000'.encode('utf-8') if sys.version_info[0] == 2 else u'\u3000'
-BAD_CHARS = ('?', '-', '+', '*', MULTISPACE)
-
-
-def quote_unsafe_chars(s):
-    # We need to quote parentheses when searching text indices
-    if '(' in s:
-        s = s.replace('(', '"("')
-    if ')' in s:
-        s = s.replace(')', '")"')
-    if MULTISPACE in s:
-        s = s.replace(MULTISPACE, ' ')
-    return s
-
-
-def quote_keywords(term):
-    # The terms and, or and not must be wrapped in quotes to avoid
-    # being parsed as logical query atoms.
-    if term.lower() in ('and', 'or', 'not'):
-        term = '"%s"' % term
-    return term
-
-
-def sanitise_search_query(query):
-        for char in BAD_CHARS:
-            query = query.replace(char, ' ')
-        clean_query = map(quote_keywords, query.split())
-        clean_query = quote_unsafe_chars(clean_query)
-        return clean_query
 
 
 class BaseView(object):
@@ -204,9 +172,6 @@ class BaseSearchView(BaseView):
     def urlquery(self):
         urlquery = {}
         urlquery.update(self.top_request.form)
-
-        if urlquery.get("SearchableText"):
-            urlquery["SearchableText"] = sanitise_search_query(urlquery["SearchableText"])
 
         for it in (
             TEXT_IDX,
