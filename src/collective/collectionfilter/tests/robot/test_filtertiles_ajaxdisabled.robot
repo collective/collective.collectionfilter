@@ -47,5 +47,5 @@ Scenario: Add filter tiles to page for collection
       and Capture Page Screenshot
 
     Given Go to  ${TEST_PAGE}
-    When I search for ${EMPTY} and click search
+    When I search for "${EMPTY}" and click search
     Then should be 3 collection results

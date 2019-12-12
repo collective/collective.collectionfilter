@@ -200,6 +200,7 @@ class BaseSearchView(BaseView):
         ] if it])
         return ajax_url
 
+
 if HAS_GEOLOCATION:
 
     class BaseMapsView(BaseView):
