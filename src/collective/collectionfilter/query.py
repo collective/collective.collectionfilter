@@ -35,7 +35,7 @@ def quote_keywords(term):
 def sanitise_search_query(query):
     for char in BAD_CHARS:
         query = query.replace(char, u" ")
-    clean_query = map(quote_keywords, query.split())
+    clean_query = [quote_keywords(token) for token in query.split()]
     clean_query = quote_unsafe_chars(clean_query)
     return u" ".join(clean_query)
 
