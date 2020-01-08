@@ -12,7 +12,7 @@ Changelog
   [tmassman]
 - fix translation of ``filter_value``
   [petschki]
-- customize search button text and search input placeholder
+- allow user to customize search button text and search input placeholder
   [nngu6036]
 
 3.2.1 (2019-08-07)
