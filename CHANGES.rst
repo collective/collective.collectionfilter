@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.3 (unreleased)
+3.3 (2020-01-22)
 ----------------
 
 - Fix is_available property
