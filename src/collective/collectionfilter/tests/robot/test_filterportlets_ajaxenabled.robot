@@ -22,8 +22,8 @@ Scenario: Searching through a portlet with ajax enabled
 
     # Searching for query keywords (https://github.com/collective/collective.collectionfilter/issues/85)
     When I search for "and Document" with ajax
-      and I should not see any results
-      and I should have a portlet titled "Subject" with 0 filter options
+    Then should be 1 collection results
+      and I should have a portlet titled "Subject" with 3 filter options
     When I search for "or Document" with ajax
     Then I should not see any results
       and I should have a portlet titled "Subject" with 0 filter options
