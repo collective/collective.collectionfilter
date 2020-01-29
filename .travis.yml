@@ -51,7 +51,7 @@ script:
   - python --version 2> /dev/stdout | grep 3.6 || bin/code-analysis
   - bin/test --all $TEST_OPTIONS
   - grep  --include=output.xml -Rl  FAIL parts/test | xargs --no-run-if-empty -n 1 popt
-  - bin/createcoverage -t '--all $TEST_OPTIONS'
+  - travis_wait 15 bin/createcoverage -t '--all $TEST_OPTIONS'
   - grep  --include=output.xml -Rl  FAIL parts/test | xargs --no-run-if-empty -n 1 popt
 after_success:
   - pip install -q coveralls
