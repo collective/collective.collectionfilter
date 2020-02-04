@@ -105,6 +105,7 @@ Should be ${X} filter options
     Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//div[contains(@class, 'filterContent')]//*[contains(@class, 'filterItem')]  limit=${X}
 
 Should be ${X} collection results
+    Wait until element is visible  css=#content-core
     Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//article[@class='entry']  limit=${X}
 
 Should be ${X} pages
