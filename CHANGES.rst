@@ -4,7 +4,8 @@ Changelog
 3.4 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- New sorting tile/portlet
+  [petschki]
 
 
 3.3 (2020-01-22)

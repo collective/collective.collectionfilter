@@ -100,6 +100,19 @@ Add filter portlet
     Click element  css=.plone-modal-footer input#form-buttons-add
     Wait until page contains element  xpath=//div[contains(@class, 'portletAssignments')]//a[text()='${group_criteria}']
 
+Add sorting portlet
+    [Arguments]   ${sort_on}  ${input_type}
+
+    Wait until page contains element  css=select.add-portlet
+    Select From List by label  css=select.add-portlet  Collection Result Sorting
+    Wait until element is visible  css=input#form-widgets-header
+
+    Input text  css=input#form-widgets-header  Sort on
+    Select from List by value  css=select#form-widgets-sort_on  ${sort_on}
+    Select from List by value  css=select#form-widgets-input_type  ${input_type}
+    Click element  css=.plone-modal-footer input#form-buttons-add
+    Wait until page contains element  xpath=//div[contains(@class, 'portletAssignments')]//a[text()='Sort on']
+
 
 Should be ${X} filter options
     Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//div[contains(@class, 'filterContent')]//*[contains(@class, 'filterItem')]  limit=${X}
