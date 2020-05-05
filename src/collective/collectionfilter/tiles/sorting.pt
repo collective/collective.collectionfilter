@@ -55,8 +55,10 @@
           <li tal:attributes="class python:'selected' if item['active'] else None">
             <a rel="nofollow"
                href="${view/ajax_url}&sort_on=${item/value}&sort_order=${item/new_order}">
-              <span tal:attributes="class python:'%s%s' % ('glyphicon glyphicon-sort-by-attributes' if item['curr_order'] else '', '-alt' if item['curr_order'] == 'descending' else '')"></span>
-              <span tal:content="item/title">Item</span>
+              <span>
+                <span tal:replace="item/title">Item</span>
+                <span tal:attributes="class python:'%s%s' % ('glyphicon glyphicon-sort-by-attributes' if item['curr_order'] else '', '-alt' if item['curr_order'] == 'descending' else '')"></span>
+              </span>
             </a>
           </li>
           </tal:items>
