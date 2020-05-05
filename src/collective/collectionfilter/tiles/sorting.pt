@@ -11,9 +11,17 @@
        data-pat-collectionfilter='${view/pat_options}'
        tal:condition="view/available">
 
+  <a
+      tal:define="edit_url view/edit_url"
+      tal:condition="edit_url"
+      title="edit filter"
+      i18n:attributes="title title-edit-filter"
+      href="${edit_url}"
+      class="pat-plone-modal edit-link"><span class="fa fa-pencil"/><label i18n:translate="label-edit-filter">edit</label></a>
+
   <tal:if condition="view/settings/target_collection">
   <header class="portletHeader" tal:condition="view/title" tal:content="view/title">Title</header>
-  <div class="portletContent filterContent"
+  <div class="filterContent"
        tal:define="results view/results;
                    input_type view/settings/input_type">
 
@@ -23,10 +31,18 @@
           <tal:items repeat="item results">
             <option
                 value="${item/value}"
-                data-url="${view/ajax_url}&sort_on=${item/value}&sort_order=${item/new_order}"
-                tal:attributes="selected python:'selected' if item['active'] else None">
+                data-url="${view/ajax_url}&sort_on=${item/value}&sort_order=ascending"
+                tal:attributes="selected python:'selected' if item['active'] and item['curr_order'] == 'ascending' else None">
               <span class="filterLabel">
-                <span tal:replace="item/title">Item</span>
+                <span tal:replace="item/title">Item</span> <tal:block i18n:translate>(ascending)</tal:block>
+              </span>
+            </option>
+            <option
+                value="${item/value}"
+                data-url="${view/ajax_url}&sort_on=${item/value}&sort_order=descending"
+                tal:attributes="selected python:'selected' if item['active'] and item['curr_order'] == 'descending' else None">
+              <span class="filterLabel">
+                <span tal:replace="item/title">Item</span> <tal:block i18n:translate="">(descending)</tal:block>
               </span>
             </option>
           </tal:items>
@@ -36,14 +52,11 @@
         <tal:if condition="python:input_type == 'links'">
         <ul>
           <tal:items repeat="item results">
-          <li>
-            <a
-                rel="nofollow"
-                href="${view/ajax_url}&sort_on=${item/value}&sort_order=${item/new_order}"
-                tal:attributes="class python:'%s%s' %(item['curr_order'], ' active' if item['active'] else '')">
-              <span>
-                <span tal:replace="item/title">Item</span>
-              </span>
+          <li tal:attributes="class python:'selected' if item['active'] else None">
+            <a rel="nofollow"
+               href="${view/ajax_url}&sort_on=${item/value}&sort_order=${item/new_order}">
+              <span tal:attributes="class python:'%s%s' % ('glyphicon glyphicon-sort-by-attributes' if item['curr_order'] else '', '-alt' if item['curr_order'] == 'descending' else '')"></span>
+              <span tal:content="item/title">Item</span>
             </a>
           </li>
           </tal:items>
