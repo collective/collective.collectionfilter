@@ -52,4 +52,8 @@ def make_query(params_dict):
     if TEXT_IDX in params_dict and params_dict.get(TEXT_IDX):
         query_dict[TEXT_IDX] = safe_decode(params_dict.get(TEXT_IDX))
 
+    if 'sort_on' in params_dict:
+        query_dict['sort_on'] = params_dict['sort_on']
+        query_dict['sort_order'] = params_dict.get('sort_order', 'ascending')
+
     return query_dict

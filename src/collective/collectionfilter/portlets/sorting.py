@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from collective.collectionfilter import _
-from collective.collectionfilter.baseviews import BaseFilterView
+from collective.collectionfilter.baseviews import BaseSortOnView
 from collective.collectionfilter.interfaces import ICollectionFilterResultListSort  # noqa
 from collective.collectionfilter.portlets import BasePortletRenderer
 from plone.app.portlets.portlets import base
@@ -54,7 +54,7 @@ class Assignment(base.Assignment):
             return _(u'Collection Result Sorting')
 
 
-class Renderer(BasePortletRenderer, BaseFilterView):
+class Renderer(BasePortletRenderer, BaseSortOnView):
     render = ViewPageTemplateFile('sorting.pt')
 
 

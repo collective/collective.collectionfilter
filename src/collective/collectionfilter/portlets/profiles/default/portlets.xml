@@ -10,4 +10,9 @@
       title="Collection Search"
       description="This portlet allows fulltext search in collection results."
       />
+  <portlet
+      addview="collective.collectionfilter.portlets.CollectionSortOn"
+      title="Collection Filter Result Sorting"
+      description="This portlet allows sorting of the filtered result listing."
+      />
 </portlets>

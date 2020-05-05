@@ -182,14 +182,17 @@ class ICollectionFilterResultListSort(ICollectionFilterBaseSchema):
     """Schema for the result list sorting.
     """
 
-    sort_on = schema.Choice(
+    sort_on = schema.Tuple(
         title=_('label_sort_on', u'Enabled sort indexes'),
         description=_(
             'help_sort_on',
             u'Select the indexes which can be sorted on.'
         ),
+        value_type=schema.Choice(
+            title=u'Index',
+            vocabulary='collective.collectionfilter.SortOnIndexes',
+        ),
         required=True,
-        vocabulary='collective.collectionfilter.SortOnIndexes',
     )
 
     input_type = schema.Choice(
