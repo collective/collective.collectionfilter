@@ -155,6 +155,10 @@ class GroupByCriteria():
                 index_modifier = make_bool
                 display_modifier = get_yes_no_title
 
+            # for portal_type or Type we have some special sauce as we need to translate via fti.i18n_domain.  # noqa
+            if getattr(idx, 'meta_type', None) == 'FieldIndex' and it in ['portal_type', 'Type']:  # noqa
+                display_modifier = translate_portal_type
+                
             self._groupby[it] = {
                 'index': it,
                 'metadata': it,
