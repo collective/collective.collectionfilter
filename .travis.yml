@@ -38,8 +38,8 @@ before_install:
   - cp test-$PLONE_VERSION.cfg buildout.cfg
   - pip2.7 install popt || pip2.7 install --user  popt
 install:
-  - buildout -N annotate
-  - buildout -N
+  # - buildout -N annotate
+  - buildout -N -vvvvv
   - pip install zest.pocompile
   - pocompile src
 before_script:
