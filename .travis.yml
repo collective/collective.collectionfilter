@@ -39,7 +39,7 @@ before_install:
   - pip2.7 install popt || pip2.7 install --user  popt
 install:
   # - buildout -N annotate
-  - buildout -N -vvvvv
+  - buildout -N
   - pip install zest.pocompile
   - pocompile src
 before_script:
