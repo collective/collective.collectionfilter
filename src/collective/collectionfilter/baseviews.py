@@ -204,8 +204,11 @@ class BaseSearchView(BaseView):
 class BaseSortOnView(BaseView):
 
     def results(self):
-        curr_val = self.top_request.get('sort_on')
-        curr_order = self.top_request.get('sort_order')
+        collection = self.collection.getObject()
+        curr_val = self.top_request.get('sort_on', collection.sort_on)
+        curr_order = self.top_request.get(
+            'sort_order',
+            'descending' if collection.sort_reversed else 'ascending')
         new_order = 'ascending'
         if curr_order is not None and curr_order == 'ascending':
             new_order = 'descending'

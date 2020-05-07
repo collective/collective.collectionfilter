@@ -4,7 +4,7 @@ Changelog
 3.4 (unreleased)
 ----------------
 
-- New sorting tile/portlet
+- Add sorting tile/portlet to populate selected sort indexes to enduser
   [petschki]
 
 

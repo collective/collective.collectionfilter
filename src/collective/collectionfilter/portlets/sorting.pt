@@ -1,4 +1,4 @@
-<aside class="portlet ${view/filterClassName} collectionFilter pat-collectionfilter"
+<aside class="portlet ${view/filterClassName} collectionSortOn pat-collectionfilter"
        tal:define="input_type view/settings/input_type"
        data-pat-collectionfilter='${view/pat_options}'
        tal:condition="view/available"
@@ -35,9 +35,10 @@
         <tal:if condition="python:input_type == 'links'">
         <ul>
           <tal:items repeat="item results">
-          <li tal:attributes="class python:'selected' if item['active'] else None">
+          <li tal:attributes="class python:'sortItem%s' % (' selected' if item['active'] else '')">
             <a rel="nofollow"
-               href="${view/ajax_url}&sort_on=${item/value}&sort_order=${item/new_order}">
+               href="${view/ajax_url}&sort_on=${item/value}&sort_order=${item/new_order}"
+               class="${item/value}">
               <span>
                 <span tal:replace="item/title">Item</span>
                 <span tal:attributes="class python:'%s%s' % ('glyphicon glyphicon-sort-by-attributes' if item['curr_order'] else '', '-alt' if item['curr_order'] == 'descending' else '')"></span>
