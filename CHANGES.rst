@@ -6,6 +6,8 @@ Changelog
 
 - Add sorting tile/portlet to populate selected sort indexes to enduser
   [petschki]
+- Added translation display_modifier for portal_type and Type.
+  [iham]
 
 
 3.3 (2020-01-22)
