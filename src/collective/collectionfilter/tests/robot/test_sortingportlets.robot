@@ -14,5 +14,6 @@ Test Teardown  Close all browsers
 Scenario: Sorting with result sorting portlet
     Given I've got a site with a collection
       and my collection has a collection sorting portlet
+      and I'm viewing the collection
 
     I sort by "sortable_title"

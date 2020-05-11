@@ -7,7 +7,7 @@ Resource  Selenium2Screenshots/keywords.robot
 
 *** Variables ***
 
-${BROWSER}  firefox
+${BROWSER}  chrome
 
 
 *** Keywords *****************************************************************
@@ -108,7 +108,8 @@ Add sorting portlet
     Wait until element is visible  css=input#form-widgets-header
 
     Input text  css=input#form-widgets-header  Sort on
-    Select from List by value  css=select#form-widgets-sort_on  ${sort_on}
+    Select from List by value  css=select#form-widgets-sort_on-from  ${sort_on}
+    Click element  css=#form-widgets-sort_on button[name='from2toButton']
     Select from List by value  css=select#form-widgets-input_type  ${input_type}
     Click element  css=.plone-modal-footer input#form-buttons-add
     Wait until page contains element  xpath=//div[contains(@class, 'portletAssignments')]//a[text()='Sort on']
