@@ -1,5 +1,7 @@
 language: python
 sudo: false
+addons:
+  chrome: stable
 matrix:
   include:
     - python: "2.7"
