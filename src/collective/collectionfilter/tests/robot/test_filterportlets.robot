@@ -18,7 +18,7 @@ Scenario: Add filter portlets to collection
     Manage portlets
     Add search portlet
     Add filter portlet  Subject  or  checkboxes_dropdowns
-    Add sorting portlet  sortable_title  link
+    Add sorting portlet  sortable_title  links
     Go to  ${PLONE_URL}/testcollection
     Should be 3 collection results
 
