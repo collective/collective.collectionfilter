@@ -26,7 +26,7 @@ before_install:
   - echo "download-cache = $HOME/buildout-cache/downloads" >> $HOME/.buildout/default.cfg
   - echo "eggs-directory = $HOME/buildout-cache/eggs" >> $HOME/.buildout/default.cfg
   - pip install webdrivermanager;
-    webdrivermanage chrome --linkpath /usr/local/bin
+    webdrivermanager chrome --linkpath /usr/local/bin
   - pip install zc.buildout
   - cp test-$PLONE_VERSION.cfg buildout.cfg
   - pip2.7 install popt || pip2.7 install --user  popt
