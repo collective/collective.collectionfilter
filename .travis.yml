@@ -21,9 +21,9 @@ cache:
   - downloads
 before_install:
   - mkdir webdriver;
+    export PATH=$(pwd)/webdriver:$PATH;
     pip install webdrivermanager;
-    webdrivermanager chrome --linkpath $(pwd)/webdriver;
-    export PATH=$PATH:$(pwd)/webdriver
+    webdrivermanager chrome --linkpath $(pwd)/webdriver
   - mkdir -p $HOME/buildout-cache/{eggs,downloads}
   - mkdir $HOME/.buildout
   - echo "[buildout]" > $HOME/.buildout/default.cfg
