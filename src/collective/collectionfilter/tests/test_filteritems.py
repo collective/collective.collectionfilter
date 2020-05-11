@@ -3,7 +3,7 @@
 import unittest
 try:
     from urllib.parse import urlparse, parse_qs
-except:
+except ImportError:
     from urlparse import urlparse, parse_qs
 
 from plone.app.contenttypes.interfaces import ICollection
