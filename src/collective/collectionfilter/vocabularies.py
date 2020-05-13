@@ -99,13 +99,14 @@ def get_yes_no_title(item):
 def translate_portal_type(value):
     """Translate the type based on its i18n domain the fti provides."""
     types_tool = plone.api.portal.get_tool('portal_types')
+    fti = {}
     # Type and portal_type is not the same ...
     if value not in types_tool.listContentTypes():
         # we need to find the fti based on the title, not the id
         titles = types_tool.listTypeTitles()
-        for id, title in titles.items():
+        for tid, title in titles.items():
             if value == title:
-                fti = types_tool.get(id, None)
+                fti = types_tool.get(tid, None)
     else:
         fti = types_tool.get(value, None)
     if len(fti):
