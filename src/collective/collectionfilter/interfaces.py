@@ -178,6 +178,35 @@ class ICollectionSearchSchema(ICollectionFilterBaseSchema):
     """
 
 
+class ICollectionFilterResultListSort(ICollectionFilterBaseSchema):
+    """Schema for the result list sorting.
+    """
+
+    sort_on = schema.Tuple(
+        title=_('label_sort_on', u'Enabled sort indexes'),
+        description=_(
+            'help_sort_on',
+            u'Select the indexes which can be sorted on.'
+        ),
+        value_type=schema.Choice(
+            title=u'Index',
+            vocabulary='collective.collectionfilter.SortOnIndexes',
+        ),
+        required=True,
+    )
+
+    input_type = schema.Choice(
+        title=_('label_input_type', u'Input Type'),
+        description=_(
+            'help_input_type',
+            u'Select how the UI of the collection filter should be rendered. '
+            u'Wether as links, as checkboxes and radiobuttons or checkboxes and dropdowns.'  # noqa
+        ),
+        required=True,
+        vocabulary='collective.collectionfilter.InputType',
+    )
+
+
 class IGroupByCriteria(Interface):
     """Interface for the GroupByCriteria utility.
 

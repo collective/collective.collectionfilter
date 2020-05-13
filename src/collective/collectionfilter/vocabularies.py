@@ -3,7 +3,10 @@ from collective.collectionfilter import _
 from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.interfaces import IGroupByModifier
 from collective.collectionfilter.utils import safe_encode
+from plone.app.querystring.interfaces import IQuerystringRegistryReader
+from plone.registry.interfaces import IRegistry
 from zope.component import getAdapters
+from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.globalrequest import getRequest
 from zope.i18n import translate
@@ -186,4 +189,15 @@ def InputTypeVocabulary(context):
 @provider(IVocabularyFactory)
 def ListScalingVocabulary(context):
     items = [SimpleTerm(title=_(it), value=it) for it in LIST_SCALING]
+    return SimpleVocabulary(items)
+
+
+@provider(IVocabularyFactory)
+def SortOnIndexesVocabulary(context):
+    # we reuse p.a.querystring registry reader for sortable_indexes
+    registry = getUtility(IRegistry)
+    reader = getMultiAdapter(
+        (registry, getRequest()), IQuerystringRegistryReader)
+    sortable_indexes = reader().get('sortable_indexes')
+    items = [SimpleTerm(title=_(v['title']), value=k) for k, v in sortable_indexes.items()]  # noqa
     return SimpleVocabulary(items)

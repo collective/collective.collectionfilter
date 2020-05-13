@@ -4,7 +4,8 @@ Changelog
 3.4 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Add sorting tile/portlet to populate selected sort indexes to enduser
+  [petschki]
 
 
 3.3 (2020-01-22)
