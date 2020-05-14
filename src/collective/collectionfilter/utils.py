@@ -95,7 +95,6 @@ def base_query(request_params={}, extra_ignores=[]):
         'b_start',
         'b_size',
         'batch',
-        'sort_on',
         'limit',
         'portlethash',
     ] + extra_ignores

@@ -22,13 +22,10 @@ cache:
   - eggs
   - downloads
 before_install:
-# install chrome webdriver
   - mkdir webdriver;
-    wget https://github.com/mozilla/geckodriver/releases/download/v0.20.0/geckodriver-v0.20.0-linux64.tar.gz;
-    tar -xzf geckodriver-v0.20.0-linux64.tar.gz -C webdriver;
-    wget https://chromedriver.storage.googleapis.com/2.40/chromedriver_linux64.zip;
-    unzip chromedriver_linux64.zip -d webdriver;
-    export PATH=$PATH:$(pwd)/webdriver;
+    export PATH=$(pwd)/webdriver:$PATH;
+    pip install webdrivermanager;
+    webdrivermanager chrome --linkpath $(pwd)/webdriver
   - mkdir -p $HOME/buildout-cache/{eggs,downloads}
   - mkdir $HOME/.buildout
   - echo "[buildout]" > $HOME/.buildout/default.cfg

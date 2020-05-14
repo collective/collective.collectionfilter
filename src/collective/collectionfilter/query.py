@@ -74,4 +74,8 @@ def make_query(params_dict):
         clean_searchable_text = sanitise_search_query(safe_text)
         query_dict[TEXT_IDX] = clean_searchable_text
 
+    if 'sort_on' in params_dict:
+        query_dict['sort_on'] = params_dict['sort_on']
+        query_dict['sort_order'] = params_dict.get('sort_order', 'ascending')
+
     return query_dict
