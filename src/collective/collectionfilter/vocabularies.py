@@ -96,6 +96,27 @@ def get_yes_no_title(item):
     return translate(value, context=getRequest())
 
 
+def translate_portal_type(value):
+    """Translate the type based on its i18n domain the fti provides."""
+    types_tool = plone.api.portal.get_tool('portal_types')
+    fti = {}
+    # Type and portal_type is not the same ...
+    if value not in types_tool.listContentTypes():
+        # we need to find the fti based on the title, not the id
+        titles = types_tool.listTypeTitles()
+        for tid, title in titles.items():
+            if value == title:
+                fti = types_tool.get(tid, None)
+    else:
+        fti = types_tool.get(value, None)
+    if len(fti):
+        domain = fti.get('i18n_domain', 'plone')
+        lang = plone.api.portal.get_current_language()
+        return plone.api.portal.translate(value, domain=domain, lang=lang)
+    else:
+        return translate(value, context=getRequest())
+
+
 @implementer(IGroupByCriteria)
 class GroupByCriteria():
     """Global utility for retrieving and manipulating groupby criterias.
@@ -134,6 +155,10 @@ class GroupByCriteria():
             if getattr(idx, 'meta_type', None) == 'BooleanIndex':
                 index_modifier = make_bool
                 display_modifier = get_yes_no_title
+
+            # for portal_type or Type we have some special sauce as we need to translate via fti.i18n_domain.  # noqa
+            if getattr(idx, 'meta_type', None) == 'FieldIndex' and it in ['portal_type', 'Type']:  # noqa
+                display_modifier = translate_portal_type
 
             self._groupby[it] = {
                 'index': it,
