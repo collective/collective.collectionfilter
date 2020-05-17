@@ -7,7 +7,7 @@
     i18n:domain="collective.collectionfilter">
 <body>
 
-<aside class="collectionFilter ${view/filterClassName} pat-collectionfilter"
+<aside class="collectionFilter ${view/filterClassName} group-${view/data/group_by} pat-collectionfilter"
        tal:define="input_type view/input_type"
        data-pat-collectionfilter='${view/pat_options}'
        tal:condition="view/available">
