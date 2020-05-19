@@ -4,12 +4,16 @@ Changelog
 3.4.3 (unreleased)
 ------------------
 
-- Use collection from context as default. `target_collection` is now used to select an alternative collection as result source. 
+- Use collection from context as default. `target_collection` is now used to select an alternative collection as result source.
   This allows to copy and paste preconfigured collections for reuse without reconfiguring each filter element.
   [agitator]
 
 - Fix search which include the terms "and", "or" and "not"
   [jeffersonbledsoe]
+
+- Update ``plone.app.mosaic`` integration documentation with the
+  new ``Contentlisting tile`` feature (this needs ``plone.app.standardtiles`` >= 2.3.3)
+  [petschki]
 
 
 3.4.2 (2021-02-25)
