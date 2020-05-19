@@ -125,6 +125,32 @@ class TestFilteritems(unittest.TestCase):
             get_data_by_val(result, u'Event')['selected'], True,
             msg=u"Test that Event portal_type is selected matching the query")
 
+        # test operators option on FieldIndex
+        result = get_filter_items(
+            self.collection_uid, 'portal_type',
+            request_params={
+                'portal_type': ['Event', 'Document'],
+                'portal_type_op': 'or',
+            },
+            filter_type="or",
+            cache_enabled=False)
+
+        self.assertEqual(len(result), 3)
+        self.assertEqual(get_data_by_val(result, u'Event')['selected'], True)
+        self.assertEqual(get_data_by_val(result, u'Document')['selected'], True)  # noqa
+
+        # and operator is ignored (same result as above)
+        result = get_filter_items(
+            self.collection_uid, 'portal_type',
+            request_params={
+                'portal_type': ['Event', 'Document'],
+                'portal_type_op': 'and',
+            },
+            filter_type="and",
+            cache_enabled=False)
+
+        self.assertEqual(len(result), 3)
+
     def test_and_filter_type(self):
         self.assertEqual(len(self.collection.results()), 3)
 
