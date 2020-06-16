@@ -19,6 +19,8 @@ There are three portlets/tiles available for filtering:
     a LeafletJS map which shows and filters ``IGeolocatable`` items on it
     (this feature is available if ``collective.geolocationbehavior`` is installed and the behavior
     is activated on a contenttype. See installation notes below)
+``Collection Result Listing Sort``
+    a list of indexes where the user can sort the filtered result listing
 
 
 Filter Results with portlets
