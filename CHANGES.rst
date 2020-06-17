@@ -4,7 +4,8 @@ Changelog
 3.4.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fixed translation display_modifier for portal_type and Type.
+  [iham]
 
 
 3.4 (2020-06-16)
