@@ -4,7 +4,7 @@ Changelog
 3.4.1 (unreleased)
 ------------------
 
-- Fixed translation display_modifier for portal_type and Type.
+- Separated translation display_modifier for portal_type and Type.
   [iham]
 
 
