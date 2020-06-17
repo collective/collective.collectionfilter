@@ -10,6 +10,7 @@ from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.globalrequest import getRequest
 from zope.i18n import translate
+from zope.i18nmessageid.message import Message
 from zope.interface import implementer
 from zope.interface import provider
 from zope.schema.interfaces import IVocabularyFactory
@@ -100,6 +101,9 @@ def translate_portal_type(value):
     """Translate the type based on its i18n domain the fti provides."""
     types_tool = plone.api.portal.get_tool('portal_types')
     fti = {}
+    if type(value) == Message:
+        # we need a unicode string, not a Message Object to make it work
+        value = unicode(value)
     # Type and portal_type is not the same ...
     if value not in types_tool.listContentTypes():
         # we need to find the fti based on the title, not the id
@@ -109,12 +113,10 @@ def translate_portal_type(value):
                 fti = types_tool.get(tid, None)
     else:
         fti = types_tool.get(value, None)
-    if len(fti):
-        domain = fti.get('i18n_domain', 'plone')
-        lang = plone.api.portal.get_current_language()
-        return plone.api.portal.translate(value, domain=domain, lang=lang)
-    else:
-        return translate(value, context=getRequest())
+
+    # lets grab the domain, or fall back to plones default domain
+    domain = getattr(fti, 'i18n_domain', 'plone')
+    return translate(value, domain=domain, context=getRequest())
 
 
 @implementer(IGroupByCriteria)
