@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.4.1 (unreleased)
+3.4.1 (2020-06-18)
 ------------------
 
 - Separated translation display_modifier for portal_type and Type.
