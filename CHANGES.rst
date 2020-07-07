@@ -1,13 +1,33 @@
 Changelog
 =========
 
-3.4 (unreleased)
+3.4.2 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
+3.4.1 (2020-06-18)
+------------------
+
+- Separated translation display_modifier for portal_type and Type.
+  [iham]
+
+
+3.4 (2020-06-16)
 ----------------
+
+Features:
 
 - Add sorting tile/portlet to populate selected sort indexes to enduser
   [petschki]
 - Added translation display_modifier for portal_type and Type.
   [iham]
+
+Bug fixes:
+
+- fix ``filter_type`` for indexes without ``operator`` capability. Fixes #74
+  [petschki]
 
 
 3.3 (2020-01-22)

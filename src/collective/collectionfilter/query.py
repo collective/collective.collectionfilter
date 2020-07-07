@@ -5,6 +5,7 @@ from collective.collectionfilter.vocabularies import EMPTY_MARKER
 from collective.collectionfilter.vocabularies import GEOLOC_IDX
 from collective.collectionfilter.vocabularies import TEXT_IDX
 from logging import getLogger
+from plone import api
 from zope.component import getUtility
 from Products.CMFPlone.browser.search import BAD_CHARS, quote_chars
 try:
@@ -35,17 +36,22 @@ def make_query(params_dict):
     """
     query_dict = {}
     groupby_criteria = getUtility(IGroupByCriteria).groupby
+    cat = api.portal.get_tool('portal_catalog')
+
     for val in groupby_criteria.values():
         idx = val['index']
         if idx in params_dict:
             crit = params_dict.get(idx) or EMPTY_MARKER
+            cat_idx = cat._catalog.indexes.get(idx)
 
             idx_mod = val.get('index_modifier', None)
             crit = idx_mod(crit) if idx_mod else safe_decode(crit)
 
             # filter operator
             op = params_dict.get(idx + '_op', None)
-            if op is None:
+            idx_has_operator = 'operator' in getattr(cat_idx, 'query_options', ['query', ])  # noqa: E501
+
+            if op is None or not idx_has_operator:
                 # add filter query
                 query_dict[idx] = {'query': crit}
             else:

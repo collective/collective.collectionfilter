@@ -4,6 +4,7 @@ from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.interfaces import IGroupByModifier
 from collective.collectionfilter.utils import safe_encode
 from plone.app.querystring.interfaces import IQuerystringRegistryReader
+from plone.app.vocabularies.types import ReallyUserFriendlyTypesVocabularyFactory  # noqa: E501
 from plone.registry.interfaces import IRegistry
 from zope.component import getAdapters
 from zope.component import getMultiAdapter
@@ -62,6 +63,10 @@ def translate_value(value):
     return translate(_(value), context=getRequest())
 
 
+def translate_messagefactory(value):
+    return translate(value, context=getRequest())
+
+
 def make_bool(value):
     """Transform into a boolean value."""
     truthy = [
@@ -93,28 +98,13 @@ def yes_no(value):
 def get_yes_no_title(item):
     """Return a readable representation of a boolean value."""
     value = yes_no(item)
-    return translate(value, context=getRequest())
+    return translate_messagefactory(value)
 
 
 def translate_portal_type(value):
-    """Translate the type based on its i18n domain the fti provides."""
-    types_tool = plone.api.portal.get_tool('portal_types')
-    fti = {}
-    # Type and portal_type is not the same ...
-    if value not in types_tool.listContentTypes():
-        # we need to find the fti based on the title, not the id
-        titles = types_tool.listTypeTitles()
-        for tid, title in titles.items():
-            if value == title:
-                fti = types_tool.get(tid, None)
-    else:
-        fti = types_tool.get(value, None)
-    if len(fti):
-        domain = fti.get('i18n_domain', 'plone')
-        lang = plone.api.portal.get_current_language()
-        return plone.api.portal.translate(value, domain=domain, lang=lang)
-    else:
-        return translate(value, context=getRequest())
+    vocabulary = ReallyUserFriendlyTypesVocabularyFactory(None)
+    term = vocabulary.getTermByToken(value)
+    return term.title if term else value
 
 
 @implementer(IGroupByCriteria)
@@ -157,8 +147,10 @@ class GroupByCriteria():
                 display_modifier = get_yes_no_title
 
             # for portal_type or Type we have some special sauce as we need to translate via fti.i18n_domain.  # noqa
-            if getattr(idx, 'meta_type', None) == 'FieldIndex' and it in ['portal_type', 'Type']:  # noqa
+            if it == 'portal_type':
                 display_modifier = translate_portal_type
+            elif it == 'Type':
+                display_modifier = translate_messagefactory
 
             self._groupby[it] = {
                 'index': it,

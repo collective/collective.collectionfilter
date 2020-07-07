@@ -61,7 +61,7 @@ class Renderer(BasePortletRenderer, BaseSortOnView):
 class AddForm(base.AddForm):
 
     schema = ICollectionFilterSortOnPortlet
-    label = _(u"Add Collection Filter Sorting Portlet")
+    label = _(u"Add Collection Result Listing Sort Portlet")
     description = _(
         u"This portlet shows sorting options for the result listing."
     )
@@ -73,7 +73,7 @@ class AddForm(base.AddForm):
 class EditForm(base.EditForm):
 
     schema = ICollectionFilterSortOnPortlet
-    label = _(u"Edit Collection Filter Sorting Portlet")
+    label = _(u"Edit Collection Result Listing Sort Portlet")
     description = _(
         u"This portlet shows sorting options for the result listing."
     )
