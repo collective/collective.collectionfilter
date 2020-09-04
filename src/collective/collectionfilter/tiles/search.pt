@@ -29,6 +29,7 @@
         </tal:urlquery>
         <input name="SearchableText" type="text"
             placeholder="Search"
+            aria-label="Search"
             data-url="${view/ajax_url}"
             value="${view/value}"
             i18n:attributes="placeholder text_search"/>
