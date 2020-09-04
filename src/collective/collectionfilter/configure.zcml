@@ -38,6 +38,10 @@
       component=".vocabularies.InputTypeVocabulary"
       name="collective.collectionfilter.InputType"
       />
+  <utility
+      component=".vocabularies.SortOnIndexesVocabulary"
+      name="collective.collectionfilter.SortOnIndexes"
+      />
 
   <subscriber
       for="Products.CMFPlone.interfaces.IPloneSiteRoot

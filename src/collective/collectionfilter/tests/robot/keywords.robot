@@ -100,6 +100,20 @@ Add filter portlet
     Click element  css=.plone-modal-footer input#form-buttons-add
     Wait until page contains element  xpath=//div[contains(@class, 'portletAssignments')]//a[text()='${group_criteria}']
 
+Add sorting portlet
+    [Arguments]   ${sort_on}  ${input_type}
+
+    Wait until page contains element  css=select.add-portlet
+    Select From List by label  css=select.add-portlet  Collection Filter Result Sorting
+    Wait until element is visible  css=input#form-widgets-header
+
+    Input text  css=input#form-widgets-header  Sort on
+    Select from List by value  css=select#form-widgets-sort_on-from  ${sort_on}
+    Click element  css=#form-widgets-sort_on button[name='from2toButton']
+    Select from List by value  css=select#form-widgets-input_type  ${input_type}
+    Click element  css=.plone-modal-footer input#form-buttons-add
+    Wait until page contains element  xpath=//div[contains(@class, 'portletAssignments')]//a[text()='Sort on']
+
 
 Should be ${X} filter options
     Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//div[contains(@class, 'filterContent')]//*[contains(@class, 'filterItem')]  limit=${X}
@@ -152,6 +166,15 @@ My collection has a collection filter portlet
     Click element  partial link=Right
     Add filter portlet  ${group_by}  or  checkboxes_dropdowns
 
+My collection has a collection sorting portlet
+    [Arguments]  ${sort_on}=sortable_title
+
+    Go to  ${PLONE_URL}/testcollection
+    Click element  link=Manage portlets
+    Element should be visible  css=#plone-contentmenu-portletmanager > ul
+    Click element  partial link=Right
+    Add sorting portlet  ${sort_on}  links
+
 I'm viewing the collection
     Go to  ${PLONE_URL}/testcollection
     Should be 3 collection results
@@ -175,6 +198,14 @@ I should have a portlet titled "${filter_title}" with ${number_of_results} filte
     Page Should Contain Element  xpath=//${portlet_title_xpath}
     Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//${portlet_title_xpath}/parent::*[contains(@class, 'collectionFilter')]//${filter_item_xpath}  limit=${number_of_results}
 
+I sort by "${sort_on}"
+    Wait until element is visible  css=.collectionSortOn
+
+    Click Element  css=.collectionSortOn .sortItem .${sort_on}
+    Wait until keyword succeeds  5s  1s  Page Should Contain Element  css=.collectionSortOn .sortItem.selected .${sort_on} span.glyphicon-sort-by-attributes
+
+    Click Element  css=.collectionSortOn .sortItem .${sort_on}
+    Wait until keyword succeeds  5s  1s  Page Should Contain Element  css=.collectionSortOn .sortItem.selected .${sort_on} span.glyphicon-sort-by-attributes-alt
 
 # --- Tiles -------------------------------------------------------------------
 Enable mosaic layout for page

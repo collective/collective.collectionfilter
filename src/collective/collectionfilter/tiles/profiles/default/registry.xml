@@ -4,6 +4,7 @@
     <value purge="false">
       <element>collective.collectionfilter.tiles.filter</element>
       <element>collective.collectionfilter.tiles.search</element>
+      <element>collective.collectionfilter.tiles.sortOn</element>
     </value>
   </record>
 
@@ -25,6 +26,20 @@
            interface="plone.app.mosaic.interfaces.ITile">
     <value key="name">collective.collectionfilter.tiles.search</value>
     <value key="label">Collection Search</value>
+    <value key="category">advanced</value>
+    <value key="tile_type">app</value>
+    <value key="default_value"></value>
+    <value key="read_only">false</value>
+    <value key="settings">true</value>
+    <value key="favorite">false</value>
+    <value key="rich_text">false</value>
+    <value key="weight">10</value>
+  </records>
+
+  <records prefix="plone.app.mosaic.app_tiles.collective_collectionfilter_tiles_sort_on"
+           interface="plone.app.mosaic.interfaces.ITile">
+    <value key="name">collective.collectionfilter.tiles.sortOn</value>
+    <value key="label">Collection Result Listing Sort</value>
     <value key="category">advanced</value>
     <value key="tile_type">app</value>
     <value key="default_value"></value>

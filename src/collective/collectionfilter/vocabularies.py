@@ -3,7 +3,11 @@ from collective.collectionfilter import _
 from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.interfaces import IGroupByModifier
 from collective.collectionfilter.utils import safe_encode
+from plone.app.querystring.interfaces import IQuerystringRegistryReader
+from plone.app.vocabularies.types import ReallyUserFriendlyTypesVocabularyFactory  # noqa: E501
+from plone.registry.interfaces import IRegistry
 from zope.component import getAdapters
+from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.globalrequest import getRequest
 from zope.i18n import translate
@@ -59,6 +63,10 @@ def translate_value(value):
     return translate(_(value), context=getRequest())
 
 
+def translate_messagefactory(value):
+    return translate(value, context=getRequest())
+
+
 def make_bool(value):
     """Transform into a boolean value."""
     truthy = [
@@ -90,7 +98,13 @@ def yes_no(value):
 def get_yes_no_title(item):
     """Return a readable representation of a boolean value."""
     value = yes_no(item)
-    return translate(value, context=getRequest())
+    return translate_messagefactory(value)
+
+
+def translate_portal_type(value):
+    vocabulary = ReallyUserFriendlyTypesVocabularyFactory(None)
+    term = vocabulary.getTermByToken(value)
+    return term.title if term else value
 
 
 @implementer(IGroupByCriteria)
@@ -131,6 +145,12 @@ class GroupByCriteria():
             if getattr(idx, 'meta_type', None) == 'BooleanIndex':
                 index_modifier = make_bool
                 display_modifier = get_yes_no_title
+
+            # for portal_type or Type we have some special sauce as we need to translate via fti.i18n_domain.  # noqa
+            if it == 'portal_type':
+                display_modifier = translate_portal_type
+            elif it == 'Type':
+                display_modifier = translate_messagefactory
 
             self._groupby[it] = {
                 'index': it,
@@ -186,4 +206,15 @@ def InputTypeVocabulary(context):
 @provider(IVocabularyFactory)
 def ListScalingVocabulary(context):
     items = [SimpleTerm(title=_(it), value=it) for it in LIST_SCALING]
+    return SimpleVocabulary(items)
+
+
+@provider(IVocabularyFactory)
+def SortOnIndexesVocabulary(context):
+    # we reuse p.a.querystring registry reader for sortable_indexes
+    registry = getUtility(IRegistry)
+    reader = getMultiAdapter(
+        (registry, getRequest()), IQuerystringRegistryReader)
+    sortable_indexes = reader().get('sortable_indexes')
+    items = [SimpleTerm(title=_(v['title']), value=k) for k, v in sortable_indexes.items()]  # noqa
     return SimpleVocabulary(items)
