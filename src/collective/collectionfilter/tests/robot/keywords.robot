@@ -66,6 +66,7 @@ Input text with placeholder
 
 Manage Portlets
     Click element  link=Manage portlets
+    Wait until element is visible  css=#plone-contentmenu-portletmanager > ul  5s
     Element should be visible  css=#plone-contentmenu-portletmanager > ul
     Click element  partial link=Right
 
