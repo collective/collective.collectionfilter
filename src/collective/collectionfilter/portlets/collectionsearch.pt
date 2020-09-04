@@ -6,7 +6,7 @@
   <tal:if condition="view/settings/target_collection">
   <header class="portletHeader" tal:condition="view/title" tal:content="view/title">Title</header>
   <div class="searchContent">
-    <form method="get" name="searchForm" role="form" action="${view/action_url}">
+    <form method="get" name="searchForm" role="search" action="${view/action_url}">
         <input type="hidden" name="collectionfilter" value="1"/>
         <tal:urlquery repeat="item python:view.urlquery.items()">
           <input type="hidden" tal:attributes="name python:item[0]; value python:item[1]"/>
