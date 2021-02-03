@@ -69,8 +69,10 @@ Input text with placeholder
 
 Manage Portlets
     Click element  link=Manage portlets
-    Element should be visible  css=#plone-contentmenu-portletmanager > ul
-    Click element  partial link=Right
+    # Sometimes the click opens the backup page instead of the popup menu
+    ${present}=  Run Keyword And Return Status    Element Should Be Visible   partial link=Right
+    Run Keyword If    ${present}    Click element  partial link=Right
+    
 
 Select related filter collection
     Click element  css=div.pattern-relateditems-container input.select2-input
@@ -155,27 +157,21 @@ I've got a site with a collection
 
 My collection has a collection search portlet
     Go to  ${PLONE_URL}/testcollection
-    Click element  link=Manage portlets
-    Wait until element is visible  css=#plone-contentmenu-portletmanager > ul   timeout=5 sec
-    Click element  partial link=Right
+    Manage portlets
     Add search portlet
 
 My collection has a collection filter portlet
     [Arguments]  ${group_by}=Subject
 
     Go to  ${PLONE_URL}/testcollection
-    Click element  link=Manage portlets
-    Wait until element is visible  css=#plone-contentmenu-portletmanager > ul   timeout=5 sec
-    Click element  partial link=Right
+    Manage portlets
     Add filter portlet  ${group_by}  or  checkboxes_dropdowns
 
 My collection has a collection sorting portlet
     [Arguments]  ${sort_on}=sortable_title
 
     Go to  ${PLONE_URL}/testcollection
-    Click element  link=Manage portlets
-    Wait until element is visible  css=#plone-contentmenu-portletmanager > ul   timeout=5 sec
-    Click element  partial link=Right
+    Manage portlets
     Add sorting portlet  ${sort_on}  links
 
 I'm viewing the collection
