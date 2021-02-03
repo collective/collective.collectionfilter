@@ -12,6 +12,9 @@ ${BROWSER}  chrome
 
 *** Keywords *****************************************************************
 
+Default Teardown
+    Run Keyword If Test Failed        Capture Page Screenshot
+    Close all browsers
 
 # --- Given ------------------------------------------------------------------
 
@@ -213,7 +216,6 @@ Enable mosaic layout for page
 
     # Setup Mosaic display and open editor
     Click element  link=Display
-    Element should be visible  css=#plone-contentmenu-portletmanager > ul
     Element should be visible  css=#plone-contentmenu-display-layout_view
     Click element  link=Mosaic layout
     Go to  ${page}/edit

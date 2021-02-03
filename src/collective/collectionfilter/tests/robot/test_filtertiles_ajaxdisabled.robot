@@ -6,7 +6,7 @@ Resource  keywords.robot
 # Library  Remote  ${PLONE_URL}/RobotRemote
 
 Test Setup  Open test browser
-Test Teardown  Close all browsers
+Test Teardown  Default Teardown
 
 *** Variables ***
 
@@ -23,7 +23,6 @@ Scenario: Add filter tiles to page for collection
 
     # Setup full mosaic display and open editor
     Enable mosaic layout for page  ${TEST_PAGE}
-    Capture Page Screenshot
 
     # Add tiles to page
     Go to  ${TEST_PAGE}/edit
@@ -31,20 +30,17 @@ Scenario: Add filter tiles to page for collection
     Add search tile  ${COLLECTION_NAME}
     Save mosaic page
     Go to  ${TEST_PAGE}
-    Capture Page screenshot
 
     # Check collection filter filters collections
     # Broken when running with AJAX enabled
     Go to  ${TEST_PAGE}
     Filter by  Dokumänt
     Should be 2 collection results
-    Capture Page Screenshot
     
     # Check collection search filters collections
     Given go to  ${TEST_PAGE}
     When I search for Document and click search
     Then should be 1 collection results
-      and Capture Page Screenshot
 
     Given Go to  ${TEST_PAGE}
     When I search for ${EMPTY} and click search
