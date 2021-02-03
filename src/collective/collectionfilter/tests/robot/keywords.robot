@@ -156,7 +156,7 @@ I've got a site with a collection
 My collection has a collection search portlet
     Go to  ${PLONE_URL}/testcollection
     Click element  link=Manage portlets
-    Element should be visible  css=#plone-contentmenu-portletmanager > ul
+    Wait until element is visible  css=#plone-contentmenu-portletmanager > ul   timeout=5 sec
     Click element  partial link=Right
     Add search portlet
 
@@ -165,7 +165,7 @@ My collection has a collection filter portlet
 
     Go to  ${PLONE_URL}/testcollection
     Click element  link=Manage portlets
-    Element should be visible  css=#plone-contentmenu-portletmanager > ul
+    Wait until element is visible  css=#plone-contentmenu-portletmanager > ul   timeout=5 sec
     Click element  partial link=Right
     Add filter portlet  ${group_by}  or  checkboxes_dropdowns
 
@@ -174,7 +174,7 @@ My collection has a collection sorting portlet
 
     Go to  ${PLONE_URL}/testcollection
     Click element  link=Manage portlets
-    Element should be visible  css=#plone-contentmenu-portletmanager > ul
+    Wait until element is visible  css=#plone-contentmenu-portletmanager > ul   timeout=5 sec
     Click element  partial link=Right
     Add sorting portlet  ${sort_on}  links
 
@@ -234,9 +234,9 @@ Enable mosaic layout for page
     Save mosaic page
 
 Save mosaic page
-    Wait Until Element Is Visible  css=.mosaic-button-save
+    Wait Until Element Is Visible  css=.mosaic-button-save   timeout=5 sec
     Click button  css=.mosaic-button-save
-    Wait until page contains  Changes saved
+    Wait until page contains  Changes saved   timeout=10 sec
 
 Add filter tile
     [Arguments]   ${collection_name}  ${filter_type}  ${input_type}
