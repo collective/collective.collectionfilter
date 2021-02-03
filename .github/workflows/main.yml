@@ -76,18 +76,23 @@ jobs:
             sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
             sleep 3
             bin/test --all 
-      # - name: Robottest report
-      #   run: |
-      #       pip2.7 install popt || pip2.7 install --user  popt
-      #       grep  --include=output.xml -Rl  FAIL parts/test | xargs --no-run-if-empty -n 1 popt
+      - name: code-analysis
+        run: echo "${{ matrix.plone-version }}" | grep 5.1 || bin/code-analysis  
       - name: Artifact Robot Test Report
         if: failure()
         uses: actions/upload-artifact@v1
         with:
           name: test_results
           path: ./parts/test
-      - name: code-analysis
-        run: echo "${{ matrix.plone-version }}" | grep 5.1 || bin/code-analysis  
+      - uses: actions/setup-python@v2
+        if: failure()
+        with:
+          python-version: 2.7            
+      - name: Robottest report
+        if: failure()
+        run: |
+            pip2.7 install popt || pip2.7 install --user  popt
+            grep  --include=output.xml -Rl  FAIL parts/test | xargs --no-run-if-empty -n 1 popt
       - name: createcoverage
         run: |
             bin/createcoverage -t '--all'
