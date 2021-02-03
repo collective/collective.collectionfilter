@@ -212,7 +212,7 @@ Enable mosaic layout for page
 
     # Setup Mosaic display and open editor
     Click element  link=Display
-    Element should be visible  css=#plone-contentmenu-display-layout_view
+    Wait Until Element Is visible  css=#plone-contentmenu-display-layout_view
     Click element  link=Mosaic layout
     Go to  ${page}/edit
 
@@ -224,7 +224,7 @@ Enable mosaic layout for page
     # Enable layout editing
     Wait Until Element Is Visible  css=.mosaic-toolbar
     Click element  css=.mosaic-button-layout
-    Element should be visible  css=.mosaic-button-customizelayout
+    Wait Until Element Is visible  css=.mosaic-button-customizelayout
     Click element  css=.mosaic-button-customizelayout
 
     Save mosaic page
