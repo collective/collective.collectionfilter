@@ -38,7 +38,6 @@ jobs:
           # sudo apt-get install py-pip  
           pip install \
             virtualenv wheel
-          pip2.7 install popt || pip2.7 install --user  popt
       - uses: nanasess/setup-chromedriver@master
         # with:
         #   # Optional: do not specify to match Chrome's version
@@ -77,9 +76,10 @@ jobs:
             sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
             sleep 3
             bin/test --all 
-      - name: Robottest report
-        run: |
-            grep  --include=output.xml -Rl  FAIL parts/test | xargs --no-run-if-empty -n 1 popt
+      # - name: Robottest report
+      #   run: |
+      #       pip2.7 install popt || pip2.7 install --user  popt
+      #       grep  --include=output.xml -Rl  FAIL parts/test | xargs --no-run-if-empty -n 1 popt
       - name: Artifact Robot Test Report
         if: failure()
         uses: actions/upload-artifact@v1
