@@ -95,8 +95,12 @@ jobs:
             grep  --include=output.xml -Rl  FAIL parts/test | xargs --no-run-if-empty -n 1 popt
       - name: createcoverage
         run: |
-            # bin/createcoverage -t '--all'
-            bin/createcoverage
+            export DISPLAY=:99.0
+            chromedriver --url-base=/wd/hub &
+            sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
+            sleep 3
+            bin/createcoverage -t '--all'
+            # bin/createcoverage
             bin/coverage json -i
       - name: Coveralls
         uses: AndreMiras/coveralls-python-action@develop
