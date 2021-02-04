@@ -95,7 +95,8 @@ jobs:
             grep  --include=output.xml -Rl  FAIL parts/test | xargs --no-run-if-empty -n 1 popt
       - name: createcoverage
         run: |
-            bin/createcoverage -t '--all'
+            # bin/createcoverage -t '--all'
+            bin/createcoverage
             bin/coverage json -i
       - name: Coveralls
         uses: AndreMiras/coveralls-python-action@develop
