@@ -1,0 +1,262 @@
+# --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2019-04-01 10:23+0000\n"
+"PO-Revision-Date: 2021-01-28 13:33+0100\n"
+"Last-Translator: espenm <post@medialog.no>\n"
+"Language-Team: Espen Moe-Nilssen <espen@medialog.no>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Language-Code: de\n"
+"Language-Name: Deutsch\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: collective.collectionfilter\n"
+"Language: nb_NO\n"
+"X-Generator: Poedit 1.5.7\n"
+
+#: collective/collectionfilter/portlets/collectionfilter.py:98
+msgid "Add Collection Filter Portlet"
+msgstr "Legg til portlet for filtrering av samlinger "
+
+#: collective/collectionfilter/portlets/collectionsearch.py:70
+msgid "Add Collection Search Portlet"
+msgstr "Legg til portlet (boks) for å søke i samlinger "
+
+#: collective/collectionfilter/portlets/collectionfilter.py:71
+msgid "Collection Filter"
+msgstr "Kollektionsfilter"
+
+#: collective/collectionfilter/portlets/collectionsearch.py:43
+msgid "Collection Search"
+msgstr "Samlingssøk  (Collection Search)"
+
+#: collective/collectionfilter/portlets/collectionfilter.py:111
+msgid "Edit Collection Filter Portlet"
+msgstr "Rediger portletten (infoboksen) for å filtrere samlinger "
+
+#: collective/collectionfilter/portlets/collectionsearch.py:82
+msgid "Edit Collection Search Portlet"
+msgstr "Rediger portlet (infoboks) for søking i samlinger "
+
+#: collective/collectionfilter/configure.zcml:54
+#: collective/collectionfilter/portlets/configure.zcml:36
+#: collective/collectionfilter/tests/configure.zcml:15
+msgid "Extension profile for Plone."
+msgstr ""
+
+#: collective/collectionfilter/portlets/collectionsearch.py:71
+msgid "This portlet allows fulltext search in collection results."
+msgstr ""
+"Denne portletten tillater et fulltekstsøk i samlingsresultatene og begrenser "
+"dem ytterligere. "
+
+#: collective/collectionfilter/portlets/collectionfilter.py:99
+msgid ""
+"This portlet shows grouped criteria of collection results and allows "
+"filtering of collection results."
+msgstr ""
+"Denne portletten viser grupperte samlingsresultater og lar resultatene "
+"begrenses ytterligere ved hjelp av filtre. "
+
+#: collective/collectionfilter/configure.zcml:54
+msgid "collective.collectionfilter base"
+msgstr ""
+
+#: collective/collectionfilter/configure.zcml:61
+msgid "collective.collectionfilter base uninstall"
+msgstr ""
+
+#: collective/collectionfilter/portlets/configure.zcml:36
+msgid "collective.collectionfilter portlets"
+msgstr ""
+
+#: collective/collectionfilter/portlets/configure.zcml:44
+msgid "collective.collectionfilter portlets uninstall"
+msgstr ""
+
+#: collective/collectionfilter/tests/configure.zcml:15
+msgid "collective.collectionfilter testing"
+msgstr ""
+
+#. Default: "Default map layer"
+#: collective/collectionfilter/tiles/maps.py:37
+msgid "default_map_layer"
+msgstr "Standardkart "
+
+#: collective/collectionfilter/vocabularies.py:119
+msgid "filtertype_and"
+msgstr "OG"
+
+#: collective/collectionfilter/vocabularies.py:120
+msgid "filtertype_or"
+msgstr "ELLER"
+
+#: collective/collectionfilter/vocabularies.py:118
+msgid "filtertype_single"
+msgstr "Enkelt valg (ikke flere valg)"
+
+#. Default: "Enable caching of filter items. The cache is cleared as soon as the database has any changes."
+#: collective/collectionfilter/interfaces.py:92
+msgid "help_cache_enabled"
+msgstr ""
+"Aktiver hurtigbuffer for filtrering. Cachen oppdateres med hver "
+"databaseendring. "
+
+#. Default: "Selector which is used to choose a DOM node from the source into the target. For source and target the same selectors are used."
+#: collective/collectionfilter/interfaces.py:56
+msgid "help_content_selector"
+msgstr ""
+"En CSS-velger som markerer resultatlisten. Kildenode (samling) og målnode "
+"(resultatliste) må definere samme velger. "
+
+#. Default: "Set the default map layer"
+#: collective/collectionfilter/tiles/maps.py:41
+msgid "help_default_map_layer"
+msgstr "velg standardkartet for visningen. "
+
+#. Default: "Select if single or multiple criterias can be selected and if all (and) or any (or) of the selected criterias must be met.Some index types like ``FieldIndex`` (e.g. Type index) only support the any (or) criteria when set to multiple criterias and ignore, if all (and) is set."
+#: collective/collectionfilter/interfaces.py:103
+msgid "help_filter_type"
+msgstr ""
+
+#. Default: "Select the criteria to group the collection results by."
+#: collective/collectionfilter/interfaces.py:73
+msgid "help_groupby"
+msgstr "Velg kriteriet for gruppering av samlingsresultatene. "
+
+#. Default: "Title of the rendered filter."
+#: collective/collectionfilter/interfaces.py:15
+msgid "help_header"
+msgstr "Tittel infoboksen"
+
+#. Default: "Select how the UI of the collection filter should be rendered. Wether as links, as checkboxes and radiobuttons or checkboxes and dropdowns."
+#: collective/collectionfilter/interfaces.py:114
+msgid "help_input_type"
+msgstr ""
+
+#. Default: "Set the available map layers"
+#: collective/collectionfilter/tiles/maps.py:52
+msgid "help_map_layers"
+msgstr ""
+
+#. Default: "Narrow down the filter options when a filter of this group is applied. Only options, which are available in the result set will then be displayed. Other filter groups can still narrow down this one, though."
+#: collective/collectionfilter/interfaces.py:125
+msgid "help_narrow_down"
+msgstr ""
+"Filteralternativene er begrenset når et filterkriterium er valgt. Bare de "
+"filterkriteriene som vises i gjeldende resultat, vises. Imidlertid kan andre "
+"filtergrupper fortsatt begrense denne filtergruppen. "
+
+#. Default: "Narrow down the result after zooming/moving the map."
+#: collective/collectionfilter/tiles/maps.py:29
+msgid "help_narrow_down_results"
+msgstr ""
+
+#. Default: "Show the result count for each filter group."
+#: collective/collectionfilter/interfaces.py:83
+msgid "help_show_count"
+msgstr "Vis antall (resultater) for hver filtergruppe. "
+
+#. Default: "The collection, which is the source for the filter items and where the filter is applied."
+#: collective/collectionfilter/interfaces.py:24
+msgid "help_target_collection"
+msgstr "Velg målsamling (Collection). "
+
+#. Default: "Optional view name, if the result listing should be rendered with a special view. Can be used to direct the request to a tile."
+#: collective/collectionfilter/interfaces.py:44
+msgid "help_view_name"
+msgstr ""
+
+#: collective/collectionfilter/vocabularies.py:130
+msgid "inputtype_checkboxes_dropdowns"
+msgstr ""
+
+#: collective/collectionfilter/vocabularies.py:129
+msgid "inputtype_checkboxes_radiobuttons"
+msgstr ""
+
+#: collective/collectionfilter/vocabularies.py:128
+msgid "inputtype_links"
+msgstr ""
+
+#. Default: "edit"
+#: collective/collectionfilter/tiles/filter.pt:25
+#: collective/collectionfilter/tiles/maps.pt:24
+msgid "label-edit-filter"
+msgstr ""
+
+#. Default: "Enable Cache"
+#: collective/collectionfilter/interfaces.py:91
+msgid "label_cache_enabled"
+msgstr "Aktiver hurtigbuffer (cache)"
+
+#. Default: "Content Selector"
+#: collective/collectionfilter/interfaces.py:55
+msgid "label_content_selector"
+msgstr ""
+
+#. Default: "Filter Type"
+#: collective/collectionfilter/interfaces.py:102
+msgid "label_filter_type"
+msgstr ""
+
+#. Default: "Group by"
+#: collective/collectionfilter/interfaces.py:72
+msgid "label_groupby"
+msgstr "Grupperingskriterium "
+
+#. Default: "Filter title"
+#: collective/collectionfilter/interfaces.py:14
+msgid "label_header"
+msgstr "Portletittel "
+
+#. Default: "Input Type"
+#: collective/collectionfilter/interfaces.py:113
+msgid "label_input_type"
+msgstr ""
+
+#. Default: "Map Layers"
+#: collective/collectionfilter/tiles/maps.py:51
+msgid "label_map_layers"
+msgstr "Kartnivåer "
+
+#. Default: "Narrow down filter options"
+#: collective/collectionfilter/interfaces.py:124
+msgid "label_narrow_down"
+msgstr "Begrens filterkriterier "
+
+#. Default: "Narrow down result"
+#: collective/collectionfilter/tiles/maps.py:28
+msgid "label_narrow_down_results"
+msgstr "Begrens resultatlisten "
+
+#. Default: "Show count"
+#: collective/collectionfilter/interfaces.py:82
+msgid "label_show_count"
+msgstr "Vis antall"
+
+#. Default: "Target Collection"
+#: collective/collectionfilter/interfaces.py:23
+msgid "label_target_collection"
+msgstr "Målsamling "
+
+#. Default: "Result listing view name"
+#: collective/collectionfilter/interfaces.py:43
+msgid "label_view_name"
+msgstr ""
+
+#. Default: "All"
+#: collective/collectionfilter/filteritems.py:210
+msgid "subject_all"
+msgstr "Alle"
+
+#. Default: "edit filter"
+#: collective/collectionfilter/tiles/filter.pt:19
+#: collective/collectionfilter/tiles/maps.pt:18
+msgid "title-edit-filter"
+msgstr "Redigere filtere"
