@@ -82,8 +82,7 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
                 'Document',
                 id='testdoc',
                 title=u'Test Document 😉',
-                text=RichTextValue(u'Ein heiBes Test Dokument'),
-                # text=RichTextValue(u'Ein heißes Test Dokument'),
+                text=RichTextValue(u'Ein heißes Test Dokument'),
                 subject=[u'Süper', u'Dokumänt'],
                 exclude_from_nav=False,
             )
@@ -92,7 +91,6 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
                 id='testdoc2',
                 title=u'Page 😉',
                 text=RichTextValue(u'Ein heiBes Test Dokument'),
-                # text=RichTextValue(u'Ein heiBes Test Dokument'),
                 subject=[u'Dokumänt'],
                 exclude_from_nav=True,
             )
