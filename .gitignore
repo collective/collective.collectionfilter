@@ -35,3 +35,6 @@ share/
 var/
 pyvenv.cfg
 
+.python-version
+requirements.txt
+annotate.txt
