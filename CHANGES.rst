@@ -4,7 +4,8 @@ Changelog
 3.4.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix search which include the terms "and", "or" and "not"
+  [jeffersonbledsoe]
 
 
 3.4.1 (2020-06-18)
@@ -41,8 +42,6 @@ Bug fixes:
   [tmassman]
 - fix translation of ``filter_value``
   [petschki]
-- Fix search which include the terms "and", "or" and "not"
-  [jeffersonbledsoe]
 
 
 3.2.1 (2019-08-07)
