@@ -44,6 +44,8 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
         self.loadZCML(package=collective.collectionfilter.tests)
 
     def setUpPloneSite(self, portal):
+        from plone.formwidget.geolocation.geolocation import Geolocation
+
         applyProfile(portal, 'plone.app.mosaic:default')
         applyProfile(portal, 'collective.geolocationbehavior:default')
         applyProfile(portal, 'collective.collectionfilter:default')
@@ -88,13 +90,12 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
                 'Document',
                 id='testdoc2',
                 title=u'Page 😉',
-                text=RichTextValue(u'Ein heißes Test Dokument'),
+                text=RichTextValue(u'Ein heiBes Test Dokument'),
                 subject=[u'Dokumänt'],
                 exclude_from_nav=True,
             )
             doc = portal['testdoc']
-            # doc.geolocation.latitude = 47.4048832
-            # doc.geolocation.longitude = 9.7587760701108
+            doc.geolocation = Geolocation(47.4048832, 9.7587760701108)
             doc.reindexObject()
 
 
