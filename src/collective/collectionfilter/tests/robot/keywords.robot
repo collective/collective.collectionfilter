@@ -12,6 +12,9 @@ ${BROWSER}  chrome
 
 *** Keywords *****************************************************************
 
+Default Teardown
+    Run Keyword If Test Failed        Capture Page Screenshot
+    Close all browsers
 
 # --- Given ------------------------------------------------------------------
 
@@ -66,8 +69,10 @@ Input text with placeholder
 
 Manage Portlets
     Click element  link=Manage portlets
-    Element should be visible  css=#plone-contentmenu-portletmanager > ul
-    Click element  partial link=Right
+    # Sometimes the click opens the backup page instead of the popup menu
+    ${present}=  Run Keyword And Return Status    Element Should Be Visible   partial link=Right
+    Run Keyword If    ${present}    Click element  partial link=Right
+    
 
 Select related filter collection
     Click element  css=div.pattern-relateditems-container input.select2-input
@@ -152,27 +157,21 @@ I've got a site with a collection
 
 My collection has a collection search portlet
     Go to  ${PLONE_URL}/testcollection
-    Click element  link=Manage portlets
-    Element should be visible  css=#plone-contentmenu-portletmanager > ul
-    Click element  partial link=Right
+    Manage portlets
     Add search portlet
 
 My collection has a collection filter portlet
     [Arguments]  ${group_by}=Subject
 
     Go to  ${PLONE_URL}/testcollection
-    Click element  link=Manage portlets
-    Element should be visible  css=#plone-contentmenu-portletmanager > ul
-    Click element  partial link=Right
+    Manage portlets
     Add filter portlet  ${group_by}  or  checkboxes_dropdowns
 
 My collection has a collection sorting portlet
     [Arguments]  ${sort_on}=sortable_title
 
     Go to  ${PLONE_URL}/testcollection
-    Click element  link=Manage portlets
-    Element should be visible  css=#plone-contentmenu-portletmanager > ul
-    Click element  partial link=Right
+    Manage portlets
     Add sorting portlet  ${sort_on}  links
 
 I'm viewing the collection
@@ -213,8 +212,7 @@ Enable mosaic layout for page
 
     # Setup Mosaic display and open editor
     Click element  link=Display
-    Element should be visible  css=#plone-contentmenu-portletmanager > ul
-    Element should be visible  css=#plone-contentmenu-display-layout_view
+    Wait Until Element Is visible  css=#plone-contentmenu-display-layout_view
     Click element  link=Mosaic layout
     Go to  ${page}/edit
 
@@ -226,15 +224,15 @@ Enable mosaic layout for page
     # Enable layout editing
     Wait Until Element Is Visible  css=.mosaic-toolbar
     Click element  css=.mosaic-button-layout
-    Element should be visible  css=.mosaic-button-customizelayout
+    Wait Until Element Is visible  css=.mosaic-button-customizelayout
     Click element  css=.mosaic-button-customizelayout
 
     Save mosaic page
 
 Save mosaic page
-    Wait Until Element Is Visible  css=.mosaic-button-save
+    Wait Until Element Is Visible  css=.mosaic-button-save   timeout=5 sec
     Click button  css=.mosaic-button-save
-    Wait until page contains  Changes saved
+    Wait until page contains  Changes saved   timeout=10 sec
 
 Add filter tile
     [Arguments]   ${collection_name}  ${filter_type}  ${input_type}

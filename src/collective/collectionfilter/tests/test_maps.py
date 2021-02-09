@@ -5,7 +5,7 @@ import unittest
 from collective.collectionfilter.testing import COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING  # noqa
 
 
-class TestFilteritems(unittest.TestCase):
+class TestMaps(unittest.TestCase):
 
     layer = COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING
 

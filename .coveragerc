@@ -1,5 +1,11 @@
+[run]
+relative_files = True
+
 [report]
+include =
+    src/*
 omit =
+    */test*
     /home/*/.buildout/eggs/*
     /home/travis/buildout-cache/eggs/*
     /home/travis/virtualenv/*
