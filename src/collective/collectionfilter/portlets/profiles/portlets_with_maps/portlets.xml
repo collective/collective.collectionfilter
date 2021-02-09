@@ -11,6 +11,11 @@
       description="This portlet allows fulltext search in collection results."
       />
   <portlet
+      addview="collective.collectionfilter.portlets.CollectionSortOn"
+      title="Collection Filter Result Sorting"
+      description="This portlet allows sorting of the filtered result listing."
+      />
+  <portlet
       addview="collective.collectionfilter.portlets.CollectionMaps"
       title="Collection Maps"
       description="This portlet allows map filtering in collection results."

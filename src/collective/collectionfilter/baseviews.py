@@ -4,27 +4,28 @@ import json
 from plone import api
 from plone.memoize import instance
 
+from Acquisition import aq_inner
+from Products.CMFPlone.utils import get_top_request
+from Products.CMFPlone.utils import safe_unicode
 from collective.collectionfilter import PLONE_VERSION
 from collective.collectionfilter.filteritems import get_filter_items
 from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.query import make_query
 from collective.collectionfilter.utils import base_query
-from collective.collectionfilter.utils import safe_iterable
 from collective.collectionfilter.utils import safe_decode
 from collective.collectionfilter.utils import safe_encode
+from collective.collectionfilter.utils import safe_iterable
 from collective.collectionfilter.vocabularies import TEXT_IDX
 from plone.api.portal import get_registry_record as getrec
 from plone.app.contenttypes.behaviors.collection import ICollection
-from Acquisition import aq_inner
 from plone.app.uuid.utils import uuidToCatalogBrain
 from plone.app.uuid.utils import uuidToObject
 from plone.i18n.normalizer.interfaces import IIDNormalizer
-from Products.CMFPlone.utils import safe_unicode
 from six.moves.urllib.parse import urlencode
-from zope.component import queryUtility
 from zope.component import getUtility
+from zope.component import queryUtility
 from zope.i18n import translate
-from Products.CMFPlone.utils import get_top_request
+from zope.schema.interfaces import IVocabularyFactory
 
 try:
     from collective.geolocationbehavior.interfaces import IGeoJSONProperties
@@ -198,6 +199,47 @@ class BaseSearchView(BaseView):
             '?' + query_param if query_param else None
         ] if it])
         return ajax_url
+
+
+class BaseSortOnView(BaseView):
+
+    def results(self):
+        collection = self.collection.getObject()
+        curr_val = self.top_request.get('sort_on', collection.sort_on)
+        curr_order = self.top_request.get(
+            'sort_order',
+            'descending' if collection.sort_reversed else 'ascending')
+        new_order = 'ascending'
+        if curr_order is not None and curr_order == 'ascending':
+            new_order = 'descending'
+        sortable_indexes = getUtility(
+            IVocabularyFactory,
+            name='collective.collectionfilter.SortOnIndexes')
+        vocab = sortable_indexes(self.context)
+        for idx in self.settings.sort_on:
+            curr = curr_val == idx
+            yield {
+                'value': idx,
+                'title': vocab.getTerm(idx).title,
+                'new_order': new_order if curr else 'ascending',
+                'curr_order': curr_order if curr else '',
+                'active': curr,
+            }
+
+    @property
+    def ajax_url(self):
+        # Recursively transform all to unicode
+        request_params = safe_decode(self.top_request.form)
+        urlquery = base_query(
+            request_params, extra_ignores=['sort_on', 'sort_order'])
+        query_param = urlencode(safe_encode(urlquery), doseq=True)
+        ajax_url = u'/'.join([it for it in [
+            self.collection.getURL(),
+            self.settings.view_name,
+            '?' + query_param if query_param else None
+        ] if it])
+        return ajax_url
+
 
 if HAS_GEOLOCATION:
 

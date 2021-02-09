@@ -6,7 +6,7 @@ Resource  keywords.robot
 # Library  Remote  ${PLONE_URL}/RobotRemote
 
 Test Setup  View Test Collection
-Test Teardown  Close all browsers
+Test Teardown  Default Teardown
 
 
 
@@ -18,7 +18,7 @@ Scenario: Add filter portlets to collection
     Manage portlets
     Add search portlet
     Add filter portlet  Subject  or  checkboxes_dropdowns
-
+    Add sorting portlet  sortable_title  links
     Go to  ${PLONE_URL}/testcollection
     Should be 3 collection results
 
@@ -64,7 +64,6 @@ Scenario: Hide when no options
     Go to  ${PLONE_URL}/testcollection
     # No idea why intermittently we get 1 filter option below instead of 0
     log source
-    capture page screenshot
     Should be 0 filter options
     Should be 3 collection results
 
@@ -88,7 +87,6 @@ Scenario: show hidden filter if just narrowed down
     # But if we filter it down it shouldn't disappear as then we have no way to click "All" to get back
       and Select Filter Option "Event (1)"
       Log source
-      capture page screenshot
      Then Should be 2 filter options
 
 

@@ -39,7 +39,7 @@
     <value key="merge_with">default</value>
     <value key="jscompilation">++resource++collective.collectionfilter/collectionfilter-bundle-compiled.js</value>
     <value key="csscompilation">++resource++collective.collectionfilter/collectionfilter-bundle-compiled.css</value>
-    <value key="last_compilation">2019-08-05 14:10:00</value>
+    <value key="last_compilation">2020-05-06 14:30:00</value>
     <value key="stub_js_modules">
       <element>backbone</element>
       <element>bootstrap-dropdown</element>
