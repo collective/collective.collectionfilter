@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from collective.collectionfilter.interfaces import IGroupByCriteria
-from collective.collectionfilter.utils import safe_decode, safe_encode
+from collective.collectionfilter.utils import safe_decode
 from collective.collectionfilter.vocabularies import EMPTY_MARKER
 from collective.collectionfilter.vocabularies import GEOLOC_IDX
 from collective.collectionfilter.vocabularies import TEXT_IDX
@@ -21,10 +21,11 @@ except ImportError:
 
 
 logger = getLogger('collective.collectionfilter')
+ENCODED_BAD_CHARS = safe_decode(BAD_CHARS)
 
 
 def sanitise_search_query(query):
-    for char in BAD_CHARS:
+    for char in ENCODED_BAD_CHARS:
         query = query.replace(char, " ")
     clean_query = [quote(token) for token in query.split()]
     clean_query = quote_chars(clean_query)
@@ -76,7 +77,7 @@ def make_query(params_dict):
                     params_dict[idx])
 
     if TEXT_IDX in params_dict and params_dict.get(TEXT_IDX):
-        safe_text = safe_encode(params_dict.get(TEXT_IDX))
+        safe_text = safe_decode(params_dict.get(TEXT_IDX))
         clean_searchable_text = sanitise_search_query(safe_text)
         query_dict[TEXT_IDX] = clean_searchable_text
 
