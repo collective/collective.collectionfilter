@@ -56,9 +56,9 @@ setup(
             # support for latitude/longitude catalog index
             "collective.geolocationbehavior >= 1.6.0",
             # refactored map configuration
-            "plone.formwidget.geolocation >= 2.2.0",
-            # leaflet JS events for map filter
-            "plone.patternslib >= 1.1.0",
+            'plone.formwidget.geolocation >= 2.2.0',
+            # AJAX geoJSON feature
+            'plone.patternslib >= 1.2.2',
         ],
         "test": [
             "plone.app.mosaic",

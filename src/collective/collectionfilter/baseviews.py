@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_inner
+from Products.CMFPlone.utils import get_top_request
+from Products.CMFPlone.utils import safe_unicode
+from Products.Five import BrowserView
 from collective.collectionfilter import PLONE_VERSION
 from collective.collectionfilter.filteritems import get_filter_items
 from collective.collectionfilter.interfaces import IGroupByCriteria
@@ -17,8 +20,6 @@ from plone.app.uuid.utils import uuidToObject
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize import instance
 from plone.uuid.interfaces import IUUID
-from Products.CMFPlone.utils import get_top_request
-from Products.CMFPlone.utils import safe_unicode
 from six.moves.urllib.parse import urlencode
 from zope.component import getUtility
 from zope.component import queryUtility
@@ -356,3 +357,12 @@ if HAS_GEOLOCATION:
                 ],
             }
             return json.dumps(config)
+
+    class GeoJSON(BrowserView):
+
+        def __call__(self):
+            """ AJAX response of GeoJSON data """
+            self.request.response.setHeader("Content-type", "application/json")
+            if not hasattr(self.context, 'data_geojson'):
+                return {}
+            return self.context.data_geojson

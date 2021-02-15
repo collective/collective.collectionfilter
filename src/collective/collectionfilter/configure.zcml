@@ -54,6 +54,14 @@
       handler=".contentfilter.set_content_filter"
       />
 
+  <browser:page
+      zcml:condition="installed collective.geolocationbehavior"
+      name="geodata.json"
+      class=".baseviews.GeoJSON"
+      for="*"
+      permission="zope2.View"
+      />
+
   <genericsetup:registerProfile
       name="default"
       title="collective.collectionfilter base"
