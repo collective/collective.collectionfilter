@@ -26,6 +26,9 @@ Breaking Change:
 - Fix search which include the terms "and", "or" and "not"
   [jeffersonbledsoe]
 
+- implement AJAX geoJSON feature (needs ``plone.patternslib>=1.2.2``)
+  [petschki]
+
 
 3.4.2 (2021-02-25)
 ------------------
