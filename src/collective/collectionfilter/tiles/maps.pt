@@ -22,7 +22,7 @@
   <tal:if condition="view/collection|nothing">
   <header tal:condition="view/title" tal:content="view/title">Title</header>
   <div class="pat-leaflet" data-pat-leaflet='${view/map_configuration}' data-url="${view/ajax_url}" data-narrow-down-result="${view/settings/narrow_down}"
-       data-geojson="${view/url}/@@geodata.json"></div>
+       data-geojson="${view/geojson_ajax_url}"></div>
   </tal:if>
 </aside>
 
