@@ -62,7 +62,7 @@ setup(
             # refactored map configuration
             'plone.formwidget.geolocation >= 2.2.0',
             # AJAX geoJSON feature
-            'plone.patternslib >= 1.2.2',
+            'plone.patternslib >= 1.2.2.dev0',
         ],
         "test": [
             "plone.app.mosaic",
