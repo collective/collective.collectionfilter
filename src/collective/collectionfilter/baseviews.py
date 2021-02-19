@@ -320,8 +320,11 @@ if HAS_GEOLOCATION:
         def data_geojson(self):
             """Return the geo location as GeoJSON string."""
             features = []
+            locations = self.locations
+            count = len(locations)
+            limit = self.settings.geojson_properties_limit
 
-            for it in self.locations:
+            for it in locations:
                 if not it.longitude or not it.latitude:
                     # these ``it`` are brains, so anything which got lat/lng
                     # indexed can be used.
@@ -340,13 +343,14 @@ if HAS_GEOLOCATION:
                     },
                 }
 
-                props = IGeoJSONProperties(it.getObject(), None)
-                if getattr(props, "popup", None):
-                    feature["properties"]["popup"] = props.popup
-                if getattr(props, "color", None):
-                    feature["properties"]["color"] = props.color
-                if getattr(props, "extraClasses", None):
-                    feature["properties"]["extraClasses"] = props.extraClasses
+                if count < limit:
+                    props = IGeoJSONProperties(it.getObject(), None)
+                    if getattr(props, 'popup', None):
+                        feature['properties']['popup'] = props.popup
+                    if getattr(props, 'color', None):
+                        feature['properties']['color'] = props.color
+                    if getattr(props, 'extraClasses', None):
+                        feature['properties']['extraClasses'] = props.extraClasses
 
                 features.append(feature)
 
