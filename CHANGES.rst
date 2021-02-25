@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.4.2 (unreleased)
+3.4.2 (2021-02-25)
 ------------------
 
 - Do not render filter tiles when page gets AJAX loaded
