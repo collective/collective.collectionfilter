@@ -6,7 +6,7 @@ Changelog
 
 - Do not render filter tiles when page gets AJAX loaded
   [petschki]
-- do not add hidden field ``collectionfilter`` multiple times. Fixes #116
+- Do not add hidden field ``collectionfilter`` multiple times. Fixes #116
   [petschki]
 
 
