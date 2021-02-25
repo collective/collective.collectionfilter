@@ -4,6 +4,8 @@ Changelog
 3.4.2 (unreleased)
 ------------------
 
+- Do not render filter tiles when page gets AJAX loaded
+  [petschki]
 - do not add hidden field ``collectionfilter`` multiple times. Fixes #116
   [petschki]
 
