@@ -4,7 +4,8 @@ Changelog
 3.4.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- do not add hidden field ``collectionfilter`` multiple times. Fixes #116
+  [petschki]
 
 
 3.4.1 (2020-06-18)
