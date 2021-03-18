@@ -25,6 +25,7 @@ from zope.i18n import translate
 
 import plone.api
 
+
 try:
     from plone.app.event.browser.event_listing import EventListing
 except ImportError:
@@ -109,6 +110,7 @@ def get_filter_items(
     # Get all collection results with additional filter defined by urlquery
     custom_query.update(urlquery)
     custom_query = make_query(custom_query)
+
     catalog_results = ICollection(collection).results(
         batch=False,
         brains=True,

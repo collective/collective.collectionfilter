@@ -4,7 +4,8 @@ Changelog
 3.4.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix search which include the terms "and", "or" and "not"
+  [jeffersonbledsoe]
 
 
 3.4.2 (2021-02-25)

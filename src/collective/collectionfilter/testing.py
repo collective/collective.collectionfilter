@@ -81,7 +81,7 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
             portal.invokeFactory(
                 'Document',
                 id='testdoc',
-                title=u'Test Document 😉',
+                title=u'Test Document and Document 😉',
                 text=RichTextValue(u'Ein heißes Test Dokument'),
                 subject=[u'Süper', u'Dokumänt'],
                 exclude_from_nav=False,

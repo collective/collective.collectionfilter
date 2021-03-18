@@ -124,6 +124,7 @@ Should be ${X} filter options
     Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//div[contains(@class, 'filterContent')]//*[contains(@class, 'filterItem')]  limit=${X}
 
 Should be ${X} collection results
+    Wait until element is visible  css=#content-core
     Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//article[@class='entry']  limit=${X}
 
 Should be ${X} pages
@@ -180,14 +181,14 @@ I'm viewing the collection
 
 
 # --- Core Functionality ------------------------------------------------------
-I search for ${document} with ajax
+I search for "${search}" with ajax
     Wait until element is not visible  css=.collectionSearch button[type='submit']  timeout=5 sec
-    Input text  css=.collectionSearch input[name='SearchableText']  ${document}
+    Input text  css=.collectionSearch input[name='SearchableText']  ${search}
     Wait until keyword succeeds  5s  1s  Ajax has completed
 
-I search for ${document} and click search
+I search for "${search}" and click search
     Wait until element is visible  css=.collectionSearch button[type='submit']
-    Input text  css=.collectionSearch input[name='SearchableText']  ${document}
+    Input text  css=.collectionSearch input[name='SearchableText']  ${search}
     Click Element  css=.collectionSearch button[type='submit']
 
 I should have a portlet titled "${filter_title}" with ${number_of_results} filter options
@@ -196,6 +197,10 @@ I should have a portlet titled "${filter_title}" with ${number_of_results} filte
 
     Page Should Contain Element  xpath=//${portlet_title_xpath}
     Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//${portlet_title_xpath}/parent::*[contains(@class, 'collectionFilter')]//${filter_item_xpath}  limit=${number_of_results}
+
+I should not see any results
+    Sleep  1 sec
+    Element should be visible  xpath=//*[@id="content-core"]/*[text()="No results were found."]
 
 I sort by "${sort_on}"
     Wait until element is visible  css=.collectionSortOn

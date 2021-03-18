@@ -7,8 +7,29 @@ from collective.collectionfilter.vocabularies import TEXT_IDX
 from logging import getLogger
 from plone import api
 from zope.component import getUtility
+from Products.CMFPlone.browser.search import BAD_CHARS, quote_chars
+try:
+    from Products.CMFPlone.browser.search import quote
+except ImportError:
+    # This fix was not in Plone 5.0.x
+    def quote(term):
+        # The terms and, or and not must be wrapped in quotes to avoid
+        # being parsed as logical query atoms.
+        if term.lower() in ('and', 'or', 'not'):
+            term = '"%s"' % term
+        return term
+
 
 logger = getLogger('collective.collectionfilter')
+ENCODED_BAD_CHARS = safe_decode(BAD_CHARS)
+
+
+def sanitise_search_query(query):
+    for char in ENCODED_BAD_CHARS:
+        query = query.replace(char, " ")
+    clean_query = [quote(token) for token in query.split()]
+    clean_query = quote_chars(clean_query)
+    return u" ".join(clean_query)
 
 
 def make_query(params_dict):
@@ -56,7 +77,9 @@ def make_query(params_dict):
                     params_dict[idx])
 
     if TEXT_IDX in params_dict and params_dict.get(TEXT_IDX):
-        query_dict[TEXT_IDX] = safe_decode(params_dict.get(TEXT_IDX))
+        safe_text = safe_decode(params_dict.get(TEXT_IDX))
+        clean_searchable_text = sanitise_search_query(safe_text)
+        query_dict[TEXT_IDX] = clean_searchable_text
 
     if 'sort_on' in params_dict:
         query_dict['sort_on'] = params_dict['sort_on']
