@@ -186,6 +186,11 @@ class BaseSearchView(BaseView):
             # Remove problematic url parameters
             if it in urlquery:
                 del urlquery[it]
+
+        # add filter trigger if not already there
+        if 'collectionfilter' not in urlquery:
+            urlquery['collectionfilter'] = '1'
+
         return urlquery
 
     @property

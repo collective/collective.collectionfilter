@@ -1,11 +1,20 @@
 Changelog
 =========
 
-3.4.2 (unreleased)
+3.4.3 (unreleased)
 ------------------
 
 - Fix search which include the terms "and", "or" and "not"
   [jeffersonbledsoe]
+
+
+3.4.2 (2021-02-25)
+------------------
+
+- Do not render filter tiles when page gets AJAX loaded
+  [petschki]
+- Do not add hidden field ``collectionfilter`` multiple times. Fixes #116
+  [petschki]
 
 
 3.4.1 (2020-06-18)
