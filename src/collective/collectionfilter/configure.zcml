@@ -42,6 +42,10 @@
       component=".vocabularies.SortOnIndexesVocabulary"
       name="collective.collectionfilter.SortOnIndexes"
       />
+  <utility
+      component=".vocabularies.TemplatePartsVocabulary"
+      name="collective.collectionfilter.TemplateParts"
+      />
 
   <subscriber
       for="Products.CMFPlone.interfaces.IPloneSiteRoot

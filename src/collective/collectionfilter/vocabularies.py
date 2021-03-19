@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from collections import OrderedDict
 from collective.collectionfilter import _
 from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.interfaces import IGroupByModifier
@@ -217,4 +218,25 @@ def SortOnIndexesVocabulary(context):
         (registry, getRequest()), IQuerystringRegistryReader)
     sortable_indexes = reader().get('sortable_indexes')
     items = [SimpleTerm(title=_(v['title']), value=k) for k, v in sortable_indexes.items()]  # noqa
+    return SimpleVocabulary(items)
+
+
+DEFAULT_TEMPLATES = OrderedDict([
+    ("search_for", ("Search for", "string:Search for")),
+    ("filter_colon_value", ("{Filter}: {value}, ...", 'python: ", ".join("{}: {}".format(k,v) for k,v in query)')),
+    ("value_comma", ("{value}, ...", 'python: ", ".join("{}".format(v) for _,v in query)')),
+    ("filter_colon_value", ("{Filter}: {value}, ...", 'python: ", ".join("{}: {}".format(k,v) for k,v in query)')),
+    ("value_quoted_filter", ('"{value}" {Filter}, ...', '''python: ", ".join('"{}" {}'.format(v,k) for k,v in query)''')),
+    ("hyphen", (" - ", "string:-")),
+    ("comma", (", ", "string:, ")),
+    ("has_returned", ("has returned", "string:has returned")),
+    ("result_count", ("{results}", "python:str(results)")),
+    ("results", ("Results", "string: Results")),
+    ("documents", ("Documents", "string: Documents")),
+])
+
+
+@provider(IVocabularyFactory)
+def TemplatePartsVocabulary(context):
+    items = [SimpleTerm(title=v[0], value=k) for k, v in DEFAULT_TEMPLATES.items()]  # noqa
     return SimpleVocabulary(items)

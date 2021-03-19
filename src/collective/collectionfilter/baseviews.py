@@ -16,6 +16,7 @@ from collective.collectionfilter.utils import safe_decode
 from collective.collectionfilter.utils import safe_encode
 from collective.collectionfilter.utils import safe_iterable
 from collective.collectionfilter.vocabularies import TEXT_IDX
+from collective.collectionfilter.vocabularies import DEFAULT_TEMPLATES
 from plone.api.portal import get_registry_record as getrec
 from plone.app.contenttypes.behaviors.collection import ICollection
 from plone.app.uuid.utils import uuidToCatalogBrain
@@ -26,6 +27,7 @@ from zope.component import getUtility
 from zope.component import queryUtility
 from zope.i18n import translate
 from zope.schema.interfaces import IVocabularyFactory
+from Products.CMFCore.Expression import Expression, getExprContext
 
 try:
     from collective.geolocationbehavior.interfaces import IGeoJSONProperties
@@ -245,6 +247,66 @@ class BaseSortOnView(BaseView):
             '?' + query_param if query_param else None
         ] if it])
         return ajax_url
+
+
+class BaseInfoView(BaseView):
+
+    @property
+    def urlquery(self):
+        urlquery = {}
+        urlquery.update(self.top_request.form)
+        for it in (
+            TEXT_IDX,
+            'b_start',
+            'b_size',
+            'batch',
+            'sort_on',
+            'limit',
+            'portlethash'
+        ):
+            # Remove problematic url parameters
+            if it in urlquery:
+                del urlquery[it]
+        return urlquery
+
+    def info_contents(self):
+        # TODO: This could be cached as same result appears in other filter counts
+        target_collection = self.settings.target_collection
+        request_params = self.top_request.form or {}
+
+        collection = uuidToObject(target_collection)
+        if not collection:
+            return None
+
+        # Recursively transform all to unicode
+        request_params = safe_decode(request_params)
+
+        count_query = {}
+        query = base_query(request_params)
+        del query['collectionfilter']
+        # TODO: take out the search
+        # TODO: match them to indexes and get proper names
+        # TODO: format values properly
+        # TODO: do we want to read out sort too?
+        count_query.update(query)
+        catalog_results_fullcount = ICollection(collection).results(
+            batch=False,
+            brains=True,
+            custom_query=count_query
+        )
+        results = len(catalog_results_fullcount)
+        q = query.items()
+        expression_context = getExprContext(
+            self.context,
+        )
+        expression_context.setLocal("results", results)
+        expression_context.setLocal("query", q)
+
+        parts = []
+        for template in self.settings.template_type:
+            _, exp = DEFAULT_TEMPLATES.get(template)
+            parts.append(Expression(exp)(expression_context))
+        return " ".join(parts)
 
 
 if HAS_GEOLOCATION:

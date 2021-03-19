@@ -8,7 +8,7 @@ from plone.autoform.directives import widget
 from zope import schema
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
-
+from zope.schema.vocabulary import SimpleVocabulary
 
 try:
     from plone.formwidget.geolocation.vocabularies import default_map_layer
@@ -204,6 +204,61 @@ class ICollectionFilterResultListSort(ICollectionFilterBaseSchema):
         ),
         required=True,
         vocabulary='collective.collectionfilter.InputType',
+    )
+
+
+class ICollectionFilterInfo(Interface):
+    """Schema for the result title/info
+    """
+    header = schema.TextLine(
+        title=_('label_header', default=u'Filter title'),
+        description=_(
+            'help_header',
+            u'Title of the rendered filter.'
+        ),
+        required=False,
+    )
+
+    target_collection = schema.Choice(
+        title=_(u'label_target_collection', default=u'Target Collection'),
+        description=_(
+            u'help_target_collection',
+            default=u'The collection, which is the source for the filter '
+                    u'items and where the filter is applied.'
+        ),
+        required=True,
+        vocabulary='plone.app.vocabularies.Catalog',
+        defaultFactory=utils.target_collection_default,
+    )
+    widget(
+        'target_collection',
+        RelatedItemsFieldWidget,
+        pattern_options=pattern_options()
+    )
+
+    template_type = schema.Tuple(
+        title=_('label_template_type', u'Template Type'),
+        description=_(
+            'help_template_type',
+            u'What information to display about the search and results'
+        ),
+        value_type=schema.Choice(
+            title=u'Index',
+            vocabulary="collective.collectionfilter.TemplateParts",
+        ),
+        required=True,
+    )
+
+    tag_type = schema.Choice(
+        title=_('label_input_type', u'Tag Type'),
+        description=_(
+            'help_tag_type',
+            u'Select the tag used for the information line'
+        ),
+        required=True,
+        vocabulary=SimpleVocabulary.fromValues(
+            ['H1', 'H2', 'H3', 'H4', 'P', 'DIV']
+        ),
     )
 
 

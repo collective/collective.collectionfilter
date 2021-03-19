@@ -1,0 +1,12 @@
+<aside class="portlet ${view/filterClassName} collectionInfo"
+       tal:define="tag_type view/settings/tag_type"
+       tal:condition="view/available"
+       i18n:domain="collective.collectionfilter">
+
+  <tal:if condition="view/settings/target_collection">
+  <header class="portletHeader" tal:condition="view/title" tal:content="view/title">Title</header>
+  <div class="portletContent filterContent" tal:define="query view/urlquery">
+    <h3 tal:content="view/info_contents"></h3>
+  </div>
+  </tal:if>
+</aside>
