@@ -1,67 +1,62 @@
-# --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
-# SOME DESCRIPTIVE TITLE.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "POT-Creation-Date: 2021-03-19 15:05+0000\n"
-"PO-Revision-Date: 2021-01-28 13:33+0100\n"
-"Last-Translator: espenm <post@medialog.no>\n"
-"Language-Team: Espen Moe-Nilssen <espen@medialog.no>\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"Language-Code: de\n"
-"Language-Name: Deutsch\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: nl\n"
+"Language-Name: Nederlands\n"
 "Preferred-Encodings: utf-8 latin1\n"
-"Domain: collective.collectionfilter\n"
-"Language: nb_NO\n"
-"X-Generator: Poedit 1.5.7\n"
+"Domain: DOMAIN\n"
 
 #: collective/collectionfilter/portlets/sorting.pt:28
 msgid "(descending)"
-msgstr ""
+msgstr "(aflopend)"
 
 #: collective/collectionfilter/portlets/collectionfilter.py:83
 msgid "Add Collection Filter Portlet"
-msgstr "Legg til portlet for filtrering av samlinger "
+msgstr "Voeg verzamelingsfilter portlet toe"
 
 #: collective/collectionfilter/portlets/maps.py:63
 msgid "Add Collection Maps Portlet"
-msgstr ""
+msgstr "Voeg verzameling/kaarten portlet toe"
 
 #: collective/collectionfilter/portlets/sorting.py:64
 msgid "Add Collection Result Listing Sort Portlet"
-msgstr ""
+msgstr "Voeg verzamelingen zoekresultaten portlet toe"
 
 #: collective/collectionfilter/portlets/collectionsearch.py:52
 msgid "Add Collection Search Portlet"
-msgstr "Legg til portlet (boks) for å søke i samlinger "
+msgstr "Voeg verzameling zoekportlet toe"
 
 #: collective/collectionfilter/portlets/collectionfilter.py:73
 msgid "Collection Filter"
-msgstr "Kollektionsfilter"
+msgstr "Verzamelingfilter"
 
 #: collective/collectionfilter/portlets/maps.py:53
 msgid "Collection Maps"
-msgstr ""
+msgstr "Verzamelingkaarten"
 
 #: collective/collectionfilter/portlets/sorting.py:54
 msgid "Collection Result Sorting"
-msgstr ""
+msgstr "Verzameling sortering resultaten"
 
 #: collective/collectionfilter/portlets/collectionsearch.py:42
 msgid "Collection Search"
-msgstr "Samlingssøk  (Collection Search)"
+msgstr "Verzameling zoeken"
 
 #: collective/collectionfilter/portlets/collectionfilter.py:96
 msgid "Edit Collection Filter Portlet"
-msgstr "Rediger portletten (infoboksen) for å filtrere samlinger "
+msgstr "Bewerk verzameling filterportlet"
 
 #: collective/collectionfilter/portlets/maps.py:75
 msgid "Edit Collection Maps Portlet"
-msgstr ""
+msgstr "Bewerk verzameling kaartenportlet"
 
 #: collective/collectionfilter/portlets/sorting.py:76
 msgid "Edit Collection Result Listing Sort Portlet"
@@ -69,7 +64,7 @@ msgstr ""
 
 #: collective/collectionfilter/portlets/collectionsearch.py:64
 msgid "Edit Collection Search Portlet"
-msgstr "Rediger portlet (infoboks) for søking i samlinger "
+msgstr ""
 
 #: collective/collectionfilter/configure.zcml:58
 #: collective/collectionfilter/portlets/configure.zcml:64
@@ -79,15 +74,15 @@ msgstr ""
 
 #: collective/collectionfilter/vocabularies.py:95
 msgid "No"
-msgstr ""
+msgstr "Nee"
 
 #: collective/collectionfilter/portlets/sorting.pt:13
 msgid "Select"
-msgstr ""
+msgstr "Kies"
 
 #: collective/collectionfilter/portlets/collectionsearch.py:53
 msgid "This portlet allows fulltext search in collection results."
-msgstr "Denne portletten tillater et fulltekstsøk i samlingsresultatene og begrenser dem ytterligere. "
+msgstr "Dit portlet toont een volledige tekst zoekveld voor in verzamelingen."
 
 #: collective/collectionfilter/portlets/maps.py:64
 msgid "This portlet allows map filtering in collection results."
@@ -95,7 +90,7 @@ msgstr ""
 
 #: collective/collectionfilter/portlets/collectionfilter.py:84
 msgid "This portlet shows grouped criteria of collection results and allows filtering of collection results."
-msgstr "Denne portletten viser grupperte samlingsresultater og lar resultatene begrenses ytterligere ved hjelp av filtre. "
+msgstr ""
 
 #: collective/collectionfilter/portlets/sorting.py:65
 msgid "This portlet shows sorting options for the result listing."
@@ -103,7 +98,7 @@ msgstr ""
 
 #: collective/collectionfilter/vocabularies.py:93
 msgid "Yes"
-msgstr ""
+msgstr "Ja"
 
 #: collective/collectionfilter/configure.zcml:58
 msgid "collective.collectionfilter base"
@@ -128,34 +123,34 @@ msgstr ""
 #. Default: "Default map layer"
 #: collective/collectionfilter/interfaces.py:267
 msgid "default_map_layer"
-msgstr "Standardkart "
+msgstr ""
 
 #: collective/collectionfilter/vocabularies.py:190
 msgid "filtertype_and"
-msgstr "OG"
+msgstr ""
 
 #: collective/collectionfilter/vocabularies.py:191
 msgid "filtertype_or"
-msgstr "ELLER"
+msgstr ""
 
 #: collective/collectionfilter/vocabularies.py:189
 msgid "filtertype_single"
-msgstr "Enkelt valg (ikke flere valg)"
+msgstr ""
 
 #. Default: "Enable caching of filter items. The cache is cleared as soon as the database has any changes."
 #: collective/collectionfilter/interfaces.py:111
 msgid "help_cache_enabled"
-msgstr "Aktiver hurtigbuffer for filtrering. Cachen oppdateres med hver databaseendring. "
+msgstr ""
 
 #. Default: "Selector which is used to choose a DOM node from the source into the target. For source and target the same selectors are used."
 #: collective/collectionfilter/interfaces.py:75
 msgid "help_content_selector"
-msgstr "En CSS-velger som markerer resultatlisten. Kildenode (samling) og målnode (resultatliste) må definere samme velger. "
+msgstr ""
 
 #. Default: "Set the default map layer"
 #: collective/collectionfilter/interfaces.py:271
 msgid "help_default_map_layer"
-msgstr "velg standardkartet for visningen. "
+msgstr ""
 
 #. Default: "Select if single or multiple criterias can be selected and if all (and) or any (or) of the selected criterias must be met.Some index types like ``FieldIndex`` (e.g. Type index) only support the any (or) criteria when set to multiple criterias and ignore, if all (and) is set."
 #: collective/collectionfilter/interfaces.py:122
@@ -165,12 +160,12 @@ msgstr ""
 #. Default: "Select the criteria to group the collection results by."
 #: collective/collectionfilter/interfaces.py:92
 msgid "help_groupby"
-msgstr "Velg kriteriet for gruppering av samlingsresultatene. "
+msgstr ""
 
 #. Default: "Title of the rendered filter."
 #: collective/collectionfilter/interfaces.py:37
 msgid "help_header"
-msgstr "Tittel infoboksen"
+msgstr ""
 
 #. Default: "Don't display if there is 1 or no options without selecting a filter yet."
 #: collective/collectionfilter/interfaces.py:155
@@ -190,7 +185,7 @@ msgstr ""
 #. Default: "Narrow down the filter options when a filter of this group is applied. Only options, which are available in the result set will then be displayed. Other filter groups can still narrow down this one, though."
 #: collective/collectionfilter/interfaces.py:144
 msgid "help_narrow_down"
-msgstr "Filteralternativene er begrenset når et filterkriterium er valgt. Bare de filterkriteriene som vises i gjeldende resultat, vises. Imidlertid kan andre filtergrupper fortsatt begrense denne filtergruppen. "
+msgstr ""
 
 #. Default: "Narrow down the result after zooming/moving the map."
 #: collective/collectionfilter/interfaces.py:259
@@ -200,7 +195,7 @@ msgstr ""
 #. Default: "Show the result count for each filter group."
 #: collective/collectionfilter/interfaces.py:102
 msgid "help_show_count"
-msgstr "Vis antall (resultater) for hver filtergruppe. "
+msgstr ""
 
 #. Default: "Select the indexes which can be sorted on."
 #: collective/collectionfilter/interfaces.py:187
@@ -210,7 +205,7 @@ msgstr ""
 #. Default: "The collection, which is the source for the filter items and where the filter is applied."
 #: collective/collectionfilter/interfaces.py:46
 msgid "help_target_collection"
-msgstr "Velg målsamling (Collection). "
+msgstr ""
 
 #. Default: "Optional view name, if the result listing should be rendered with a special view. Can be used to direct the request to a tile."
 #: collective/collectionfilter/interfaces.py:63
@@ -233,12 +228,12 @@ msgstr ""
 #: collective/collectionfilter/tiles/filter.pt:21
 #: collective/collectionfilter/tiles/maps.pt:20
 msgid "label-edit-filter"
-msgstr ""
+msgstr "Bewerk"
 
 #. Default: "Enable Cache"
 #: collective/collectionfilter/interfaces.py:110
 msgid "label_cache_enabled"
-msgstr "Aktiver hurtigbuffer (cache)"
+msgstr "Activeer cache"
 
 #. Default: "Content Selector"
 #: collective/collectionfilter/interfaces.py:74
@@ -253,12 +248,12 @@ msgstr ""
 #. Default: "Group by"
 #: collective/collectionfilter/interfaces.py:91
 msgid "label_groupby"
-msgstr "Grupperingskriterium "
+msgstr ""
 
 #. Default: "Filter title"
 #: collective/collectionfilter/interfaces.py:36
 msgid "label_header"
-msgstr "Portletittel "
+msgstr ""
 
 #. Default: "Hide if empty"
 #: collective/collectionfilter/interfaces.py:154
@@ -273,22 +268,22 @@ msgstr ""
 #. Default: "Map Layers"
 #: collective/collectionfilter/interfaces.py:281
 msgid "label_map_layers"
-msgstr "Kartnivåer "
+msgstr ""
 
 #. Default: "Narrow down filter options"
 #: collective/collectionfilter/interfaces.py:143
 msgid "label_narrow_down"
-msgstr "Begrens filterkriterier "
+msgstr ""
 
 #. Default: "Narrow down result"
 #: collective/collectionfilter/interfaces.py:258
 msgid "label_narrow_down_results"
-msgstr "Begrens resultatlisten "
+msgstr ""
 
 #. Default: "Show count"
 #: collective/collectionfilter/interfaces.py:101
 msgid "label_show_count"
-msgstr "Vis antall"
+msgstr ""
 
 #. Default: "Enabled sort indexes"
 #: collective/collectionfilter/interfaces.py:186
@@ -298,7 +293,7 @@ msgstr ""
 #. Default: "Target Collection"
 #: collective/collectionfilter/interfaces.py:45
 msgid "label_target_collection"
-msgstr "Målsamling "
+msgstr ""
 
 #. Default: "Result listing view name"
 #: collective/collectionfilter/interfaces.py:62
@@ -318,4 +313,4 @@ msgstr ""
 #: collective/collectionfilter/tiles/filter.pt:15
 #: collective/collectionfilter/tiles/maps.pt:14
 msgid "title-edit-filter"
-msgstr "Redigere filtere"
+msgstr "bewerk filter"
