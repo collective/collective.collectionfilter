@@ -207,7 +207,7 @@ class ICollectionFilterResultListSort(ICollectionFilterBaseSchema):
     )
 
 
-class ICollectionFilterInfo(Interface):
+class ICollectionFilterInfo(ICollectionFilterBaseSchema):
     """Schema for the result title/info
     """
     header = schema.TextLine(

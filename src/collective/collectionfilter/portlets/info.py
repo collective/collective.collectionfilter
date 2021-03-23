@@ -21,6 +21,8 @@ class Assignment(base.Assignment):
     target_collection = None
     template_type = '__CUSTOM__'
     tag_type = 'H3'
+    view_name = None
+    content_selector = '#content-core'
 
     def __init__(
         self,
@@ -28,11 +30,15 @@ class Assignment(base.Assignment):
         target_collection=None,
         template_type="__CUSTOM__",
         tag_type='H3',
+        view_name=None,
+        content_selector='#content-core',
     ):
         self.header = header
         self.target_collection = target_collection
         self.template_type = template_type
         self.tag_type = tag_type
+        self.view_name = view_name
+        self.content_selector = content_selector
 
     @property
     def portlet_id(self):
@@ -45,7 +51,7 @@ class Assignment(base.Assignment):
         if self.header:
             return self.header
         else:
-            return _(u'')
+            return _(u'Collection Filter Search Info')
 
 
 class Renderer(BasePortletRenderer, BaseInfoView):
