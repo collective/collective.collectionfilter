@@ -17,6 +17,7 @@ from collective.collectionfilter.utils import safe_encode
 from collective.collectionfilter.utils import safe_iterable
 from collective.collectionfilter.vocabularies import TEXT_IDX
 from collective.collectionfilter.vocabularies import DEFAULT_TEMPLATES
+from collective.collectionfilter.vocabularies import EMPTY_MARKER
 from plone.api.portal import get_registry_record as getrec
 from plone.app.contenttypes.behaviors.collection import ICollection
 from plone.app.uuid.utils import uuidToCatalogBrain
@@ -270,16 +271,12 @@ class BaseInfoView(BaseView):
         return urlquery
 
     def info_contents(self):
-        # TODO: This could be cached as same result appears in other filter counts
         target_collection = self.settings.target_collection
         request_params = self.top_request.form or {}
 
         collection = uuidToObject(target_collection)
         if not collection:
             return None
-
-        # Recursively transform all to unicode
-        request_params = safe_decode(request_params)
 
         count_query = {}
         query = base_query(request_params)
@@ -288,25 +285,57 @@ class BaseInfoView(BaseView):
         # TODO: match them to indexes and get proper names
         # TODO: format values properly
         # TODO: do we want to read out sort too?
+        # TODO: hide some parts of template if query is empty. e.g. "search for has 0 results"
+        # TODO: have conditions when whole portlet is shown or not so can have multiple case portlets
         count_query.update(query)
+        # TODO: delay evaluating this unless its needed
+        # TODO: This could be cached as same result total appears in other filter counts
         catalog_results_fullcount = ICollection(collection).results(
             batch=False,
             brains=True,
             custom_query=count_query
         )
         results = len(catalog_results_fullcount)
-        q = query.items()
+
+        # Clean up filters and values
+        groupby_criteria = getUtility(IGroupByCriteria).groupby
+        q = []
+        for group_by, value in query.items():
+            if group_by not in groupby_criteria:
+                continue
+            # TODO: we actually have idx not group_by
+            # idx = groupby_criteria[group_by]['index']
+            value = safe_decode(value)
+            current_idx_value = safe_iterable(value)
+            # Set title from filter value with modifications,
+            # e.g. uuid to title
+            display_modifier = groupby_criteria[group_by].get('display_modifier', None)
+            titles = []
+            for filter_value in current_idx_value:
+                title = filter_value
+                if filter_value is not EMPTY_MARKER and callable(display_modifier):
+                    title = safe_decode(display_modifier(filter_value))
+                titles.append(title)
+            # TODO: still no nice title for filter indexes? Should be able to get from query builder
+            # TODO: we don't know if filter is AND/OR to display that detail
+            q.append((group_by, titles))
+
+        # Set up context for running templates
         expression_context = getExprContext(
             self.context,
         )
         expression_context.setLocal("results", results)
         expression_context.setLocal("query", q)
+        expression_context.setLocal("search", query.get("SearchableText", ""))
 
         parts = []
         for template in self.settings.template_type:
             _, exp = DEFAULT_TEMPLATES.get(template)
-            parts.append(Expression(exp)(expression_context))
-        return " ".join(parts)
+            # TODO: precompile templates
+            text = Expression(exp)(expression_context)
+            if text:
+                parts.append(text)
+        return u" ".join(parts)
 
 
 if HAS_GEOLOCATION:

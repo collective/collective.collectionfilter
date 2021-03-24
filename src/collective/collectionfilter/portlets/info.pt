@@ -1,4 +1,4 @@
-<aside class="portlet ${view/filterClassName} collectionInfo pat-collectionfilter"
+<aside class="portlet ${view/filterClassName} collectionFilterInfo pat-collectionfilter"
        tal:define="tag_type view/settings/tag_type"
        data-pat-collectionfilter='${view/pat_options}'
        tal:condition="view/available"
@@ -6,8 +6,8 @@
 
   <tal:if condition="view/settings/target_collection">
   <header class="portletHeader" tal:condition="view/title" tal:content="view/title">Title</header>
-  <div class="portletContent filterContent" tal:define="query view/urlquery">
-    <h3 tal:content="view/info_contents"></h3>
+  <div class="portletContent filterInfoContent" tal:define="query view/urlquery">
+    <div aria-live="polite" tal:content="view/info_contents"></div>
   </div>
   </tal:if>
 </aside>

@@ -119,6 +119,20 @@ Add sorting portlet
     Click element  css=.plone-modal-footer input#form-buttons-add
     Wait until page contains element  xpath=//div[contains(@class, 'portletAssignments')]//a[text()='Sort on']
 
+Add Info portlet
+    [Arguments]   ${template}  ${header}
+
+    Wait until page contains element  css=select.add-portlet
+    Select From List by label  css=select.add-portlet  Collection Filter Search Info
+    Wait until element is visible  css=input#form-widgets-header
+
+    Input text  css=input#form-widgets-header  ${header}
+    Select from List by value  css=select#form-widgets-template_type-from  ${template}
+    Click element  css=#form-widgets-template_type button[name='from2toButton']
+    Click element  css=.plone-modal-footer input#form-buttons-add
+    Wait until page contains element  xpath=//div[contains(@class, 'portletAssignments')]//a[text()='${header}']
+
+
 
 Should be ${X} filter options
     Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//div[contains(@class, 'filterContent')]//*[contains(@class, 'filterItem')]  limit=${X}
@@ -161,11 +175,11 @@ My collection has a collection search portlet
     Add search portlet
 
 My collection has a collection filter portlet
-    [Arguments]  ${group_by}=Subject
+    [Arguments]  ${group_by}=Subject  ${op}=or  ${style}=checkboxes_dropdowns
 
     Go to  ${PLONE_URL}/testcollection
     Manage portlets
-    Add filter portlet  ${group_by}  or  checkboxes_dropdowns
+    Add filter portlet  ${group_by}  ${op}  ${style}
 
 My collection has a collection sorting portlet
     [Arguments]  ${sort_on}=sortable_title
@@ -173,6 +187,14 @@ My collection has a collection sorting portlet
     Go to  ${PLONE_URL}/testcollection
     Manage portlets
     Add sorting portlet  ${sort_on}  links
+
+My collection has a collection info portlet
+    [Arguments]  ${template}=value_quoted_filter  ${header}="Current Filter"
+
+    Go to  ${PLONE_URL}/testcollection
+    Manage portlets
+    Add info portlet  ${template}  ${header}
+
 
 I'm viewing the collection
     Go to  ${PLONE_URL}/testcollection
@@ -196,6 +218,14 @@ I should have a portlet titled "${filter_title}" with ${number_of_results} filte
 
     Page Should Contain Element  xpath=//${portlet_title_xpath}
     Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//${portlet_title_xpath}/parent::*[contains(@class, 'collectionFilter')]//${filter_item_xpath}  limit=${number_of_results}
+
+I should have a portlet titled "${filter_title}" with text ${text}
+    ${portlet_title_xpath}  Convert to string  header[@class='portletHeader' and contains(text(), '${filter_title}')]
+    ${filter_item_xpath}  Convert to string  div[contains(@class, 'portletContent')]
+
+    Page Should Contain Element  xpath=//${portlet_title_xpath}
+    Wait Until Element Contains  xpath=//${portlet_title_xpath}/parent::*[contains(@class, 'collectionFilterInfo')]//${filter_item_xpath}  ${text}
+
 
 I sort by "${sort_on}"
     Wait until element is visible  css=.collectionSortOn

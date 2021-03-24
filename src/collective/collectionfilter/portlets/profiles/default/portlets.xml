@@ -17,7 +17,7 @@
       />
   <portlet
       addview="collective.collectionfilter.portlets.CollectionInfo"
-      title="Collection Filter Result Info"
+      title="Collection Filter Search Info"
       description="This portlet shows search criteria and results summary information"
       />
 </portlets>

@@ -210,31 +210,31 @@ class ICollectionFilterResultListSort(ICollectionFilterBaseSchema):
 class ICollectionFilterInfo(ICollectionFilterBaseSchema):
     """Schema for the result title/info
     """
-    header = schema.TextLine(
-        title=_('label_header', default=u'Filter title'),
-        description=_(
-            'help_header',
-            u'Title of the rendered filter.'
-        ),
-        required=False,
-    )
+    # header = schema.TextLine(
+    #     title=_('label_header', default=u'Filter title'),
+    #     description=_(
+    #         'help_header',
+    #         u'Title of the rendered filter.'
+    #     ),
+    #     required=False,
+    # )
 
-    target_collection = schema.Choice(
-        title=_(u'label_target_collection', default=u'Target Collection'),
-        description=_(
-            u'help_target_collection',
-            default=u'The collection, which is the source for the filter '
-                    u'items and where the filter is applied.'
-        ),
-        required=True,
-        vocabulary='plone.app.vocabularies.Catalog',
-        defaultFactory=utils.target_collection_default,
-    )
-    widget(
-        'target_collection',
-        RelatedItemsFieldWidget,
-        pattern_options=pattern_options()
-    )
+    # target_collection = schema.Choice(
+    #     title=_(u'label_target_collection', default=u'Target Collection'),
+    #     description=_(
+    #         u'help_target_collection',
+    #         default=u'The collection, which is the source for the filter '
+    #                 u'items and where the filter is applied.'
+    #     ),
+    #     required=True,
+    #     vocabulary='plone.app.vocabularies.Catalog',
+    #     defaultFactory=utils.target_collection_default,
+    # )
+    # widget(
+    #     'target_collection',
+    #     RelatedItemsFieldWidget,
+    #     pattern_options=pattern_options()
+    # )
 
     template_type = schema.Tuple(
         title=_('label_template_type', u'Template Type'),
