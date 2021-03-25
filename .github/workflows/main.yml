@@ -49,10 +49,11 @@ jobs:
             ~/buildout-cache
             ~/extends
             ~/.cache/pip
-          # key: ${{ runner.os }}-buildout-${{ hashFiles('**/*.cfg') }}-${{ matrix.plone-version }}-${{ matrix.python-version }}
-          key: ${{ runner.os }}-buildout-${{ matrix.plone-version }}-${{ matrix.python-version }}
+          key: ${{ runner.os }}-${{ matrix.python-version }}-${{ matrix.plone-version }}-${{ hashFiles('**/*.cfg') }}
           restore-keys: |
-            ${{ runner.os }}-buildout-
+            ${{ runner.os }}-${{ matrix.python-version }}-${{ matrix.plone-version }}-
+            ${{ runner.os }}-${{ matrix.python-version }}-
+            ${{ runner.os }}-
       - name: setup buildout cache
         run: |
             mkdir -p ~/buildout-cache/{eggs,downloads}
