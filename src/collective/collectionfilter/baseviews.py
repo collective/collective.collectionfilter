@@ -280,7 +280,6 @@ class BaseInfoView(BaseView):
 
         count_query = {}
         query = base_query(request_params)
-        del query['collectionfilter']
         # TODO: take out the search
         # TODO: match them to indexes and get proper names
         # TODO: format values properly
@@ -293,11 +292,12 @@ class BaseInfoView(BaseView):
         catalog_results_fullcount = ICollection(collection).results(
             batch=False,
             brains=True,
-            custom_query=count_query
+            custom_query=make_query(count_query)
         )
         results = len(catalog_results_fullcount)
 
         # Clean up filters and values
+        del query['collectionfilter']
         groupby_criteria = getUtility(IGroupByCriteria).groupby
         q = []
         for group_by, value in query.items():
