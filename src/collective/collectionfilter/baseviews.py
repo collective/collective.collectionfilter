@@ -252,24 +252,6 @@ class BaseSortOnView(BaseView):
 
 class BaseInfoView(BaseView):
 
-    @property
-    def urlquery(self):
-        urlquery = {}
-        urlquery.update(self.top_request.form)
-        for it in (
-            TEXT_IDX,
-            'b_start',
-            'b_size',
-            'batch',
-            'sort_on',
-            'limit',
-            'portlethash'
-        ):
-            # Remove problematic url parameters
-            if it in urlquery:
-                del urlquery[it]
-        return urlquery
-
     def info_contents(self):
         target_collection = self.settings.target_collection
         request_params = self.top_request.form or {}

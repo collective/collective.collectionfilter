@@ -6,7 +6,7 @@
 
   <tal:if condition="view/settings/target_collection">
   <header class="portletHeader" tal:condition="view/title" tal:content="view/title">Title</header>
-  <div class="portletContent filterInfoContent" tal:define="query view/urlquery">
+  <div class="portletContent filterInfoContent">
     <div aria-live="polite" tal:content="view/info_contents"></div>
   </div>
   </tal:if>
