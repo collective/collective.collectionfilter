@@ -45,7 +45,7 @@ Scenario: Info on keyword search
       and my collection has a collection info portlet  Current Filters  search_quoted  
       and my collection has a collection search portlet
      When I'm viewing the collection
-      and I search for "Document" with ajax
+      and I search for "Document"
      then I should have a portlet titled "Current Filters" with text "Document"
 
 Scenario: Combine info templates
@@ -58,5 +58,5 @@ Scenario: Combine info templates
       and Should be 2 collection results
       and Click Input "Evänt (1)"
       and Should be 1 collection results
-      and I search for "Event" with ajax
+      and I search for "Event"
      Then I should have a portlet titled "Current Filters" with text Search for "Event" Subject: Süper/Evänt, with 1 result

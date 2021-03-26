@@ -214,6 +214,11 @@ I search for "${search}" and click search
     Input text  css=.collectionSearch input[name='SearchableText']  ${search}
     Click Element  css=.collectionSearch button[type='submit']
 
+I search for "${search}"
+    Input text  css=.collectionSearch input[name='SearchableText']  ${search}
+    ${present}=  Run Keyword And Return Status   Element Should Be Visible  css=.collectionSearch button[type='submit']
+    Run Keyword If    ${present}   Click Element  css=.collectionSearch button[type='submit']
+
 I should have a portlet titled "${filter_title}" with ${number_of_results} filter options
     ${portlet_title_xpath}  Convert to string  header[@class='portletHeader' and contains(text(), '${filter_title}')]
     ${filter_item_xpath}  Convert to string  div[contains(@class, 'filterContent')]//li[contains(@class, 'filterItem')]
