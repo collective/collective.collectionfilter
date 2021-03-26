@@ -335,7 +335,10 @@ class BaseInfoView(BaseView):
             text = Expression(exp)(expression_context)
             if text:
                 parts.append(text)
-        return u" ".join(parts)
+        line = u" ".join(parts)
+        # TODO: should be more generic i18n way to do this?
+        line = line.replace(u" ,", u",").replace(" :", ":")
+        return line
 
 
 if HAS_GEOLOCATION:

@@ -120,15 +120,16 @@ Add sorting portlet
     Wait until page contains element  xpath=//div[contains(@class, 'portletAssignments')]//a[text()='Sort on']
 
 Add Info portlet
-    [Arguments]   ${template}  ${header}
+    [Arguments]   ${header}  @{templates}
 
     Wait until page contains element  css=select.add-portlet
     Select From List by label  css=select.add-portlet  Collection Filter Search Info
     Wait until element is visible  css=input#form-widgets-header
 
     Input text  css=input#form-widgets-header  ${header}
-    Select from List by value  css=select#form-widgets-template_type-from  ${template}
-    Click element  css=#form-widgets-template_type button[name='from2toButton']
+    :FOR  ${template}  IN  @{templates}
+    \    Select from List by value  css=select#form-widgets-template_type-from  ${template}
+    \    Click element  css=#form-widgets-template_type button[name='from2toButton']
     Click element  css=.plone-modal-footer input#form-buttons-add
     Wait until page contains element  xpath=//div[contains(@class, 'portletAssignments')]//a[text()='${header}']
 
@@ -190,11 +191,11 @@ My collection has a collection sorting portlet
     Add sorting portlet  ${sort_on}  links
 
 My collection has a collection info portlet
-    [Arguments]  ${template}=value_quoted_filter  ${header}="Current Filter"
+    [Arguments]  ${header}="Current Filter"  @{templates}
 
     Go to  ${PLONE_URL}/testcollection
     Manage portlets
-    Add info portlet  ${template}  ${header}
+    Add info portlet  ${header}  @{templates}  
 
 
 I'm viewing the collection

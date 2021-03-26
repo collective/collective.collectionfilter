@@ -231,9 +231,10 @@ DEFAULT_TEMPLATES = OrderedDict([
     ("hyphen", (u" - ", u"string:-")),
     ("comma", (u", ", u"string:, ")),
     ("has_returned", (u"has returned", u"string:has returned")),
+    ("with", (u"with", u"string:with")),
     ("result_count", (u"{results}", u"python:str(results)")),
-    ("results", (u"Results", u"string: Results")),
-    ("documents", (u"Documents", u"string: Documents")),
+    ("results", (u"results", u"python: 'result' if results == 1 else 'results'")),
+    ("documents", (u"documents", u"python: 'document' if results == 1 else 'documents'")),
 ])
 
 
