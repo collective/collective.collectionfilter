@@ -19,3 +19,14 @@ Scenario: Info on single choice filter
       and Click Input "Süper (2)"
       and Should be 2 collection results
      then I should have a portlet titled "Current Filters" with text "Süper" Subject
+
+Scenario: Info on multiple choice filter
+    Given I've got a site with a collection
+      and my collection has a collection info portlet  filter_colon_value  Current Filters
+      and my collection has a collection filter portlet  Subject  and  checkboxes_dropdowns
+    When I'm viewing the collection
+      and Click Input "Süper (2)"
+      and Should be 2 collection results
+      and Click Input "Evänt (1)"
+      and Should be 1 collection results
+     then I should have a portlet titled "Current Filters" with text Subject: Süper/Evänt
