@@ -1,5 +1,4 @@
 <aside class="portlet ${view/filterClassName} collectionFilterInfo pat-collectionfilter"
-       tal:define="tag_type view/settings/tag_type"
        data-pat-collectionfilter='${view/pat_options}'
        tal:condition="view/available"
        i18n:domain="collective.collectionfilter">

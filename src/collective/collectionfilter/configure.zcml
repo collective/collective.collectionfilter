@@ -46,6 +46,10 @@
       component=".vocabularies.TemplatePartsVocabulary"
       name="collective.collectionfilter.TemplateParts"
       />
+  <utility
+      component=".vocabularies.InfoConditionsVocabulary"
+      name="collective.collectionfilter.InfoConditions"
+      />
 
   <subscriber
       for="Products.CMFPlone.interfaces.IPloneSiteRoot

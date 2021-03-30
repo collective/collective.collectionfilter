@@ -240,5 +240,30 @@ DEFAULT_TEMPLATES = OrderedDict([
 
 @provider(IVocabularyFactory)
 def TemplatePartsVocabulary(context):
-    items = [SimpleTerm(title=v[0], value=k) for k, v in DEFAULT_TEMPLATES.items()]  # noqa
+    items = [SimpleTerm(title=v[0], value=k) for k, v in DEFAULT_TEMPLATES.items()]
+    return SimpleVocabulary(items)
+
+
+def get_conditions():
+    items = [
+        ("any_filter", u"Any filter", "query"),
+        ("no_filter", u"No filter", "not:query"),
+        ("search", u"Keyword search", "search"),
+        ("no_search", u"Keyword search", "not:search"),
+        ("results", u"Results", "results"),
+        ("no_results", u"No Results", "not:results"),
+    ]
+    groupby = getUtility(IGroupByCriteria).groupby
+    for it in groupby.keys():
+        i = ("filter_{}".format(it), u"Filtered by {}".format(_(it)), "python:'{}' in query".format(it))
+        items.append(i)
+        i = ("no_filter_{}".format(it), u"Not Filtered by {}".format(_(it)), "python:'{}' not in query".format(it))
+        items.append(i)
+    return items
+
+
+@provider(IVocabularyFactory)
+def InfoConditionsVocabulary(context):
+
+    items = [SimpleTerm(title=title, value=id) for id, title, _ in get_conditions()]
     return SimpleVocabulary(items)

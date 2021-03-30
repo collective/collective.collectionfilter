@@ -3,6 +3,7 @@ import json
 
 from plone import api
 from plone.memoize import instance
+from plone.memoize import ram
 
 from Acquisition import aq_inner
 from Products.CMFPlone.utils import get_top_request
@@ -17,6 +18,7 @@ from collective.collectionfilter.utils import safe_encode
 from collective.collectionfilter.utils import safe_iterable
 from collective.collectionfilter.vocabularies import TEXT_IDX
 from collective.collectionfilter.vocabularies import DEFAULT_TEMPLATES
+from collective.collectionfilter.vocabularies import get_conditions
 from collective.collectionfilter.vocabularies import EMPTY_MARKER
 from plone.api.portal import get_registry_record as getrec
 from plone.app.contenttypes.behaviors.collection import ICollection
@@ -250,11 +252,15 @@ class BaseSortOnView(BaseView):
         return ajax_url
 
 
+def _exp_cachekey(method, self, target_collection, request):
+    return (target_collection, json.dumps(request))
+
+
 class BaseInfoView(BaseView):
 
-    def info_contents(self):
-        target_collection = self.settings.target_collection
-        request_params = self.top_request.form or {}
+    # TODO: should just cache on request?
+    @ram.cache(_exp_cachekey)
+    def get_expression_context(self, target_collection, request_params):
 
         collection = uuidToObject(target_collection)
         if not collection:
@@ -304,11 +310,17 @@ class BaseInfoView(BaseView):
 
         # Set up context for running templates
         expression_context = getExprContext(
-            self.context,
+            collection,
         )
         expression_context.setLocal("results", results)
         expression_context.setLocal("query", q)
         expression_context.setLocal("search", query.get("SearchableText", ""))
+        return expression_context
+
+    def info_contents(self):
+        target_collection = self.settings.target_collection
+        request_params = self.top_request.form or {}
+        expression_context = self.get_expression_context(target_collection, request_params)
 
         parts = []
         for template in self.settings.template_type:
@@ -321,6 +333,23 @@ class BaseInfoView(BaseView):
         # TODO: should be more generic i18n way to do this?
         line = line.replace(u" ,", u",").replace(" :", ":")
         return line
+
+    @property
+    def available(self):
+        target_collection = self.settings.target_collection
+        request_params = self.top_request.form or {}
+        expression_context = self.get_expression_context(target_collection, request_params)
+
+        conditions = dict((k, (t, e)) for k, t, e in get_conditions())
+        if not self.settings.hide_when:
+            return True
+        for cond in self.settings.hide_when:
+            _, exp = conditions.get(cond)
+            # TODO: precompile templates
+            res = Expression(exp)(expression_context)
+            if not res:
+                return True
+        return False
 
 
 if HAS_GEOLOCATION:

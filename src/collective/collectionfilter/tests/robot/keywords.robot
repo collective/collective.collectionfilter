@@ -120,7 +120,7 @@ Add sorting portlet
     Wait until page contains element  xpath=//div[contains(@class, 'portletAssignments')]//a[text()='Sort on']
 
 Add Info portlet
-    [Arguments]   ${header}  @{templates}
+    [Arguments]   ${header}  @{templates}  ${hide_when}=
 
     Wait until page contains element  css=select.add-portlet
     Select From List by label  css=select.add-portlet  Collection Filter Search Info
@@ -130,6 +130,9 @@ Add Info portlet
     :FOR  ${template}  IN  @{templates}
     \    Select from List by value  css=select#form-widgets-template_type-from  ${template}
     \    Click element  css=#form-widgets-template_type button[name='from2toButton']
+    Run keyword if  "${hide_when}" != ""  Run Keywords
+    ...    Select from List by value  css=select#form-widgets-hide_when-from  ${hide_when}
+    ...    AND  Click element  css=#form-widgets-hide_when button[name='from2toButton']
     Click element  css=.plone-modal-footer input#form-buttons-add
     Wait until page contains element  xpath=//div[contains(@class, 'portletAssignments')]//a[text()='${header}']
 
@@ -191,11 +194,11 @@ My collection has a collection sorting portlet
     Add sorting portlet  ${sort_on}  links
 
 My collection has a collection info portlet
-    [Arguments]  ${header}="Current Filter"  @{templates}
+    [Arguments]  ${header}="Current Filter"  @{templates}  ${hide_when}=${None}
 
     Go to  ${PLONE_URL}/testcollection
     Manage portlets
-    Add info portlet  ${header}  @{templates}  
+    Add info portlet  ${header}   @{templates}  hide_when=${hide_when}  
 
 
 I'm viewing the collection
@@ -236,6 +239,11 @@ I should have a portlet titled "${filter_title}" with text ${text}
     Page Should Contain Element  xpath=//${portlet_title_xpath}
     Wait Until Element Contains  xpath=//${portlet_title_xpath}/parent::*[contains(@class, 'collectionFilterInfo')]//${filter_item_xpath}  ${text}
 
+I should not have a portlet titled "${filter_title}"
+    ${portlet_title_xpath}  Convert to string  header[@class='portletHeader' and contains(text(), '${filter_title}')]
+    ${filter_item_xpath}  Convert to string  div[contains(@class, 'portletContent')]
+
+    Page Should not Contain Element  xpath=//${portlet_title_xpath}
 
 I sort by "${sort_on}"
     Wait until element is visible  css=.collectionSortOn

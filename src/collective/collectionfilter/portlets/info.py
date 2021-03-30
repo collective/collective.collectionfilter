@@ -19,26 +19,26 @@ class Assignment(base.Assignment):
 
     header = u""
     target_collection = None
-    template_type = '__CUSTOM__'
-    tag_type = 'H3'
     view_name = None
     content_selector = '#content-core'
+    template_type = []
+    hide_when = []
 
     def __init__(
         self,
         header=u"",
         target_collection=None,
-        template_type="__CUSTOM__",
-        tag_type='H3',
         view_name=None,
         content_selector='#content-core',
+        template_type=[],
+        hide_when=[],
     ):
         self.header = header
         self.target_collection = target_collection
-        self.template_type = template_type
-        self.tag_type = tag_type
         self.view_name = view_name
         self.content_selector = content_selector
+        self.template_type = template_type
+        self.hide_when = hide_when
 
     @property
     def portlet_id(self):
