@@ -335,7 +335,7 @@ class BaseInfoView(BaseView):
         return line
 
     @property
-    def available(self):
+    def is_available(self):
         target_collection = self.settings.target_collection
         request_params = self.top_request.form or {}
         expression_context = self.get_expression_context(target_collection, request_params)
