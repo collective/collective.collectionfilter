@@ -120,7 +120,7 @@ Add sorting portlet
     Wait until page contains element  xpath=//div[contains(@class, 'portletAssignments')]//a[text()='Sort on']
 
 Add Info portlet
-    [Arguments]   ${header}  @{templates}  ${hide_when}=
+    [Arguments]   ${header}  @{templates}  ${hide_when}=${None}
 
     Wait until page contains element  css=select.add-portlet
     Select From List by label  css=select.add-portlet  Collection Filter Search Info
@@ -130,7 +130,7 @@ Add Info portlet
     :FOR  ${template}  IN  @{templates}
     \    Select from List by value  css=select#form-widgets-template_type-from  ${template}
     \    Click element  css=#form-widgets-template_type button[name='from2toButton']
-    Run keyword if  "${hide_when}" != ""  Run Keywords
+    Run keyword if  $hide_when is not ${None}  Run Keywords
     ...    Select from List by value  css=select#form-widgets-hide_when-from  ${hide_when}
     ...    AND  Click element  css=#form-widgets-hide_when button[name='from2toButton']
     Click element  css=.plone-modal-footer input#form-buttons-add
