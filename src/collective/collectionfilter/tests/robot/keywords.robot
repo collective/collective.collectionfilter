@@ -162,11 +162,11 @@ My collection has a collection search portlet
     Add search portlet
 
 My collection has a collection filter portlet
-    [Arguments]  ${group_by}=Subject
+    [Arguments]  ${group_by}=Subject  ${op}=or  ${style}=checkboxes_dropdowns
 
     Go to  ${PLONE_URL}/testcollection
     Manage portlets
-    Add filter portlet  ${group_by}  or  checkboxes_dropdowns
+    Add filter portlet  ${group_by}  ${op}  ${style}
 
 My collection has a collection sorting portlet
     [Arguments]  ${sort_on}=sortable_title
@@ -190,6 +190,11 @@ I search for "${search}" and click search
     Wait until element is visible  css=.collectionSearch button[type='submit']
     Input text  css=.collectionSearch input[name='SearchableText']  ${search}
     Click Element  css=.collectionSearch button[type='submit']
+
+I search for "${search}"
+    Input text  css=.collectionSearch input[name='SearchableText']  ${search}
+    ${present}=  Run Keyword And Return Status   Element Should Be Visible  css=.collectionSearch button[type='submit']
+    Run Keyword If    ${present}   Click Element  css=.collectionSearch button[type='submit']
 
 I should have a portlet titled "${filter_title}" with ${number_of_results} filter options
     ${portlet_title_xpath}  Convert to string  header[@class='portletHeader' and contains(text(), '${filter_title}')]
