@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from collective.collectionfilter.testing import (
-    COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING,
     COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED,
     COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED,
 )  # noqa
@@ -21,24 +20,34 @@ def test_suite():
         os.path.join('robot', doc) for doc in os.listdir(robot_dir)
         if doc.endswith('.robot') and doc.startswith('test_')
     ]
+    l1 = ROBOT_TEST_LEVEL
+    l2 = ROBOT_TEST_LEVEL + 1
     for robot_test in robot_tests:
         if "ajaxenabled" in robot_test:
             if api.env.plone_version() < '5.1':
                 break
             else:
                 test_layer = (
-                    COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED
+                    (l1, COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED),
                 )
         elif "ajaxdisabled" in robot_test:
             test_layer = (
-                COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED
+                (l1, COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED),
             )
 
         else:
-            test_layer = COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING
-
-        robottestsuite = robotsuite.RobotTestSuite(robot_test)
-        robottestsuite.level = ROBOT_TEST_LEVEL
-        suite.addTests([layered(robottestsuite, layer=test_layer)])
+            if api.env.plone_version() < '5.1':
+                test_layer = (
+                    (l1, COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED),
+                )
+            else:
+                test_layer = (
+                    (l2, COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED),
+                    (l1, COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED),
+                )
+        for level, layer in test_layer:
+            robottestsuite = robotsuite.RobotTestSuite(robot_test)
+            robottestsuite.level = level
+            suite.addTests([layered(robottestsuite, layer=layer)])
 
     return suite
