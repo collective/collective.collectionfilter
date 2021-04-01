@@ -23,28 +23,24 @@ def test_suite():
     l1 = ROBOT_TEST_LEVEL
     l2 = ROBOT_TEST_LEVEL + 1
     for robot_test in robot_tests:
-        if "ajaxenabled" in robot_test:
-            if api.env.plone_version() < '5.1':
-                break
-            else:
-                test_layer = (
-                    (l1, COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED),
-                )
+        if api.env.plone_version() < '5.1':
+            test_layer = (
+                (l1, COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED),
+            )
+        elif "ajaxenabled" in robot_test:
+            test_layer = (
+                (l1, COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED),
+            )
         elif "ajaxdisabled" in robot_test:
             test_layer = (
                 (l1, COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED),
             )
-
         else:
-            if api.env.plone_version() < '5.1':
-                test_layer = (
-                    (l1, COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED),
-                )
-            else:
-                test_layer = (
-                    (l2, COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED),
-                    (l1, COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED),
-                )
+            # We will run generic tests with and without ajax to test everything
+            test_layer = (
+                (l2, COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED),
+                (l1, COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED),
+            )
         for level, layer in test_layer:
             robottestsuite = robotsuite.RobotTestSuite(robot_test)
             robottestsuite.level = level
