@@ -23,7 +23,9 @@ def test_suite():
     l1 = ROBOT_TEST_LEVEL
     l2 = ROBOT_TEST_LEVEL + 1
     for robot_test in robot_tests:
-        if api.env.plone_version() < '5.1':
+        if api.env.plone_version() < '5.1' and "ajaxenabled" in robot_test:
+            continue
+        elif api.env.plone_version() < '5.1':
             test_layer = (
                 (l1, COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED),
             )
