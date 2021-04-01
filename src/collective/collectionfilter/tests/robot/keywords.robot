@@ -203,6 +203,13 @@ I should have a portlet titled "${filter_title}" with ${number_of_results} filte
     Page Should Contain Element  xpath=//${portlet_title_xpath}
     Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//${portlet_title_xpath}/parent::*[contains(@class, 'collectionFilter')]//${filter_item_xpath}  limit=${number_of_results}
 
+I should not have a portlet titled "${filter_title}"
+    ${portlet_title_xpath}  Convert to string  header[@class='portletHeader' and contains(text(), '${filter_title}')]
+    ${filter_item_xpath}  Convert to string  div[contains(@class, 'portletContent')]
+
+    Page Should not Contain Element  xpath=//${portlet_title_xpath}
+
+
 I should not see any results
     Sleep  1 sec
     Element should be visible  xpath=//*[@id="content-core"]/*[text()="No results were found."]
@@ -215,6 +222,9 @@ I sort by "${sort_on}"
 
     Click Element  css=.collectionSortOn .sortItem .${sort_on}
     Wait until keyword succeeds  5s  1s  Page Should Contain Element  css=.collectionSortOn .sortItem.selected .${sort_on} span.glyphicon-sort-by-attributes-alt
+
+should be no errors
+
 
 # --- Tiles -------------------------------------------------------------------
 Enable mosaic layout for page
