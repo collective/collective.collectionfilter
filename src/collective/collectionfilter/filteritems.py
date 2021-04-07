@@ -81,6 +81,9 @@ def get_filter_items(
 
     # Recursively transform all to unicode
     request_params = safe_decode(request_params)
+    # Things break if sort_order is not a str
+    if "sort_order" in request_params:
+        request_params["sort_order"] = str(request_params["sort_order"])
 
     # Support for the Event Listing view from plone.app.event
     collection_layout = collection.getLayout()
