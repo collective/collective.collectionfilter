@@ -22,6 +22,7 @@ from six.moves.urllib.parse import urlencode
 from zope.component import getUtility
 from zope.globalrequest import getRequest
 from zope.i18n import translate
+import six
 
 import plone.api
 
@@ -81,6 +82,9 @@ def get_filter_items(
 
     # Recursively transform all to unicode
     request_params = safe_decode(request_params)
+    # Things break if sort_order is not a str
+    if six.PY2 and "sort_order" in request_params:
+        request_params["sort_order"] = str(request_params["sort_order"])
 
     # Support for the Event Listing view from plone.app.event
     collection_layout = collection.getLayout()

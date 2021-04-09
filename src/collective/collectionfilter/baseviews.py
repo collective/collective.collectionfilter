@@ -196,7 +196,7 @@ class BaseSearchView(BaseView):
         if 'collectionfilter' not in urlquery:
             urlquery['collectionfilter'] = '1'
 
-        return ((k,vv) for k,v in urlquery.items() for vv in safe_iterable(v))
+        return ((k, vv) for k, v in urlquery.items() for vv in safe_iterable(v))
 
     @property
     def ajax_url(self):

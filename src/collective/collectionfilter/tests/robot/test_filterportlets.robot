@@ -97,3 +97,15 @@ Scenario: Displaying multiple collection filters on a single page
     When I'm viewing the collection
     Then I should have a portlet titled "Subject" with 4 filter options
       and I should have a portlet titled "Type" with 3 filter options
+
+Scenario: Combine search and OR filter
+    Given I've got a site with a collection
+      and my collection has a collection search portlet
+      and my collection has a collection filter portlet  Subject  and  checkboxes_dropdowns
+     When I'm viewing the collection
+      and Click Input "Süper (2)"
+      and Should be 2 collection results
+      and Click Input "Evänt (1)"
+      and Should be 1 collection results
+      and I search for "Event"
+      and Should be 1 collection results
