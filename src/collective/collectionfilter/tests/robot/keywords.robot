@@ -245,12 +245,6 @@ I should have a portlet titled "${filter_title}" with text ${text}
     Page Should Contain Element  xpath=//${portlet_title_xpath}
     Wait Until Element Contains  xpath=//${portlet_title_xpath}/parent::*[contains(@class, 'collectionFilterInfo')]//${filter_item_xpath}  ${text}
 
-I should not have a portlet titled "${filter_title}"
-    ${portlet_title_xpath}  Convert to string  header[@class='portletHeader' and contains(text(), '${filter_title}')]
-    ${filter_item_xpath}  Convert to string  div[contains(@class, 'portletContent')]
-
-    Page Should not Contain Element  xpath=//${portlet_title_xpath}
-
 I sort by "${sort_on}"
     Wait until element is visible  css=.collectionSortOn
 
@@ -259,8 +253,6 @@ I sort by "${sort_on}"
 
     Click Element  css=.collectionSortOn .sortItem .${sort_on}
     Wait until keyword succeeds  5s  1s  Page Should Contain Element  css=.collectionSortOn .sortItem.selected .${sort_on} span.glyphicon-sort-by-attributes-alt
-
-should be no errors
 
 
 # --- Tiles -------------------------------------------------------------------
