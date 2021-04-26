@@ -16,6 +16,7 @@ from plone.app.uuid.utils import uuidToCatalogBrain
 from plone.app.uuid.utils import uuidToObject
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize import instance
+from plone.uuid.interfaces import IUUID
 from Products.CMFPlone.utils import get_top_request
 from Products.CMFPlone.utils import safe_unicode
 from six.moves.urllib.parse import urlencode
@@ -23,8 +24,6 @@ from zope.component import getUtility
 from zope.component import queryUtility
 from zope.i18n import translate
 from zope.schema.interfaces import IVocabularyFactory
-from plone.uuid.interfaces import IUUID
-
 
 import json
 
@@ -138,7 +137,6 @@ class BaseFilterView(BaseView):
     # but just the the lifetime of the view
     @instance.memoize
     def results(self):
-        breakpoint()
         results = get_filter_items(
             target_collection=self.collection_uuid,
             group_by=self.settings.group_by,

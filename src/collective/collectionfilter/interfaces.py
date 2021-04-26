@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+from collective.collectionfilter import _
+from collective.collectionfilter import PLONE_VERSION
+from collective.collectionfilter import utils
 from plone.api.portal import get_registry_record as getrec
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from plone.autoform.directives import widget
@@ -7,11 +10,10 @@ from zope import schema
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
-from collective.collectionfilter import PLONE_VERSION, _, utils
 
 try:
-    from plone.formwidget.geolocation.vocabularies import (default_map_layer,
-                                                           default_map_layers)
+    from plone.formwidget.geolocation.vocabularies import default_map_layer
+    from plone.formwidget.geolocation.vocabularies import default_map_layers
     HAS_GEOLOCATION = True
 except ImportError:
     HAS_GEOLOCATION = False
