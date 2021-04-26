@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_base
 from Acquisition import aq_inner
+from Acquisition import aq_parent
 from collective.collectionfilter import _
 from collective.collectionfilter.interfaces import ICollectionFilterBaseSchema
 from collective.collectionfilter.interfaces import ICollectionFilterBrowserLayer
@@ -23,13 +24,14 @@ class TargetCollectionValidator(validator.SimpleFieldValidator):
     def validate(self, value):
         super(TargetCollectionValidator, self).validate(value)
 
-        # breakpoint()
+        current_context = self.context
 
-        if IDexterityContent.providedBy(self.context):
-            context = self.context
-        else:
-            context = self.context.aq_parent
-        if not hasattr(aq_base(context), 'query'):
+        while True:
+            if IDexterityContent.providedBy(current_context):
+                break
+            current_context = aq_parent(current_context)
+
+        if not hasattr(aq_base(current_context), 'query'):
             raise Invalid(_(u'Context is not a collection, please set a target collection.'))
         return True
 
