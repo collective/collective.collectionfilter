@@ -1,26 +1,33 @@
 # -*- coding: utf-8 -*-
-import json
-
 from Acquisition import aq_inner
-from plone import api
-from plone.api.portal import get_registry_record as getrec
-from plone.app.contenttypes.behaviors.collection import ICollection
-from plone.app.uuid.utils import uuidToCatalogBrain, uuidToObject
-from plone.i18n.normalizer.interfaces import IIDNormalizer
-from plone.memoize import instance
-from Products.CMFPlone.utils import get_top_request, safe_unicode
-from six.moves.urllib.parse import urlencode
-from zope.component import getUtility, queryUtility
-from zope.i18n import translate
-from zope.schema.interfaces import IVocabularyFactory
-
 from collective.collectionfilter import PLONE_VERSION
 from collective.collectionfilter.filteritems import get_filter_items
 from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.query import make_query
-from collective.collectionfilter.utils import (base_query, safe_decode,
-                                               safe_encode, safe_iterable)
+from collective.collectionfilter.utils import base_query
+from collective.collectionfilter.utils import safe_decode
+from collective.collectionfilter.utils import safe_encode
+from collective.collectionfilter.utils import safe_iterable
 from collective.collectionfilter.vocabularies import TEXT_IDX
+from plone import api
+from plone.api.portal import get_registry_record as getrec
+from plone.app.contenttypes.behaviors.collection import ICollection
+from plone.app.uuid.utils import uuidToCatalogBrain
+from plone.app.uuid.utils import uuidToObject
+from plone.i18n.normalizer.interfaces import IIDNormalizer
+from plone.memoize import instance
+from Products.CMFPlone.utils import get_top_request
+from Products.CMFPlone.utils import safe_unicode
+from six.moves.urllib.parse import urlencode
+from zope.component import getUtility
+from zope.component import queryUtility
+from zope.i18n import translate
+from zope.schema.interfaces import IVocabularyFactory
+from plone.uuid.interfaces import IUUID
+
+
+import json
+
 
 try:
     from collective.geolocationbehavior.interfaces import IGeoJSONProperties
@@ -79,7 +86,7 @@ class BaseView(object):
     def collection_uuid(self):
         if self.settings.target_collection:
             return self.settings.target_collection
-        return self.context.UID()
+        return IUUID(self.context)
 
     @property
     def collection(self):
@@ -131,6 +138,7 @@ class BaseFilterView(BaseView):
     # but just the the lifetime of the view
     @instance.memoize
     def results(self):
+        breakpoint()
         results = get_filter_items(
             target_collection=self.collection_uuid,
             group_by=self.settings.group_by,

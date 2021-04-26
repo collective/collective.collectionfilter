@@ -1,15 +1,19 @@
 # -*- coding: utf-8 -*-
-from Acquisition import aq_base, aq_inner
+from Acquisition import aq_base
+from Acquisition import aq_inner
+from collective.collectionfilter import _
+from collective.collectionfilter.interfaces import ICollectionFilterBaseSchema
+from collective.collectionfilter.interfaces import ICollectionFilterBrowserLayer
 from plone.dexterity.interfaces import IDexterityContent
 from z3c.form import validator
 from z3c.form.interfaces import IValidator
-from zope.component import adapter, getMultiAdapter, queryUtility
-from zope.interface import Interface, Invalid, implementer
+from zope.component import adapter
+from zope.component import getMultiAdapter
+from zope.component import queryUtility
+from zope.interface import implementer
+from zope.interface import Interface
+from zope.interface import Invalid
 from zope.schema.interfaces import IField
-
-from collective.collectionfilter import _
-from collective.collectionfilter.interfaces import (
-    ICollectionFilterBaseSchema, ICollectionFilterBrowserLayer)
 
 
 @implementer(IValidator)
