@@ -28,14 +28,6 @@ def target_collection_types(context):
         default=['Collection', ])
 
 
-@provider(IContextAwareDefaultFactory)
-def target_collection_default(context):
-    for potential_context in context.aq_chain:
-        if ISyndicatableCollection.providedBy(potential_context):
-            return IUUID(potential_context, None)
-    return None
-
-
 def safe_decode(val):
     """Safely create unicode values.
     """

@@ -17,6 +17,11 @@
       directory="resources"
       />
 
+  <adapter
+      factory=".validator.TargetCollectionValidator"
+      provides="z3c.form.interfaces.IValidator"
+      />
+
   <utility
       provides=".interfaces.IGroupByCriteria"
       factory=".vocabularies.GroupByCriteria"
