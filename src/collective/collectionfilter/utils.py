@@ -2,11 +2,8 @@
 from plone import api
 from Products.CMFCore.interfaces import IFolderish
 from Products.CMFPlone.utils import safe_unicode
+
 import six
-from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
-from plone.uuid.interfaces import IUUID
-from zope.interface import provider
-from zope.schema.interfaces import IContextAwareDefaultFactory
 
 
 def target_collection_base_path(context):

@@ -8,8 +8,6 @@ from plone.dexterity.interfaces import IDexterityContent
 from z3c.form import validator
 from z3c.form.interfaces import IValidator
 from zope.component import adapter
-from zope.component import getMultiAdapter
-from zope.component import queryUtility
 from zope.interface import implementer
 from zope.interface import Interface
 from zope.interface import Invalid
