@@ -2,11 +2,8 @@
 from plone import api
 from Products.CMFCore.interfaces import IFolderish
 from Products.CMFPlone.utils import safe_unicode
+
 import six
-from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
-from plone.uuid.interfaces import IUUID
-from zope.interface import provider
-from zope.schema.interfaces import IContextAwareDefaultFactory
 
 
 def target_collection_base_path(context):
@@ -26,14 +23,6 @@ def target_collection_types(context):
     return api.portal.get_registry_record(
         'collective.collectionfilter.target_collection_types',
         default=['Collection', ])
-
-
-@provider(IContextAwareDefaultFactory)
-def target_collection_default(context):
-    for potential_context in context.aq_chain:
-        if ISyndicatableCollection.providedBy(potential_context):
-            return IUUID(potential_context, None)
-    return None
 
 
 def safe_decode(val):

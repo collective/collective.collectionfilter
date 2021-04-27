@@ -1,12 +1,5 @@
 # -*- coding: utf-8 -*-
-import json
-
-from plone import api
-from plone.memoize import instance
-
 from Acquisition import aq_inner
-from Products.CMFPlone.utils import get_top_request
-from Products.CMFPlone.utils import safe_unicode
 from collective.collectionfilter import PLONE_VERSION
 from collective.collectionfilter.filteritems import get_filter_items
 from collective.collectionfilter.interfaces import IGroupByCriteria
@@ -16,16 +9,24 @@ from collective.collectionfilter.utils import safe_decode
 from collective.collectionfilter.utils import safe_encode
 from collective.collectionfilter.utils import safe_iterable
 from collective.collectionfilter.vocabularies import TEXT_IDX
+from plone import api
 from plone.api.portal import get_registry_record as getrec
 from plone.app.contenttypes.behaviors.collection import ICollection
 from plone.app.uuid.utils import uuidToCatalogBrain
 from plone.app.uuid.utils import uuidToObject
 from plone.i18n.normalizer.interfaces import IIDNormalizer
+from plone.memoize import instance
+from plone.uuid.interfaces import IUUID
+from Products.CMFPlone.utils import get_top_request
+from Products.CMFPlone.utils import safe_unicode
 from six.moves.urllib.parse import urlencode
 from zope.component import getUtility
 from zope.component import queryUtility
 from zope.i18n import translate
 from zope.schema.interfaces import IVocabularyFactory
+
+import json
+
 
 try:
     from collective.geolocationbehavior.interfaces import IGeoJSONProperties
@@ -81,10 +82,16 @@ class BaseView(object):
         return self._top_request
 
     @property
+    def collection_uuid(self):
+        if self.settings.target_collection:
+            return self.settings.target_collection
+        return IUUID(self.context)
+
+    @property
     def collection(self):
         if not self._collection:
             self._collection = uuidToCatalogBrain(
-                self.settings.target_collection
+                self.collection_uuid
             )
         return aq_inner(self._collection)
 
@@ -92,7 +99,7 @@ class BaseView(object):
     def pat_options(self):
 
         return json.dumps({
-            "collectionUUID": self.settings.target_collection,
+            "collectionUUID": self.collection_uuid,
             "reloadURL": self.reload_url,
             "ajaxLoad": self.ajax_load,
             "contentSelector": self.settings.content_selector
@@ -131,7 +138,7 @@ class BaseFilterView(BaseView):
     @instance.memoize
     def results(self):
         results = get_filter_items(
-            target_collection=self.settings.target_collection,
+            target_collection=self.collection_uuid,
             group_by=self.settings.group_by,
             filter_type=self.settings.filter_type,
             narrow_down=self.settings.narrow_down,
@@ -269,7 +276,7 @@ if HAS_GEOLOCATION:
         def locations(self):
             custom_query = {}  # Additional query to filter the collection
 
-            collection = uuidToObject(self.settings.target_collection)
+            collection = uuidToObject(self.collection_uuid)
             if not collection:
                 return None
 

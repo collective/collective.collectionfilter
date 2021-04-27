@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from collective.collectionfilter import PLONE_VERSION
 from collective.collectionfilter import _
+from collective.collectionfilter import PLONE_VERSION
 from collective.collectionfilter import utils
 from plone.api.portal import get_registry_record as getrec
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
@@ -42,15 +42,14 @@ class ICollectionFilterBaseSchema(Interface):
     )
 
     target_collection = schema.Choice(
-        title=_(u'label_target_collection', default=u'Target Collection'),
+        title=_(u'label_target_collection', default=u'Alternative Target Collection'),
         description=_(
             u'help_target_collection',
-            default=u'The collection, which is the source for the filter '
-                    u'items and where the filter is applied.'
+            default=u'As an alternative you can select a collection, which is the source for the filter '
+                    u'items and where the filter is applied. If not given, we use the current context as collection.'
         ),
-        required=True,
+        required=False,
         vocabulary='plone.app.vocabularies.Catalog',
-        defaultFactory=utils.target_collection_default,
     )
     widget(
         'target_collection',
