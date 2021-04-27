@@ -31,14 +31,15 @@ import json
 try:
     from collective.geolocationbehavior.interfaces import IGeoJSONProperties
     from plone.formwidget.geolocation.vocabularies import _
+
     HAS_GEOLOCATION = True
 except ImportError:
     HAS_GEOLOCATION = False
 
 
 class BaseView(object):
-    """Abstract base filter view class.
-    """
+    """Abstract base filter view class."""
+
     _collection = None
     _top_request = None
 
@@ -60,16 +61,12 @@ class BaseView(object):
 
     @property
     def title(self):
-        return getattr(
-            self.settings,
-            'header',
-            getattr(self.collection, 'Title', u'')
-        )
+        return getattr(self.settings, "header", getattr(self.collection, "Title", u""))
 
     @property
     def filterClassName(self):
         name = self.title and queryUtility(IIDNormalizer).normalize(self.title)
-        return u'filter' + name.capitalize() if name else ''
+        return u"filter" + name.capitalize() if name else ""
 
     @property
     def reload_url(self):
@@ -90,48 +87,47 @@ class BaseView(object):
     @property
     def collection(self):
         if not self._collection:
-            self._collection = uuidToCatalogBrain(
-                self.collection_uuid
-            )
+            self._collection = uuidToCatalogBrain(self.collection_uuid)
         return aq_inner(self._collection)
 
     @property
     def pat_options(self):
 
-        return json.dumps({
-            "collectionUUID": self.collection_uuid,
-            "reloadURL": self.reload_url,
-            "ajaxLoad": self.ajax_load,
-            "contentSelector": self.settings.content_selector
-        })
+        return json.dumps(
+            {
+                "collectionUUID": self.collection_uuid,
+                "reloadURL": self.reload_url,
+                "ajaxLoad": self.ajax_load,
+                "contentSelector": self.settings.content_selector,
+            }
+        )
 
     @property
     def ajax_load(self):
-        if PLONE_VERSION < '5.1':
+        if PLONE_VERSION < "5.1":
             # Due to bug in AJAX load pattern makes it hard to make it work in 5.0.x
             return False
 
-        values = api.portal.get_registry_record('plone.patternoptions')
-        if 'collectionfilter' in values:
-            filterOptions = json.loads(values['collectionfilter'])
-            if 'ajaxLoad' in filterOptions:
-                return filterOptions['ajaxLoad']
+        values = api.portal.get_registry_record("plone.patternoptions")
+        if "collectionfilter" in values:
+            filterOptions = json.loads(values["collectionfilter"])
+            if "ajaxLoad" in filterOptions:
+                return filterOptions["ajaxLoad"]
         return True
 
 
 class BaseFilterView(BaseView):
-
     @property
     def input_type(self):
-        if self.settings.input_type == 'links':
-            return 'link'
-        elif self.settings.filter_type == 'single':
-            if self.settings.input_type == 'checkboxes_radiobuttons':
-                return 'radio'
+        if self.settings.input_type == "links":
+            return "link"
+        elif self.settings.filter_type == "single":
+            if self.settings.input_type == "checkboxes_radiobuttons":
+                return "radio"
             else:
-                return 'dropdown'
+                return "dropdown"
         else:
-            return 'checkbox'
+            return "checkbox"
 
     # results is called twice inside the template in view/available and view/results.  But its expensive so we cache it
     # but just the the lifetime of the view
@@ -145,7 +141,7 @@ class BaseFilterView(BaseView):
             show_count=self.settings.show_count,
             view_name=self.settings.view_name,
             cache_enabled=self.settings.cache_enabled,
-            request_params=self.top_request.form or {}
+            request_params=self.top_request.form or {},
         )
         return results
 
@@ -156,7 +152,7 @@ class BaseFilterView(BaseView):
 
         if self.settings.narrow_down:
             groupby_criteria = getUtility(IGroupByCriteria).groupby
-            idx = groupby_criteria[self.settings.group_by]['index']
+            idx = groupby_criteria[self.settings.group_by]["index"]
             request_params = safe_decode(self.top_request.form)
             current_idx_value = safe_iterable(request_params.get(idx))
             if current_idx_value:
@@ -167,10 +163,9 @@ class BaseFilterView(BaseView):
 
 
 class BaseSearchView(BaseView):
-
     @property
     def value(self):
-        return safe_unicode(self.top_request.get(TEXT_IDX, ''))
+        return safe_unicode(self.top_request.get(TEXT_IDX, ""))
 
     @property
     def action_url(self):
@@ -183,20 +178,20 @@ class BaseSearchView(BaseView):
 
         for it in (
             TEXT_IDX,
-            'b_start',
-            'b_size',
-            'batch',
-            'sort_on',
-            'limit',
-            'portlethash'
+            "b_start",
+            "b_size",
+            "batch",
+            "sort_on",
+            "limit",
+            "portlethash",
         ):
             # Remove problematic url parameters
             if it in urlquery:
                 del urlquery[it]
 
         # add filter trigger if not already there
-        if 'collectionfilter' not in urlquery:
-            urlquery['collectionfilter'] = '1'
+        if "collectionfilter" not in urlquery:
+            urlquery["collectionfilter"] = "1"
 
         return ((k, vv) for k, v in urlquery.items() for vv in safe_iterable(v))
 
@@ -204,72 +199,88 @@ class BaseSearchView(BaseView):
     def ajax_url(self):
         # Recursively transform all to unicode
         request_params = safe_decode(self.top_request.form)
-        urlquery = base_query(request_params, extra_ignores=['SearchableText'])
+        urlquery = base_query(request_params, extra_ignores=["SearchableText"])
         query_param = urlencode(safe_encode(urlquery), doseq=True)
-        ajax_url = u'/'.join([it for it in [
-            self.collection.getURL(),
-            self.settings.view_name,
-            '?' + query_param if query_param else None
-        ] if it])
+        ajax_url = u"/".join(
+            [
+                it
+                for it in [
+                    self.collection.getURL(),
+                    self.settings.view_name,
+                    "?" + query_param if query_param else None,
+                ]
+                if it
+            ]
+        )
         return ajax_url
 
 
 class BaseSortOnView(BaseView):
-
     def results(self):
         collection = self.collection.getObject()
-        curr_val = self.top_request.get('sort_on', collection.sort_on)
+        curr_val = self.top_request.get("sort_on", collection.sort_on)
         curr_order = self.top_request.get(
-            'sort_order',
-            'descending' if collection.sort_reversed else 'ascending')
-        new_order = 'ascending'
-        if curr_order is not None and curr_order == 'ascending':
-            new_order = 'descending'
+            "sort_order", "descending" if collection.sort_reversed else "ascending"
+        )
+        new_order = "ascending"
+        if curr_order is not None and curr_order == "ascending":
+            new_order = "descending"
         sortable_indexes = getUtility(
-            IVocabularyFactory,
-            name='collective.collectionfilter.SortOnIndexes')
+            IVocabularyFactory, name="collective.collectionfilter.SortOnIndexes"
+        )
         vocab = sortable_indexes(self.context)
         for idx in self.settings.sort_on:
             curr = curr_val == idx
             yield {
-                'value': idx,
-                'title': vocab.getTerm(idx).title,
-                'new_order': new_order if curr else 'ascending',
-                'curr_order': curr_order if curr else '',
-                'active': curr,
+                "value": idx,
+                "title": vocab.getTerm(idx).title,
+                "new_order": new_order if curr else "ascending",
+                "curr_order": curr_order if curr else "",
+                "active": curr,
             }
 
     @property
     def ajax_url(self):
         # Recursively transform all to unicode
         request_params = safe_decode(self.top_request.form)
-        urlquery = base_query(
-            request_params, extra_ignores=['sort_on', 'sort_order'])
+        urlquery = base_query(request_params, extra_ignores=["sort_on", "sort_order"])
         query_param = urlencode(safe_encode(urlquery), doseq=True)
-        ajax_url = u'/'.join([it for it in [
-            self.collection.getURL(),
-            self.settings.view_name,
-            '?' + query_param if query_param else None
-        ] if it])
+        ajax_url = u"/".join(
+            [
+                it
+                for it in [
+                    self.collection.getURL(),
+                    self.settings.view_name,
+                    "?" + query_param if query_param else None,
+                ]
+                if it
+            ]
+        )
         return ajax_url
 
 
 if HAS_GEOLOCATION:
 
     class BaseMapsView(BaseView):
-
         @property
         def ajax_url(self):
             # Recursively transform all to unicode
             request_params = safe_decode(self.top_request.form)
             urlquery = base_query(
-                request_params, extra_ignores=['latitude', 'longitude'])
+                request_params, extra_ignores=["latitude", "longitude"]
+            )
             query_param = urlencode(safe_encode(urlquery), doseq=True)
-            ajax_url = u'/'.join([it for it in [
-                self.collection.getURL(),
-                self.settings.view_name,
-                '?' + query_param if query_param else None
-            ] if it])
+            ajax_url = u"/".join(
+                [
+                    it
+                    for it in [
+                        self.collection.getURL(),
+                        self.settings.view_name,
+                        "?" + query_param if query_param else None,
+                    ]
+                    if it
+                ]
+            )
             return ajax_url
 
         @property
@@ -288,15 +299,12 @@ if HAS_GEOLOCATION:
             custom_query = base_query(request_params)
             custom_query = make_query(custom_query)
             return ICollection(collection).results(
-                batch=False,
-                brains=True,
-                custom_query=custom_query
+                batch=False, brains=True, custom_query=custom_query
             )
 
         @property
         def data_geojson(self):
-            """Return the geo location as GeoJSON string.
-            """
+            """Return the geo location as GeoJSON string."""
             features = []
 
             for it in self.locations:
@@ -306,44 +314,41 @@ if HAS_GEOLOCATION:
                     continue
 
                 feature = {
-                    'type': 'Feature',
-                    'id': it.UID,
-                    'properties': {},
-                    'geometry': {
-                        'type': 'Point',
-                        'coordinates': [
+                    "type": "Feature",
+                    "id": it.UID,
+                    "properties": {},
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
                             it.longitude,
                             it.latitude,
-                        ]
-                    }
+                        ],
+                    },
                 }
 
                 props = IGeoJSONProperties(it.getObject(), None)
-                if getattr(props, 'popup', None):
-                    feature['properties']['popup'] = props.popup
-                if getattr(props, 'color', None):
-                    feature['properties']['color'] = props.color
-                if getattr(props, 'extraClasses', None):
-                    feature['properties']['extraClasses'] = props.extraClasses
+                if getattr(props, "popup", None):
+                    feature["properties"]["popup"] = props.popup
+                if getattr(props, "color", None):
+                    feature["properties"]["color"] = props.color
+                if getattr(props, "extraClasses", None):
+                    feature["properties"]["extraClasses"] = props.extraClasses
 
                 features.append(feature)
 
             if not features:
                 return
 
-            geo_json = json.dumps({
-                'type': 'FeatureCollection',
-                'features': features
-            })
+            geo_json = json.dumps({"type": "FeatureCollection", "features": features})
             return geo_json
 
         @property
         def map_configuration(self):
             config = {
-                "fullscreencontrol": getrec('geolocation.fullscreen_control'),
-                "locatecontrol": getrec('geolocation.locate_control'),
-                "zoomcontrol": getrec('geolocation.zoom_control'),
-                "minimap": getrec('geolocation.show_minimap'),
+                "fullscreencontrol": getrec("geolocation.fullscreen_control"),
+                "locatecontrol": getrec("geolocation.locate_control"),
+                "zoomcontrol": getrec("geolocation.zoom_control"),
+                "minimap": getrec("geolocation.show_minimap"),
                 "default_map_layer": self.settings.default_map_layer,
                 "map_layers": [
                     {"title": translate(_(it), context=self.request), "id": it}

@@ -4,7 +4,8 @@ from setuptools import setup
 
 import os
 
-version = '3.4.3.dev0'
+
+version = "3.4.3.dev0"
 
 
 def read(*rnames):
@@ -13,10 +14,10 @@ def read(*rnames):
 
 
 setup(
-    name='collective.collectionfilter',
+    name="collective.collectionfilter",
     version=version,
     description="Plone addon for filtering collection results.",
-    long_description='{0}\n\n{1}'.format(
+    long_description="{0}\n\n{1}".format(
         read("README.rst"),
         read("CHANGES.rst"),
     ),
@@ -32,44 +33,46 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
-    keywords='plone collection filter faceted tagcloud tags',
-    author='Johannes Raggam',
-    author_email='thetetet@gmail.com',
-    url='http://github.com/collective/collective.collectionfilter',
-    license='GPL',
-    namespace_packages=['collective', ],
-    packages=find_packages('src'),
-    package_dir={'': 'src'},
+    keywords="plone collection filter faceted tagcloud tags",
+    author="Johannes Raggam",
+    author_email="thetetet@gmail.com",
+    url="http://github.com/collective/collective.collectionfilter",
+    license="GPL",
+    namespace_packages=[
+        "collective",
+    ],
+    packages=find_packages("src"),
+    package_dir={"": "src"},
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        'setuptools',
-        'plone.api >= 1.5.1',
-        'Products.CMFPlone >= 5.0',
-        'plone.app.contenttypes',
+        "setuptools",
+        "plone.api >= 1.5.1",
+        "Products.CMFPlone >= 5.0",
+        "plone.app.contenttypes",
     ],
     extras_require={
-        'geolocation': [
+        "geolocation": [
             # support for latitude/longitude catalog index
-            'collective.geolocationbehavior >= 1.6.0',
+            "collective.geolocationbehavior >= 1.6.0",
             # refactored map configuration
-            'plone.formwidget.geolocation >= 2.2.0',
+            "plone.formwidget.geolocation >= 2.2.0",
             # leaflet JS events for map filter
-            'plone.patternslib >= 1.1.0',
+            "plone.patternslib >= 1.1.0",
         ],
-        'test': [
-            'plone.app.mosaic',
-            'collective.geolocationbehavior',
-            'plone.app.testing[robot]',
-            'plone.app.robotframework',
-            'plone.app.contenttypes',
-            'robotframework-selenium2library',
-            'robotframework-selenium2screenshots',
+        "test": [
+            "plone.app.mosaic",
+            "collective.geolocationbehavior",
+            "plone.app.testing[robot]",
+            "plone.app.robotframework",
+            "plone.app.contenttypes",
+            "robotframework-selenium2library",
+            "robotframework-selenium2screenshots",
         ],
     },
     entry_points="""
     # -*- Entry points: -*-
     [z3c.autoinclude.plugin]
     target = plone
-    """
+    """,
 )
