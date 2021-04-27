@@ -1,17 +1,21 @@
 # -*- coding: utf-8 -*-
 """Setup tests for this package."""
 import unittest
+
+
 try:
-    from urllib.parse import urlparse, parse_qs
+    from urllib.parse import parse_qs
+    from urllib.parse import urlparse
 except ImportError:
     from urlparse import urlparse, parse_qs
 
-from plone.app.contenttypes.interfaces import ICollection
-
-from collective.collectionfilter.query import make_query
-from collective.collectionfilter.testing import COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING  # noqa
 from collective.collectionfilter.filteritems import get_filter_items
+from collective.collectionfilter.query import make_query
+from collective.collectionfilter.testing import (  # noqa
+    COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING,
+)
 from collective.collectionfilter.utils import safe_decode
+from plone.app.contenttypes.interfaces import ICollection
 
 
 def get_data_by_val(result, val):

@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 """Setup tests for this package."""
-from Products.CMFCore.utils import getToolByName
-
-from collective.collectionfilter.testing import COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING  # noqa
+from collective.collectionfilter.testing import (  # noqa
+    COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING,
+)
 from plone import api
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
+from Products.CMFCore.utils import getToolByName
 
 import unittest
+
 
 no_get_installer = False
 
@@ -44,8 +46,7 @@ class TestSetup(unittest.TestCase):
 
     def test_browserlayer(self):
         """Test that ICollectionFilterBrowserLayer is registered."""
-        from collective.collectionfilter.interfaces import (
-            ICollectionFilterBrowserLayer)
+        from collective.collectionfilter.interfaces import ICollectionFilterBrowserLayer
         from plone.browserlayer import utils
         self.assertIn(
             ICollectionFilterBrowserLayer,
@@ -71,8 +72,7 @@ class TestUninstall(unittest.TestCase):
 
     def test_browserlayer_removed(self):
         """Test that ICollectionFilterBrowserLayer is removed."""
-        from collective.collectionfilter.interfaces import \
-            ICollectionFilterBrowserLayer
+        from collective.collectionfilter.interfaces import ICollectionFilterBrowserLayer
         from plone.browserlayer import utils
         self.assertNotIn(
             ICollectionFilterBrowserLayer,

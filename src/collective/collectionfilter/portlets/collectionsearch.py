@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from collective.collectionfilter import _
 from collective.collectionfilter.baseviews import BaseSearchView
 from collective.collectionfilter.interfaces import ICollectionSearchSchema
 from collective.collectionfilter.portlets import BasePortletRenderer
 from plone.app.portlets.portlets import base
 from plone.portlets.interfaces import IPortletDataProvider
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.interface import implementer
 
 

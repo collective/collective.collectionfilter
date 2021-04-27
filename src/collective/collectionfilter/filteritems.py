@@ -22,9 +22,9 @@ from six.moves.urllib.parse import urlencode
 from zope.component import getUtility
 from zope.globalrequest import getRequest
 from zope.i18n import translate
-import six
 
 import plone.api
+import six
 
 
 try:

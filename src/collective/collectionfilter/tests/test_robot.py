@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
+from collective.collectionfilter.testing import (  # noqa
+    COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED,
+)
 from collective.collectionfilter.testing import (
     COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED,
-    COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED,
-)  # noqa
+)
+from plone import api
 from plone.app.testing import ROBOT_TEST_LEVEL
 from plone.testing import layered
-from plone import api
 
 import os
 import robotsuite

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from collective.collectionfilter import _
 from collective.collectionfilter.baseviews import BaseFilterView
 from collective.collectionfilter.interfaces import ICollectionFilterSchema
@@ -7,6 +6,7 @@ from collective.collectionfilter.portlets import BasePortletRenderer
 from collective.collectionfilter.vocabularies import DEFAULT_FILTER_TYPE
 from plone.app.portlets.portlets import base
 from plone.portlets.interfaces import IPortletDataProvider
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.interface import implementer
 
 

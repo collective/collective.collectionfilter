@@ -1,4 +1,6 @@
-from collective.collectionfilter.portlets.collectionfilter import ICollectionFilterPortlet  # noqa
+from collective.collectionfilter.portlets.collectionfilter import (  # noqa
+    ICollectionFilterPortlet,
+)
 from plone.portlets.interfaces import ILocalPortletAssignable
 from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets.interfaces import IPortletManager
@@ -9,6 +11,7 @@ from zope.component import getUtilitiesFor
 from zope.component.hooks import getSite
 
 import logging
+
 
 _marker = []
 

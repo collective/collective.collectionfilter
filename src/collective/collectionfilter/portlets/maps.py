@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from collective.collectionfilter import _
 from collective.collectionfilter.baseviews import BaseMapsView
 from collective.collectionfilter.interfaces import ICollectionMapsSchema
@@ -8,6 +7,7 @@ from plone.app.portlets.portlets import base
 from plone.formwidget.geolocation.vocabularies import default_map_layer
 from plone.formwidget.geolocation.vocabularies import default_map_layers
 from plone.portlets.interfaces import IPortletDataProvider
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.interface import implementer
 
 

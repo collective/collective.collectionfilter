@@ -6,8 +6,11 @@ from collective.collectionfilter.vocabularies import GEOLOC_IDX
 from collective.collectionfilter.vocabularies import TEXT_IDX
 from logging import getLogger
 from plone import api
+from Products.CMFPlone.browser.search import BAD_CHARS
+from Products.CMFPlone.browser.search import quote_chars
 from zope.component import getUtility
-from Products.CMFPlone.browser.search import BAD_CHARS, quote_chars
+
+
 try:
     from Products.CMFPlone.browser.search import quote
 except ImportError:
