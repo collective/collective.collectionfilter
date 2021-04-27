@@ -21,6 +21,10 @@ class TargetCollectionValidator(validator.SimpleFieldValidator):
     def validate(self, value):
         super(TargetCollectionValidator, self).validate(value)
 
+        if value:
+            # If we have a uid, we do not need to check.
+            return True
+
         for obj in aq_chain(self.context):
             if IDexterityContent.providedBy(obj):
                 break
