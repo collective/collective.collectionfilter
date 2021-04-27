@@ -17,4 +17,5 @@
         <button type="submit" i18n:translate="button_search">Search</button>
     </form>
   </div>
+
 </aside>
