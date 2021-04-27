@@ -14,10 +14,9 @@ class IMapsTile(Schema, ICollectionMapsSchema):
 
 @implementer(IMapsTile)
 class MapsTile(BaseFilterTile, BaseMapsView):
-
     def __init__(self, context, request):
         super(MapsTile, self).__init__(context, request)
         # TODO: does not work, because CMFPlone.resources.browser.resource is
         #       called before this one; subrequest problem
         top_request = get_top_request(request)
-        add_bundle_on_request(top_request, 'bundle-leaflet')
+        add_bundle_on_request(top_request, "bundle-leaflet")

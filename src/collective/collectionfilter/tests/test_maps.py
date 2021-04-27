@@ -13,8 +13,8 @@ class TestMaps(unittest.TestCase):
 
     def setUp(self):
         """Custom shared utility setup for tests."""
-        self.portal = self.layer['portal']
-        self.collection = self.portal['testcollection']
+        self.portal = self.layer["portal"]
+        self.collection = self.portal["testcollection"]
 
     def test_locationfilter(self):
-        self.assertEqual(len(self.portal['testcollection'].results()), 3)
+        self.assertEqual(len(self.portal["testcollection"].results()), 3)

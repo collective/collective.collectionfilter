@@ -10,8 +10,7 @@ from zope.interface import implementer
 
 
 class ICollectionSearchPortlet(ICollectionSearchSchema, IPortletDataProvider):
-    """Portlet interface based on ICollectionSearchSchema
-    """
+    """Portlet interface based on ICollectionSearchSchema"""
 
 
 @implementer(ICollectionSearchPortlet)
@@ -20,14 +19,14 @@ class Assignment(base.Assignment):
     header = u""
     target_collection = None
     view_name = None
-    content_selector = '#content-core'
+    content_selector = "#content-core"
 
     def __init__(
         self,
         header=u"",
         target_collection=None,
         view_name=None,
-        content_selector='#content-core',
+        content_selector="#content-core",
     ):
         self.header = header
         self.target_collection = target_collection
@@ -39,20 +38,18 @@ class Assignment(base.Assignment):
         if self.header:
             return self.header
         else:
-            return _(u'Collection Search')
+            return _(u"Collection Search")
 
 
 class Renderer(BasePortletRenderer, BaseSearchView):
-    render = ViewPageTemplateFile('collectionsearch.pt')
+    render = ViewPageTemplateFile("collectionsearch.pt")
 
 
 class AddForm(base.AddForm):
 
     schema = ICollectionSearchPortlet
     label = _(u"Add Collection Search Portlet")
-    description = _(
-        u"This portlet allows fulltext search in collection results."
-    )
+    description = _(u"This portlet allows fulltext search in collection results.")
 
     def create(self, data):
         return Assignment(**data)
@@ -62,6 +59,4 @@ class EditForm(base.EditForm):
 
     schema = ICollectionSearchPortlet
     label = _(u"Edit Collection Search Portlet")
-    description = _(
-        u"This portlet allows fulltext search in collection results."
-    )
+    description = _(u"This portlet allows fulltext search in collection results.")
