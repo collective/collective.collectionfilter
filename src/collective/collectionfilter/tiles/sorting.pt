@@ -19,7 +19,6 @@
       href="${edit_url}"
       class="pat-plone-modal edit-link"><span class="fa fa-pencil"/><label i18n:translate="label-edit-filter">edit</label></a>
 
-  <tal:if condition="view/settings/target_collection">
   <header tal:condition="view/title" tal:content="view/title">Title</header>
   <div class="filterContent"
        tal:define="results view/results;
@@ -66,7 +65,6 @@
         </tal:if>
 
   </div>
-  </tal:if>
 </aside>
 
 
