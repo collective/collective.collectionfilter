@@ -3,7 +3,6 @@
       tal:condition="view/available"
        i18n:domain="plone">
 
-  <tal:if condition="view/settings/target_collection">
   <header class="portletHeader" tal:condition="view/title" tal:content="view/title">Title</header>
   <div class="searchContent">
     <form method="get" name="searchForm" role="form" action="${view/action_url}">
@@ -18,5 +17,4 @@
         <button type="submit" i18n:translate="button_search">Search</button>
     </form>
   </div>
-  </tal:if>
 </aside>
