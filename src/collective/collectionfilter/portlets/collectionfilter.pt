@@ -4,7 +4,6 @@
        tal:condition="view/available"
        i18n:domain="collective.collectionfilter">
 
-  <tal:if condition="view/settings/target_collection">
   <header class="portletHeader" tal:condition="view/title" tal:content="view/title">Title</header>
   <div class="portletContent filterContent" tal:define="results view/results">
 
@@ -68,5 +67,4 @@
         </tal:if>
 
   </div>
-  </tal:if>
 </aside>
