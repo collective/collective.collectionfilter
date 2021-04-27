@@ -17,7 +17,6 @@ from zope.schema.interfaces import IField
 @implementer(IValidator)
 @adapter(Interface, ICollectionFilterBrowserLayer, Interface, IField, Interface)
 class TargetCollectionValidator(validator.SimpleFieldValidator):
-
     def validate(self, value):
         super(TargetCollectionValidator, self).validate(value)
 
@@ -30,10 +29,13 @@ class TargetCollectionValidator(validator.SimpleFieldValidator):
                 break
         context = obj
 
-        if not hasattr(aq_base(context), 'query'):
-            raise Invalid(_(u'Context is not a collection, please set a target collection.'))
+        if not hasattr(aq_base(context), "query"):
+            raise Invalid(
+                _(u"Context is not a collection, please set a target collection.")
+            )
         return True
 
 
-validator.WidgetValidatorDiscriminators(TargetCollectionValidator,
-                                        field=ICollectionFilterBaseSchema['target_collection'])
+validator.WidgetValidatorDiscriminators(
+    TargetCollectionValidator, field=ICollectionFilterBaseSchema["target_collection"]
+)

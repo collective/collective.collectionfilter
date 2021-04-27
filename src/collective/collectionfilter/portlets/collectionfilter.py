@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from collective.collectionfilter import _
 from collective.collectionfilter.baseviews import BaseFilterView
 from collective.collectionfilter.interfaces import ICollectionFilterSchema
@@ -7,12 +6,12 @@ from collective.collectionfilter.portlets import BasePortletRenderer
 from collective.collectionfilter.vocabularies import DEFAULT_FILTER_TYPE
 from plone.app.portlets.portlets import base
 from plone.portlets.interfaces import IPortletDataProvider
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.interface import implementer
 
 
 class ICollectionFilterPortlet(ICollectionFilterSchema, IPortletDataProvider):
-    """Portlet interface based on ICollectionFilterSchema
-    """
+    """Portlet interface based on ICollectionFilterSchema"""
 
 
 @implementer(ICollectionFilterPortlet)
@@ -24,10 +23,10 @@ class Assignment(base.Assignment):
     show_count = False
     cache_enabled = True
     filter_type = DEFAULT_FILTER_TYPE
-    input_type = 'links'
+    input_type = "links"
     narrow_down = False
     view_name = None
-    content_selector = '#content-core'
+    content_selector = "#content-core"
     hide_if_empty = False
     # list_scaling = None
 
@@ -39,10 +38,10 @@ class Assignment(base.Assignment):
         show_count=False,
         cache_enabled=True,
         filter_type=DEFAULT_FILTER_TYPE,
-        input_type='links',
+        input_type="links",
         narrow_down=False,
         view_name=None,
-        content_selector='#content-core',
+        content_selector="#content-core",
         hide_if_empty=False,
         # list_scaling=None
     ):
@@ -61,8 +60,7 @@ class Assignment(base.Assignment):
 
     @property
     def portlet_id(self):
-        """Return the portlet assignment's unique object id.
-        """
+        """Return the portlet assignment's unique object id."""
         return id(self)
 
     @property
@@ -70,11 +68,11 @@ class Assignment(base.Assignment):
         if self.header:
             return self.header
         else:
-            return _(u'Collection Filter')
+            return _(u"Collection Filter")
 
 
 class Renderer(BasePortletRenderer, BaseFilterView):
-    render = ViewPageTemplateFile('collectionfilter.pt')
+    render = ViewPageTemplateFile("collectionfilter.pt")
 
 
 class AddForm(base.AddForm):
