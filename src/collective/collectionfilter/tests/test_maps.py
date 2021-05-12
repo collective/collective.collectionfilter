@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 """Setup tests for this package."""
-import unittest
+from collective.collectionfilter.testing import (  # noqa
+    COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING,
+)
 
-from collective.collectionfilter.testing import COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING  # noqa
+import unittest
 
 
 class TestMaps(unittest.TestCase):
@@ -11,8 +13,8 @@ class TestMaps(unittest.TestCase):
 
     def setUp(self):
         """Custom shared utility setup for tests."""
-        self.portal = self.layer['portal']
-        self.collection = self.portal['testcollection']
+        self.portal = self.layer["portal"]
+        self.collection = self.portal["testcollection"]
 
     def test_locationfilter(self):
-        self.assertEqual(len(self.portal['testcollection'].results()), 3)
+        self.assertEqual(len(self.portal["testcollection"].results()), 3)

@@ -5,7 +5,9 @@ from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.interfaces import IGroupByModifier
 from collective.collectionfilter.utils import safe_encode
 from plone.app.querystring.interfaces import IQuerystringRegistryReader
-from plone.app.vocabularies.types import ReallyUserFriendlyTypesVocabularyFactory  # noqa: E501
+from plone.app.vocabularies.types import (  # noqa: E501
+    ReallyUserFriendlyTypesVocabularyFactory,
+)
 from plone.registry.interfaces import IRegistry
 from zope.component import getAdapters
 from zope.component import getMultiAdapter
@@ -23,41 +25,41 @@ import six
 
 
 # Use this EMPTY_MARKER for your custom indexer to index empty criterions.
-EMPTY_MARKER = '__EMPTY__'
+EMPTY_MARKER = "__EMPTY__"
 TEXT_IDX = "SearchableText"
 GEOLOC_IDX = [
-    'latitude',
-    'longitude',
+    "latitude",
+    "longitude",
 ]
 GROUPBY_BLACKLIST = [
-    'CreationDate',
-    'Date',
-    'Description',
-    'EffectiveDate',
-    'ExpirationDate',
-    'ModificationDate',
-    'Title',
-    'UID',
-    'cmf_uid',
-    'created',
-    'effective',
-    'end',
-    'expires',
-    'getIcon',
-    'getId',
-    'getObjSize',
-    'getRemoteUrl',
-    'id',
-    'last_comment_date',
-    'listCreators',
-    'meta_type',
-    'modified',
-    'start',
-    'sync_uid',
-    'total_comments',
+    "CreationDate",
+    "Date",
+    "Description",
+    "EffectiveDate",
+    "ExpirationDate",
+    "ModificationDate",
+    "Title",
+    "UID",
+    "cmf_uid",
+    "created",
+    "effective",
+    "end",
+    "expires",
+    "getIcon",
+    "getId",
+    "getObjSize",
+    "getRemoteUrl",
+    "id",
+    "last_comment_date",
+    "listCreators",
+    "meta_type",
+    "modified",
+    "start",
+    "sync_uid",
+    "total_comments",
 ] + GEOLOC_IDX  # latitude/longitude is handled as a range filter ... see query.py  # noqa
-DEFAULT_FILTER_TYPE = 'single'
-LIST_SCALING = ['No Scaling', 'Linear', 'Logarithmic']
+DEFAULT_FILTER_TYPE = "single"
+LIST_SCALING = ["No Scaling", "Linear", "Logarithmic"]
 
 
 def translate_value(value):
@@ -71,10 +73,10 @@ def translate_messagefactory(value):
 def make_bool(value):
     """Transform into a boolean value."""
     truthy = [
-        safe_encode('true'),
-        safe_encode('1'),
-        safe_encode('t'),
-        safe_encode('yes'),
+        safe_encode("true"),
+        safe_encode("1"),
+        safe_encode("t"),
+        safe_encode("yes"),
     ]
     if value is None:
         return
@@ -91,9 +93,9 @@ def make_bool(value):
 def yes_no(value):
     """Return i18n message for a value."""
     if value:
-        return _(u'Yes')
+        return _(u"Yes")
     else:
-        return _(u'No')
+        return _(u"No")
 
 
 def get_yes_no_title(item):
@@ -109,7 +111,7 @@ def translate_portal_type(value):
 
 
 @implementer(IGroupByCriteria)
-class GroupByCriteria():
+class GroupByCriteria:
     """Global utility for retrieving and manipulating groupby criterias.
 
     1) Populate ``groupby`` catalog metadata.
@@ -130,7 +132,7 @@ class GroupByCriteria():
             return self._groupby
         self._groupby = {}
 
-        cat = plone.api.portal.get_tool('portal_catalog')
+        cat = plone.api.portal.get_tool("portal_catalog")
         # get catalog metadata schema, but filter out items which cannot be
         # used for grouping
         metadata = [it for it in cat.schema() if it not in GROUPBY_BLACKLIST]
@@ -139,31 +141,33 @@ class GroupByCriteria():
             index_modifier = None
             display_modifier = translate_value  # Allow to translate in this package domain per default.  # noqa
             idx = cat._catalog.indexes.get(it)
-            if six.PY2 and getattr(idx, 'meta_type', None) == 'KeywordIndex':
+            if six.PY2 and getattr(idx, "meta_type", None) == "KeywordIndex":
                 # in Py2 KeywordIndex accepts only utf-8 encoded values.
                 index_modifier = safe_encode
 
-            if getattr(idx, 'meta_type', None) == 'BooleanIndex':
+            if getattr(idx, "meta_type", None) == "BooleanIndex":
                 index_modifier = make_bool
                 display_modifier = get_yes_no_title
 
             # for portal_type or Type we have some special sauce as we need to translate via fti.i18n_domain.  # noqa
-            if it == 'portal_type':
+            if it == "portal_type":
                 display_modifier = translate_portal_type
-            elif it == 'Type':
+            elif it == "Type":
                 display_modifier = translate_messagefactory
 
             self._groupby[it] = {
-                'index': it,
-                'metadata': it,
-                'display_modifier': display_modifier,
-                'css_modifier': None,
-                'index_modifier': index_modifier,
-                'value_blacklist': None,
-                'sort_key_function': lambda it: it['title'].lower(),  # sort key function. defaults to a lower-cased title.  # noqa
+                "index": it,
+                "metadata": it,
+                "display_modifier": display_modifier,
+                "css_modifier": None,
+                "index_modifier": index_modifier,
+                "value_blacklist": None,
+                "sort_key_function": lambda it: it[
+                    "title"
+                ].lower(),  # sort key function. defaults to a lower-cased title.  # noqa
             }
 
-        modifiers = getAdapters((self, ), IGroupByModifier)
+        modifiers = getAdapters((self,), IGroupByModifier)
         for name, modifier in sorted(modifiers, key=lambda it: it[0]):
             modifier()
 
@@ -176,8 +180,7 @@ class GroupByCriteria():
 
 @provider(IVocabularyFactory)
 def GroupByCriteriaVocabulary(context):
-    """Collection filter group by criteria.
-    """
+    """Collection filter group by criteria."""
     groupby = getUtility(IGroupByCriteria).groupby
     items = [SimpleTerm(title=_(it), value=it) for it in groupby.keys()]
     return SimpleVocabulary(items)
@@ -187,9 +190,9 @@ def GroupByCriteriaVocabulary(context):
 @provider(IVocabularyFactory)
 def FilterTypeVocabulary(context):
     items = [
-        SimpleTerm(title=_('filtertype_single'), value='single'),
-        SimpleTerm(title=_('filtertype_and'), value='and'),
-        SimpleTerm(title=_('filtertype_or'), value='or')
+        SimpleTerm(title=_("filtertype_single"), value="single"),
+        SimpleTerm(title=_("filtertype_and"), value="and"),
+        SimpleTerm(title=_("filtertype_or"), value="or"),
     ]
     return SimpleVocabulary(items)
 
@@ -197,9 +200,14 @@ def FilterTypeVocabulary(context):
 @provider(IVocabularyFactory)
 def InputTypeVocabulary(context):
     items = [
-        SimpleTerm(title=_('inputtype_links'), value='links'),
-        SimpleTerm(title=_('inputtype_checkboxes_radiobuttons'), value='checkboxes_radiobuttons'),  # noqa
-        SimpleTerm(title=_('inputtype_checkboxes_dropdowns'), value='checkboxes_dropdowns')  # noqa
+        SimpleTerm(title=_("inputtype_links"), value="links"),
+        SimpleTerm(
+            title=_("inputtype_checkboxes_radiobuttons"),
+            value="checkboxes_radiobuttons",
+        ),  # noqa
+        SimpleTerm(
+            title=_("inputtype_checkboxes_dropdowns"), value="checkboxes_dropdowns"
+        ),  # noqa
     ]
     return SimpleVocabulary(items)
 
@@ -214,10 +222,11 @@ def ListScalingVocabulary(context):
 def SortOnIndexesVocabulary(context):
     # we reuse p.a.querystring registry reader for sortable_indexes
     registry = getUtility(IRegistry)
-    reader = getMultiAdapter(
-        (registry, getRequest()), IQuerystringRegistryReader)
-    sortable_indexes = reader().get('sortable_indexes')
-    items = [SimpleTerm(title=_(v['title']), value=k) for k, v in sortable_indexes.items()]  # noqa
+    reader = getMultiAdapter((registry, getRequest()), IQuerystringRegistryReader)
+    sortable_indexes = reader().get("sortable_indexes")
+    items = [
+        SimpleTerm(title=_(v["title"]), value=k) for k, v in sortable_indexes.items()
+    ]  # noqa
     return SimpleVocabulary(items)
 
 
