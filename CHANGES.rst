@@ -1,10 +1,18 @@
 Changelog
 =========
 
+4.0 (unreleased)
+
+Breaking Change:
+
+- Add idx parameter to display_modifier call, so that we can use the index name to resolve the correct translated taxonomy titles in collective.taxonomy. This means that the display_modifier method in the groupby_modifier adapters needs to expect this parameter too!
+  [MrTango]
+
+
 3.4.3 (unreleased)
 ------------------
 
-- Use collection from context as default. `target_collection` is now used to select an alternative collection as result source. 
+- Use collection from context as default. `target_collection` is now used to select an alternative collection as result source.
   This allows to copy and paste preconfigured collections for reuse without reconfiguring each filter element.
   [agitator]
 
