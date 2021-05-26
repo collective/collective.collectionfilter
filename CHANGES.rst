@@ -1,8 +1,8 @@
 Changelog
 =========
 
-3.4.3 (unreleased)
-------------------
+3.5 (2021-05-26)
+----------------
 
 - Use collection from context as default. `target_collection` is now used to select an alternative collection as result source. 
   This allows to copy and paste preconfigured collections for reuse without reconfiguring each filter element.
