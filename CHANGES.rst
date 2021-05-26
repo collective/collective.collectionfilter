@@ -4,7 +4,8 @@ Changelog
 3.6 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Updated de and ch-de translations
+  [agitator]
 
 
 3.5 (2021-05-26)
