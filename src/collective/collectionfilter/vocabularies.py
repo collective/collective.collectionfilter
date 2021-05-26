@@ -61,11 +61,11 @@ DEFAULT_FILTER_TYPE = "single"
 LIST_SCALING = ["No Scaling", "Linear", "Logarithmic"]
 
 
-def translate_value(value):
+def translate_value(value, *args, **kwargs):
     return translate(_(value), context=getRequest())
 
 
-def translate_messagefactory(value):
+def translate_messagefactory(value, *args, **kwargs):
     return translate(value, context=getRequest())
 
 
@@ -97,13 +97,13 @@ def yes_no(value):
         return _(u"No")
 
 
-def get_yes_no_title(item):
+def get_yes_no_title(item, *args, **kwargs):
     """Return a readable representation of a boolean value."""
     value = yes_no(item)
     return translate_messagefactory(value)
 
 
-def translate_portal_type(value):
+def translate_portal_type(value, *args, **kwargs):
     vocabulary = ReallyUserFriendlyTypesVocabularyFactory(None)
     term = vocabulary.getTermByToken(value)
     return term.title if term else value

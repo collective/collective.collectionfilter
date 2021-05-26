@@ -129,12 +129,12 @@ Write an adapter::
     @implementer(IGroupByModifier)
     @adapter(IGroupByCriteria)
     def groupby_modifier(groupby):
-        groupby._groupby['Subject']['display_modifier'] = lambda x: x.upper()
+        groupby._groupby['Subject']['display_modifier'] = lambda x, idx: x.upper()
         groupby._groupby['Subject']['sort_key_function'] = subjectsort
         groupby._groupby['my_new_index'] = {
             'index': 'my_new_index',
             'metadata': 'my_new_index_metadata_colum',
-            'display_modifier': lambda it: u'this is awesome: {0}'.format(it)
+            'display_modifier': lambda it, idx: u'this is awesome: {0}'.format(it)
         }
 
 Register the adapter::

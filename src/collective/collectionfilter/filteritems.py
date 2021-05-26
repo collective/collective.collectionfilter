@@ -177,7 +177,7 @@ def get_filter_items(
             # e.g. uuid to title
             title = filter_value
             if filter_value is not EMPTY_MARKER and callable(display_modifier):
-                title = safe_decode(display_modifier(filter_value))
+                title = safe_decode(display_modifier(filter_value, idx))
 
             # Build filter url query
             _urlquery = urlquery.copy()
