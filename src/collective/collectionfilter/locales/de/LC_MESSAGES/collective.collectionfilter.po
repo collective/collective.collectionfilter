@@ -179,7 +179,7 @@ msgstr "Nicht anzeigen, wenn 1 oder weniger Optionen vorhanden sind."
 #. Default: "Select how the UI of the collection filter should be rendered. Wether as links, as checkboxes and radiobuttons or checkboxes and dropdowns."
 #: collective/collectionfilter/interfaces.py:128
 msgid "help_input_type"
-msgstr "Wählen Sie aus, wie die Benutzeroberfläche des Kollektionsfilters gerendert werden soll. Als Links, Kontrollkästchen und Radiobuttons oder Kontrollkästchen und Dropdowns."
+msgstr "Wählen Sie aus, wie die Benutzeroberfläche des Kollektionsfilters dargestellt werden soll. Als Links, Kontrollkästchen und Radiobuttons oder Kontrollkästchen und Dropdowns."
 
 #. Default: "Set the available map layers"
 #: collective/collectionfilter/interfaces.py:264
@@ -209,12 +209,12 @@ msgstr "Wählen Sie die Indizes, nach denen sortiert werden kann"
 #. Default: "As an alternative you can select a different collection as source for the filter items and where the filter is applied. If not given, we use the current context as collection."
 #: collective/collectionfilter/interfaces.py:46
 msgid "help_target_collection"
-msgstr "Alternativ können Sie eine Kollektion auswählen, die die Quelle für die Filterelemente ist und auf die der Filter angewendet wird. Wenn nicht angegeben, wird der aktuelle Kontext als Sammlung verwendet."
+msgstr "Die Kollektion des aktuellen Kontext wird standardmässig verwendet. Alternativ kann eine Kollektion ausgewählt werden, die die Quelle für die Filterelemente ist und auf die der Filter angewendet wird."
 
 #. Default: "Optional view name, if the result listing should be rendered with a special view. Can be used to direct the request to a tile."
 #: collective/collectionfilter/interfaces.py:60
 msgid "help_view_name"
-msgstr "Name der Ansicht, wenn die Ergebnisliste mit einer speziellen Ansicht gerendert werden soll."
+msgstr "Name der Ansicht, wenn die Ergebnisliste mit einer speziellen Ansicht dargestellt werden soll."
 
 #: collective/collectionfilter/vocabularies.py:208
 msgid "inputtype_checkboxes_dropdowns"
