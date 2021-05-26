@@ -45,8 +45,8 @@ class ICollectionFilterBaseSchema(Interface):
         title=_(u"label_target_collection", default=u"Alternative Target Collection"),
         description=_(
             u"help_target_collection",
-            default=u"As an alternative you can select a collection, which is the source for the filter "
-            u"items and where the filter is applied. If not given, we use the current context as collection.",
+            default=u"We use the current context as collection. As an alternative you can select a different collection as source for the filter items "
+            u"and where the filter is applied.",
         ),
         required=False,
         vocabulary="plone.app.vocabularies.Catalog",
