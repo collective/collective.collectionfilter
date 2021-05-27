@@ -45,8 +45,8 @@ class ICollectionFilterBaseSchema(Interface):
         title=_(u"label_target_collection", default=u"Alternative Target Collection"),
         description=_(
             u"help_target_collection",
-            default=u"As an alternative you can select a collection, which is the source for the filter "
-            u"items and where the filter is applied. If not given, we use the current context as collection.",
+            default=u"We use the current context as collection. As an alternative you can select a different collection as source for the filter items "
+            u"and where the filter is applied.",
         ),
         required=False,
         vocabulary="plone.app.vocabularies.Catalog",
@@ -268,4 +268,16 @@ if HAS_GEOLOCATION:
             value_type=schema.Choice(
                 vocabulary="plone.formwidget.geolocation.vocabularies.map_layers"
             ),
-        )  # noqa: E501
+        )
+
+        geojson_properties_limit = schema.Int(
+            title=_(
+                u'geojson_properties_limit',
+                default=u"Limit for GeoJSON properties"),
+            description=_(
+                u'help_geojson_properties_limit',
+                default=u"If the search result is larger than this limit, no additional "
+                "GeoJSON properties (like popup information) are shown."),
+            required=False,
+            default=500,
+        )

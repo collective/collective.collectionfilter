@@ -5,10 +5,9 @@
 
   <header class="portletHeader" tal:condition="view/title" tal:content="view/title">Title</header>
   <tal:if condition="view/collection|nothing">
-  <tal:def define="geojson view/data_geojson">
   <header tal:condition="view/title" tal:content="view/title">Title</header>
   <div class="pat-leaflet" data-pat-leaflet='${view/map_configuration}' data-url="${view/ajax_url}" data-narrow-down-result="${view/settings/narrow_down}"
-       tal:attributes="data-geojson python:geojson or None"></div>
-  </tal:def>
+       data-geojson="${view/geojson_ajax_url}"></div>
+  <div class="plone-loader"><div class="loader" /></div>
   </tal:if>
 </aside>
