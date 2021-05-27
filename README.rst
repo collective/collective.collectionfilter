@@ -49,13 +49,15 @@ source collection template and on the target page which shows the filtered resul
 Mosaic Integration
 ------------------
 
-The three tiles can be added within the Mosaic editor multiple times. Just select them in the ``Insert`` menu
-and assign a collection to it. To show the results of the collection simply add a
-``Existing Content`` tile which links to the same collection your filter tiles are assigned with.
+If ``plone.app.mosaic`` is installed, enable the ``collective.collectionfilter tiles`` in the addon controlpanel.
 
-TODO: right now the collection needs a default_view template, which wraps the result list with a unique selector
-inside the ``#content-core`` container. so the collectionfilter can load the filtered result correctly from
-the collection into the container inside the existing content tile.
+Enable ``Layout View`` for your Collection. 
+
+Edit your Collection and add a ``ContentListing`` tile.
+
+Make sure you add a unique **tile CSS class** to your ``ContentListing`` tile.
+
+Add multiples filter tiles and make sure you use the unique **tile CSS class** as ``Content CSS Selector``.
 
 
 Geolocation filter support

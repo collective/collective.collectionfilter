@@ -2,6 +2,7 @@ Changelog
 =========
 
 4.0 (unreleased)
+----------------
 
 Breaking Change:
 
@@ -10,7 +11,7 @@ Breaking Change:
 
 
 3.5.1 (2021-05-26)
-----------------
+------------------
 
 - Updated de and ch-de translations
   [agitator]
@@ -25,6 +26,9 @@ Breaking Change:
 
 - Fix search which include the terms "and", "or" and "not"
   [jeffersonbledsoe]
+
+- Update ``plone.app.mosaic`` integration documentation with the
+  new ``Contentlisting tile`` feature (this needs ``plone.app.standardtiles`` >= 2.3.3)
 
 - implement AJAX geoJSON feature (needs ``plone.patternslib>=1.2.2``)
   [petschki]
