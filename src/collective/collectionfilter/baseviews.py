@@ -15,7 +15,6 @@ from collective.collectionfilter.vocabularies import TEXT_IDX
 from plone import api
 from plone.api.portal import get_registry_record as getrec
 from plone.app.uuid.utils import uuidToCatalogBrain
-from plone.app.uuid.utils import uuidToObject
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize import instance
 from plone.uuid.interfaces import IUUID
@@ -339,7 +338,7 @@ if HAS_GEOLOCATION:
 
             try:
                 limit = int(self.request.get("geojson-limit"))
-            except:
+            except Exception:
                 limit = 500
 
             for it in locations:
