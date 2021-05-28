@@ -298,6 +298,19 @@ if HAS_GEOLOCATION:
             return ajax_url
 
         @property
+        def geojson_ajax_url(self):
+            # Recursively transform all to unicode
+            request_params = safe_decode(self.top_request.form)
+            urlquery = base_query(
+                request_params, extra_ignores=['latitude', 'longitude'])
+            query_param = urlencode(safe_encode(urlquery), doseq=True)
+            geojson_ajax_url = u'{}/@@geodata.json{}'.format(
+                self.collection.getURL(),
+                '?' + query_param if query_param else '',
+            )
+            return geojson_ajax_url
+
+        @property
         def locations(self):
             custom_query = {}  # Additional query to filter the collection
 
