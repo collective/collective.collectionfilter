@@ -150,14 +150,6 @@ define([
 
                     this.reloadCollection(collectionURL);
                 }.bind(this));
-
-                $(".pat-leaflet", this.$el).on("leaflet.geojson.load", function(e) {
-                    $(".plone-loader", this.$el).show();
-                }.bind(this));
-
-                $(".pat-leaflet", this.$el).on("leaflet.geojson.loaded", function(e, data) {
-                    $(".plone-loader", this.$el).hide();
-                }.bind(this));
             }
         },
 
