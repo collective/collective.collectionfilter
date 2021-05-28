@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_inner
-from Products.CMFPlone.utils import get_top_request
-from Products.CMFPlone.utils import safe_unicode
-from Products.Five import BrowserView
 from collective.collectionfilter import PLONE_VERSION
 from collective.collectionfilter.filteritems import get_filter_items
 from collective.collectionfilter.interfaces import IGroupByCriteria
@@ -20,6 +17,8 @@ from plone.app.uuid.utils import uuidToObject
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize import instance
 from plone.uuid.interfaces import IUUID
+from Products.CMFPlone.utils import get_top_request
+from Products.CMFPlone.utils import safe_unicode
 from six.moves.urllib.parse import urlencode
 from zope.component import getUtility
 from zope.component import queryUtility
@@ -285,19 +284,6 @@ if HAS_GEOLOCATION:
             return ajax_url
 
         @property
-        def geojson_ajax_url(self):
-            # Recursively transform all to unicode
-            request_params = safe_decode(self.top_request.form)
-            urlquery = base_query(
-                request_params, extra_ignores=['latitude', 'longitude'])
-            query_param = urlencode(safe_encode(urlquery), doseq=True)
-            geojson_ajax_url = u'{}/@@geodata.json{}'.format(
-                self.url,
-                '?' + query_param if query_param else '',
-            )
-            return geojson_ajax_url
-
-        @property
         def locations(self):
             custom_query = {}  # Additional query to filter the collection
 
@@ -320,11 +306,8 @@ if HAS_GEOLOCATION:
         def data_geojson(self):
             """Return the geo location as GeoJSON string."""
             features = []
-            locations = self.locations
-            count = len(locations)
-            limit = self.settings.geojson_properties_limit
 
-            for it in locations:
+            for it in self.locations:
                 if not it.longitude or not it.latitude:
                     # these ``it`` are brains, so anything which got lat/lng
                     # indexed can be used.
@@ -343,14 +326,13 @@ if HAS_GEOLOCATION:
                     },
                 }
 
-                if count < limit:
-                    props = IGeoJSONProperties(it.getObject(), None)
-                    if getattr(props, 'popup', None):
-                        feature['properties']['popup'] = props.popup
-                    if getattr(props, 'color', None):
-                        feature['properties']['color'] = props.color
-                    if getattr(props, 'extraClasses', None):
-                        feature['properties']['extraClasses'] = props.extraClasses
+                props = IGeoJSONProperties(it.getObject(), None)
+                if getattr(props, "popup", None):
+                    feature["properties"]["popup"] = props.popup
+                if getattr(props, "color", None):
+                    feature["properties"]["color"] = props.color
+                if getattr(props, "extraClasses", None):
+                    feature["properties"]["extraClasses"] = props.extraClasses
 
                 features.append(feature)
 
@@ -374,12 +356,3 @@ if HAS_GEOLOCATION:
                 ],
             }
             return json.dumps(config)
-
-    class GeoJSON(BrowserView):
-
-        def __call__(self):
-            """ AJAX response of GeoJSON data """
-            self.request.response.setHeader("Content-type", "application/json")
-            if not hasattr(self.context, 'data_geojson'):
-                return {}
-            return self.context.data_geojson
