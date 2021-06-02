@@ -57,6 +57,18 @@
         template="maps.pt"
         />
 
+    <plone:tile
+        name="collective.collectionfilter.tiles.info"
+        title="Collection Filter Info"
+        description="Show information about current filters/search"
+        add_permission="cmf.ModifyPortalContent"
+        class=".info.InfoTile"
+        for="*"
+        permission="zope2.View"
+        schema=".info.IInfoTile"
+        template="info.pt"
+        />
+
     <genericsetup:registerProfile
         zcml:condition="not-installed collective.geolocationbehavior"
         name="default"
