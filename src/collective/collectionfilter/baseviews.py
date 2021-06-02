@@ -28,7 +28,6 @@ from zope.i18n import translate
 from zope.schema.interfaces import IVocabularyFactory
 from Products.CMFCore.Expression import Expression, getExprContext
 from plone import api
-from plone.memoize import instance
 from plone.memoize import ram
 import json
 
@@ -272,12 +271,7 @@ class BaseInfoView(BaseView):
 
     # TODO: should just cache on request?
     @ram.cache(_exp_cachekey)
-    def get_expression_context(self, target_collection, request_params):
-
-        collection = uuidToObject(target_collection)
-        if not collection:
-            return None
-
+    def get_expression_context(self, collection, request_params):
         count_query = {}
         query = base_query(request_params)
         # TODO: take out the search
@@ -330,9 +324,8 @@ class BaseInfoView(BaseView):
         return expression_context
 
     def info_contents(self):
-        target_collection = self.settings.target_collection
         request_params = self.top_request.form or {}
-        expression_context = self.get_expression_context(target_collection, request_params)
+        expression_context = self.get_expression_context(self.collection.getObject(), request_params)
 
         parts = []
         for template in self.settings.template_type:
@@ -348,9 +341,11 @@ class BaseInfoView(BaseView):
 
     @property
     def is_available(self):
-        target_collection = self.settings.target_collection
+        target_collection = self.collection
+        if target_collection is None:
+            return False
         request_params = self.top_request.form or {}
-        expression_context = self.get_expression_context(target_collection, request_params)
+        expression_context = self.get_expression_context(target_collection.getObject(), request_params)
 
         conditions = dict((k, (t, e)) for k, t, e in get_conditions())
         if not self.settings.hide_when:
