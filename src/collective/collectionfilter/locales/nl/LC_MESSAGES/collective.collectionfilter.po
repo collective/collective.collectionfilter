@@ -1,0 +1,315 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2021-05-26 12:35+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: nl\n"
+"Language-Name: Nederlands\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: DOMAIN\n"
+
+#: collective/collectionfilter/portlets/sorting.pt:27
+msgid "(descending)"
+msgstr "(aflopend)"
+
+#: collective/collectionfilter/portlets/collectionfilter.py:81
+msgid "Add Collection Filter Portlet"
+msgstr "Voeg verzamelingsfilter portlet toe"
+
+#: collective/collectionfilter/portlets/maps.py:62
+msgid "Add Collection Maps Portlet"
+msgstr "Voeg verzameling/kaarten portlet toe"
+
+#: collective/collectionfilter/portlets/sorting.py:66
+msgid "Add Collection Result Listing Sort Portlet"
+msgstr "Voeg verzamelingen zoekresultaten portlet toe"
+
+#: collective/collectionfilter/portlets/collectionsearch.py:51
+msgid "Add Collection Search Portlet"
+msgstr "Voeg verzameling zoekportlet toe"
+
+#: collective/collectionfilter/portlets/collectionfilter.py:71
+msgid "Collection Filter"
+msgstr "Verzamelingfilter"
+
+#: collective/collectionfilter/portlets/maps.py:52
+msgid "Collection Maps"
+msgstr "Verzamelingkaarten"
+
+#: collective/collectionfilter/portlets/sorting.py:56
+msgid "Collection Result Sorting"
+msgstr "Verzameling sortering resultaten"
+
+#: collective/collectionfilter/portlets/collectionsearch.py:41
+msgid "Collection Search"
+msgstr "Verzameling zoeken"
+
+#: collective/collectionfilter/validator.py:34
+msgid "Context is not a collection, please set a target collection."
+msgstr ""
+
+#: collective/collectionfilter/portlets/collectionfilter.py:94
+msgid "Edit Collection Filter Portlet"
+msgstr "Bewerk verzameling filterportlet"
+
+#: collective/collectionfilter/portlets/maps.py:72
+msgid "Edit Collection Maps Portlet"
+msgstr "Bewerk verzameling kaartenportlet"
+
+#: collective/collectionfilter/portlets/sorting.py:76
+msgid "Edit Collection Result Listing Sort Portlet"
+msgstr ""
+
+#: collective/collectionfilter/portlets/collectionsearch.py:61
+msgid "Edit Collection Search Portlet"
+msgstr ""
+
+#: collective/collectionfilter/configure.zcml:63
+#: collective/collectionfilter/portlets/configure.zcml:64
+msgid "Extension profile for Plone."
+msgstr ""
+
+#: collective/collectionfilter/vocabularies.py:97
+msgid "No"
+msgstr "Nee"
+
+#: collective/collectionfilter/portlets/sorting.pt:12
+msgid "Select"
+msgstr "Kies"
+
+#: collective/collectionfilter/portlets/collectionsearch.py:52
+msgid "This portlet allows fulltext search in collection results."
+msgstr "Dit portlet toont een volledige tekst zoekveld voor in verzamelingen."
+
+#: collective/collectionfilter/portlets/maps.py:63
+msgid "This portlet allows map filtering in collection results."
+msgstr ""
+
+#: collective/collectionfilter/portlets/collectionfilter.py:82
+msgid "This portlet shows grouped criteria of collection results and allows filtering of collection results."
+msgstr ""
+
+#: collective/collectionfilter/portlets/sorting.py:67
+msgid "This portlet shows sorting options for the result listing."
+msgstr ""
+
+#: collective/collectionfilter/vocabularies.py:95
+msgid "Yes"
+msgstr "Ja"
+
+#: collective/collectionfilter/configure.zcml:63
+msgid "collective.collectionfilter base"
+msgstr ""
+
+#: collective/collectionfilter/configure.zcml:70
+msgid "collective.collectionfilter base uninstall"
+msgstr ""
+
+#: collective/collectionfilter/portlets/configure.zcml:64
+msgid "collective.collectionfilter portlets"
+msgstr ""
+
+#: collective/collectionfilter/portlets/configure.zcml:81
+msgid "collective.collectionfilter portlets uninstall"
+msgstr ""
+
+#. Default: "Default map layer"
+#: collective/collectionfilter/interfaces.py:253
+msgid "default_map_layer"
+msgstr ""
+
+#: collective/collectionfilter/vocabularies.py:193
+msgid "filtertype_and"
+msgstr ""
+
+#: collective/collectionfilter/vocabularies.py:194
+msgid "filtertype_or"
+msgstr ""
+
+#: collective/collectionfilter/vocabularies.py:192
+msgid "filtertype_single"
+msgstr ""
+
+#. Default: "Enable caching of filter items. The cache is cleared as soon as the database has any changes."
+#: collective/collectionfilter/interfaces.py:106
+msgid "help_cache_enabled"
+msgstr ""
+
+#. Default: "Selector which is used to choose a DOM node from the source into the target. For source and target the same selectors are used."
+#: collective/collectionfilter/interfaces.py:72
+msgid "help_content_selector"
+msgstr ""
+
+#. Default: "Set the default map layer"
+#: collective/collectionfilter/interfaces.py:254
+msgid "help_default_map_layer"
+msgstr ""
+
+#. Default: "Select if single or multiple criterias can be selected and if all (and) or any (or) of the selected criterias must be met.Some index types like ``FieldIndex`` (e.g. Type index) only support the any (or) criteria when set to multiple criterias and ignore, if all (and) is set."
+#: collective/collectionfilter/interfaces.py:117
+msgid "help_filter_type"
+msgstr ""
+
+#. Default: "Select the criteria to group the collection results by."
+#: collective/collectionfilter/interfaces.py:88
+msgid "help_groupby"
+msgstr ""
+
+#. Default: "Title of the rendered filter."
+#: collective/collectionfilter/interfaces.py:40
+msgid "help_header"
+msgstr ""
+
+#. Default: "Don't display if there is 1 or no options without selecting a filter yet."
+#: collective/collectionfilter/interfaces.py:151
+msgid "help_hide_if_empty"
+msgstr ""
+
+#. Default: "Select how the UI of the collection filter should be rendered. Wether as links, as checkboxes and radiobuttons or checkboxes and dropdowns."
+#: collective/collectionfilter/interfaces.py:128
+msgid "help_input_type"
+msgstr ""
+
+#. Default: "Set the available map layers"
+#: collective/collectionfilter/interfaces.py:264
+msgid "help_map_layers"
+msgstr ""
+
+#. Default: "Narrow down the filter options when a filter of this group is applied. Only options, which are available in the result set will then be displayed. Other filter groups can still narrow down this one, though."
+#: collective/collectionfilter/interfaces.py:139
+msgid "help_narrow_down"
+msgstr ""
+
+#. Default: "Narrow down the result after zooming/moving the map."
+#: collective/collectionfilter/interfaces.py:244
+msgid "help_narrow_down_results"
+msgstr ""
+
+#. Default: "Show the result count for each filter group."
+#: collective/collectionfilter/interfaces.py:97
+msgid "help_show_count"
+msgstr ""
+
+#. Default: "Select the indexes which can be sorted on."
+#: collective/collectionfilter/interfaces.py:181
+msgid "help_sort_on"
+msgstr ""
+
+#. Default: "As an alternative you can select a different collection as source for the filter items and where the filter is applied. If not given, we use the current context as collection."
+#: collective/collectionfilter/interfaces.py:46
+msgid "help_target_collection"
+msgstr ""
+
+#. Default: "Optional view name, if the result listing should be rendered with a special view. Can be used to direct the request to a tile."
+#: collective/collectionfilter/interfaces.py:60
+msgid "help_view_name"
+msgstr ""
+
+#: collective/collectionfilter/vocabularies.py:208
+msgid "inputtype_checkboxes_dropdowns"
+msgstr ""
+
+#: collective/collectionfilter/vocabularies.py:204
+msgid "inputtype_checkboxes_radiobuttons"
+msgstr ""
+
+#: collective/collectionfilter/vocabularies.py:202
+msgid "inputtype_links"
+msgstr ""
+
+#. Default: "edit"
+#: collective/collectionfilter/tiles/filter.pt:21
+#: collective/collectionfilter/tiles/maps.pt:20
+msgid "label-edit-filter"
+msgstr "Bewerk"
+
+#. Default: "Enable Cache"
+#: collective/collectionfilter/interfaces.py:105
+msgid "label_cache_enabled"
+msgstr "Activeer cache"
+
+#. Default: "Content Selector"
+#: collective/collectionfilter/interfaces.py:71
+msgid "label_content_selector"
+msgstr ""
+
+#. Default: "Filter Type"
+#: collective/collectionfilter/interfaces.py:116
+msgid "label_filter_type"
+msgstr ""
+
+#. Default: "Group by"
+#: collective/collectionfilter/interfaces.py:87
+msgid "label_groupby"
+msgstr ""
+
+#. Default: "Filter title"
+#: collective/collectionfilter/interfaces.py:39
+msgid "label_header"
+msgstr ""
+
+#. Default: "Hide if empty"
+#: collective/collectionfilter/interfaces.py:150
+msgid "label_hide_if_empty"
+msgstr ""
+
+#. Default: "Input Type"
+#: collective/collectionfilter/interfaces.py:127
+msgid "label_input_type"
+msgstr ""
+
+#. Default: "Map Layers"
+#: collective/collectionfilter/interfaces.py:263
+msgid "label_map_layers"
+msgstr ""
+
+#. Default: "Narrow down filter options"
+#: collective/collectionfilter/interfaces.py:138
+msgid "label_narrow_down"
+msgstr ""
+
+#. Default: "Narrow down result"
+#: collective/collectionfilter/interfaces.py:243
+msgid "label_narrow_down_results"
+msgstr ""
+
+#. Default: "Show count"
+#: collective/collectionfilter/interfaces.py:96
+msgid "label_show_count"
+msgstr ""
+
+#. Default: "Enabled sort indexes"
+#: collective/collectionfilter/interfaces.py:180
+msgid "label_sort_on"
+msgstr ""
+
+#. Default: "Alternative Target Collection"
+#: collective/collectionfilter/interfaces.py:45
+msgid "label_target_collection"
+msgstr ""
+
+#. Default: "Result listing view name"
+#: collective/collectionfilter/interfaces.py:59
+msgid "label_view_name"
+msgstr ""
+
+#. Default: "All"
+#: collective/collectionfilter/filteritems.py:232
+msgid "subject_all"
+msgstr "Alle"
+
+#: collective/collectionfilter/vocabularies.py:227
+msgid "title"
+msgstr ""
+
+#. Default: "edit filter"
+#: collective/collectionfilter/tiles/filter.pt:15
+#: collective/collectionfilter/tiles/maps.pt:14
+msgid "title-edit-filter"
+msgstr "bewerk filter"

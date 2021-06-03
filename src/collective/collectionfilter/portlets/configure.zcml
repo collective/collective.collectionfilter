@@ -32,6 +32,17 @@
       />
 
   <plone:portlet
+      name="collective.collectionfilter.portlets.CollectionSortOn"
+      interface=".sorting.ICollectionFilterSortOnPortlet"
+      assignment=".sorting.Assignment"
+      renderer=".sorting.Renderer"
+      addview=".sorting.AddForm"
+      editview=".sorting.EditForm"
+      view_permission="zope2.View"
+      edit_permission="plone.app.portlets.ManagePortlets"
+      />
+
+  <plone:portlet
       zcml:condition="installed collective.geolocationbehavior"
       name="collective.collectionfilter.portlets.CollectionMaps"
       interface=".maps.ICollectionMapsPortlet"
@@ -85,6 +96,15 @@
       title="Install new Maps portlet"
       source="1"
       destination="2"
+      profile="collective.collectionfilter.portlets:default"
+      import_profile="collective.collectionfilter.portlets:default"
+      import_steps="portlets"
+      />
+
+  <genericsetup:upgradeDepends
+      title="Install new SortOn portlet"
+      source="2"
+      destination="3"
       profile="collective.collectionfilter.portlets:default"
       import_profile="collective.collectionfilter.portlets:default"
       import_steps="portlets"

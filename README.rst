@@ -1,6 +1,18 @@
 collective.collectionfilter
 ===========================
 
+|CI| |Coverage|
+
+|Workflows|
+
+.. |CI| image:: https://github.com/collective/collective.collectionfilter/workflows/CI/badge.svg
+   :target: https://github.com/collective/collective.collectionfilter/actions
+.. |Coverage| image:: https://coveralls.io/repos/github/collective/collective.collectionfilter/badge.svg
+   :target: https://coveralls.io/github/collective/collective.collectionfilter
+.. |Workflows| image:: http://github-actions.40ants.com/collective/collective.collectionfilter/matrix.svg
+   :target: https://github.com/collective/collective.collectionfilter/actions
+
+
 Faceted navigation filter for collection results.
 
 This Plone 5 addon allows you to filter collections results for additional catalog metadata.
@@ -9,7 +21,7 @@ This can also be used to build tag clouds.
 
 The filter types can be extended (see: ``collective.collectionfilter.vocabularies``).
 
-There are four portlets/tiles available for filtering:
+There are three portlets/tiles available for filtering:
 
 ``Collection Filter``
     a list with values (select, radio, checkbox, link) you can filter on
@@ -19,6 +31,8 @@ There are four portlets/tiles available for filtering:
     a LeafletJS map which shows and filters ``IGeolocatable`` items on it
     (this feature is available if ``collective.geolocationbehavior`` is installed and the behavior
     is activated on a contenttype. See installation notes below)
+``Collection Result Listing Sort``
+    a list of indexes where the user can sort the filtered result listing
 ``Section Filter``
     a list of site sections (folders) you can filter on
 
@@ -117,12 +131,12 @@ Write an adapter::
     @implementer(IGroupByModifier)
     @adapter(IGroupByCriteria)
     def groupby_modifier(groupby):
-        groupby._groupby['Subject']['display_modifier'] = lambda x: x.upper()
+        groupby._groupby['Subject']['display_modifier'] = lambda x, idx: x.upper()
         groupby._groupby['Subject']['sort_key_function'] = subjectsort
         groupby._groupby['my_new_index'] = {
             'index': 'my_new_index',
             'metadata': 'my_new_index_metadata_colum',
-            'display_modifier': lambda it: u'this is awesome: {0}'.format(it)
+            'display_modifier': lambda it, idx: u'this is awesome: {0}'.format(it)
         }
 
 Register the adapter::

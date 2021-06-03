@@ -10,6 +10,10 @@
       />
   <portlet
       rempve="True"
+      addview="collective.collectionfilter.portlets.CollectionSortOn"
+      />
+  <portlet
+      rempve="True"
       addview="collective.collectionfilter.portlets.CollectionMaps"
       />
   <portlet

@@ -33,6 +33,18 @@
         />
 
     <plone:tile
+        name="collective.collectionfilter.tiles.sortOn"
+        title="Collection Result Listing Sort Tile"
+        description="Show the result listing sort tile."
+        add_permission="cmf.ModifyPortalContent"
+        class=".sorting.SortOnTile"
+        for="*"
+        permission="zope2.View"
+        schema=".sorting.ISortOnTile"
+        template="sorting.pt"
+        />
+
+    <plone:tile
         zcml:condition="installed collective.geolocationbehavior"
         name="collective.collectionfilter.tiles.maps"
         title="Collection Maps Tile"
@@ -69,6 +81,15 @@
         directory="profiles/uninstall"
         description='Extension profile for Plone.'
         provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+
+    <genericsetup:upgradeDepends
+        title="Install new sorting tile"
+        source="1"
+        destination="2"
+        profile="collective.collectionfilter.tiles:default"
+        import_profile="collective.collectionfilter.tiles:default"
+        import_steps="plone.app.registry"
         />
 
 </configure>
