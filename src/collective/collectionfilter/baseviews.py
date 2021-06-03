@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_inner
 from collective.collectionfilter import PLONE_VERSION
-from collective.collectionfilter.filteritems import get_filter_items
+from collective.collectionfilter.filteritems import (
+    get_filter_items,
+    get_section_filter_items,
+)
 from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.query import make_query
-from collective.collectionfilter.filteritems import get_section_filter_items
 from collective.collectionfilter.utils import base_query
 from collective.collectionfilter.utils import safe_decode
 from collective.collectionfilter.utils import safe_encode
@@ -150,6 +152,7 @@ class BaseFilterView(BaseView):
     def is_available(self):
         if not self.settings.hide_if_empty:
             return True
+
         if self.settings.narrow_down:
             groupby_criteria = getUtility(IGroupByCriteria).groupby
             idx = groupby_criteria[self.settings.group_by]["index"]
@@ -165,15 +168,15 @@ class BaseFilterView(BaseView):
 class BaseSectionView(BaseView):
     @property
     def input_type(self):
-        if self.settings.input_type == 'links':
-            return 'link'
-        elif self.settings.filter_type == 'single':
-            if self.settings.input_type == 'checkboxes_radiobuttons':
-                return 'radio'
+        if self.settings.input_type == "links":
+            return "link"
+        elif self.settings.filter_type == "single":
+            if self.settings.input_type == "checkboxes_radiobuttons":
+                return "radio"
             else:
-                return 'dropdown'
+                return "dropdown"
         else:
-            return 'checkbox'
+            return "checkbox"
 
     @property
     def is_available(self):
@@ -184,7 +187,7 @@ class BaseSectionView(BaseView):
             target_collection=self.settings.target_collection,
             view_name=self.settings.view_name,
             cache_enabled=self.settings.cache_enabled,
-            request_params=self.top_request.form or {}
+            request_params=self.top_request.form or {},
         )
         return results
 

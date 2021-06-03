@@ -199,24 +199,24 @@ class ICollectionFilterResultListSort(ICollectionFilterBaseSchema):
 
 
 class ICollectionSectionFilterSchema(ICollectionFilterBaseSchema):
-    """Schema for the navigation filter.
-    """
+    """Schema for the navigation filter."""
 
     show_count = schema.Bool(
-        title=_(u'label_show_count', default=u'Show count'),
+        title=_(u"label_show_count", default=u"Show count"),
         description=_(
-            u'help_show_count',
-            default=u'Show the result count for each filter group.'),
+            u"help_show_count",
+            default=u"Show the result count for each filter group.",
+        ),
         default=False,
-        required=False
+        required=False,
     )
 
     cache_enabled = schema.Bool(
         title=_(u"label_cache_enabled", default=u"Enable Cache"),
         description=_(
-            u'help_cache_enabled',
+            u"help_cache_enabled",
             default=u"Enable caching of filter items. The cache is cleared as"
-                    u" soon as the database has any changes."
+            u" soon as the database has any changes.",
         ),
         default=True,
         required=False,

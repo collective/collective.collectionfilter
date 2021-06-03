@@ -64,20 +64,17 @@ def _results_cachekey(
 
 
 def _section_results_cachekey(
-        method,
-        target_collection,
-        view_name,
-        cache_enabled,
-        request_params):
+    method, target_collection, view_name, cache_enabled, request_params
+):
     if not cache_enabled:
         raise DontCache
     cachekey = (
         target_collection,
         view_name,
         request_params,
-        ' '.join(plone.api.user.get_roles()),
+        " ".join(plone.api.user.get_roles()),
         plone.api.portal.get_current_language(),
-        str(plone.api.portal.get_tool('portal_catalog').getCounter()),
+        str(plone.api.portal.get_tool("portal_catalog").getCounter()),
     )
     return cachekey
 
@@ -288,8 +285,8 @@ def get_section_filter_items(
 
     # Support for the Event Listing view from plone.app.event
     if isinstance(default_view, EventListing):
-        mode = request_params.get('mode', 'future')
-        date = request_params.get('date', None)
+        mode = request_params.get("mode", "future")
+        date = request_params.get("date", None)
         date = guess_date_from(date) if date else None
         start, end = start_end_from_mode(mode, date, collection)
         start, end = _prepare_range(collection, start, end)
@@ -297,44 +294,41 @@ def get_section_filter_items(
         # TODO: expand events. better yet, let collection.results
         #       do that
 
-    current_path_value = request_params.get('path')
-    urlquery = base_query(request_params, ['path'])
+    current_path_value = request_params.get("path")
+    urlquery = base_query(request_params, ["path"])
 
     # Get all collection results with additional filter defined by urlquery
     custom_query.update(urlquery)
     custom_query = make_query(custom_query)
     catalog_results = ICollection(collection).results(
-        batch=False,
-        brains=True,
-        custom_query=custom_query
+        batch=False, brains=True, custom_query=custom_query
     )
 
     # Entry to clear all filters
-    urlquery_all = {
-        k: v for k, v in urlquery.items() if k != 'path'
-    }
-    ret = [{
-        'title': translate(
-            _('location_home', default=u'Home'), context=getRequest()
-        ),
-        'url': u'{0}/?{1}'.format(
-            collection_url,
-            urlencode(safe_encode(urlquery_all), doseq=True)
-        ),
-        'value': 'all',
-        'css_class': 'navTreeItem filterItem filter-all selected',
-        'count': len(catalog_results),
-        'level': 0,
-        'contenttype': 'folder'
-    }]
+    urlquery_all = {k: v for k, v in urlquery.items() if k != "path"}
+    ret = [
+        {
+            "title": translate(
+                _("location_home", default=u"Home"), context=getRequest()
+            ),
+            "url": u"{0}/?{1}".format(
+                collection_url, urlencode(safe_encode(urlquery_all), doseq=True)
+            ),
+            "value": "all",
+            "css_class": "navTreeItem filterItem filter-all selected",
+            "count": len(catalog_results),
+            "level": 0,
+            "contenttype": "folder",
+        }
+    ]
 
     if not catalog_results:
         return ret
 
     portal = plone.api.portal.get()
     portal_path = portal.getPhysicalPath()
-    qspaths = current_path_value and current_path_value.split('/') or []
-    filtered_path = '/'.join(list(portal_path) + qspaths)
+    qspaths = current_path_value and current_path_value.split("/") or []
+    filtered_path = "/".join(list(portal_path) + qspaths)
     grouped_results = {}
     level = len(qspaths) + 1
     for brain in catalog_results:
@@ -342,55 +336,65 @@ def get_section_filter_items(
         # Get path, remove portal root from path, remove leading /
         path = brain.getPath()
         if path.startswith(filtered_path):
-            path = path[len(filtered_path) + 1:]
+            path = path[len(filtered_path) + 1 :]  # noqa: E203
         else:
             continue
 
         # If path is in the root, don't add anything to path
-        paths = path.split('/')
+        paths = path.split("/")
         if len(paths) == 1:
             continue
 
         first_path = paths[0]
         if first_path in grouped_results:
             # Add counter, if path is already present
-            grouped_results[first_path]['count'] += 1
+            grouped_results[first_path]["count"] += 1
             continue
 
         title = first_path
-        ctype = 'folder'
-        container = portal.portal_catalog.searchResults({'path': {
-            'query': '/'.join(list(portal.getPhysicalPath()) +
-                              qspaths +
-                              [first_path]),
-            'depth': 0,
-        }})
+        ctype = "folder"
+        container = portal.portal_catalog.searchResults(
+            {
+                "path": {
+                    "query": "/".join(
+                        list(portal.getPhysicalPath()) + qspaths + [first_path]
+                    ),
+                    "depth": 0,
+                }
+            }
+        )
         if len(container) > 0:
             title = container[0].Title
             ctype = container[0].portal_type.lower()
 
         # Build filter url query
         _urlquery = urlquery.copy()
-        _urlquery['path'] = '/'.join(qspaths + [first_path])
+        _urlquery["path"] = "/".join(qspaths + [first_path])
         query_param = urlencode(safe_encode(_urlquery), doseq=True)
-        url = u'/'.join([it for it in [
-            collection_url,
-            view_name,
-            '?' + query_param if query_param else None
-        ] if it])
+        url = u"/".join(
+            [
+                it
+                for it in [
+                    collection_url,
+                    view_name,
+                    "?" + query_param if query_param else None,
+                ]
+                if it
+            ]
+        )
 
-        css_class = 'navTreeItem filterItem {0}'.format(
-            'filter-' + idnormalizer.normalize(first_path)
+        css_class = "navTreeItem filterItem {0}".format(
+            "filter-" + idnormalizer.normalize(first_path)
         )
 
         grouped_results[first_path] = {
-            'title': title,
-            'url': url,
-            'value': first_path,
-            'css_class': css_class,
-            'count': 1,
-            'level': level,
-            'contenttype': ctype,
+            "title": title,
+            "url": url,
+            "value": first_path,
+            "css_class": css_class,
+            "count": 1,
+            "level": level,
+            "contenttype": ctype,
         }
 
     # Add the selected paths
@@ -402,32 +406,42 @@ def get_section_filter_items(
             break
 
         # Get the results just in this subfolder
-        item_path = '/'.join(item.getPhysicalPath())[
-                    len('/'.join(portal_path)) + 1:]
-        custom_query = {'path': item_path}
+        item_path = "/".join(item.getPhysicalPath())[
+            len("/".join(portal_path)) + 1 :  # noqa: 203
+        ]
+        custom_query = {"path": item_path}
         custom_query.update(urlquery)
         custom_query = make_query(custom_query)
         catalog_results = ICollection(collection).results(
-            batch=False,
-            brains=True,
-            custom_query=custom_query
+            batch=False, brains=True, custom_query=custom_query
         )
         level += 1
         _urlquery = urlquery.copy()
-        _urlquery['path'] = '/'.join(qspaths[:qspaths.index(path) + 1])
+        _urlquery["path"] = "/".join(qspaths[: qspaths.index(path) + 1])
         query_param = urlencode(safe_encode(_urlquery), doseq=True)
-        url = u'/'.join([it for it in [
-            collection_url,
-            view_name,
-            '?' + query_param if query_param else None
-        ] if it])
-        ret.append({'title': item.Title(),
-                    'url': url,
-                    'value': path,
-                    'css_class': 'filter-%s selected' % idnormalizer.normalize(path),
-                    'count': len(catalog_results),
-                    'level': level,
-                    'contenttype': item.portal_type.lower()})
+        url = u"/".join(
+            [
+                it
+                for it in [
+                    collection_url,
+                    view_name,
+                    "?" + query_param if query_param else None,
+                ]
+                if it
+            ]
+        )
+        ret.append(
+            {
+                "title": item.Title(),
+                "url": url,
+                "value": path,
+                "css_class": "filter-%s selected"
+                % idnormalizer.normalize(path),
+                "count": len(catalog_results),
+                "level": level,
+                "contenttype": item.portal_type.lower(),
+            }
+        )
 
     grouped_results = grouped_results.values()
 

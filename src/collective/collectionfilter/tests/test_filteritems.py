@@ -9,7 +9,10 @@ try:
 except ImportError:
     from urlparse import urlparse, parse_qs
 
-from collective.collectionfilter.filteritems import get_filter_items, get_section_filter_items
+from collective.collectionfilter.filteritems import (
+    get_filter_items,
+    get_section_filter_items,
+)
 from collective.collectionfilter.query import make_query
 from collective.collectionfilter.testing import (  # noqa
     COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING,
@@ -313,8 +316,12 @@ class TestFilteritems(unittest.TestCase):
         )
 
         self.assertEqual(len(result_subfolder), 3)
-        self.assertEqual(get_data_by_val(result_subfolder, "testsubfolder")["level"], 2)
-        self.assertEqual(is_filter_selected(result_subfolder, "testsubfolder"), True)
+        self.assertEqual(
+            get_data_by_val(result_subfolder, "testsubfolder")["level"], 2
+        )
+        self.assertEqual(
+            is_filter_selected(result_subfolder, "testsubfolder"), True
+        )
 
         result_folder2 = get_section_filter_items(
             self.collection_uid,
@@ -324,7 +331,9 @@ class TestFilteritems(unittest.TestCase):
         )
 
         self.assertEqual(len(result_folder2), 2)
-        self.assertEqual(is_filter_selected(result_folder2, "testfolder2"), True)
+        self.assertEqual(
+            is_filter_selected(result_folder2, "testfolder2"), True
+        )
 
     def test_boolean_filter(self):
         """Validate boolean fields are shown with all values."""
