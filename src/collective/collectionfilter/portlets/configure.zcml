@@ -112,8 +112,8 @@
 
     <genericsetup:upgradeDepends
       title="Install new Section Filter portlet"
-      source="2"
-      destination="3"
+      source="3"
+      destination="4"
       profile="collective.collectionfilter.portlets:default"
       import_profile="collective.collectionfilter.portlets:default"
       import_steps="portlets"
