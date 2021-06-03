@@ -214,7 +214,7 @@ I search for "${search}"
 
 I should have a portlet titled "${filter_title}" with ${number_of_results} filter options
     ${portlet_title_xpath}  Convert to string  header[@class='portletHeader' and descendant-or-self::*[contains(text(), '${filter_title}')]]
-    ${filter_item_xpath}  Convert to string  div[contains(@class, 'filterContent')]//li[contains(@class, 'filterItem')]
+    ${filter_item_xpath}  Convert to string  *[contains(@class, 'portletContent')]//li[contains(@class, 'filterItem')]
 
     Page Should Contain Element  xpath=//${portlet_title_xpath}
     Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//${portlet_title_xpath}/parent::*[contains(@class, 'portlet')]//${filter_item_xpath}  limit=${number_of_results}
