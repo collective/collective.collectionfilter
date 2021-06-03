@@ -170,26 +170,22 @@ class ICollectionFilterSchema(ICollectionFilterBaseSchema):
 
 
 class ICollectionSearchSchema(ICollectionFilterBaseSchema):
-    """Schema for the search filter.
-    """
+    """Schema for the search filter."""
+
     button_text = schema.TextLine(
-        title=_('text_search_button', default=u'Search button text'),
-        description=_(
-            'help_header',
-            u'Text of the search button.'
-        ),
+        title=_("text_search_button", default=u"Search button text"),
+        description=_("help_header", u"Text of the search button."),
         required=False,
-        default=_(u'Search')
+        default=_(u"Search"),
     )
 
     placeholder = schema.TextLine(
-        title=_('placeholder_search_input', default=u'Search input placeholder'),
-        description=_(
-            'help_header',
-            u'Placeholder of the search input.'
+        title=_(
+            "placeholder_search_input", default=u"Search input placeholder"
         ),
+        description=_("help_header", u"Placeholder of the search input."),
         required=False,
-        default=_(u'Search')
+        default=_(u"Search"),
     )
 
 

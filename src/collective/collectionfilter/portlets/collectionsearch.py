@@ -30,7 +30,7 @@ class Assignment(base.Assignment):
         view_name=None,
         content_selector="#content-core",
         button_text=_(u"Search"),
-        placeholder=_(u"Search")
+        placeholder=_(u"Search"),
     ):
         self.header = header
         self.target_collection = target_collection
