@@ -118,4 +118,5 @@ Scenario: I can access search through ARIA
 
     Wait Until Element Is Visible  xpath=//input[@name='SearchableText' and @aria-label='Search']
     Click element  xpath=//form[@role='search' and @id='searchForm']
-    Element should be focused  xpath=//input[@name='SearchableText' and @aria-label='Search']
+
+    Element should be focused  xpath=//input[@type='search' and @aria-labelledby='filterSearch-SearchableText']
