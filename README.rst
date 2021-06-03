@@ -1,6 +1,18 @@
 collective.collectionfilter
 ===========================
 
+|CI| |Coverage|
+
+|Workflows|
+
+.. |CI| image:: https://github.com/collective/collective.collectionfilter/workflows/CI/badge.svg
+   :target: https://github.com/collective/collective.collectionfilter/actions
+.. |Coverage| image:: https://coveralls.io/repos/github/collective/collective.collectionfilter/badge.svg
+   :target: https://coveralls.io/github/collective/collective.collectionfilter
+.. |Workflows| image:: http://github-actions.40ants.com/collective/collective.collectionfilter/matrix.svg
+   :target: https://github.com/collective/collective.collectionfilter/actions
+
+
 Faceted navigation filter for collection results.
 
 This Plone 5 addon allows you to filter collections results for additional catalog metadata.
@@ -117,12 +129,12 @@ Write an adapter::
     @implementer(IGroupByModifier)
     @adapter(IGroupByCriteria)
     def groupby_modifier(groupby):
-        groupby._groupby['Subject']['display_modifier'] = lambda x: x.upper()
+        groupby._groupby['Subject']['display_modifier'] = lambda x, idx: x.upper()
         groupby._groupby['Subject']['sort_key_function'] = subjectsort
         groupby._groupby['my_new_index'] = {
             'index': 'my_new_index',
             'metadata': 'my_new_index_metadata_colum',
-            'display_modifier': lambda it: u'this is awesome: {0}'.format(it)
+            'display_modifier': lambda it, idx: u'this is awesome: {0}'.format(it)
         }
 
 Register the adapter::
