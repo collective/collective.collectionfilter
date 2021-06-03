@@ -20,6 +20,8 @@ class Assignment(base.Assignment):
     target_collection = None
     view_name = None
     content_selector = "#content-core"
+    button_text = _(u"Search")
+    placeholder = _(u"Search keyword")
 
     def __init__(
         self,
@@ -27,11 +29,15 @@ class Assignment(base.Assignment):
         target_collection=None,
         view_name=None,
         content_selector="#content-core",
+        button_text=_(u"Search"),
+        placeholder=_(u"Search"),
     ):
         self.header = header
         self.target_collection = target_collection
         self.view_name = view_name
         self.content_selector = content_selector
+        self.button_text = button_text
+        self.placeholder = placeholder
 
     @property
     def title(self):

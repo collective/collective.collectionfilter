@@ -85,6 +85,8 @@ Add search portlet
     Wait until element is visible  css=input#form-widgets-header
 
     Input text  css=input#form-widgets-header  Searchable Text
+    Input text  css=input#form-widgets-button_text  Click to search
+    Input text  css=input#form-widgets-placeholder  Enter some keyword
     #Select related filter collection
     Click element  css=.plone-modal-footer input#form-buttons-add
     Wait until page contains element  xpath=//div[@class='portletAssignments']//a[text()='Searchable Text']
@@ -178,7 +180,12 @@ My collection has a collection sorting portlet
 I'm viewing the collection
     Go to  ${PLONE_URL}/testcollection
     Should be 3 collection results
+    
+I should see the search portlet placeholder displays the text "${placeholder_text}"
+    Wait Until Element Is Visible  xpath=//input[@name='SearchableText' and @placeholder='${placeholder_text}']
 
+I should see the search portlet search button displays the text "${button_text}"
+    Wait Until Element Is Visible  xpath=//button[@type='submit' and text()='${button_text}']
 
 # --- Core Functionality ------------------------------------------------------
 I search for "${search}" with ajax

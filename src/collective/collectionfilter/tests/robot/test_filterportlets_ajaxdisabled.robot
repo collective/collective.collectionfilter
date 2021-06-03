@@ -38,3 +38,9 @@ Scenario: Searching through a portlet with ajax disabled
     #   and should be 4 filter options
 
 
+Scenario: Customize search porlet text with ajax disabled
+    Given I've got a site with a collection
+      and my collection has a collection search portlet
+    When I'm viewing the collection
+    Then I should see the search portlet search button displays the text "Click to search"
+      and I should see the search portlet placeholder displays the text "Enter some keyword"

@@ -8,6 +8,11 @@ Breaking Change:
 - Add idx parameter to display_modifier call, so that we can use the index name to resolve the correct translated taxonomy titles in collective.taxonomy. This means that the display_modifier method in the groupby_modifier adapters needs to expect this parameter too!
   [MrTango]
 
+Features:
+
+- allow user to customize search button text and search input placeholder
+  [nngu6036 + jeffersonbledsoe]
+
 
 3.5.1 (2021-05-26)
 ----------------
