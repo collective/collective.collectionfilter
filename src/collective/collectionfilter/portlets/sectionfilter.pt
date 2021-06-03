@@ -3,7 +3,6 @@
        tal:condition="view/available"
        i18n:domain="plone">
 
-  <tal:if condition="view/settings/target_collection">
     <header class="portletHeader" tal:condition="view/title" tal:content="view/title">Title</header>
     <nav class="portletContent" tal:define="results view/results">
           <ul class="navTree navTreeLevel0">
@@ -25,5 +24,4 @@
               </tal:items>
           </ul>
     </nav>
-  </tal:if>
 </aside>

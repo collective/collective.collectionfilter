@@ -184,7 +184,7 @@ class BaseSectionView(BaseView):
 
     def results(self):
         results = get_section_filter_items(
-            target_collection=self.settings.target_collection,
+            target_collection=self.collection_uuid,
             view_name=self.settings.view_name,
             cache_enabled=self.settings.cache_enabled,
             request_params=self.top_request.form or {},
