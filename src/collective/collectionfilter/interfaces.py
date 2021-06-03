@@ -181,7 +181,7 @@ class ICollectionSearchSchema(ICollectionFilterBaseSchema):
 
     placeholder = schema.TextLine(
         title=_(
-            "placeholder_search_input", default=u"Search input placeholder"
+            "placeholder_search_input", default=u"Placeholder"
         ),
         description=_("help_header", u"Placeholder of the search input."),
         required=False,
