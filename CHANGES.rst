@@ -1,10 +1,39 @@
 Changelog
 =========
 
-3.4.2 (unreleased)
+4.0 (unreleased)
+
+Breaking Change:
+
+- Add idx parameter to display_modifier call, so that we can use the index name to resolve the correct translated taxonomy titles in collective.taxonomy. This means that the display_modifier method in the groupby_modifier adapters needs to expect this parameter too!
+  [MrTango]
+
+
+3.5.1 (2021-05-26)
+----------------
+
+- Updated de and ch-de translations
+  [agitator]
+
+
+3.5 (2021-05-26)
+----------------
+
+- Use collection from context as default. `target_collection` is now used to select an alternative collection as result source.
+  This allows to copy and paste preconfigured collections for reuse without reconfiguring each filter element.
+  [agitator]
+
+- Fix search which include the terms "and", "or" and "not"
+  [jeffersonbledsoe]
+
+
+3.4.2 (2021-02-25)
 ------------------
 
-- Nothing changed yet.
+- Do not render filter tiles when page gets AJAX loaded
+  [petschki]
+- Do not add hidden field ``collectionfilter`` multiple times. Fixes #116
+  [petschki]
 
 
 3.4.1 (2020-06-18)

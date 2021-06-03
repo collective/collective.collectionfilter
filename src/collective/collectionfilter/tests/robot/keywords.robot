@@ -12,6 +12,9 @@ ${BROWSER}  chrome
 
 *** Keywords *****************************************************************
 
+Default Teardown
+    Run Keyword If Test Failed        Capture Page Screenshot
+    Close all browsers
 
 # --- Given ------------------------------------------------------------------
 
@@ -66,9 +69,10 @@ Input text with placeholder
 
 Manage Portlets
     Click element  link=Manage portlets
-    Wait until element is visible  css=#plone-contentmenu-portletmanager > ul  5s
-    Element should be visible  css=#plone-contentmenu-portletmanager > ul
-    Click element  partial link=Right
+    # Sometimes the click opens the backup page instead of the popup menu
+    ${present}=  Run Keyword And Return Status    Element Should Be Visible   partial link=Right
+    Run Keyword If    ${present}    Click element  partial link=Right
+    
 
 Select related filter collection
     Click element  css=div.pattern-relateditems-container input.select2-input
@@ -120,6 +124,7 @@ Should be ${X} filter options
     Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//div[contains(@class, 'filterContent')]//*[contains(@class, 'filterItem')]  limit=${X}
 
 Should be ${X} collection results
+    Wait until element is visible  css=#content-core
     Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//article[@class='entry']  limit=${X}
 
 Should be ${X} pages
@@ -153,27 +158,21 @@ I've got a site with a collection
 
 My collection has a collection search portlet
     Go to  ${PLONE_URL}/testcollection
-    Click element  link=Manage portlets
-    Element should be visible  css=#plone-contentmenu-portletmanager > ul
-    Click element  partial link=Right
+    Manage portlets
     Add search portlet
 
 My collection has a collection filter portlet
-    [Arguments]  ${group_by}=Subject
+    [Arguments]  ${group_by}=Subject  ${op}=or  ${style}=checkboxes_dropdowns
 
     Go to  ${PLONE_URL}/testcollection
-    Click element  link=Manage portlets
-    Element should be visible  css=#plone-contentmenu-portletmanager > ul
-    Click element  partial link=Right
-    Add filter portlet  ${group_by}  or  checkboxes_dropdowns
+    Manage portlets
+    Add filter portlet  ${group_by}  ${op}  ${style}
 
 My collection has a collection sorting portlet
     [Arguments]  ${sort_on}=sortable_title
 
     Go to  ${PLONE_URL}/testcollection
-    Click element  link=Manage portlets
-    Element should be visible  css=#plone-contentmenu-portletmanager > ul
-    Click element  partial link=Right
+    Manage portlets
     Add sorting portlet  ${sort_on}  links
 
 I'm viewing the collection
@@ -182,22 +181,37 @@ I'm viewing the collection
 
 
 # --- Core Functionality ------------------------------------------------------
-I search for ${document} with ajax
+I search for "${search}" with ajax
     Wait until element is not visible  css=.collectionSearch button[type='submit']  timeout=5 sec
-    Input text  css=.collectionSearch input[name='SearchableText']  ${document}
+    Input text  css=.collectionSearch input[name='SearchableText']  ${search}
     Wait until keyword succeeds  5s  1s  Ajax has completed
 
-I search for ${document} and click search
+I search for "${search}" and click search
     Wait until element is visible  css=.collectionSearch button[type='submit']
-    Input text  css=.collectionSearch input[name='SearchableText']  ${document}
+    Input text  css=.collectionSearch input[name='SearchableText']  ${search}
     Click Element  css=.collectionSearch button[type='submit']
 
+I search for "${search}"
+    Input text  css=.collectionSearch input[name='SearchableText']  ${search}
+    ${present}=  Run Keyword And Return Status   Element Should Be Visible  css=.collectionSearch button[type='submit']
+    Run Keyword If    ${present}   Click Element  css=.collectionSearch button[type='submit']
+
 I should have a portlet titled "${filter_title}" with ${number_of_results} filter options
-    ${portlet_title_xpath}  Convert to string  header[@class='portletHeader' and contains(text(), '${filter_title}')]
+    ${portlet_title_xpath}  Convert to string  header[@class='portletHeader' and descendant-or-self::*[contains(text(), '${filter_title}')]]
     ${filter_item_xpath}  Convert to string  div[contains(@class, 'filterContent')]//li[contains(@class, 'filterItem')]
 
     Page Should Contain Element  xpath=//${portlet_title_xpath}
     Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//${portlet_title_xpath}/parent::*[contains(@class, 'collectionFilter')]//${filter_item_xpath}  limit=${number_of_results}
+
+I should not have a portlet titled "${filter_title}"
+    ${portlet_title_xpath}  Convert to string  header[@class='portletHeader' and descendant-or-self::*[contains(text(), '${filter_title}')]]
+
+    Page Should not Contain Element  xpath=//${portlet_title_xpath}
+
+
+I should not see any results
+    Sleep  1 sec
+    Element should be visible  xpath=//*[@id="content-core"]/*[text()="No results were found."]
 
 I sort by "${sort_on}"
     Wait until element is visible  css=.collectionSortOn
@@ -208,14 +222,16 @@ I sort by "${sort_on}"
     Click Element  css=.collectionSortOn .sortItem .${sort_on}
     Wait until keyword succeeds  5s  1s  Page Should Contain Element  css=.collectionSortOn .sortItem.selected .${sort_on} span.glyphicon-sort-by-attributes-alt
 
+should be no errors
+
+
 # --- Tiles -------------------------------------------------------------------
 Enable mosaic layout for page
     [Arguments]  ${page}
 
     # Setup Mosaic display and open editor
     Click element  link=Display
-    Element should be visible  css=#plone-contentmenu-portletmanager > ul
-    Element should be visible  css=#plone-contentmenu-display-layout_view
+    Wait Until Element Is visible  css=#plone-contentmenu-display-layout_view
     Click element  link=Mosaic layout
     Go to  ${page}/edit
 
@@ -227,15 +243,15 @@ Enable mosaic layout for page
     # Enable layout editing
     Wait Until Element Is Visible  css=.mosaic-toolbar
     Click element  css=.mosaic-button-layout
-    Element should be visible  css=.mosaic-button-customizelayout
+    Wait Until Element Is visible  css=.mosaic-button-customizelayout
     Click element  css=.mosaic-button-customizelayout
 
     Save mosaic page
 
 Save mosaic page
-    Wait Until Element Is Visible  css=.mosaic-button-save
+    Wait Until Element Is Visible  css=.mosaic-button-save   timeout=5 sec
     Click button  css=.mosaic-button-save
-    Wait until page contains  Changes saved
+    Wait until page contains  Changes saved   timeout=10 sec
 
 Add filter tile
     [Arguments]   ${collection_name}  ${filter_type}  ${input_type}

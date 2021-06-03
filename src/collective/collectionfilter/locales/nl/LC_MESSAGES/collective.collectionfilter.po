@@ -1,6 +1,3 @@
-# --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
-# SOME DESCRIPTIVE TITLE.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -12,46 +9,46 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0\n"
-"Language-Code: en\n"
-"Language-Name: English\n"
+"Language-Code: nl\n"
+"Language-Name: Nederlands\n"
 "Preferred-Encodings: utf-8 latin1\n"
-"Domain: collective.collectionfilter\n"
+"Domain: DOMAIN\n"
 
 #: collective/collectionfilter/portlets/sorting.pt:27
 msgid "(descending)"
-msgstr ""
+msgstr "(aflopend)"
 
 #: collective/collectionfilter/portlets/collectionfilter.py:81
 msgid "Add Collection Filter Portlet"
-msgstr ""
+msgstr "Voeg verzamelingsfilter portlet toe"
 
 #: collective/collectionfilter/portlets/maps.py:62
 msgid "Add Collection Maps Portlet"
-msgstr ""
+msgstr "Voeg verzameling/kaarten portlet toe"
 
 #: collective/collectionfilter/portlets/sorting.py:66
 msgid "Add Collection Result Listing Sort Portlet"
-msgstr ""
+msgstr "Voeg verzamelingen zoekresultaten portlet toe"
 
 #: collective/collectionfilter/portlets/collectionsearch.py:51
 msgid "Add Collection Search Portlet"
-msgstr ""
+msgstr "Voeg verzameling zoekportlet toe"
 
 #: collective/collectionfilter/portlets/collectionfilter.py:71
 msgid "Collection Filter"
-msgstr ""
+msgstr "Verzamelingfilter"
 
 #: collective/collectionfilter/portlets/maps.py:52
 msgid "Collection Maps"
-msgstr ""
+msgstr "Verzamelingkaarten"
 
 #: collective/collectionfilter/portlets/sorting.py:56
 msgid "Collection Result Sorting"
-msgstr ""
+msgstr "Verzameling sortering resultaten"
 
 #: collective/collectionfilter/portlets/collectionsearch.py:41
 msgid "Collection Search"
-msgstr ""
+msgstr "Verzameling zoeken"
 
 #: collective/collectionfilter/validator.py:34
 msgid "Context is not a collection, please set a target collection."
@@ -59,11 +56,11 @@ msgstr ""
 
 #: collective/collectionfilter/portlets/collectionfilter.py:94
 msgid "Edit Collection Filter Portlet"
-msgstr ""
+msgstr "Bewerk verzameling filterportlet"
 
 #: collective/collectionfilter/portlets/maps.py:72
 msgid "Edit Collection Maps Portlet"
-msgstr ""
+msgstr "Bewerk verzameling kaartenportlet"
 
 #: collective/collectionfilter/portlets/sorting.py:76
 msgid "Edit Collection Result Listing Sort Portlet"
@@ -80,15 +77,15 @@ msgstr ""
 
 #: collective/collectionfilter/vocabularies.py:97
 msgid "No"
-msgstr ""
+msgstr "Nee"
 
 #: collective/collectionfilter/portlets/sorting.pt:12
 msgid "Select"
-msgstr ""
+msgstr "Kies"
 
 #: collective/collectionfilter/portlets/collectionsearch.py:52
 msgid "This portlet allows fulltext search in collection results."
-msgstr ""
+msgstr "Dit portlet toont een volledige tekst zoekveld voor in verzamelingen."
 
 #: collective/collectionfilter/portlets/maps.py:63
 msgid "This portlet allows map filtering in collection results."
@@ -104,7 +101,7 @@ msgstr ""
 
 #: collective/collectionfilter/vocabularies.py:95
 msgid "Yes"
-msgstr ""
+msgstr "Ja"
 
 #: collective/collectionfilter/configure.zcml:63
 msgid "collective.collectionfilter base"
@@ -230,12 +227,12 @@ msgstr ""
 #: collective/collectionfilter/tiles/filter.pt:21
 #: collective/collectionfilter/tiles/maps.pt:20
 msgid "label-edit-filter"
-msgstr ""
+msgstr "Bewerk"
 
 #. Default: "Enable Cache"
 #: collective/collectionfilter/interfaces.py:105
 msgid "label_cache_enabled"
-msgstr ""
+msgstr "Activeer cache"
 
 #. Default: "Content Selector"
 #: collective/collectionfilter/interfaces.py:71
@@ -305,7 +302,7 @@ msgstr ""
 #. Default: "All"
 #: collective/collectionfilter/filteritems.py:232
 msgid "subject_all"
-msgstr ""
+msgstr "Alle"
 
 #: collective/collectionfilter/vocabularies.py:227
 msgid "title"
@@ -315,4 +312,4 @@ msgstr ""
 #: collective/collectionfilter/tiles/filter.pt:15
 #: collective/collectionfilter/tiles/maps.pt:14
 msgid "title-edit-filter"
-msgstr ""
+msgstr "bewerk filter"

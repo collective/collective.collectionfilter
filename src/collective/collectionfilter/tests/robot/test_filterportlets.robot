@@ -6,7 +6,7 @@ Resource  keywords.robot
 # Library  Remote  ${PLONE_URL}/RobotRemote
 
 Test Setup  View Test Collection
-Test Teardown  Close all browsers
+Test Teardown  Default Teardown
 
 
 
@@ -64,7 +64,6 @@ Scenario: Hide when no options
     Go to  ${PLONE_URL}/testcollection
     # No idea why intermittently we get 1 filter option below instead of 0
     log source
-    capture page screenshot
     Should be 0 filter options
     Should be 3 collection results
 
@@ -88,7 +87,6 @@ Scenario: show hidden filter if just narrowed down
     # But if we filter it down it shouldn't disappear as then we have no way to click "All" to get back
       and Select Filter Option "Event (1)"
       Log source
-      capture page screenshot
      Then Should be 2 filter options
 
 
@@ -99,6 +97,18 @@ Scenario: Displaying multiple collection filters on a single page
     When I'm viewing the collection
     Then I should have a portlet titled "Subject" with 4 filter options
       and I should have a portlet titled "Type" with 3 filter options
+
+Scenario: Combine search and OR filter
+    Given I've got a site with a collection
+      and my collection has a collection search portlet
+      and my collection has a collection filter portlet  Subject  and  checkboxes_dropdowns
+     When I'm viewing the collection
+      and Click Input "Süper (2)"
+      and Should be 2 collection results
+      and Click Input "Evänt (1)"
+      and Should be 1 collection results
+      and I search for "Event"
+      and Should be 1 collection results
 
 Scenario: I can access search through ARIA
 
