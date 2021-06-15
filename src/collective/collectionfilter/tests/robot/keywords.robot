@@ -355,7 +355,7 @@ I sort by "${sort_on}"
 Results Are Sorted
 
     ${xpath}=    Set Variable    //span[@class='summary']
-    ${count}=    Get Get Element Count    xpath=${xpath}
+    ${count}=    Get Element Count    xpath=${xpath}
     ${names}=    Create List
     :FOR    ${i}    IN RANGE    1    ${count} + 1
     \    ${name}=    Get Text    xpath=(${xpath})[${i}]
