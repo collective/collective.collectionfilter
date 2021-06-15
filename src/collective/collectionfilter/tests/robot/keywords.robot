@@ -73,6 +73,7 @@ Click Input "${label}"
 
 Add to InAndOut
     [Arguments]  ${label}  @{values}
+    Wait until page contains element  xpath=//label[.//*[normalize-space(text())='${label}'] or normalize-space(text()) ='${label}']
     ${id}=  Get Element Attribute  xpath=//label[.//*[normalize-space(text())='${label}'] or normalize-space(text()) ='${label}']  for
     :FOR  ${value}  IN  @{values}
     \    Select from List by value  css=select#${id}-from  ${value}
