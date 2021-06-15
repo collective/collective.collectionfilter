@@ -44,7 +44,7 @@ Scenario: Test Batching
 Scenario: Hide when no options
 
     Given I've got a site with a collection
-      and my collection has a collection filter  author_name  or  checkboxes_dropdowns  Hide
+      and my collection has a collection filter  author_name  or  checkboxes_dropdowns  Hide if empty
      When I'm viewing the collection
      then Should be 3 collection results
      then Should be 0 filter options
