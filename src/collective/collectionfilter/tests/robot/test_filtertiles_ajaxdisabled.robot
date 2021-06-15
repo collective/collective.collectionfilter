@@ -5,7 +5,7 @@ Resource  keywords.robot
 
 # Library  Remote  ${PLONE_URL}/RobotRemote
 
-Test Setup  Open test browser
+Test Setup  Default Setup
 Test Teardown  Default Teardown
 
 *** Variables ***

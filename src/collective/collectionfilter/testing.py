@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 from datetime import timedelta
+import os
 from plone import api
 from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FIXTURE
 from plone.app.robotframework.testing import REMOTE_LIBRARY_BUNDLE_FIXTURE
@@ -137,7 +138,7 @@ COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED = FunctionalTesting(
         REMOTE_LIBRARY_BUNDLE_FIXTURE,
         z2.ZSERVER_FIXTURE,
     ),
-    name="CollectiveCollectionFilterLayer:AcceptanceTesting_AjaxEnabled",
+    name="CollectiveCollectionFilterLayer:AcceptanceTestingPortlet_AjaxEnabled",
 )
 
 
@@ -154,5 +155,26 @@ COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED = FunctionalTesting
         REMOTE_LIBRARY_BUNDLE_FIXTURE,
         z2.ZSERVER_FIXTURE,
     ),
-    name="CollectiveCollectionFilterLayer:AcceptanceTesting_AjaxDisabled",
+    name="CollectiveCollectionFilterLayer:AcceptanceTestingPortlet_AjaxDisabled",
+)
+
+
+class CollectiveCollectionFilterTilesLayer(CollectiveCollectionFilterLayer):
+    def setUpPloneSite(self, portal):
+        os.environ['ROBOT_USE_TILES'] = "True"
+        super(CollectiveCollectionFilterTilesLayer, self).setUpPloneSite(portal)
+
+    def tearDownPloneSite(self, portal):
+        super(CollectiveCollectionFilterTilesLayer, self).tearDownPloneSite(portal)
+        del os.environ['ROBOT_USE_TILES']
+
+
+TILES_FIXTURE = CollectiveCollectionFilterTilesLayer()
+COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_TILES = FunctionalTesting(
+    bases=(
+        TILES_FIXTURE,
+        REMOTE_LIBRARY_BUNDLE_FIXTURE,
+        z2.ZSERVER_FIXTURE,
+    ),
+    name="CollectiveCollectionFilterLayer:AcceptanceTesting_Tiles",
 )

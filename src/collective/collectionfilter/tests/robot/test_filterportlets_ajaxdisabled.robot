@@ -5,7 +5,7 @@ Resource  keywords.robot
 
 # Library  Remote  ${PLONE_URL}/RobotRemote
 
-Test Setup  Open test browser
+Test Setup  Default Setup
 Test Teardown  Default Teardown
 
 
@@ -13,8 +13,8 @@ Test Teardown  Default Teardown
 
 Scenario: Searching through a portlet with ajax disabled
     Given I've got a site with a collection
-      and my collection has a collection search portlet
-      and my collection has a collection filter portlet
+      and my collection has a collection search
+      and my collection has a collection filter
       and I'm viewing the collection
     When I search for "Document" and click search
     Then should be 1 collection results
