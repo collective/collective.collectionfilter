@@ -1,18 +1,3 @@
-<aside class="portlet ${view/filterClassName} collectionFilterInfo pat-collectionfilter"
-       data-pat-collectionfilter='${view/pat_options}'
-       tal:condition="view/available"
-       i18n:domain="collective.collectionfilter">
-
-  <tal:if condition="view/settings/target_collection">
-  <header class="portletHeader" tal:condition="view/title" tal:content="view/title">Title</header>
-  <div class="portletContent filterInfoContent">
-    <div aria-live="polite" tal:content="view/info_contents"></div>
-  </div>
-  </tal:if>
-</aside>
-
-
-
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
     xml:lang="en"
