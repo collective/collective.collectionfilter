@@ -11,16 +11,14 @@ Library  OperatingSystem
 
 ${BROWSER}  chrome
 
-# Not passed in as variable by robotsuite as variables collected before layer setup
-#${USE_TILES}  ${None}
-
 *** Keywords *****************************************************************
 
 Default Setup
+# Not passed in as variable by robotsuite as variables collected before layer setup
     ${USE_TILES}=  Get Environment Variable   ROBOT_USE_TILES  default=${False}
     ${USE_TILES}=  Set Test Variable   ${USE_TILES}
     open test browser
-    Set Window Size  ${1400}  ${8000}
+    #Set Window Size  ${1400}  ${8000}
 
 Default Teardown
     Run Keyword If Test Failed        Capture Page Screenshot

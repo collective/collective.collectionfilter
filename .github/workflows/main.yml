@@ -24,10 +24,13 @@ jobs:
         include:
           - plone-version: 5.2
             python-version: 3.6
+            layer: Portlet_AjaxEnabled
           - plone-version: 5.2
             python-version: 3.7
+            layer: Portlet_AjaxEnabled
           - plone-version: 5.2
             python-version: 3.8
+            layer: Portlet_AjaxEnabled
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
@@ -87,13 +90,14 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v1
         with:
-          name: test_results
+          name: test_results-${{ matrix.python-version }}-${{ matrix.plone-version }}-${{ matrix.layer }}
           path: ./parts/test
       - uses: actions/setup-python@v2
         if: failure()
         with:
           python-version: 2.7            
       - name: Robottest report
+        continue-on-error: true
         if: failure()
         run: |
             pip2.7 install popt || pip2.7 install --user  popt
