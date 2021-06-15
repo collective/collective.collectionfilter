@@ -68,5 +68,4 @@ Scenario: Hide on any filter
      When I'm viewing the collection
       and Click Input "Süper (2)"
       and Should be 2 collection results
-      pause
      then should be no Info
