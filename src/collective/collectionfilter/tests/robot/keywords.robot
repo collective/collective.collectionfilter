@@ -198,10 +198,11 @@ Should be ${X} pages
     Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//nav[@class='pagination']//a  limit=${X}
 
 Should be Info with text: ${text}
-    wait until element contains  css=.collectionInfo  ${text}
+    wait until element contains  css=.filterInfoContent  ${text}
 
+# TODO: there is a bug where the aside.collectionInfo is still visible on screen. 
 Should be no Info
-    wait until element is not visible  css=.collectionInfo
+    wait until element is not visible  css=.filterInfoContent
 
 # Set portlet "${title}" "${checkbox}"
 #     Click Link  ${title}

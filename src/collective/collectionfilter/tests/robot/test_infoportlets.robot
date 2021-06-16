@@ -63,9 +63,14 @@ Scenario: Combine info templates
 
 Scenario: Hide on any filter
     Given I've got a site with a collection
-      and my collection has a collection info  Current Filters  value_quoted_filter   hide_when=any_filter
+      and my collection has a collection info  Current Filters  result_count   hide_when=any_filter
       and my collection has a collection filter  Subject
      When I'm viewing the collection
+      and Should be Info with text: 3
       and Click Input "Süper (2)"
       and Should be 2 collection results
+     then should be no Info
+      and Click Input "All (3)"
+     then Should be Info with text: 3
+      and Click Input "Süper (2)"
      then should be no Info
