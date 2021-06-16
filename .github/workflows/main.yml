@@ -21,16 +21,20 @@ jobs:
           - Portlet_AjaxDisabled
           - Portlet_AjaxEnabled
           - Tile
+        coverage: ['off']
         include:
           - plone-version: 5.2
             python-version: 3.6
-            layer: Portlet_AjaxEnabled
+            layer: Tile
+            coverage: on
           - plone-version: 5.2
             python-version: 3.7
-            layer: Portlet_AjaxEnabled
+            layer: Portlet_AjaxDisabled
+            coverage: on
           - plone-version: 5.2
             python-version: 3.8
             layer: Portlet_AjaxEnabled
+            coverage: on
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
@@ -78,13 +82,30 @@ jobs:
           bin/pip install zest.pocompile
           bin/pocompile src
       - name: test
+        if: ${{ matrix.coverage == 'off' }}
         run: |
             export DISPLAY=:99.0
             chromedriver --url-base=/wd/hub &
             sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
             sleep 3
             bin/test --all  --layer ${{ matrix.layer }}
+      - name: createcoverage
+        if: ${{ matrix.coverage == 'on' }}
+        run: |
+            export DISPLAY=:99.0
+            chromedriver --url-base=/wd/hub &
+            sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
+            sleep 3
+            bin/createcoverage -t '--all --layer ${{ matrix.layer }}'
+            bin/coverage json -i
+      - name: Coveralls
+        if: ${{ matrix.coverage == 'on' }}
+        uses: AndreMiras/coveralls-python-action@develop
+        with:
+          parallel: true
+          flag-name: ${{ matrix.plone-version }}-${{ matrix.python-version }}-${{ matrix.layer }}     
       - name: code-analysis
+        if: always()
         run: echo "${{ matrix.plone-version }}" | grep 5.1 || bin/code-analysis  
       - name: Artifact Robot Test Report
         if: failure()
@@ -102,20 +123,6 @@ jobs:
         run: |
             pip2.7 install popt || pip2.7 install --user  popt
             grep  --include=output.xml -Rl  FAIL parts/test | xargs --no-run-if-empty -n 1 popt
-      - name: createcoverage
-        run: |
-            export DISPLAY=:99.0
-            chromedriver --url-base=/wd/hub &
-            sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
-            sleep 3
-            bin/createcoverage -t '--all'
-            # bin/createcoverage
-            bin/coverage json -i
-      - name: Coveralls
-        uses: AndreMiras/coveralls-python-action@develop
-        with:
-          parallel: true
-          flag-name: ${{ matrix.plone-version }}-${{ matrix.python-version }}     
 
   coveralls_finish:
     needs: build
