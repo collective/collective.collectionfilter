@@ -21,20 +21,20 @@ jobs:
           - Portlet_AjaxDisabled
           - Portlet_AjaxEnabled
           - Tile
-        coverage: ['off']
+        coverage: ['no_coverage']
         include:
           - plone-version: 5.2
             python-version: 3.6
             layer: Tile
-            coverage: on
+            coverage: coverage
           - plone-version: 5.2
             python-version: 3.7
             layer: Portlet_AjaxDisabled
-            coverage: on
+            coverage: coverage
           - plone-version: 5.2
             python-version: 3.8
             layer: Portlet_AjaxEnabled
-            coverage: on
+            coverage: coverage
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
@@ -82,7 +82,7 @@ jobs:
           bin/pip install zest.pocompile
           bin/pocompile src
       - name: test
-        if: ${{ matrix.coverage == 'off' }}
+        if: ${{ matrix.coverage != 'coverage' }}
         run: |
             export DISPLAY=:99.0
             chromedriver --url-base=/wd/hub &
@@ -90,7 +90,7 @@ jobs:
             sleep 3
             bin/test --all  --layer ${{ matrix.layer }}
       - name: createcoverage
-        if: ${{ matrix.coverage == 'on' }}
+        if: ${{ matrix.coverage == 'coverage' }}
         run: |
             export DISPLAY=:99.0
             chromedriver --url-base=/wd/hub &
@@ -99,7 +99,7 @@ jobs:
             bin/createcoverage -t '--all --layer ${{ matrix.layer }}'
             bin/coverage json -i
       - name: Coveralls
-        if: ${{ matrix.coverage == 'on' }}
+        if: ${{ matrix.coverage == 'coverage' }}
         uses: AndreMiras/coveralls-python-action@develop
         with:
           parallel: true
