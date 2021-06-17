@@ -24,6 +24,8 @@ def target_collection_types(context):
         "collective.collectionfilter.target_collection_types",
         default=[
             "Collection",
+            "Page",
+            "Folder"
         ],
     )
 

@@ -451,7 +451,6 @@ Add filter tile
 
     Insert Tile "Collection Filter"
     Drag tile
-    
     Click button   Edit
 #    Wait until element is visible  xpath=//div[@class='plone-modal-dialog' and .//*[contains(text(), 'Collection')]]
     #run keyword if  $collection_name  set relateditem  formfield-collective-collectionfilter-tiles-filter-target_collection  ${collection_name}
@@ -479,12 +478,10 @@ Add info tile
     Insert tile "Collection Filter Info"
     run keyword if  $collection_name  set relateditem  formfield-collective-collectionfilter-tiles-info-target_collection  ${collection_name}
     # Complete filter form
-
     Set Info Settings  collective-collectionfilter-tiles-info  @{templates}  hide_when=${hide_when}
     Run Keyword by label  Content Selector  Input Text  .contentlisting-tile
 
     Click element  css=.pattern-modal-buttons #buttons-save
-
     Drag tile
 
 Set Info Settings 
@@ -510,10 +507,23 @@ Add contentlisting tile
     Insert tile "Content listing"
     Drag tile
     Click button  Edit
-    Run Keyword by label  Use query parameters from content  click element
-    # Input Text  css=input#plone-app-standardtiles-contentlisting-item_count  ${batch}
-    # Run Keyword by label  Item count  click element
-    # Run Keyword by label  Limit   Clear Element Text
+    # Run Keyword by label  Use query parameters from content  click element
+
+    # Since we aren't using the collection we need to recreate the same settings clickin on select2
+    wait until element is visible  link=Select criteria
+    Click link  link=Select criteria
+    wait until element is visible  css=.select2-result-label
+    Click Element  xpath=//div[contains(@class,'select2-result-label') and text() = 'Type']
+    # pause
+    # select2-choices select2-search-field select2-input
+    #select from list by label  xpath=(//select[@class='querystring-criteria-value-MultipleSelectionWidget'])[1]  Event
+    #select from list by label  xpath=(//select[@class='querystring-criteria-value-MultipleSelectionWidget'])[1]  Page
+    Click Element  xpath=(//div[@class='querystring-criteria-value'])[3]//input
+    wait until element is visible  css=.select2-result-label
+    Click Element  xpath=//div[contains(@class,'select2-result-label') and text() = 'Event']
+    Click Element  xpath=(//div[@class='querystring-criteria-value'])[3]//input
+    wait until element is visible  css=.select2-result-label
+    Click Element  xpath=//div[contains(@class,'select2-result-label') and text() = 'Page']
     Run Keyword by label  Item count   Input Text  ${batch}
     #Ignore query parameters from request
     #Tile additional styles
