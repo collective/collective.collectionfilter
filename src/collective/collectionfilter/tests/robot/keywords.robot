@@ -71,13 +71,47 @@ Click Input "${label}"
     Wait until page contains element  xpath=//input[@id=//label[.//*[normalize-space(text())='${label}'] or normalize-space(text()) ='${label}']/@for]
     Click Element  xpath=//input[@id=//label[.//*[normalize-space(text())='${label}'] or normalize-space(text()) ='${label}']/@for]
 
-Add to InAndOut
+Select InAndOut
     [Arguments]  ${label}  @{values}
     Wait until page contains element  xpath=//label[.//*[normalize-space(text())='${label}'] or normalize-space(text()) ='${label}']
     ${id}=  Get Element Attribute  xpath=//label[.//*[normalize-space(text())='${label}'] or normalize-space(text()) ='${label}']  for
     :FOR  ${value}  IN  @{values}
     \    Select from List by value  css=select#${id}-from  ${value}
     \    Click element  css=#${id} button[name='from2toButton']
+
+
+Select single select2  
+    [Arguments]  ${locator}  ${value}
+    ${select2}=  get webelement  ${locator}
+    execute javascript  $(arguments[0]).select2("open")  ARGUMENTS  ${select2}
+    wait until element is visible  css=.select2-result-label
+    Click Element  xpath=//div[contains(@class,'select2-result-label') and text() = '${value}']
+
+    #Click link  link=Select criteria
+    #pause
+    #select from list by label  xpath=(//div[@class='querystring-criteria-index'])[5]//select  Type
+    #Click Element  xpath=(//div[@class='querystring-criteria-index'])[5]//*[@class='select2-arrow']//a
+    # $($x("(//div[@class='querystring-criteria-index'])[5]/div")).select2("val", "portal_type").trigger("change")
+
+
+Select multi select2
+    [Arguments]  ${locator}  @{values}
+    # select2-choices select2-search-field select2-input
+    #select from list by label  xpath=(//select[@class='querystring-criteria-value-MultipleSelectionWidget'])[1]  Event
+    #select from list by label  xpath=(//select[@class='querystring-criteria-value-MultipleSelectionWidget'])[1]  Page
+    ${select2}=  get webelement  ${locator}
+    execute javascript  $(arguments[0]).select2("val",arguments[1])  ARGUMENTS  ${select2}  ${values}
+    :FOR  ${value}  IN  @{values} 
+    # Hack to only find those in the tile popup up not the mosaic popup 
+    #\    wait until element is visible  //*[contains(@class,'plone-modal ')]//li[@class='select2-search-choice']//*[contains(text(), '${value}')]
+    \    Wait until keyword succeeds  5s  1s  call method  ${select2}  find_elements  by=xpath  value=.//li[@class='select2-search-choice']//*[contains(text(), '${value}')]
+
+    # Click Element  xpath=(//div[@class='querystring-criteria-value'])[3]//input
+    # wait until element is visible  css=.select2-result-label
+    # Click Element  xpath=//div[contains(@class,'select2-result-label') and text() = 'Event']
+    # Click Element  xpath=(//div[@class='querystring-criteria-value'])[3]//input
+    # wait until element is visible  css=.select2-result-label
+    # Click Element  xpath=//div[contains(@class,'select2-result-label') and text() = 'Page']
 
 
 Click Button with text
@@ -167,7 +201,8 @@ Add sorting portlet
 
 Set sorting Options
     [Arguments]   ${sort_on}  ${input_type}
-    Add to InAndOut  Enabled sort indexes  ${sort_on}
+    #Run keyword by label  Enabled sort indexes  select multi select2    ${sort_on}
+    select multi select2  css=#formfield-collective-collectionfilter-tiles-sortOn-sort_on .select2-container  ${sort_on}
     Run Keyword by label  Input Type   Select from List by value   ${input_type}
 
 
@@ -354,7 +389,6 @@ I sort by "${sort_on}"
     Wait until element is not visible   xpath=//span[contains(normalize-space(text()), '${sort_on}')]//span[@class='${glyph}']
 
 Results Are Sorted
-
     ${xpath}=    Set Variable    //span[@class='summary']
     ${count}=    Get Element Count    xpath=${xpath}
     ${names}=    Create List
@@ -486,10 +520,9 @@ Add info tile
 
 Set Info Settings 
     [Arguments]   ${prefix}  @{templates}  ${hide_when}
-    Add to InAndOut  Template Type  @{templates}
-    Run keyword if  $hide_when is not ${None}  Run Keywords
-    ...    Select from List by value  css=select#${prefix}-hide_when-from  ${hide_when}
-    ...    AND  Click element  css=#${prefix}-hide_when button[name='from2toButton']
+
+    select multi select2  css=#formfield-collective-collectionfilter-tiles-info-template_type .select2-container  @{templates}
+    Run keyword if  $hide_when is not ${None}  Run Keyword  select multi select2  css=#formfield-collective-collectionfilter-tiles-info-hide_when .select2-container  ${hide_when}
 
 
 
@@ -507,27 +540,17 @@ Add contentlisting tile
     Insert tile "Content listing"
     Drag tile
     Click button  Edit
+    # TODO: test using this method
     # Run Keyword by label  Use query parameters from content  click element
 
     # Since we aren't using the collection we need to recreate the same settings clickin on select2
     wait until element is visible  link=Select criteria
-    Click link  link=Select criteria
-    wait until element is visible  css=.select2-result-label
-    Click Element  xpath=//div[contains(@class,'select2-result-label') and text() = 'Type']
-    # pause
-    # select2-choices select2-search-field select2-input
-    #select from list by label  xpath=(//select[@class='querystring-criteria-value-MultipleSelectionWidget'])[1]  Event
-    #select from list by label  xpath=(//select[@class='querystring-criteria-value-MultipleSelectionWidget'])[1]  Page
-    Click Element  xpath=(//div[@class='querystring-criteria-value'])[3]//input
-    wait until element is visible  css=.select2-result-label
-    Click Element  xpath=//div[contains(@class,'select2-result-label') and text() = 'Event']
-    Click Element  xpath=(//div[@class='querystring-criteria-value'])[3]//input
-    wait until element is visible  css=.select2-result-label
-    Click Element  xpath=//div[contains(@class,'select2-result-label') and text() = 'Page']
+    select single select2      xpath=(//div[@id='formfield-plone-app-standardtiles-contentlisting-query']//div[@class='querystring-criteria-index'])[2]/div  Type
+    select multi select2   xpath=(//div[@id='formfield-plone-app-standardtiles-contentlisting-query']//div[@class='querystring-criteria-value'])[2]/div  Event  Document
+
+    # TODO: no item count in plone 5.0
     Run Keyword by label  Item count   Input Text  ${batch}
-    #Ignore query parameters from request
-    #Tile additional styles
-    #Display mode
+
     Click element  css=.pattern-modal-buttons #buttons-save
 
 

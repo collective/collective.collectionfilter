@@ -348,7 +348,7 @@ if ILayoutAware is not None:
 
             # Include query parameters from request if not set to ignore
             contentFilter = {}
-            if not self.tile.ignore_request_params:
+            if not getattr(self.tile, "ignore_request_params", False):
                 contentFilter = dict(self.context.REQUEST.get("contentFilter", {}))
 
             # TODO: handle events extra params
