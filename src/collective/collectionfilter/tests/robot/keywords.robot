@@ -113,6 +113,13 @@ Select multi select2
     # wait until element is visible  css=.select2-result-label
     # Click Element  xpath=//div[contains(@class,'select2-result-label') and text() = 'Page']
 
+select multi select2 with label
+    [Arguments]  ${label}  @{values}
+    # select2 don't have proper labels because the @for doesn't match an id of anything
+    ${xpath}=   set variable  //label[normalize-space(text()) ='${label}']/following-sibling::div[contains(@class,'select2-container')]
+    Wait until page contains element  xpath=${xpath}
+    run keyword   select multi select2  xpath=${xpath}  @{values}
+
 
 Click Button with text
     [Arguments]  ${text}  ${pos}=1
@@ -202,7 +209,7 @@ Add sorting portlet
 Set sorting Options
     [Arguments]   ${sort_on}  ${input_type}
     #Run keyword by label  Enabled sort indexes  select multi select2    ${sort_on}
-    select multi select2  css=#formfield-collective-collectionfilter-tiles-sortOn-sort_on .select2-container  ${sort_on}
+    select multi select2 with label  Enabled sort indexes  ${sort_on}
     Run Keyword by label  Input Type   Select from List by value   ${input_type}
 
 
@@ -521,8 +528,8 @@ Add info tile
 Set Info Settings 
     [Arguments]   ${prefix}  @{templates}  ${hide_when}
 
-    select multi select2  css=#formfield-collective-collectionfilter-tiles-info-template_type .select2-container  @{templates}
-    Run keyword if  $hide_when is not ${None}  Run Keyword  select multi select2  css=#formfield-collective-collectionfilter-tiles-info-hide_when .select2-container  ${hide_when}
+    select multi select2 with label  Template type  @{templates}
+    Run keyword if  $hide_when is not ${None}  Run Keyword  select multi select2 with label  Hide when  ${hide_when}
 
 
 

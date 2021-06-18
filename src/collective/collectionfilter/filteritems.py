@@ -335,7 +335,10 @@ if ILayoutAware is not None:
 
         @property
         def sort_reversed(self):
-            return self.sort_order == "reverse"
+            if self.tile is not None:
+                return self.sort_order == "reverse"
+            else:
+                return self.collection.sort_reversed
 
         def results(self, custom_query, request_params):
             """Search results"""
