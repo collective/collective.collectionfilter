@@ -35,6 +35,9 @@ jobs:
             python-version: 3.8
             layer: Portlet_AjaxEnabled
             coverage: coverage
+        exclude:
+          - plone-version: 5.0  # standardtiles 2.3.2 does support using the request to query. embed might still be possible
+            layer: Tile
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
