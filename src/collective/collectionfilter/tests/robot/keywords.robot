@@ -528,7 +528,7 @@ Add info tile
 Set Info Settings 
     [Arguments]   ${prefix}  @{templates}  ${hide_when}
 
-    select multi select2 with label  Template type  @{templates}
+    select multi select2 with label  Template Type  @{templates}
     Run keyword if  $hide_when is not ${None}  Run Keyword  select multi select2 with label  Hide when  ${hide_when}
 
 
