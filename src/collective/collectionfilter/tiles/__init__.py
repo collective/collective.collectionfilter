@@ -17,7 +17,7 @@ class DictDataWrapper(object):
 class BaseFilterTile(PersistentTile):
     def available(self):
         # do not render when page is ajax loaded
-        return "ajax_load" not in self.top_request
+        return "ajax_load" not in self.top_request and self.is_available
 
     @property
     def edit_url(self):

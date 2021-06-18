@@ -4,11 +4,11 @@ from collective.collectionfilter import PLONE_VERSION
 from collective.collectionfilter import utils
 from plone.api.portal import get_registry_record as getrec
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
+from plone.app.z3cform.widget import SelectFieldWidget
 from plone.autoform.directives import widget
 from zope import schema
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
-
 
 try:
     from plone.formwidget.geolocation.vocabularies import default_map_layer
@@ -185,6 +185,8 @@ class ICollectionFilterResultListSort(ICollectionFilterBaseSchema):
         ),
         required=True,
     )
+    # NB needed as InAndOut breaks tiles in 5.0
+    widget('sort_on', SelectFieldWidget, pattern_options=dict(orderable=True))
 
     input_type = schema.Choice(
         title=_("label_input_type", u"Input Type"),

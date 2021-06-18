@@ -5,7 +5,7 @@ Resource  keywords.robot
 
 # Library  Remote  ${PLONE_URL}/RobotRemote
 
-Test Setup  View Test Collection
+Test Setup  Default Setup
 Test Teardown  Default Teardown
 
 
@@ -13,95 +13,77 @@ Test Teardown  Default Teardown
 
 *** Test Cases ***************************************************************
 
-Scenario: Add filter portlets to collection
-
-    Manage portlets
-    Add search portlet
-    Add filter portlet  Subject  or  checkboxes_dropdowns
-    Add sorting portlet  sortable_title  links
-    Go to  ${PLONE_URL}/testcollection
-    Should be 3 collection results
-
-    Click Input "Dokumänt (2)"
-    Should be 2 collection results
-
-    Click Input "All (3)"
-    Should be 3 collection results
+Scenario: Add filter to collection
+    Given I've got a site with a collection
+      and my collection has a collection search
+      and my collection has a collection filter  Subject  or  checkboxes_dropdowns
+      and my collection has a collection sorting  sortable_title
+     When I'm viewing the collection
+     then Should be 3 collection results
+     When Click Input "Dokumänt (2)"
+     then Should be 2 collection results
+     When Click Input "All (3)"
+     then Should be 3 collection results
 
 Scenario: Test Batching
 
-    Manage portlets
-    Add filter portlet  Subject  or  checkboxes_dropdowns
-    Go to  ${PLONE_URL}/testcollection
-    Should be 3 collection results
-
-    Set Batch Size  1
-
-    Should be 1 collection results
-
-    Click Input "Süper (2)"
-    Should be 1 collection results
-    Should be 1 pages
-
-    Click Page "1"
-    Should be 1 collection results
-    Should be 1 pages
+    Given I've got a site with a collection  batch=1
+      and my collection has a collection filter  Subject  or  checkboxes_dropdowns
+      and I'm viewing the collection
+     then Should be 1 collection results
+     when Click Input "Süper (2)"
+     then Should be 1 collection results
+      and Should be 1 pages
+     when Click Page "1"
+     then Should be 1 collection results
+     then Should be 1 pages
 
     ${loc}=  get location
     should contain  ${loc}  collectionfilter=1
 
 Scenario: Hide when no options
 
-    Manage portlets
-    Add filter portlet  author_name  or  checkboxes_dropdowns
-    Go to  ${PLONE_URL}/testcollection
-
-    Should be 3 collection results
-    Should be 1 filter options
-
-    Manage portlets
-    Set portlet "author_name" "Hide if empty"
-    Go to  ${PLONE_URL}/testcollection
-    # No idea why intermittently we get 1 filter option below instead of 0
-    log source
-    Should be 0 filter options
-    Should be 3 collection results
+    Given I've got a site with a collection
+      and my collection has a collection filter  author_name  or  checkboxes_dropdowns  Hide if empty
+     When I'm viewing the collection
+     then Should be 3 collection results
+     then Should be 0 filter options
 
 
 Scenario: show hidden filter if just narrowed down
 
-    Given Manage portlets
-      and Add filter portlet  Type  single  checkboxes_dropdowns
-      and Set portlet "Type" "Narrow down filter options"
-      and Go to  ${PLONE_URL}/testcollection
+    Given I've got a site with a collection
+      and my collection has a collection filter  Type  single  checkboxes_dropdowns  Narrow down filter options
+     When I'm viewing the collection
       and Should be 3 filter options
 
       and Select Filter Option "Event (1)"
       and Should be 2 filter options
 
-     When Manage portlets
-      and Set portlet "Type" "Hide if empty"
-      and Go to  ${PLONE_URL}/testcollection
+Scenario: hide hidden filter if just narrowed down
+    Given I've got a site with a collection
+      and my collection has a collection filter  Type  single  checkboxes_dropdowns  Narrow down filter options  Hide if empty
+     When I'm viewing the collection
       and Should be 3 filter options
 
     # But if we filter it down it shouldn't disappear as then we have no way to click "All" to get back
       and Select Filter Option "Event (1)"
-      Log source
      Then Should be 2 filter options
 
 
 Scenario: Displaying multiple collection filters on a single page
     Given I've got a site with a collection
-      and my collection has a collection filter portlet
-      and my collection has a collection filter portlet  group_by=Type
+      and my collection has a collection filter
+      and my collection has a collection filter  group_by=Type
     When I'm viewing the collection
-    Then I should have a portlet titled "Subject" with 4 filter options
-      and I should have a portlet titled "Type" with 3 filter options
+    Then I should have a filter with 4 options
+      and I should have a filter with 3 options
+      and I should see 7 filter options on the page
 
 Scenario: Combine search and OR filter
     Given I've got a site with a collection
-      and my collection has a collection search portlet
-      and my collection has a collection filter portlet  Subject  and  checkboxes_dropdowns
+      and my collection has a collection search
+      and my collection has a collection filter  Subject  and  checkboxes_dropdowns
      When I'm viewing the collection
       and Click Input "Süper (2)"
       and Should be 2 collection results
@@ -109,3 +91,32 @@ Scenario: Combine search and OR filter
       and Should be 1 collection results
       and I search for "Event"
       and Should be 1 collection results
+
+
+Scenario: Search filter
+    Given I've got a site with a collection
+      and my collection has a collection search
+      and my collection has a collection filter
+      and I'm viewing the collection
+    When I search for "Document"
+    Then should be 1 collection results
+      and should be 3 filter options
+
+    # Searching for query keywords (https://github.com/collective/collective.collectionfilter/issues/85)
+    When I search for "and Document"
+    Then should be 1 collection results
+      and I should have a filter with 3 options
+    When I search for "or Document"
+    Then should be 0 collection results
+      and I should see 0 filter options on the page
+    When I search for "not Document"
+    Then should be 0 collection results
+      and I should see 0 filter options on the page
+
+    # the following doesn't work ... I think no 'keyup' event is fired
+    # Given I'm viewing the collection
+    # When I search for ${EMPTY} and click search
+    # Then should be 2 collection results
+    #   and should be 4 filter options
+
+

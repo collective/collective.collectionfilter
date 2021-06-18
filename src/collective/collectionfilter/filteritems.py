@@ -9,7 +9,12 @@ from collective.collectionfilter.utils import safe_iterable
 from collective.collectionfilter.vocabularies import DEFAULT_FILTER_TYPE
 from collective.collectionfilter.vocabularies import EMPTY_MARKER
 from Missing import Missing
+from plone.app.blocks.layoutbehavior import ILayoutBehaviorAdaptable
 from plone.app.contenttypes.behaviors.collection import ICollection
+try:
+    from plone.app.blocks.layoutbehavior import ILayoutAware
+except ImportError:
+    ILayoutAware = None
 from plone.app.event.base import _prepare_range
 from plone.app.event.base import guess_date_from
 from plone.app.event.base import start_end_from_mode
@@ -19,12 +24,17 @@ from plone.i18n.normalizer import idnormalizer
 from plone.memoize import ram
 from plone.memoize.volatile import DontCache
 from six.moves.urllib.parse import urlencode
+from zope.component import adapter
 from zope.component import getUtility
+from zope.component import getMultiAdapter
+from zope.interface import Interface
+from zope.interface import implementer
 from zope.globalrequest import getRequest
 from zope.i18n import translate
 
 import plone.api
 import six
+import re
 
 
 try:
@@ -81,25 +91,13 @@ def get_filter_items(
     if not collection or not group_by:
         return None
     collection_url = collection.absolute_url()
+    collection = ICollectionish(collection)
 
     # Recursively transform all to unicode
     request_params = safe_decode(request_params)
     # Things break if sort_order is not a str
     if six.PY2 and "sort_order" in request_params:
         request_params["sort_order"] = str(request_params["sort_order"])
-
-    # Support for the Event Listing view from plone.app.event
-    collection_layout = collection.getLayout()
-    default_view = collection.restrictedTraverse(collection_layout)
-    if isinstance(default_view, EventListing):
-        mode = request_params.get("mode", "future")
-        date = request_params.get("date", None)
-        date = guess_date_from(date) if date else None
-        start, end = start_end_from_mode(mode, date, collection)
-        start, end = _prepare_range(collection, start, end)
-        custom_query.update(start_end_query(start, end))
-        # TODO: expand events. better yet, let collection.results
-        #       do that
 
     # Get index in question and the current filter value of this index, if set.
     groupby_criteria = getUtility(IGroupByCriteria).groupby
@@ -117,9 +115,7 @@ def get_filter_items(
     custom_query.update(urlquery)
     custom_query = make_query(custom_query)
 
-    catalog_results = ICollection(collection).results(
-        batch=False, brains=True, custom_query=custom_query
-    )
+    catalog_results = collection.results(custom_query, request_params)
     if narrow_down and show_count:
         # we need the extra_ignores to get a true count
         # even when narrow_down filters the display of indexed values
@@ -127,9 +123,7 @@ def get_filter_items(
         count_query = {}
         count_urlquery = base_query(request_params, [idx, idx + "_op"])
         count_query.update(count_urlquery)
-        catalog_results_fullcount = ICollection(collection).results(
-            batch=False, brains=True, custom_query=count_query
-        )
+        catalog_results_fullcount = collection.results(count_query, request_params)
     if not catalog_results:
         return None
 
@@ -248,3 +242,126 @@ def get_filter_items(
     ret += grouped_results
 
     return ret
+
+
+class ICollectionish(Interface):
+    "Adapts object similar to ICollection if has contentlisting tile, or if collection"
+
+
+@implementer(ICollectionish)
+class CollectionishCollection(object):
+
+    def __init__(self, context):
+        self.context = context
+        self.collection = ICollection(self.context)
+
+    @property
+    def query(self):
+        return self.collection.query
+
+    @property
+    def sort_on(self):
+        return self.collection.sort_on
+
+    @property
+    def sort_order(self):
+        return self.collection.sort_order
+
+    @property
+    def sort_reversed(self):
+        return self.collection.sort_reversed
+
+    @property
+    def limit(self):
+        return self.collection.limit
+
+    @property
+    def item_count(self):
+        return self.collection.item_count
+
+    def results(self, custom_query, request_params):
+
+        # Support for the Event Listing view from plone.app.event
+        collection_layout = self.context.getLayout()
+        default_view = self.context.restrictedTraverse(collection_layout)
+        if isinstance(default_view, EventListing):
+            mode = request_params.get("mode", "future")
+            date = request_params.get("date", None)
+            date = guess_date_from(date) if date else None
+            start, end = start_end_from_mode(mode, date, self.collection)
+            start, end = _prepare_range(self.collection, start, end)
+            custom_query.update(start_end_query(start, end))
+            # TODO: expand events. better yet, let collection.results
+            #        do that
+
+        return self.collection.results(batch=False, brains=True, custom_query=custom_query)
+
+
+if ILayoutAware is not None:
+    @implementer(ICollectionish)
+    @adapter(ILayoutBehaviorAdaptable)
+    class CollectionishLayout(CollectionishCollection):
+        """Provide interface for either objects with contentlisting tiles or collections or both"""
+
+        tile = None
+
+        def __init__(self, context):
+            self.context = context
+
+            la = ILayoutAware(self.context)
+            if la.content:
+                urls = re.findall('(@@plone.app.standardtiles.contentlisting/[^"]+)', la.content)
+                if urls:
+                    # TODO: maybe better to get tile data? using ITileDataManager(id)?
+                    url = context.REQUEST.response.headers.get('x-tile-url')
+                    tile = self.context.unrestrictedTraverse(urls[0])
+                    tile.update()
+                    if context.REQUEST.response.headers.get('x-tile-url'):
+                        if url:
+                            context.REQUEST.response.headers['x-tile-url'] = url
+                        else:
+                            del context.REQUEST.response.headers['x-tile-url']
+
+                    # print(context.REQUEST.response.headers)
+                    self.tile = tile
+            if self.tile is None:
+                # Could still be a ILayoutAware collection
+                try:
+                    self.collection = ICollection(self.context)
+                except TypeError:
+                    raise TypeError("No contentlisting tile or Collection found")
+            else:
+                self.collection = self.tile  # to get properties
+
+        @property
+        def sort_reversed(self):
+            if self.tile is not None:
+                return self.sort_order == "reverse"
+            else:
+                return self.collection.sort_reversed
+
+        def results(self, custom_query, request_params):
+            """Search results"""
+            if self.tile is None:
+                return super(CollectionishLayout, self).results(custom_query, request_params)
+
+            builder = getMultiAdapter(
+                (self.context, self.context.REQUEST), name="querybuilderresults"
+            )
+
+            # Include query parameters from request if not set to ignore
+            contentFilter = {}
+            if not getattr(self.tile, "ignore_request_params", False):
+                contentFilter = dict(self.context.REQUEST.get("contentFilter", {}))
+
+            # TODO: handle events extra params
+
+            return builder(
+                query=self.query,
+                sort_on=self.sort_on or "getObjPositionInParent",
+                sort_order=self.sort_order,
+                limit=self.limit,
+                batch=False,
+                brains=True,
+                custom_query=custom_query if custom_query is not None else contentFilter,
+            )

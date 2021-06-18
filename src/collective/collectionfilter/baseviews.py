@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_inner
 from collective.collectionfilter import PLONE_VERSION
-from collective.collectionfilter.filteritems import get_filter_items
+from collective.collectionfilter.filteritems import ICollectionish, get_filter_items
 from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.query import make_query
 from collective.collectionfilter.utils import base_query
@@ -217,7 +217,7 @@ class BaseSearchView(BaseView):
 
 class BaseSortOnView(BaseView):
     def results(self):
-        collection = self.collection.getObject()
+        collection = ICollectionish(self.collection.getObject())
         curr_val = self.top_request.get("sort_on", collection.sort_on)
         curr_order = self.top_request.get(
             "sort_order", "descending" if collection.sort_reversed else "ascending"
@@ -298,9 +298,7 @@ if HAS_GEOLOCATION:
             # defined by urlquery
             custom_query = base_query(request_params)
             custom_query = make_query(custom_query)
-            return ICollection(collection).results(
-                batch=False, brains=True, custom_query=custom_query
-            )
+            return ICollectionish(collection).results(custom_query, request_params)
 
         @property
         def data_geojson(self):
