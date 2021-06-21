@@ -10,8 +10,8 @@
 
     <plone:tile
         name="collective.collectionfilter.tiles.filter"
-        title="Collection Filter Tile"
-        description="Show the collection filter tile."
+        title="Filter Tile"
+        description="Show the filter tile."
         add_permission="cmf.ModifyPortalContent"
         class=".filter.FilterTile"
         for="*"
@@ -22,8 +22,8 @@
 
     <plone:tile
         name="collective.collectionfilter.tiles.search"
-        title="Collection Search Tile"
-        description="Show the collection search tile."
+        title="Filter Search Tile"
+        description="Show the filter search tile."
         add_permission="cmf.ModifyPortalContent"
         class=".search.SearchTile"
         for="*"
@@ -34,7 +34,7 @@
 
     <plone:tile
         name="collective.collectionfilter.tiles.sortOn"
-        title="Collection Result Listing Sort Tile"
+        title="Filter Sort Tile"
         description="Show the result listing sort tile."
         add_permission="cmf.ModifyPortalContent"
         class=".sorting.SortOnTile"
@@ -47,8 +47,8 @@
     <plone:tile
         zcml:condition="installed collective.geolocationbehavior"
         name="collective.collectionfilter.tiles.maps"
-        title="Collection Maps Tile"
-        description="Show the collection maps tile."
+        title="Filter Maps Tile"
+        description="Show the filter by maps tile."
         add_permission="cmf.ModifyPortalContent"
         class=".maps.MapsTile"
         for="*"

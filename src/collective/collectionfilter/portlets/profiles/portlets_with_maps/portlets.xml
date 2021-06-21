@@ -2,22 +2,22 @@
 <portlets>
   <portlet
       addview="collective.collectionfilter.portlets.CollectionFilter"
-      title="Collection Filter"
+      title="Result Filter"
       description="Portlet that groups collections items by criteria."
       />
   <portlet
       addview="collective.collectionfilter.portlets.CollectionSearch"
-      title="Collection Search"
+      title="Result Search"
       description="This portlet allows fulltext search in collection results."
       />
   <portlet
       addview="collective.collectionfilter.portlets.CollectionSortOn"
-      title="Collection Filter Result Sorting"
+      title="Result Sort"
       description="This portlet allows sorting of the filtered result listing."
       />
   <portlet
       addview="collective.collectionfilter.portlets.CollectionMaps"
-      title="Collection Maps"
+      title="Filter by Map"
       description="This portlet allows map filtering in collection results."
       />
 </portlets>

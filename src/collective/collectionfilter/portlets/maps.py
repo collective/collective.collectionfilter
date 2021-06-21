@@ -49,7 +49,7 @@ class Assignment(base.Assignment):
         if self.header:
             return self.header
         else:
-            return _(u"Collection Maps")
+            return _(u"Map")
 
 
 class Renderer(BasePortletRenderer, BaseMapsView):
@@ -59,8 +59,8 @@ class Renderer(BasePortletRenderer, BaseMapsView):
 class AddForm(base.AddForm):
 
     schema = ICollectionMapsPortlet
-    label = _(u"Add Collection Maps Portlet")
-    description = _(u"This portlet allows map filtering in collection results.")
+    label = _(u"Add Filter by Map Portlet")
+    description = _(u"This portlet allows map filtering in results listings like collections")
 
     def create(self, data):
         return Assignment(**data)
@@ -69,5 +69,5 @@ class AddForm(base.AddForm):
 class EditForm(base.EditForm):
 
     schema = ICollectionMapsPortlet
-    label = _(u"Edit Collection Maps Portlet")
-    description = _(u"This portlet allows map filtering in collection results.")
+    label = _(u"Edit Filter by Map Portlet")
+    description = _(u"This portlet allows map filtering in results listings like collections")

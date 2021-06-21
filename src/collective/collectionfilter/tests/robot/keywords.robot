@@ -155,7 +155,7 @@ Set Options
 
 Add search portlet
     Wait until page contains element  css=select.add-portlet
-    Select From List by label  css=select.add-portlet  Collection Search
+    Select From List by label  css=select.add-portlet  Result Search
     Wait until element is visible  css=input#form-widgets-header
 
     Input text  css=input#form-widgets-header  Searchable Text
@@ -167,7 +167,7 @@ Add filter portlet
     [Arguments]   ${group_criteria}  ${filter_type}  ${input_type}  @{options}
 
     Wait until page contains element  css=select.add-portlet
-    Select From List by label  css=select.add-portlet  Collection Filter
+    Select From List by label  css=select.add-portlet  Result Filter
     Wait until element is visible  css=input#form-widgets-header
 
     Input text  css=input#form-widgets-header  ${group_criteria}
@@ -184,7 +184,7 @@ Add filter portlet
 Set Filter Options
     [Arguments]   ${group_by}  ${filter_type}  ${input_type}  @{options}
 
-    Run Keyword by label  Group by     Select from List by value  ${group_by}
+    Run Keyword by label  Filter by     Select from List by value  ${group_by}
     Run Keyword by label  Filter Type  Select from List by value  ${filter_type}
     Run Keyword by label  Input Type   Select from List by value   ${input_type}
     Set Options  @{options}
@@ -195,7 +195,7 @@ Add sorting portlet
     [Arguments]   ${sort_on}  ${input_type}
 
     Wait until page contains element  css=select.add-portlet
-    Select From List by label  css=select.add-portlet  Collection Filter Result Sorting
+    Select From List by label  css=select.add-portlet  Result Sort
     Wait until element is visible  css=input#form-widgets-header
 
     Input text  css=input#form-widgets-header  Sort on
@@ -209,7 +209,7 @@ Add sorting portlet
 Set sorting Options
     [Arguments]   ${sort_on}  ${input_type}
     #Run keyword by label  Enabled sort indexes  select multi select2    ${sort_on}
-    select multi select2 with label  Enabled sort indexes  ${sort_on}
+    select multi select2 with label  Enabled sort fields  ${sort_on}
     Run Keyword by label  Input Type   Select from List by value   ${input_type}
 
 
@@ -217,7 +217,7 @@ Add Info portlet
     [Arguments]   ${header}  @{templates}  ${hide_when}=${None}
 
     Wait until page contains element  css=select.add-portlet
-    Select From List by label  css=select.add-portlet  Collection Filter Search Info
+    Select From List by label  css=select.add-portlet Result Filter Info
     Wait until element is visible  css=input#form-widgets-header
 
     Input text  css=input#form-widgets-header  ${header}
@@ -434,9 +434,9 @@ My collection has a collection info tile
 My collection has a collection sorting tile 
     [Arguments]  ${sort_on}
     Go to  ${PLONE_URL}/testcollection/edit
-    Insert Tile "Collection Result Listing Sort"
+    Insert Tile "Result Listing Sort"
     Set Sorting Options  ${sort_on}  links
-    Run Keyword by label  Content Selector  Input Text  .contentlisting-tile
+    Run Keyword by label  Content CSS Selector  Input Text  .contentlisting-tile
     Click element  css=.pattern-modal-buttons #buttons-save
     Drag tile
 #    Click button   Edit
@@ -490,14 +490,14 @@ Save mosaic page
 Add filter tile
     [Arguments]   ${group_by}  ${filter_type}  ${input_type}  @{options}
 
-    Insert Tile "Collection Filter"
+    Insert Tile "Result Filter"
     Drag tile
     Click button   Edit
 #    Wait until element is visible  xpath=//div[@class='plone-modal-dialog' and .//*[contains(text(), 'Collection')]]
     #run keyword if  $collection_name  set relateditem  formfield-collective-collectionfilter-tiles-filter-target_collection  ${collection_name}
 
     Set Filter Options  ${group_by}  ${filter_type}  ${input_type}  @{options}
-    Run Keyword by label  Content Selector  Input Text  .contentlisting-tile
+    Run Keyword by label  Content CSS Selector  Input Text  .contentlisting-tile
 
     Click element  css=.pattern-modal-buttons #buttons-save
 
@@ -505,22 +505,22 @@ Add filter tile
 Add search tile
     [Arguments]   ${collection_name}=${None}
 
-    Insert tile "Collection Search"
+    Insert tile "Result Search"
     Drag tile
     Click button  Edit
     run keyword if  $collection_name  set relateditem  formfield-collective-collectionfilter-tiles-search-target_collection  ${collection_name}
-    Run Keyword by label  Content Selector  Input Text  .contentlisting-tile
+    Run Keyword by label  Content CSS Selector  Input Text  .contentlisting-tile
     Click element  css=.pattern-modal-buttons #buttons-save
 
 
 Add info tile
     [Arguments]   @{templates}  ${hide_when}=${None}  ${collection_name}=${None}
 
-    Insert tile "Collection Filter Info"
+    Insert tile "Result Filter Info"
     run keyword if  $collection_name  set relateditem  formfield-collective-collectionfilter-tiles-info-target_collection  ${collection_name}
     # Complete filter form
     Set Info Settings  collective-collectionfilter-tiles-info  @{templates}  hide_when=${hide_when}
-    Run Keyword by label  Content Selector  Input Text  .contentlisting-tile
+    Run Keyword by label  Content CSS Selector  Input Text  .contentlisting-tile
 
     Click element  css=.pattern-modal-buttons #buttons-save
     Drag tile

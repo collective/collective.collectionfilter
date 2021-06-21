@@ -78,10 +78,9 @@ class Renderer(BasePortletRenderer, BaseFilterView):
 class AddForm(base.AddForm):
 
     schema = ICollectionFilterPortlet
-    label = _(u"Add Collection Filter Portlet")
+    label = _(u"Add Result Filter Portlet")
     description = _(
-        u"This portlet shows grouped criteria of collection results and "
-        u"allows filtering of collection results."
+        u"This portlet allows filtering of result listings"
     )
 
     def create(self, data):
@@ -91,8 +90,7 @@ class AddForm(base.AddForm):
 class EditForm(base.EditForm):
 
     schema = ICollectionFilterPortlet
-    label = _(u"Edit Collection Filter Portlet")
+    label = _(u"Edit Result Filter Portlet")
     description = _(
-        u"This portlet shows grouped criteria of collection results and "
-        u"allows filtering of collection results."
+        u"This portlet allows filtering of result listings"
     )

@@ -38,7 +38,7 @@ class Assignment(base.Assignment):
         if self.header:
             return self.header
         else:
-            return _(u"Collection Search")
+            return _(u"Search")
 
 
 class Renderer(BasePortletRenderer, BaseSearchView):
@@ -48,8 +48,8 @@ class Renderer(BasePortletRenderer, BaseSearchView):
 class AddForm(base.AddForm):
 
     schema = ICollectionSearchPortlet
-    label = _(u"Add Collection Search Portlet")
-    description = _(u"This portlet allows fulltext search in collection results.")
+    label = _(u"Add Result Search Portlet")
+    description = _(u"This portlet allows fulltext search in results listings like collections")
 
     def create(self, data):
         return Assignment(**data)
@@ -58,5 +58,5 @@ class AddForm(base.AddForm):
 class EditForm(base.EditForm):
 
     schema = ICollectionSearchPortlet
-    label = _(u"Edit Collection Search Portlet")
-    description = _(u"This portlet allows fulltext search in collection results.")
+    label = _(u"Edit Result Search Portlet")
+    description = _(u"This portlet allows fulltext search in results like collections")

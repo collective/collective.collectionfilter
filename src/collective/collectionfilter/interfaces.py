@@ -5,7 +5,7 @@ from collective.collectionfilter import utils
 from plone.api.portal import get_registry_record as getrec
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from plone.app.z3cform.widget import SelectFieldWidget
-from plone.autoform.directives import widget
+from plone.autoform import directives
 from zope import schema
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
@@ -37,22 +37,31 @@ class ICollectionFilterBaseSchema(Interface):
 
     header = schema.TextLine(
         title=_("label_header", default=u"Filter title"),
-        description=_("help_header", u"Title of the rendered filter."),
+        description=_("help_header", u"Title of the rendered filter or leave blank for no header"),
         required=False,
     )
 
     target_collection = schema.Choice(
-        title=_(u"label_target_collection", default=u"Alternative Target Collection"),
+        title=_(u"label_target_collection", default=u"Alternative Target"),
         description=_(
             u"help_target_collection",
-            default=u"We use the current context as collection. As an alternative you can select a different collection as source for the filter items "
-            u"and where the filter is applied.",
+            default=u"Filter the results of this Page or Collection, or else pick a Page or Collection "
+            u"this filter will take you to"
         ),
         required=False,
         vocabulary="plone.app.vocabularies.Catalog",
     )
-    widget(
-        "target_collection", RelatedItemsFieldWidget, pattern_options=pattern_options()
+    directives.widget("target_collection", RelatedItemsFieldWidget, pattern_options=pattern_options())
+
+    content_selector = schema.TextLine(
+        title=_("label_content_selector", default=u"Content CSS Selector"),
+        description=_(
+            "help_content_selector",
+            default=u"The part of the page you would like to update if using a alternate target or different theme. "
+            u"Only useful if AJAX mode is enabled."
+        ),
+        required=True,  # TODO: blank should mean it uses default tile or collection selector
+        default=u"#content-core",
     )
 
     view_name = schema.TextLine(
@@ -67,39 +76,76 @@ class ICollectionFilterBaseSchema(Interface):
         default=None,
     )
 
-    content_selector = schema.TextLine(
-        title=_("label_content_selector", default=u"Content Selector"),
-        description=_(
-            "help_content_selector",
-            default=u"Selector which is used to choose a DOM node from the"
-            u" source into the target. For source and target the same"
-            u" selectors are used.",
-        ),
-        required=True,
-        default=u"#content-core",
-    )
-
 
 class ICollectionFilterSchema(ICollectionFilterBaseSchema):
     """Schema for the filter."""
 
     group_by = schema.Choice(
-        title=_("label_groupby", u"Group by"),
+        title=_("label_groupby", u"Filter by"),
         description=_(
-            "help_groupby", u"Select the criteria to group the collection results by."
+            "help_groupby", u"Select the field to filter the listing by."
         ),
         required=True,
         vocabulary="collective.collectionfilter.GroupByCriteria",
     )
 
+    input_type = schema.Choice(
+        title=_("label_input_type", u"Input Type"),
+        description=_(
+            "help_input_type",
+            u"How the user will pick filter options"
+        ),
+        required=True,
+        vocabulary="collective.collectionfilter.InputType",
+    )
+
     show_count = schema.Bool(
         title=_(u"label_show_count", default=u"Show count"),
         description=_(
-            u"help_show_count", default=u"Show the result count for each filter group."
+            u"help_show_count", default=u"Show the result count for each filter option (can impact site performance)"
         ),
         default=False,
         required=False,
     )
+
+    filter_type = schema.Choice(
+        title=_("label_filter_type", u"Filter Type"),
+        description=_(
+            "help_filter_type",
+            u"A Single filter shows results of on option at a time, OR will add results for each option picked or "
+            u"AND to reduce results where only all options match. "
+            u"Note some Filters don't support AND so multiple options will increase results."
+        ),
+        required=True,
+        vocabulary="collective.collectionfilter.FilterType",
+    )
+
+    # TODO: Narrow down is really a way to do AND using single select? What does OR+narrow down mean?
+    narrow_down = schema.Bool(
+        title=_(u"label_narrow_down", default=u"Narrow down filter options"),  # noqa
+        description=_(
+            u"help_narrow_down",
+            default=u"Selection will reduce the options shown otherwise show all options."  # noqa
+            u" Selection of other filters will reduce options regardless.",
+        ),  # noqa
+        default=False,
+        required=False,
+    )
+
+    hide_if_empty = schema.Bool(
+        title=_(u"label_hide_if_empty", default=u"Hide if empty"),  # noqa
+        description=_(
+            u"help_hide_if_empty",
+            default=u"Show only if there are options to pick",
+        ),
+        default=False,
+        required=False,
+    )
+
+    directives.order_before(header='cache_enabled')
+    directives.order_before(target_collection='cache_enabled')
+    directives.order_before(content_selector='cache_enabled')
+    directives.order_before(view_name='cache_enabled')
 
     cache_enabled = schema.Bool(
         title=_(u"label_cache_enabled", default=u"Enable Cache"),
@@ -111,51 +157,6 @@ class ICollectionFilterSchema(ICollectionFilterBaseSchema):
         default=True,
         required=False,
     )
-
-    filter_type = schema.Choice(
-        title=_("label_filter_type", u"Filter Type"),
-        description=_(
-            "help_filter_type",
-            u"Select if single or multiple criterias can be selected and if all (and) or any (or) of the selected criterias must be met."  # noqa
-            u"Some index types like ``FieldIndex`` (e.g. Type index) only support the any (or) criteria when set to multiple criterias and ignore, if all (and) is set.",  # noqa
-        ),
-        required=True,
-        vocabulary="collective.collectionfilter.FilterType",
-    )
-
-    input_type = schema.Choice(
-        title=_("label_input_type", u"Input Type"),
-        description=_(
-            "help_input_type",
-            u"Select how the UI of the collection filter should be rendered. "
-            u"Wether as links, as checkboxes and radiobuttons or checkboxes and dropdowns.",  # noqa
-        ),
-        required=True,
-        vocabulary="collective.collectionfilter.InputType",
-    )
-
-    narrow_down = schema.Bool(
-        title=_(u"label_narrow_down", default=u"Narrow down filter options"),  # noqa
-        description=_(
-            u"help_narrow_down",
-            default=u"Narrow down the filter options when a filter of this group is applied."  # noqa
-            u" Only options, which are available in the result set will then be displayed."  # noqa
-            u" Other filter groups can still narrow down this one, though.",
-        ),  # noqa
-        default=False,
-        required=False,
-    )
-
-    hide_if_empty = schema.Bool(
-        title=_(u"label_hide_if_empty", default=u"Hide if empty"),  # noqa
-        description=_(
-            u"help_hide_if_empty",
-            default=u"Don't display if there is 1 or no options without selecting a filter yet.",
-        ),
-        default=False,
-        required=False,
-    )
-
 
 #    list_scaling = schema.Choice(
 #        title=_('label_list_scaling', u'List scaling'),
@@ -177,8 +178,8 @@ class ICollectionFilterResultListSort(ICollectionFilterBaseSchema):
     """Schema for the result list sorting."""
 
     sort_on = schema.Tuple(
-        title=_("label_sort_on", u"Enabled sort indexes"),
-        description=_("help_sort_on", u"Select the indexes which can be sorted on."),
+        title=_("label_sort_on", u"Enabled sort fields"),
+        description=_("help_sort_on", u"Select the fields to allow sort on."),
         value_type=schema.Choice(
             title=u"Index",
             vocabulary="collective.collectionfilter.SortOnIndexes",
@@ -186,18 +187,22 @@ class ICollectionFilterResultListSort(ICollectionFilterBaseSchema):
         required=True,
     )
     # NB needed as InAndOut breaks tiles in 5.0
-    widget('sort_on', SelectFieldWidget, pattern_options=dict(orderable=True))
+    directives.widget('sort_on', SelectFieldWidget, pattern_options=dict(orderable=True))
 
     input_type = schema.Choice(
         title=_("label_input_type", u"Input Type"),
         description=_(
             "help_input_type",
-            u"Select how the UI of the collection filter should be rendered. "
-            u"Wether as links, as checkboxes and radiobuttons or checkboxes and dropdowns.",  # noqa
+            u"How the user will pick filter options"
         ),
         required=True,
         vocabulary="collective.collectionfilter.InputType",
     )
+
+    directives.order_before(header='view_name')
+    directives.order_before(target_collection='view_name')
+    directives.order_before(content_selector='view_name')
+    directives.order_after(view_name='input_type')
 
 
 class IGroupByCriteria(Interface):
