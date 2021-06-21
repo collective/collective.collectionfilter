@@ -189,9 +189,9 @@ def GroupByCriteriaVocabulary(context):
 @provider(IVocabularyFactory)
 def FilterTypeVocabulary(context):
     items = [
-        SimpleTerm(title=_("filtertype_single"), value="single"),
-        SimpleTerm(title=_("filtertype_and"), value="and"),
-        SimpleTerm(title=_("filtertype_or"), value="or"),
+        SimpleTerm(title=_("filtertype_single", u"One Option at a time"), value="single"),
+        SimpleTerm(title=_("filtertype_and", u"Reduce Results (AND)"), value="and"),
+        SimpleTerm(title=_("filtertype_or", u"Expand Results (OR)"), value="or"),
     ]
     return SimpleVocabulary(items)
 
@@ -199,13 +199,13 @@ def FilterTypeVocabulary(context):
 @provider(IVocabularyFactory)
 def InputTypeVocabulary(context):
     items = [
-        SimpleTerm(title=_("inputtype_links"), value="links"),
+        SimpleTerm(title=_("inputtype_links", u"Links"), value="links"),
         SimpleTerm(
-            title=_("inputtype_checkboxes_radiobuttons"),
+            title=_("inputtype_checkboxes_radiobuttons", u"Radio Buttons (or Checkboxes)"),
             value="checkboxes_radiobuttons",
         ),  # noqa
         SimpleTerm(
-            title=_("inputtype_checkboxes_dropdowns"), value="checkboxes_dropdowns"
+            title=_("inputtype_checkboxes_dropdowns", u"Dropdown Menu (or Checkboxes)"), value="checkboxes_dropdowns"
         ),  # noqa
     ]
     return SimpleVocabulary(items)

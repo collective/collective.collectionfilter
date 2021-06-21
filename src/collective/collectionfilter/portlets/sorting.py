@@ -53,7 +53,7 @@ class Assignment(base.Assignment):
         if self.header:
             return self.header
         else:
-            return _(u"Collection Result Sorting")
+            return _(u"Sort by")
 
 
 class Renderer(BasePortletRenderer, BaseSortOnView):
@@ -63,8 +63,8 @@ class Renderer(BasePortletRenderer, BaseSortOnView):
 class AddForm(base.AddForm):
 
     schema = ICollectionFilterSortOnPortlet
-    label = _(u"Add Collection Result Listing Sort Portlet")
-    description = _(u"This portlet shows sorting options for the result listing.")
+    label = _(u"Add Result Sort Portlet")
+    description = _(u"This portlet shows sorting options for a result listing like a collection")
 
     def create(self, data):
         return Assignment(**data)
@@ -73,5 +73,5 @@ class AddForm(base.AddForm):
 class EditForm(base.EditForm):
 
     schema = ICollectionFilterSortOnPortlet
-    label = _(u"Edit Collection Result Listing Sort Portlet")
-    description = _(u"This portlet shows sorting options for the result listing.")
+    label = _(u"Edit Result Sort Portlet")
+    description = _(u"This portlet shows sorting options for a result listing like a collection")
