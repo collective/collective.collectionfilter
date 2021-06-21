@@ -89,16 +89,6 @@ class ICollectionFilterSchema(ICollectionFilterBaseSchema):
         vocabulary="collective.collectionfilter.GroupByCriteria",
     )
 
-    input_type = schema.Choice(
-        title=_("label_input_type", u"Input Type"),
-        description=_(
-            "help_input_type",
-            u"How the user will pick filter options"
-        ),
-        required=True,
-        vocabulary="collective.collectionfilter.InputType",
-    )
-
     show_count = schema.Bool(
         title=_(u"label_show_count", default=u"Show count"),
         description=_(
@@ -112,12 +102,21 @@ class ICollectionFilterSchema(ICollectionFilterBaseSchema):
         title=_("label_filter_type", u"Filter Type"),
         description=_(
             "help_filter_type",
-            u"A Single filter shows results of on option at a time, OR will add results for each option picked or "
-            u"AND to reduce results where only all options match. "
-            u"Note some Filters don't support AND so multiple options will increase results."
+            u"Determines how if you can pick more than one option and how options will be combined"
+            u"Note some fields don't support AND so will default to OR"
         ),
         required=True,
         vocabulary="collective.collectionfilter.FilterType",
+    )
+
+    input_type = schema.Choice(
+        title=_("label_input_type", u"Input Type"),
+        description=_(
+            "help_input_type",
+            u"UI used to pick options. Only checkboxes or links can be used if multiple."
+        ),
+        required=True,
+        vocabulary="collective.collectionfilter.InputType",
     )
 
     # TODO: Narrow down is really a way to do AND using single select? What does OR+narrow down mean?
@@ -125,8 +124,8 @@ class ICollectionFilterSchema(ICollectionFilterBaseSchema):
         title=_(u"label_narrow_down", default=u"Narrow down filter options"),  # noqa
         description=_(
             u"help_narrow_down",
-            default=u"Selection will reduce the options shown otherwise show all options."  # noqa
-            u" Selection of other filters will reduce options regardless.",
+            default=u"Hide filter options which won't change the result listing"  # noqa
+            u" Note, other filters on the same page may still hide options on this filter.",
         ),  # noqa
         default=False,
         required=False,
