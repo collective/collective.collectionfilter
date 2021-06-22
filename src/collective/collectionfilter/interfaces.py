@@ -45,8 +45,8 @@ class ICollectionFilterBaseSchema(Interface):
         title=_(u"label_target_collection", default=u"Alternative Target Collection"),
         description=_(
             u"help_target_collection",
-            default=u"We use the current context as collection. As an alternative you can select a different collection as source for the filter items "
-            u"and where the filter is applied.",
+            default=u"We use the current context as collection. As an alternative you can select a different collection"
+            u" as source for the filter items and where the filter is applied.",
         ),
         required=False,
         vocabulary="plone.app.vocabularies.Catalog",
@@ -238,7 +238,7 @@ class ICollectionFilterInfoTile(ICollectionFilterInfo):
     """ Extra settings for tile """
 
     display_as_title = schema.Bool(
-        title=_(u"label_display_as_title", default=u"Display as Title"), 
+        title=_(u"label_display_as_title", default=u"Display as Title"),
         description=_(
             u"help_display_as_title",
             default=u"Appear as a page title",
