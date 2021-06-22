@@ -74,3 +74,13 @@ Scenario: Hide on any filter
      then Should be Info with text: 3
       and Click Input "Süper (2)"
      then should be no Info
+
+Scenario: Display as title
+    Given I've got a site with a collection
+      and my collection has a collection info  Current Filters  search_for  search_quoted  filter_colon_value  comma  with  result_count  results  as_title=${True}
+      and my collection has a collection filter  Subject
+     When I'm viewing the collection
+      and Click Input "Süper (2)"
+      and Should be 2 collection results
+     then Should be Info with text: Subject: Süper, with 2 results
+      and run keyword if  ${USE_TILES}  Page Should Contain Element   css=h1  limit=2

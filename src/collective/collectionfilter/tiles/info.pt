@@ -9,7 +9,7 @@
 
 <aside class="collectionInfo ${view/filterClassName} pat-collectionfilter"
        data-pat-collectionfilter='${view/pat_options}'
-       tal:condition="view/available">
+       tal:condition="python: view.available and not view.settings.display_as_title">
 
   <tal:if condition="view/collection|nothing">
   <header tal:condition="view/title" tal:content="view/title">Title</header>
@@ -18,6 +18,12 @@
   </tal:if>
 </aside>
 
+<h1 class="documentFirstHeading collectionInfo ${view/filterClassName} pat-collectionfilter"
+       data-pat-collectionfilter='${view/pat_options}'
+       tal:condition="python: view.available and view.settings.display_as_title">
+  <span tal:condition="view/title" tal:content="view/title">Title</span>
+  <span class="filterInfoContent" tal:content="view/info_contents">
+</h1>
 
 </body>
 </html>

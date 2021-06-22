@@ -234,6 +234,20 @@ class ICollectionFilterInfo(ICollectionFilterBaseSchema):
     widget('hide_when', SelectFieldWidget, pattern_options=dict(orderable=True))
 
 
+class ICollectionFilterInfoTile(ICollectionFilterInfo):
+    """ Extra settings for tile """
+
+    display_as_title = schema.Bool(
+        title=_(u"label_display_as_title", default=u"Display as Title"), 
+        description=_(
+            u"help_display_as_title",
+            default=u"Appear as a page title",
+        ),
+        default=False,
+        required=False,
+    )
+
+
 class IGroupByCriteria(Interface):
     """Interface for the GroupByCriteria utility.
 

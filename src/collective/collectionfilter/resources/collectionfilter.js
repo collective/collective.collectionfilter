@@ -168,7 +168,7 @@ define([
                 this.$el, {
                     url: reloadURL,
                     target: this.$el,
-                    content: 'aside',
+                    //content: 'aside',
                     trigger: 'immediate'
                 }
             );

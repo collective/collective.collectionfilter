@@ -9,10 +9,10 @@ from collective.collectionfilter.utils import safe_iterable
 from collective.collectionfilter.vocabularies import DEFAULT_FILTER_TYPE
 from collective.collectionfilter.vocabularies import EMPTY_MARKER
 from Missing import Missing
-from plone.app.blocks.layoutbehavior import ILayoutBehaviorAdaptable
 from plone.app.contenttypes.behaviors.collection import ICollection
 try:
     from plone.app.blocks.layoutbehavior import ILayoutAware
+    from plone.app.blocks.layoutbehavior import ILayoutBehaviorAdaptable
 except ImportError:
     ILayoutAware = None
 from plone.app.event.base import _prepare_range
