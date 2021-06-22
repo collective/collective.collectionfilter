@@ -91,3 +91,32 @@ Scenario: Combine search and OR filter
       and Should be 1 collection results
       and I search for "Event"
       and Should be 1 collection results
+
+
+Scenario: Search filter
+    Given I've got a site with a collection
+      and my collection has a collection search
+      and my collection has a collection filter
+      and I'm viewing the collection
+    When I search for "Document"
+    Then should be 1 collection results
+      and should be 3 filter options
+
+    # Searching for query keywords (https://github.com/collective/collective.collectionfilter/issues/85)
+    When I search for "and Document"
+    Then should be 1 collection results
+      and I should have a filter with 3 options
+    When I search for "or Document"
+    Then should be 0 collection results
+      and I should see 0 filter options on the page
+    When I search for "not Document"
+    Then should be 0 collection results
+      and I should see 0 filter options on the page
+
+    # the following doesn't work ... I think no 'keyup' event is fired
+    # Given I'm viewing the collection
+    # When I search for ${EMPTY} and click search
+    # Then should be 2 collection results
+    #   and should be 4 filter options
+
+

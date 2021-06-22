@@ -65,6 +65,15 @@
            for="plone.app.blocks.layoutbehavior.ILayoutBehaviorAdaptable" 
            zcml:condition="installed plone.tiles" />
 
+  <adapter factory=".filteritems.CollectionishCollection"
+           provides=".filteritems.ICollectionish"
+           for="plone.app.contenttypes.interfaces.ICollection" />
+
+  <adapter factory=".filteritems.CollectionishLayout"
+           provides=".filteritems.ICollectionish"
+           for="plone.app.blocks.layoutbehavior.ILayoutBehaviorAdaptable" 
+           zcml:condition="installed plone.tiles" />
+
   <subscriber
       for="Products.CMFPlone.interfaces.IPloneSiteRoot
            zope.traversing.interfaces.IBeforeTraverseEvent"
