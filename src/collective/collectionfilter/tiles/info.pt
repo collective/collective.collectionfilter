@@ -5,11 +5,11 @@
     xmlns:tal="http://xml.zope.org/namespaces/tal"
     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
     i18n:domain="plone">
-<body>
+<body tal:define="available view/available; title view/settings/display_as_title" >
 
 <aside class="collectionInfo ${view/filterClassName} pat-collectionfilter"
        data-pat-collectionfilter='${view/pat_options}'
-       tal:condition="python: view.available and not view.settings.display_as_title">
+       tal:condition="python: not title and available">
 
   <tal:if condition="view/collection|nothing">
   <header tal:condition="view/title" tal:content="view/title">Title</header>
@@ -20,7 +20,7 @@
 
 <h1 class="documentFirstHeading collectionInfo ${view/filterClassName} pat-collectionfilter"
        data-pat-collectionfilter='${view/pat_options}'
-       tal:condition="python: view.available and view.settings.display_as_title">
+       tal:condition="python: title and available">
   <span tal:condition="view/title" tal:content="view/title">Title</span>
   <span class="filterInfoContent" tal:content="view/info_contents">
 </h1>
