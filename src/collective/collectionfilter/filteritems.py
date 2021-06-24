@@ -47,6 +47,7 @@ def _results_cachekey(
     view_name="",
     cache_enabled=True,
     request_params=None,
+    content_selector="",
 ):
     if not cache_enabled:
         raise DontCache
@@ -58,6 +59,7 @@ def _results_cachekey(
         show_count,
         view_name,
         request_params,
+        content_selector,
         " ".join(plone.api.user.get_roles()),
         plone.api.portal.get_current_language(),
         str(plone.api.portal.get_tool("portal_catalog").getCounter()),
@@ -75,6 +77,7 @@ def get_filter_items(
     view_name="",
     cache_enabled=True,
     request_params=None,
+    content_selector="",
 ):
     request_params = request_params or {}
     custom_query = {}  # Additional query to filter the collection
@@ -83,7 +86,7 @@ def get_filter_items(
     if not collection or not group_by:
         return None
     collection_url = collection.absolute_url()
-    collection = ICollectionish(collection)
+    collection = ICollectionish(collection).selectContent(content_selector)
 
     # Recursively transform all to unicode
     request_params = safe_decode(request_params)
@@ -242,6 +245,10 @@ class CollectionishCollection(object):
     def __init__(self, context):
         self.context = context
         self.collection = ICollection(self.context)
+
+    def selectContent(self, selector=""):
+        """ Collections can only have a single content """
+        return self
 
     @property
     def query(self):

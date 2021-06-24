@@ -55,24 +55,11 @@ class CollectionishLayout(CollectionishCollection):
     tile = None
 
     def __init__(self, context):
+        """ Adapt either collections or contentlisting tile. The name is sorted content selector """
         self.context = context
 
-        la = ILayoutAware(self.context)
-        if la.content:
-            urls = re.findall('(@@plone.app.standardtiles.contentlisting/[^"]+)', la.content)
-            if urls:
-                # TODO: maybe better to get tile data? using ITileDataManager(id)?
-                url = context.REQUEST.response.headers.get('x-tile-url')
-                tile = self.context.unrestrictedTraverse(urls[0])
-                tile.update()
-                if context.REQUEST.response.headers.get('x-tile-url'):
-                    if url:
-                        context.REQUEST.response.headers['x-tile-url'] = url
-                    else:
-                        del context.REQUEST.response.headers['x-tile-url']
+        self.selectContent("")  # get first tile
 
-                # print(context.REQUEST.response.headers)
-                self.tile = tile
         if self.tile is None:
             # Could still be a ILayoutAware collection
             try:
@@ -81,6 +68,36 @@ class CollectionishLayout(CollectionishCollection):
                 raise TypeError("No contentlisting tile or Collection found")
         else:
             self.collection = self.tile  # to get properties
+
+    def selectContent(self, selector=""):
+        """ Pick tile that selector will match, otherwise pick first one """
+
+        if selector is None:
+            selector = ""
+        la = ILayoutAware(self.context)
+        if la.content:
+            urls = re.findall('(@@plone.app.standardtiles.contentlisting/[^"]+)', la.content)
+            # TODO: maybe better to get tile data? using ITileDataManager(id)?
+            our_tile = self.context.REQUEST.response.headers.get('x-tile-url')
+            for url in urls:
+                tile = self.context.unrestrictedTraverse(urls[0])
+                tile.update()
+                tile_classes = tile.tile_class.split() + ['']
+                # First tile that matches all the selector classes
+                if all([_class in tile_classes for _class in selector.split(".")]):
+                    self.tile = tile
+                    break
+            if urls and self.tile is None:
+                # TODO: what if the class is inside a special template? Just pick first?
+                # none of the selectors worked. Just pick any and hope it works?
+                self.tile = tile
+            # mosaic get confused if we are doing this while creating a filter tile
+            if self.context.REQUEST.response.headers.get('x-tile-url'):
+                if our_tile:
+                    self.context.REQUEST.response.headers['x-tile-url'] = our_tile
+                else:
+                    del self.context.REQUEST.response.headers['x-tile-url']
+        return self
 
     @property
     def sort_reversed(self):
@@ -92,7 +109,7 @@ class CollectionishLayout(CollectionishCollection):
     @property
     def content_selector(self):
         if self.tile is None:
-            super(CollectionishLayout, self).content_selector
+            return super(CollectionishLayout, self).content_selector
         classes = ["contentlisting-tile"]
         if self.tile.tile_class:
             classes += self.tile.tile_class.split()

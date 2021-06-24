@@ -97,12 +97,15 @@ class BaseView(object):
                 "collectionUUID": self.collection_uuid,
                 "reloadURL": self.reload_url,
                 "ajaxLoad": self.ajax_load,
-                "contentSelector": self.settings.content_selector if self.settings.content_selector else self.content_selector,
+                "contentSelector": self.content_selector,
             }
         )
 
     @property
     def content_selector(self):
+        if self.settings.content_selector:
+            return self.settings.content_selector
+
         collectionish = ICollectionish(self.collection.getObject()) if self.collection else None
         if collectionish is None:
             return u"#content-core"
@@ -149,6 +152,7 @@ class BaseFilterView(BaseView):
             view_name=self.settings.view_name,
             cache_enabled=self.settings.cache_enabled,
             request_params=self.top_request.form or {},
+            content_selector=self.settings.content_selector,
         )
         return results
 
@@ -224,7 +228,7 @@ class BaseSearchView(BaseView):
 
 class BaseSortOnView(BaseView):
     def results(self):
-        collection = ICollectionish(self.collection.getObject())
+        collection = ICollectionish(self.collection.getObject()).selectContent(self.settings.content_selector)
         curr_val = self.top_request.get("sort_on", collection.sort_on)
         curr_order = self.top_request.get(
             "sort_order", "descending" if collection.sort_reversed else "ascending"
@@ -305,7 +309,8 @@ if HAS_GEOLOCATION:
             # defined by urlquery
             custom_query = base_query(request_params)
             custom_query = make_query(custom_query)
-            return ICollectionish(collection).results(custom_query, request_params)
+            return ICollectionish(collection).selectContent(self.settings.content_selector).results(
+                custom_query, request_params)
 
         @property
         def data_geojson(self):
