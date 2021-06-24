@@ -269,7 +269,7 @@ class CollectionishCollection(object):
 
     @property
     def content_selector(self):
-        return u"#content-core"  # TODO: could look it up based on view? 
+        return u"#content-core"  # TODO: could look it up based on view?
 
     def results(self, custom_query, request_params):
 
