@@ -49,8 +49,8 @@ class ICollectionFilterBaseSchema(Interface):
         title=_(u"label_target_collection", default=u"Alternative Target Collection"),
         description=_(
             u"help_target_collection",
-            default=u"We use the current context as collection. As an alternative you can select a different collection "
-            u"as source for the filter items "
+            default=u"We use the current context as collection. As an alternative you can select a different "
+            u"collection as source for the filter items "
             u"and where the filter is applied.",
         ),
         required=False,
@@ -81,7 +81,7 @@ class ICollectionFilterBaseSchema(Interface):
             u" selectors are used.",
         ),
         required=True,
-        default=u"#content-core",
+        default=u"#content-core",  # TODO: shoulld be blank and determine based on context
     )
 
 
