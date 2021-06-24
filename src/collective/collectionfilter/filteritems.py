@@ -267,6 +267,10 @@ class CollectionishCollection(object):
     def item_count(self):
         return self.collection.item_count
 
+    @property
+    def content_selector(self):
+        return u"#content-core"  # TODO: could look it up based on view? 
+
     def results(self, custom_query, request_params):
 
         # Support for the Event Listing view from plone.app.event

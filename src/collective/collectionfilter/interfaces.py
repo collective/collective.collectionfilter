@@ -76,12 +76,10 @@ class ICollectionFilterBaseSchema(Interface):
         title=_("label_content_selector", default=u"Content Selector"),
         description=_(
             "help_content_selector",
-            default=u"Selector which is used to choose a DOM node from the"
-            u" source into the target. For source and target the same"
-            u" selectors are used.",
+            default=u"If your tile or collection has a special class or id for ajax replacement use it here."
+            u" Selector will need to work for unthemed view and current page.",
         ),
-        required=True,
-        default=u"#content-core",  # TODO: shoulld be blank and determine based on context
+        required=False,
     )
 
 

@@ -89,6 +89,15 @@ class CollectionishLayout(CollectionishCollection):
         else:
             return self.collection.sort_reversed
 
+    @property
+    def content_selector(self):
+        if self.tile is None:
+            super(CollectionishLayout, self).content_selector
+        classes = ["contentlisting-tile"]
+        if self.tile.tile_class:
+            classes += self.tile.tile_class.split()
+        return "." + ".".join(classes)
+
     def results(self, custom_query, request_params):
         """Search results"""
         if self.tile is None:

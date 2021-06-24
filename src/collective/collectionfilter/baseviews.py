@@ -97,9 +97,17 @@ class BaseView(object):
                 "collectionUUID": self.collection_uuid,
                 "reloadURL": self.reload_url,
                 "ajaxLoad": self.ajax_load,
-                "contentSelector": self.settings.content_selector,
+                "contentSelector": self.settings.content_selector if self.settings.content_selector else self.content_selector,
             }
         )
+
+    @property
+    def content_selector(self):
+        collectionish = ICollectionish(self.collection.getObject()) if self.collection else None
+        if collectionish is None:
+            return u"#content-core"
+        else:
+            return collectionish.content_selector
 
     @property
     def ajax_load(self):

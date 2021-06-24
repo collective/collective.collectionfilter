@@ -436,7 +436,7 @@ My collection has a collection sorting tile
     Go to  ${PLONE_URL}/testcollection/edit
     Insert Tile "Collection Result Listing Sort"
     Set Sorting Options  ${sort_on}  links
-    Run Keyword by label  Content Selector  Input Text  .contentlisting-tile
+    # Run Keyword by label  Content Selector  Input Text  .contentlisting-tile
     Click element  css=.pattern-modal-buttons #buttons-save
     Drag tile
 #    Click button   Edit
@@ -497,7 +497,7 @@ Add filter tile
     #run keyword if  $collection_name  set relateditem  formfield-collective-collectionfilter-tiles-filter-target_collection  ${collection_name}
 
     Set Filter Options  ${group_by}  ${filter_type}  ${input_type}  @{options}
-    Run Keyword by label  Content Selector  Input Text  .contentlisting-tile
+    # Run Keyword by label  Content Selector  Input Text  .contentlisting-tile
 
     Click element  css=.pattern-modal-buttons #buttons-save
 
@@ -509,7 +509,7 @@ Add search tile
     Drag tile
     Click button  Edit
     run keyword if  $collection_name  set relateditem  formfield-collective-collectionfilter-tiles-search-target_collection  ${collection_name}
-    Run Keyword by label  Content Selector  Input Text  .contentlisting-tile
+    # Run Keyword by label  Content Selector  Input Text  .contentlisting-tile
     Click element  css=.pattern-modal-buttons #buttons-save
 
 
@@ -520,7 +520,7 @@ Add info tile
     run keyword if  $collection_name  set relateditem  formfield-collective-collectionfilter-tiles-info-target_collection  ${collection_name}
     # Complete filter form
     Set Info Settings  collective-collectionfilter-tiles-info  @{templates}  hide_when=${hide_when}
-    Run Keyword by label  Content Selector  Input Text  .contentlisting-tile
+    # Run Keyword by label  Content Selector  Input Text  .contentlisting-tile
 
     Click element  css=.pattern-modal-buttons #buttons-save
     Drag tile
