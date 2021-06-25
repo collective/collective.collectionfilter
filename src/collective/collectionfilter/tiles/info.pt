@@ -13,7 +13,7 @@
 
   <tal:if condition="view/collection|nothing">
   <header tal:condition="view/title" tal:content="view/title">Title</header>
-  <div class="filterInfoContent" tal:content="view/info_contents">
+  <div class="filterInfoContent" tal:content="structure view/info_contents">
   </div>
   </tal:if>
 </aside>
@@ -22,7 +22,7 @@
        data-pat-collectionfilter='${view/pat_options}'
        tal:condition="python: title and available">
   <span tal:condition="view/title" tal:content="view/title">Title</span>
-  <span class="filterInfoContent" tal:content="view/info_contents">
+  <span class="filterInfoContent" tal:content="structure view/info_contents">
 </h1>
 
 </body>

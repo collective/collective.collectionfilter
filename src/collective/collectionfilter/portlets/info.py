@@ -23,6 +23,7 @@ class Assignment(base.Assignment):
     content_selector = '#content-core'
     template_type = []
     hide_when = []
+    as_links = True
 
     def __init__(
         self,
@@ -32,6 +33,7 @@ class Assignment(base.Assignment):
         content_selector='#content-core',
         template_type=[],
         hide_when=[],
+        as_links=True,
     ):
         self.header = header
         self.target_collection = target_collection
@@ -39,6 +41,7 @@ class Assignment(base.Assignment):
         self.content_selector = content_selector
         self.template_type = template_type
         self.hide_when = hide_when
+        self.as_links = as_links
 
     @property
     def portlet_id(self):

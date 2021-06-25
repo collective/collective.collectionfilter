@@ -233,6 +233,16 @@ class ICollectionFilterInfo(ICollectionFilterBaseSchema):
     # NB needed as InAndOut breaks tiles in 5.0
     widget('hide_when', SelectFieldWidget, pattern_options=dict(orderable=True))
 
+    as_links = schema.Bool(
+        title=_(u"label_display_as_links", default=u"Display as Links"),
+        description=_(
+            u"help_display_as_links",
+            default=u"Filter options can be displayed as links which reset the search to just this value.",
+        ),
+        default=True,
+        required=False,
+    )
+
 
 class ICollectionFilterInfoTile(ICollectionFilterInfo):
     """ Extra settings for tile """

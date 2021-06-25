@@ -263,7 +263,12 @@ class BaseSortOnView(BaseView):
 
 
 def _exp_cachekey(method, self, target_collection, request):
-    return (target_collection, json.dumps(request))
+    return (
+        target_collection,
+        json.dumps(request),
+        self.settings.view_name,
+        self.settings.as_links
+    )
 
 
 class BaseInfoView(BaseView):
@@ -273,12 +278,11 @@ class BaseInfoView(BaseView):
     def get_expression_context(self, collection, request_params):
         count_query = {}
         query = base_query(request_params)
+        collection_url = collection.absolute_url()
         # TODO: take out the search
         # TODO: match them to indexes and get proper names
         # TODO: format values properly
         # TODO: do we want to read out sort too?
-        # TODO: hide some parts of template if query is empty. e.g. "search for has 0 results"
-        # TODO: have conditions when whole portlet is shown or not so can have multiple case portlets
         count_query.update(query)
         # TODO: delay evaluating this unless its needed
         # TODO: This could be cached as same result total appears in other filter counts
@@ -288,7 +292,8 @@ class BaseInfoView(BaseView):
         results = len(catalog_results_fullcount)
 
         # Clean up filters and values
-        del query['collectionfilter']
+        if 'collectionfilter' in query:
+            del query['collectionfilter']
         groupby_criteria = getUtility(IGroupByCriteria).groupby
         q = []
         for group_by, value in query.items():
@@ -306,9 +311,28 @@ class BaseInfoView(BaseView):
                 title = filter_value
                 if filter_value is not EMPTY_MARKER and callable(display_modifier):
                     title = safe_decode(display_modifier(filter_value))
-                titles.append(title)
-            # TODO: still no nice title for filter indexes? Should be able to get from query builder
-            # TODO: we don't know if filter is AND/OR to display that detail
+                # TODO: still no nice title for filter indexes? Should be able to get from query builder
+                # TODO: we don't know if filter is AND/OR to display that detail
+                # TODO: do we want no follow always?
+                # TODO: should support clearing filter? e.g. if single value, click to remove?
+                # Build filter url query
+                query_param = urlencode(safe_encode({group_by: filter_value}), doseq=True)
+                url = "/".join(
+                    [
+                        it
+                        for it in [
+                            collection_url,
+                            self.settings.view_name,
+                            "?" + query_param if query_param else None,
+                        ]
+                        if it
+                    ]
+                )
+                # TODO: should have option for nofollow?
+                if self.settings.as_links:
+                    titles.append(u'<a href="{}">{}</a>'.format(url, title))
+                else:
+                    titles.append(title)
             q.append((group_by, titles))
 
         # Set up context for running templates
