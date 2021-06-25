@@ -53,9 +53,9 @@ option will redirect you to the collection.
 Mosaic Integration
 ------------------
 
-Use the package extra to install the required dependencies:
+Use the package extra to install the required dependencies::
 
-[buildout]
+    [buildout]
     ...
     eggs +=
         collective.collectionfilter[mosaic]
