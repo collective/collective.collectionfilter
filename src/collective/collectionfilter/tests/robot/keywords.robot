@@ -262,7 +262,7 @@ Ajax has completed
 I've got a site with a collection
     [arguments]  ${batch}=20
     Log in as site owner
-    run keyword if  ${USE_TILES}   run keyword  Enable mosaic layout for page  ${PLONE_URL}/testcollection  batch=${batch}
+    run keyword if  ${USE_TILES}   run keyword  Enable mosaic layout for page  ${PLONE_URL}/testdoc  batch=${batch}
     run keyword unless  ${USE_TILES}   Go to  ${PLONE_URL}/testcollection
     run keyword unless  ${USE_TILES}   Set Batch Size  ${batch}
 
@@ -287,7 +287,7 @@ My collection has a collection info
     run keyword unless  ${USE_TILES}  My collection has a collection info portlet  ${header}   @{templates}  hide_when=${hide_when} 
 
 I'm viewing the collection
-    run keyword if  ${USE_TILES}  Go to  ${PLONE_URL}/testcollection
+    run keyword if  ${USE_TILES}  Go to  ${PLONE_URL}/testdoc
     run keyword unless  ${USE_TILES}  Go to  ${PLONE_URL}/testcollection
     # Should be 3 collection results
 
@@ -334,7 +334,7 @@ Set Batch Size
     # Go to  ${PLONE_URL}/testcollection
 
 Edit Listing Tile
-    Go to  ${PLONE_URL}/testcollection/edit
+    Go to  ${PLONE_URL}/testdoc/edit
     #Wait until page contains element  css=.mosaic-btn-delete
     #Wait until page contains element   css=#mosaic-panel
     Wait Until Element Is Visible  css=.mosaic-toolbar
@@ -414,26 +414,26 @@ Results Are Sorted
 My collection has a collection filter tile
     [Arguments]  ${group_by}=Subject  ${op}=or  ${style}=checkboxes_dropdowns  @{options}
 
-    Go to  ${PLONE_URL}/testcollection/edit
+    Go to  ${PLONE_URL}/testdoc/edit
     Add filter tile  ${group_by}  ${op}  ${style}  @{options} 
     Save mosaic page
 
 My collection has a collection search tile
 
-    Go to  ${PLONE_URL}/testcollection/edit
+    Go to  ${PLONE_URL}/testdoc/edit
     Add search tile
     Save mosaic page
 
 My collection has a collection info tile
     [Arguments]  ${header}  @{templates}  ${hide_when}=${None}
 
-    Go to  ${PLONE_URL}/testcollection/edit
+    Go to  ${PLONE_URL}/testdoc/edit
     Add info tile  @{templates}  hide_when=${hide_when}
     Save mosaic page
 
 My collection has a collection sorting tile 
     [Arguments]  ${sort_on}
-    Go to  ${PLONE_URL}/testcollection/edit
+    Go to  ${PLONE_URL}/testdoc/edit
     Insert Tile "Collection Result Listing Sort"
     Set Sorting Options  ${sort_on}  links
     # Run Keyword by label  Content Selector  Input Text  .contentlisting-tile
@@ -453,12 +453,10 @@ Enable mosaic layout for page
     Click element  link=Mosaic layout
     Go to  ${page}/edit
 
-    wait until element is visible  css=.mosaic-toolbar
-
     # Create default layout if its a Page
-    # Wait Until Element Is Visible  css=.mosaic-select-layout
-    # Wait until Page contains element  xpath=//a[@data-value='default/basic.html']
-    # Click element  xpath=//a[@data-value='default/basic.html']
+    Wait Until Element Is Visible  css=.mosaic-select-layout
+    Wait until Page contains element  xpath=//a[@data-value='default/basic.html']
+    Click element  xpath=//a[@data-value='default/basic.html']
 
     # Enable layout editing
     Wait Until Element Is Visible  css=.mosaic-toolbar
@@ -467,7 +465,7 @@ Enable mosaic layout for page
     Click element  css=.mosaic-button-customizelayout
 
     # Add a embed content tile pointing to the collection
-    #Add existing content tile  /testcollection
+    #Add existing content tile  /testdoc
     Add contentlisting tile  ${batch}
 
     Save mosaic page with bug
