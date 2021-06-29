@@ -12,7 +12,6 @@ from collective.collectionfilter import _
 from collective.collectionfilter.interfaces import ICollectionish
 from collective.collectionfilter.filteritems import CollectionishCollection
 from plone.app.contenttypes.behaviors.collection import ICollection
-from Products.statusmessages.interfaces import IStatusMessage
 
 
 class DictDataWrapper(object):
@@ -154,8 +153,7 @@ def validateFilterTileModify(tile, event):
         except TypeError:
             target = None
     if target is None:
-        request = tile.context.REQUEST
-        IStatusMessage(request).addStatusMessage(
+        api.portal.show_message(
             _(u"You will need to add a Content Listing tile or target a collection to make Filters work"),
             type=u'warning',
         )
