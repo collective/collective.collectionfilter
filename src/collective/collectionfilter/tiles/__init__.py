@@ -6,10 +6,13 @@ from plone.app.blocks.layoutbehavior import ILayoutAware
 import re
 from zope.component import adapter
 from zope.component import getMultiAdapter
+from zope.component import queryAdapter
 from zope.interface import implementer
+from collective.collectionfilter import _
 from collective.collectionfilter.interfaces import ICollectionish
 from collective.collectionfilter.filteritems import CollectionishCollection
 from plone.app.contenttypes.behaviors.collection import ICollection
+from Products.statusmessages.interfaces import IStatusMessage
 
 
 class DictDataWrapper(object):
@@ -139,4 +142,17 @@ class CollectionishLayout(CollectionishCollection):
             batch=False,
             brains=True,
             custom_query=custom_query if custom_query is not None else contentFilter,
+        )
+
+
+def validateFilterTileModify(tile, event):
+    # TODO: is ok in the acquisiton path?
+    target = tile.collection
+    if target is not None:
+        target = queryAdapter(target.getObject(), ICollectionish)
+    if target is None:
+        request = tile.context.REQUEST
+        IStatusMessage(request).addStatusMessage(
+            _(u"You will need to add a Content Listing tile or target a collection to make Filters work"),
+            type=u'warning',
         )

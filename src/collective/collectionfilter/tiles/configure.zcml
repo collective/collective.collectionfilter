@@ -14,6 +14,14 @@
            for="plone.app.blocks.layoutbehavior.ILayoutBehaviorAdaptable" 
            />
 
+
+  <subscriber
+    for="collective.collectionfilter.tiles.BaseFilterTile
+         zope.lifecycleevent.IObjectModifiedEvent"
+    handler=".validateFilterTileModify"
+    />      
+
+
     <plone:tile
         name="collective.collectionfilter.tiles.filter"
         title="Collection Filter Tile"
