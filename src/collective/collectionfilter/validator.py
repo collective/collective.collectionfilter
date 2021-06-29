@@ -35,7 +35,10 @@ class TargetCollectionValidator(validator.SimpleFieldValidator):
                     portlet = True
                 if IDexterityContent.providedBy(obj):
                     break
-        collection = queryAdapter(obj, ICollectionish)
+        try:
+            collection = queryAdapter(obj, ICollectionish)
+        except TypeError:
+            collection = None
         # if it's a tile we will use a warning instead since we can't tell if a listing tile
         # has been added to the layout yet as it's not saved.
         if collection is None and portlet:

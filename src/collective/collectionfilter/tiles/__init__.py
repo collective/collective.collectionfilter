@@ -149,7 +149,10 @@ def validateFilterTileModify(tile, event):
     # TODO: is ok in the acquisiton path?
     target = tile.collection
     if target is not None:
-        target = queryAdapter(target.getObject(), ICollectionish)
+        try:
+            target = queryAdapter(target.getObject(), ICollectionish)
+        except TypeError:
+            target = None
     if target is None:
         request = tile.context.REQUEST
         IStatusMessage(request).addStatusMessage(
