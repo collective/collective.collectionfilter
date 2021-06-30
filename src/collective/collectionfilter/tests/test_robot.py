@@ -27,17 +27,21 @@ def test_suite():
     for robot_test in robot_tests:
         if api.env.plone_version() < "5.1" and "ajaxenabled" in robot_test:
             continue
-        elif api.env.plone_version() < "5.1":
-            test_layer = (
-                (ROBOT_TEST_LEVEL, COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_TILES),
-                (ROBOT_TEST_LEVEL, COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED),
-            )
         elif "ajaxenabled" in robot_test:
             test_layer = (
                 (ROBOT_TEST_LEVEL, COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED),
             )
         elif "ajaxdisabled" in robot_test:
             test_layer = (
+                (ROBOT_TEST_LEVEL, COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED),
+            )
+        elif "_tiles" in robot_test:
+            test_layer = (
+                (ROBOT_TEST_LEVEL, COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_TILES),
+            )
+        elif api.env.plone_version() < "5.1":
+            test_layer = (
+                (ROBOT_TEST_LEVEL, COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_TILES),
                 (ROBOT_TEST_LEVEL, COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED),
             )
         else:

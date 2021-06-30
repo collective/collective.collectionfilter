@@ -266,6 +266,8 @@ I've got a site with a collection
     run keyword unless  ${USE_TILES}   Go to  ${PLONE_URL}/testcollection
     run keyword unless  ${USE_TILES}   Set Batch Size  ${batch}
 
+I've got a site without a listing
+    I've got a site with a collection  0
 
 My collection has a collection search
     run keyword if  ${USE_TILES}  My collection has a collection search tile 
@@ -466,7 +468,7 @@ Enable mosaic layout for page
 
     # Add a embed content tile pointing to the collection
     #Add existing content tile  /testdoc
-    Add contentlisting tile  ${batch}
+    run keyword if  ${batch} > 0  Add contentlisting tile  ${batch}
 
     Save mosaic page with bug
 
@@ -475,14 +477,14 @@ Save mosaic page with bug
     Wait Until Element Is Visible  css=.mosaic-button-save   timeout=5 sec
     Click button  css=.mosaic-button-save
     # HACK: Due to bug. If you save it once it works? https://github.com/plone/plone.app.mosaic/issues/421
-    Run Keyword And Ignore Error  handle alert
-    Wait until page contains  Changes saved   timeout=10 sec
+    Run Keyword And Ignore Error  handle alert timeout=1 sec
+    Wait until page contains  Changes saved   timeout=2 sec
 
 
 Save mosaic page
     Wait Until Element Is Visible  css=.mosaic-button-save   timeout=5 sec
     Click button  css=.mosaic-button-save
-    Wait until page contains  Changes saved   timeout=10 sec
+    Wait until page contains  Changes saved   timeout=2 sec
 
 
 Add filter tile
