@@ -87,7 +87,7 @@ def get_filter_items(
         return None
     collection_url = collection.absolute_url()
     collection = ICollectionish(collection).selectContent(content_selector)
-    if collection is None or collection.content_selector:  # e.g. when no listing tile
+    if collection is None or not collection.content_selector:  # e.g. when no listing tile
         return None
 
     # Recursively transform all to unicode
