@@ -230,6 +230,8 @@ class BaseSearchView(BaseView):
 class BaseSortOnView(BaseView):
     def results(self):
         collection = ICollectionish(self.collection.getObject()).selectContent(self.settings.content_selector)
+        if collection is None:
+            return
         curr_val = self.top_request.get("sort_on", collection.sort_on)
         curr_order = self.top_request.get(
             "sort_order", "descending" if collection.sort_reversed else "ascending"

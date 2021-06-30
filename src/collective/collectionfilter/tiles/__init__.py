@@ -55,6 +55,7 @@ class CollectionishLayout(CollectionishCollection):
     """Provide interface for either objects with contentlisting tiles or collections or both"""
 
     tile = None
+    collection = None
 
     def __init__(self, context):
         """ Adapt either collections or contentlisting tile. The name is sorted content selector """
@@ -72,14 +73,16 @@ class CollectionishLayout(CollectionishCollection):
             self.collection = self.tile  # to get properties
 
     def selectContent(self, selector=None):
-        """ Pick tile that selector will match, otherwise pick first one """
+        """ Pick tile that selector will match, otherwise pick first one.
+        Return None if no listing tile or collection is suitable, else return this adapter.
+         """
 
         if selector is None:
             selector = ""
         self.tile = None
         la = ILayoutAware(self.context)
         if not la.content:
-            return None
+            return None if self.collection is None else self
         urls = re.findall('(@@plone.app.standardtiles.contentlisting/[^"]+)', la.content)
         # TODO: maybe better to get tile data? using ITileDataManager(id)?
         our_tile = self.context.REQUEST.response.headers.get('x-tile-url')
@@ -101,7 +104,7 @@ class CollectionishLayout(CollectionishCollection):
                 self.context.REQUEST.response.headers['x-tile-url'] = our_tile
             else:
                 del self.context.REQUEST.response.headers['x-tile-url']
-        if self.tile:
+        if self.tile is not None or self.collection is not None:
             return self
         else:
             return None
