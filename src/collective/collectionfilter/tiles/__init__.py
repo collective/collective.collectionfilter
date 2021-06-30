@@ -67,39 +67,44 @@ class CollectionishLayout(CollectionishCollection):
             try:
                 self.collection = ICollection(self.context)
             except TypeError:
-                raise TypeError("No contentlisting tile or Collection found")
+                self.collection = None
         else:
             self.collection = self.tile  # to get properties
 
-    def selectContent(self, selector=""):
+    def selectContent(self, selector=None):
         """ Pick tile that selector will match, otherwise pick first one """
 
         if selector is None:
             selector = ""
+        self.tile = None
         la = ILayoutAware(self.context)
-        if la.content:
-            urls = re.findall('(@@plone.app.standardtiles.contentlisting/[^"]+)', la.content)
-            # TODO: maybe better to get tile data? using ITileDataManager(id)?
-            our_tile = self.context.REQUEST.response.headers.get('x-tile-url')
-            for url in urls:
-                tile = self.context.unrestrictedTraverse(urls[0])
-                tile.update()
-                tile_classes = tile.tile_class.split() + ['']
-                # First tile that matches all the selector classes
-                if all([_class in tile_classes for _class in selector.split(".")]):
-                    self.tile = tile
-                    break
-            if urls and self.tile is None:
-                # TODO: what if the class is inside a special template? Just pick first?
-                # none of the selectors worked. Just pick any and hope it works?
+        if not la.content:
+            return None
+        urls = re.findall('(@@plone.app.standardtiles.contentlisting/[^"]+)', la.content)
+        # TODO: maybe better to get tile data? using ITileDataManager(id)?
+        our_tile = self.context.REQUEST.response.headers.get('x-tile-url')
+        for url in urls:
+            tile = self.context.unrestrictedTraverse(urls[0])
+            tile.update()
+            tile_classes = tile.tile_class.split() + ['']
+            # First tile that matches all the selector classes
+            if all([_class in tile_classes for _class in selector.split(".")]):
                 self.tile = tile
-            # mosaic get confused if we are doing this while creating a filter tile
-            if self.context.REQUEST.response.headers.get('x-tile-url'):
-                if our_tile:
-                    self.context.REQUEST.response.headers['x-tile-url'] = our_tile
-                else:
-                    del self.context.REQUEST.response.headers['x-tile-url']
-        return self
+                break
+        if urls and self.tile is None:
+            # TODO: what if the class is inside a special template? Just pick first?
+            # none of the selectors worked. Just pick any and hope it works?
+            self.tile = tile
+        # mosaic get confused if we are doing this while creating a filter tile
+        if self.context.REQUEST.response.headers.get('x-tile-url'):
+            if our_tile:
+                self.context.REQUEST.response.headers['x-tile-url'] = our_tile
+            else:
+                del self.context.REQUEST.response.headers['x-tile-url']
+        if self.tile:
+            return self
+        else:
+            return None
 
     @property
     def sort_reversed(self):
@@ -110,7 +115,10 @@ class CollectionishLayout(CollectionishCollection):
 
     @property
     def content_selector(self):
-        if self.tile is None:
+        """ will return None if no tile or colleciton found """
+        if self.collection is None:
+            return None
+        elif self.tile is None:
             return super(CollectionishLayout, self).content_selector
         classes = ["contentlisting-tile"]
         if self.tile.tile_class:
@@ -148,12 +156,10 @@ def validateFilterTileModify(tile, event):
     # TODO: is ok in the acquisiton path?
     target = tile.collection
     if target is not None:
-        try:
-            target = queryAdapter(target.getObject(), ICollectionish)
-        except TypeError:
-            target = None
-    if target is None:
+        target = queryAdapter(target.getObject(), ICollectionish)
+    if target is None or target.content_selector is None:
         api.portal.show_message(
             _(u"You will need to add a Content Listing tile or target a collection to make Filters work"),
+            request=tile.context.REQUEST,
             type=u'warning',
         )

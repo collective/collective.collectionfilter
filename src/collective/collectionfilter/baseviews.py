@@ -107,10 +107,11 @@ class BaseView(object):
             return self.settings.content_selector
 
         collectionish = ICollectionish(self.collection.getObject()) if self.collection else None
-        if collectionish is None:
+        selector = collectionish.content_selector
+        if collectionish is None or not selector:
             return u"#content-core"
         else:
-            return collectionish.content_selector
+            return selector
 
     @property
     def ajax_load(self):

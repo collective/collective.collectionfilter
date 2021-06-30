@@ -35,13 +35,10 @@ class TargetCollectionValidator(validator.SimpleFieldValidator):
                     portlet = True
                 if IDexterityContent.providedBy(obj):
                     break
-        try:
-            collection = queryAdapter(obj, ICollectionish)
-        except TypeError:
-            collection = None
+        collection = queryAdapter(obj, ICollectionish)
         # if it's a tile we will use a warning instead since we can't tell if a listing tile
         # has been added to the layout yet as it's not saved.
-        if collection is None and portlet:
+        if portlet and (collection is None or collection.content_selector is None):
             raise Invalid(
                 _(u"Context is not a collection or has a contentlisting tile, please set a target.")
             )
