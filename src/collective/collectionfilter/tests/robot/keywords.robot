@@ -477,7 +477,7 @@ Save mosaic page with bug
     Wait Until Element Is Visible  css=.mosaic-button-save   timeout=5 sec
     Click button  css=.mosaic-button-save
     # HACK: Due to bug. If you save it once it works? https://github.com/plone/plone.app.mosaic/issues/421
-    Run Keyword And Ignore Error  handle alert timeout=3 sec
+    alert should not be present  timeout=6 sec
     Wait until page contains  Changes saved   timeout=2 sec
 
 
