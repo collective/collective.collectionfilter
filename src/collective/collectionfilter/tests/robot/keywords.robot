@@ -234,10 +234,23 @@ Should be filter options
     [Arguments]  @{values}
     Wait until keyword succeeds  2s  1s  List Labels Should Equal  xpath=//div[contains(@class, 'filterContent')]//select  @{values}
 
+Should be filter checkboxes
+    [Arguments]  @{values}
+    Wait until keyword succeeds  2s  1s  Labels Should Equal  xpath=//div[contains(@class, 'filterContent')]//span[@class='filterLabel']  @{values}
+
 List Labels Should Equal
    [Arguments]  ${selector}  @{expect}
    @{options}=  get list items  ${selector}
    Should Be Equal  ${expect}  ${options}
+
+Labels Should Equal
+    [Arguments]  ${selector}  @{expect}
+    @{locators}=     Get Webelements    ${selector}
+    ${result}=       Create List
+    :FOR   ${locator}   in    @{locators}
+    \       ${name}=    Get Text    ${locator}
+    \       Append To List  ${result}  ${name}
+   Should Be Equal  ${expect}  ${result}
 
 Should be ${X} collection results
     # Wait until element is visible  css=#content-core
