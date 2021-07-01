@@ -54,17 +54,17 @@ Scenario: Hide when no options
 Scenario: show hidden filter if just narrowed down
 
     Given I've got a site with a collection
-      and my collection has a collection filter  Type  single  checkboxes_dropdowns  Narrow down filter options
+      and my collection has a collection filter  portal_type  single  checkboxes_dropdowns  Narrow down filter options
      When I'm viewing the collection
-      and Should be filter options  All (3)  Event (1)  Unknown (2)
+      and Should be filter options  All (3)  Event (1)  Page (2)
       and Select Filter Option "Event (1)"
      Then Should be filter options  All (3)  Event (1)
 
 Scenario: don't hide hidden filter if just narrowed down
     Given I've got a site with a collection
-      and my collection has a collection filter  Type  single  checkboxes_dropdowns  Narrow down filter options  Hide if empty
+      and my collection has a collection filter  portal_type  single  checkboxes_dropdowns  Narrow down filter options  Hide if empty
      When I'm viewing the collection
-      and Should be filter options  All (3)  Event (1)  Unknown (2)
+      and Should be filter options  All (3)  Event (1)  Page (2)
     # But if we filter it down it shouldn't disappear as then we have no way to click "All" to get back
       and Select Filter Option "Event (1)"
       Then Should be filter options  All (3)  Event (1)
@@ -73,12 +73,12 @@ Scenario: don't hide hidden filter if just narrowed down
 Scenario: Displaying multiple collection filters on a single page
     Given I've got a site with a collection
       and my collection has a collection filter
-      and my collection has a collection filter  group_by=Type
-    When I'm viewing the collection
-    Then I should have a filter with 4 options
+      and my collection has a collection filter  group_by=portal_type
+     When I'm viewing the collection
+     Then I should have a filter with 4 options
       and I should have a filter with 3 options
       and I should see 7 filter options on the page
-      and Should be filter checkboxes  All (3)  Dokumänt (2)  Evänt (1)  Süper (2)  All (3)  Event (1)  Unknown (2)
+      and Should be filter checkboxes  All (3)  Dokumänt (2)  Evänt (1)  Süper (2)  All (3)  Event (1)  Page (2)
 
 Scenario: Combine search and AND filter
     Given I've got a site with a collection
