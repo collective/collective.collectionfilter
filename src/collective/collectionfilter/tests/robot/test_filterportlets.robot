@@ -55,20 +55,18 @@ Scenario: show hidden filter if just narrowed down
     Given I've got a site with a collection
       and my collection has a collection filter  Type  single  checkboxes_dropdowns  Narrow down filter options
      When I'm viewing the collection
-      and Should be 3 filter options
-
+      and Should be filter options  All (3)  Event (1)  Unknown (2)
       and Select Filter Option "Event (1)"
-      and Should be 2 filter options
+     Then Should be filter options  All (3)  Event (1)
 
-Scenario: hide hidden filter if just narrowed down
+Scenario: don't hide hidden filter if just narrowed down
     Given I've got a site with a collection
       and my collection has a collection filter  Type  single  checkboxes_dropdowns  Narrow down filter options  Hide if empty
      When I'm viewing the collection
-      and Should be 3 filter options
-
+      and Should be filter options  All (3)  Event (1)  Unknown (2)
     # But if we filter it down it shouldn't disappear as then we have no way to click "All" to get back
       and Select Filter Option "Event (1)"
-     Then Should be 2 filter options
+      Then Should be filter options  All (3)  Event (1)
 
 
 Scenario: Displaying multiple collection filters on a single page

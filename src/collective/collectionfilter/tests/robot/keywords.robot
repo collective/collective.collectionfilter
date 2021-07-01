@@ -228,7 +228,16 @@ Add Info portlet
 
 
 Should be ${X} filter options
-    Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//div[contains(@class, 'filterContent')]//*[contains(@class, 'filterItem')]  limit=${X}
+    Wait until keyword succeeds  2s  1s  Page Should Contain Element  xpath=//div[contains(@class, 'filterContent')]//*[contains(@class, 'filterItem')]  limit=${X}
+
+Should be filter options
+    [Arguments]  @{values}
+    Wait until keyword succeeds  2s  1s  List Labels Should Equal  xpath=//div[contains(@class, 'filterContent')]//select  @{values}
+
+List Labels Should Equal
+   [Arguments]  ${selector}  @{expect}
+   @{options}=  get list items  ${selector}
+   Should Be Equal  ${expect}  ${options}
 
 Should be ${X} collection results
     # Wait until element is visible  css=#content-core
