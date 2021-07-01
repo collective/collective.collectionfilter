@@ -365,7 +365,7 @@ Edit Listing Tile
     #Unselect Frame
     #mouse over  css=.mosaic-plone.app.standardtiles.contentlisting-tile
     click element  css=.contentlisting-tile
-    click button  Edit
+    Edit Current Tile
 
 # --- Core Functionality ------------------------------------------------------
 I search for "${search}" with ajax
@@ -514,7 +514,7 @@ Add filter tile
 
     Insert Tile "Collection Filter"
     Drag tile
-    Click button   Edit
+    Edit Current Tile
 #    Wait until element is visible  xpath=//div[@class='plone-modal-dialog' and .//*[contains(text(), 'Collection')]]
     #run keyword if  $collection_name  set relateditem  formfield-collective-collectionfilter-tiles-filter-target_collection  ${collection_name}
 
@@ -529,7 +529,7 @@ Add search tile
 
     Insert tile "Collection Search"
     Drag tile
-    Click button  Edit
+    Edit Current Tile
     run keyword if  $collection_name  set relateditem  formfield-collective-collectionfilter-tiles-search-target_collection  ${collection_name}
     # Run Keyword by label  Content Selector  Input Text  .contentlisting-tile
     Click element  css=.pattern-modal-buttons #buttons-save
@@ -568,7 +568,7 @@ Add contentlisting tile
     [Arguments]  ${batch}=20
     Insert tile "Content listing"
     Drag tile
-    Click button  Edit
+    Edit Current Tile
     # TODO: test using this method
     # Run Keyword by label  Use query parameters from content  click element
 
@@ -582,13 +582,17 @@ Add contentlisting tile
 
     Click element  css=.pattern-modal-buttons #buttons-save
 
+Edit Current Tile
+    Click Button  css=.mosaic-selected-tile .mosaic-btn-settings
+    
 
 Drag tile
     Wait until page contains element  css=.mosaic-helper-tile-new
     Wait until element is visible  css=.mosaic-helper-tile-new
     Update element style  css=.mosaic-IDublinCore-description-tile .mosaic-divider-bottom  display  block
-    Mouse over  css=.mosaic-IDublinCore-description-tile .mosaic-divider-bottom
+    Mouse over  xpath=(//*[contains(@class,'movable')])[last()-1]
     Click element  css=.mosaic-selected-divider
+    #Click element  xpath=(//*[contains(@class,'movable')])[last()-1]
 
 Filter by
     [Arguments]  ${filter}
