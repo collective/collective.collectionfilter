@@ -75,9 +75,10 @@ Select InAndOut
     [Arguments]  ${label}  @{values}
     Wait until page contains element  xpath=//label[.//*[normalize-space(text())='${label}'] or normalize-space(text()) ='${label}']
     ${id}=  Get Element Attribute  xpath=//label[.//*[normalize-space(text())='${label}'] or normalize-space(text()) ='${label}']  for
-    :FOR  ${value}  IN  @{values}
-    \    Select from List by value  css=select#${id}-from  ${value}
-    \    Click element  css=#${id} button[name='from2toButton']
+    FOR  ${value}  IN  @{values}
+        Select from List by value  css=select#${id}-from  ${value}
+        Click element  css=#${id} button[name='from2toButton']
+    END
 
 
 Select single select2  
@@ -101,10 +102,11 @@ Select multi select2
     #select from list by label  xpath=(//select[@class='querystring-criteria-value-MultipleSelectionWidget'])[1]  Page
     ${select2}=  get webelement  ${locator}
     execute javascript  $(arguments[0]).select2("val",arguments[1])  ARGUMENTS  ${select2}  ${values}
-    :FOR  ${value}  IN  @{values} 
+    FOR  ${value}  IN  @{values} 
     # Hack to only find those in the tile popup up not the mosaic popup 
     #\    wait until element is visible  //*[contains(@class,'plone-modal ')]//li[@class='select2-search-choice']//*[contains(text(), '${value}')]
-    \    Wait until keyword succeeds  5s  1s  call method  ${select2}  find_elements  by=xpath  value=.//li[@class='select2-search-choice']//*[contains(text(), '${value}')]
+        Wait until keyword succeeds  5s  1s  call method  ${select2}  find_elements  by=xpath  value=.//li[@class='select2-search-choice']//*[contains(text(), '${value}')]
+    END
 
     # Click Element  xpath=(//div[@class='querystring-criteria-value'])[3]//input
     # wait until element is visible  css=.select2-result-label
@@ -247,10 +249,11 @@ Labels Should Equal
     [Arguments]  ${selector}  @{expect}
     @{locators}=     Get Webelements    ${selector}
     ${result}=       Create List
-    :FOR   ${locator}   in    @{locators}
-    \       ${name}=    Get Text    ${locator}
-    \       Append To List  ${result}  ${name}
-   Should Be Equal  ${expect}  ${result}
+    FOR   ${locator}   IN    @{locators}
+           ${name}=    Get Text    ${locator}
+           Append To List  ${result}  ${name}
+    END
+    Should Be Equal  ${expect}  ${result}
 
 Should be ${X} collection results
     # Wait until element is visible  css=#content-core
@@ -423,9 +426,10 @@ Results Are Sorted
     ${xpath}=    Set Variable    //span[@class='summary']
     ${count}=    Get Element Count    xpath=${xpath}
     ${names}=    Create List
-    :FOR    ${i}    IN RANGE    1    ${count} + 1
-    \    ${name}=    Get Text    xpath=(${xpath})[${i}]
-    \    Append To List    ${names}    ${name}
+    FOR    ${i}    IN RANGE    1    ${count} + 1
+        ${name}=    Get Text    xpath=(${xpath})[${i}]
+        Append To List    ${names}    ${name}
+    END
 
     ${sorted}=  copy list  ${names}  False
     sort list  ${sorted}
