@@ -4,11 +4,11 @@ from collective.collectionfilter import PLONE_VERSION
 from collective.collectionfilter import utils
 from plone.api.portal import get_registry_record as getrec
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
+from plone.app.z3cform.widget import SelectFieldWidget
 from plone.autoform.directives import widget
 from zope import schema
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
-
 
 try:
     from plone.formwidget.geolocation.vocabularies import default_map_layer
@@ -33,6 +33,10 @@ def pattern_options():
     return options
 
 
+class ICollectionish(Interface):
+    "Adapts object similar to ICollection if has contentlisting tile, or is a collection"
+
+
 class ICollectionFilterBaseSchema(Interface):
 
     header = schema.TextLine(
@@ -45,7 +49,8 @@ class ICollectionFilterBaseSchema(Interface):
         title=_(u"label_target_collection", default=u"Alternative Target Collection"),
         description=_(
             u"help_target_collection",
-            default=u"We use the current context as collection. As an alternative you can select a different collection as source for the filter items "
+            default=u"We use the current context as collection. As an alternative you can select a different "
+            u"collection as source for the filter items "
             u"and where the filter is applied.",
         ),
         required=False,
@@ -71,12 +76,10 @@ class ICollectionFilterBaseSchema(Interface):
         title=_("label_content_selector", default=u"Content Selector"),
         description=_(
             "help_content_selector",
-            default=u"Selector which is used to choose a DOM node from the"
-            u" source into the target. For source and target the same"
-            u" selectors are used.",
+            default=u"If your tile or collection has a special class or id for ajax replacement use it here."
+            u" Selector will need to work for unthemed view and current page.",
         ),
-        required=True,
-        default=u"#content-core",
+        required=False,
     )
 
 
@@ -185,6 +188,8 @@ class ICollectionFilterResultListSort(ICollectionFilterBaseSchema):
         ),
         required=True,
     )
+    # NB needed as InAndOut breaks tiles in 5.0
+    widget('sort_on', SelectFieldWidget, pattern_options=dict(orderable=True))
 
     input_type = schema.Choice(
         title=_("label_input_type", u"Input Type"),
