@@ -240,6 +240,11 @@ Should be filter checkboxes
     [Arguments]  @{values}
     Wait until keyword succeeds  2s  1s  Labels Should Equal  xpath=//div[contains(@class, 'filterContent')]//span[@class='filterLabel']  @{values}
 
+Should be filter links
+    [Arguments]  @{values}
+    Wait until keyword succeeds  2s  1s  Labels Should Equal  xpath=//div[contains(@class, 'filterContent')]//*[contains(@class, 'filterItem')]  @{values}
+
+
 List Labels Should Equal
    [Arguments]  ${selector}  @{expect}
    @{options}=  get list items  ${selector}
@@ -258,7 +263,7 @@ Labels Should Equal
 Should be ${X} collection results
     # Wait until element is visible  css=#content-core
     # below should work for both collections and contentlisting tiles
-    Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//span[@class='summary']  limit=${X}
+    Wait until keyword succeeds  2s  1s  Page Should Contain Element  xpath=//span[@class='summary']  limit=${X}
 
 Should be ${X} pages
     ${X}=  evaluate  ${X} + 1  # need we have next or previous

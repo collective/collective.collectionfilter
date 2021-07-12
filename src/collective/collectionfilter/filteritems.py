@@ -67,7 +67,7 @@ def _results_cachekey(
     return cachekey
 
 
-@ram.cache(_results_cachekey)
+@ram.cache(_results_cachekey)  # noqa
 def get_filter_items(
     target_collection,
     group_by,
@@ -128,6 +128,8 @@ def get_filter_items(
     metadata_attr = groupby_criteria[group_by]["metadata"]
     # Optional modifier to set title from filter value
     display_modifier = groupby_criteria[group_by].get("display_modifier", None)
+    # Optional modifier to modify the metadata value into one or more groupby values
+    groupby_modifier = groupby_criteria[group_by].get("groupby_modifier", None)
     # CSS modifier to set class on filter item
     css_modifier = groupby_criteria[group_by].get("css_modifier", None)
     # Value blacklist
@@ -141,6 +143,16 @@ def get_filter_items(
         "sort_key_function", lambda it: it["title"].lower()
     )
 
+    if groupby_modifier:
+        # ensure all values associated with current selection are selected
+        portal = plone.api.portal.get()
+        portal_path = "/".join(portal.getPhysicalPath())
+        selected_values = current_idx_value + [
+            val for selected in current_idx_value
+            for val in groupby_modifier("/".join([portal_path, selected]), current_idx_value)]
+    else:
+        selected_values = current_idx_value
+
     grouped_results = {}
     for brain in catalog_results:
 
@@ -150,10 +162,12 @@ def get_filter_items(
             val = val()
         # decode it to unicode
         val = safe_decode(val)
+        if groupby_modifier is not None:
+            val = groupby_modifier(val, current_idx_value)
         # Make sure it's iterable, as it's the case for e.g. the subject index.
-        val = safe_iterable(val)
+        vals = safe_iterable(val)
 
-        for filter_value in val:
+        for filter_value in vals:
             if filter_value is None or isinstance(filter_value, Missing):
                 continue
             if value_blacklist and filter_value in value_blacklist:
@@ -168,7 +182,12 @@ def get_filter_items(
             # e.g. uuid to title
             title = filter_value
             if filter_value is not EMPTY_MARKER and callable(display_modifier):
-                title = safe_decode(display_modifier(filter_value, idx))
+                try:
+                    title = display_modifier(filter_value, idx, filter_type)  # TODO: could it need more context?
+                except TypeError:
+                    # Backwards compatibility
+                    title = display_modifier(filter_value, idx)
+                title = safe_decode(title)
 
             # Build filter url query
             _urlquery = urlquery.copy()
@@ -196,7 +215,7 @@ def get_filter_items(
             )
 
             # Set selected state
-            selected = filter_value in current_idx_value
+            selected = filter_value in selected_values
             css_class = "filterItem {0}{1} {2}".format(
                 "filter-" + idnormalizer.normalize(filter_value),
                 " selected" if selected else "",

@@ -109,6 +109,59 @@ def translate_portal_type(value, *args, **kwargs):
     return term.title if term else value
 
 
+def selected_path_children(path, query):
+    """ We only want the ancestors and direct child folders of current selections to be options.
+        This means we don't get overloaded with full tree of options. If no query then assume
+        portal is the query so return top level folders.
+     """
+    # Get path, remove portal root from path, remove leading /
+    portal = plone.api.portal.get()
+    portal_parts = portal.getPhysicalPath()
+    portal_path = "/".join(list(portal_parts))
+    if not query:
+        filters = ['']
+    else:
+        filters = query  # TODO: process it
+    for filter in filters:
+        if not path.startswith('/'.join([portal_path, filter])):
+            continue
+        parts = path.split("/")
+        selected_parts = filter.split("/") if filter else []
+        sub_parts = parts[len(portal_parts): -1]  # We only want parents
+        sub_parts = sub_parts[:len(selected_parts) + 1]  # Only want direct descendents of whats been picked
+        if not sub_parts:
+            continue
+        for i in range(1, len(sub_parts) + 1):
+            yield "/".join(sub_parts[:i])
+
+
+def path_to_title(path, idx, filter_type):
+    portal = plone.api.portal.get()
+    # ctype = "folder"
+    path = "/".join(["/".join(portal.getPhysicalPath()), path])
+    container = portal.portal_catalog.searchResults({"path": {"query": path}, "depth": 0})
+    if len(container) > 0:
+        title = container[0].Title
+        # ctype = container[0].portal_type.lower()
+    else:
+        title = path.split("/")[-1]
+    if filter_type != "links":
+        # so dropdowns look indented
+        title = u" " * (len(path.split("/")) - 1) + title
+    return title
+
+
+def path_indent(path):
+    level = len(path.split("/"))
+    css_class = u"pathLevel{level}".format(level=level)
+    return css_class
+
+
+def relative_to_absolute_path(path):
+    # Ensure query string only needs relative path. Internal search needs full path
+    return '/'.join(list(plone.api.portal.get().getPhysicalPath()) + path.split("/"))
+
+
 @implementer(IGroupByCriteria)
 class GroupByCriteria:
     """Global utility for retrieving and manipulating groupby criterias.
@@ -134,19 +187,29 @@ class GroupByCriteria:
         cat = plone.api.portal.get_tool("portal_catalog")
         # get catalog metadata schema, but filter out items which cannot be
         # used for grouping
-        metadata = [it for it in cat.schema() if it not in GROUPBY_BLACKLIST]
+        metadata = [it for it in cat.schema() if it not in GROUPBY_BLACKLIST] + ['getPath']
 
         for it in metadata:
             index_modifier = None
             display_modifier = translate_value  # Allow to translate in this package domain per default.  # noqa
-            idx = cat._catalog.indexes.get(it)
-            if six.PY2 and getattr(idx, "meta_type", None) == "KeywordIndex":
+            groupby_modifier = None
+            sort_key_function = lambda it: it["title"].lower() # noqa
+            css_modifier = None
+            index_name = dict(getPath="path").get(it, it)
+            idx = cat._catalog.indexes.get(index_name)
+            index_type = getattr(idx, "meta_type", None)
+            if six.PY2 and index_type == "KeywordIndex":
                 # in Py2 KeywordIndex accepts only utf-8 encoded values.
                 index_modifier = safe_encode
-
-            if getattr(idx, "meta_type", None) == "BooleanIndex":
+            elif index_type == "BooleanIndex":
                 index_modifier = make_bool
                 display_modifier = get_yes_no_title
+            elif index_type == "ExtendedPathIndex":
+                display_modifier = path_to_title
+                css_modifier = path_indent
+                groupby_modifier = selected_path_children
+                index_modifier = relative_to_absolute_path
+                sort_key_function = lambda it: it["url"]  # noqa # TODO: should use orderinparent index
 
             # for portal_type or Type we have some special sauce as we need to translate via fti.i18n_domain.  # noqa
             if it == "portal_type":
@@ -155,15 +218,14 @@ class GroupByCriteria:
                 display_modifier = translate_messagefactory
 
             self._groupby[it] = {
-                "index": it,
+                "index": index_name,
                 "metadata": it,
                 "display_modifier": display_modifier,
-                "css_modifier": None,
+                "css_modifier": css_modifier,
                 "index_modifier": index_modifier,
+                "groupby_modifier": groupby_modifier,
                 "value_blacklist": None,
-                "sort_key_function": lambda it: it[
-                    "title"
-                ].lower(),  # sort key function. defaults to a lower-cased title.  # noqa
+                "sort_key_function": sort_key_function,  # sort key function. defaults to a lower-cased title.  # noqa
             }
 
         modifiers = getAdapters((self,), IGroupByModifier)
