@@ -21,6 +21,11 @@
     handler=".validateFilterTileModify"
     />      
 
+  <subscriber
+    for="plone.app.blocks.layoutbehavior.ILayoutBehaviorAdaptable
+         zope.lifecycleevent.IObjectModifiedEvent"
+    handler=".validateFilterMosaicModify"
+    />      
 
     <plone:tile
         name="collective.collectionfilter.tiles.filter"

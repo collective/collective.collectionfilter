@@ -49,6 +49,26 @@ class BaseFilterTile(PersistentTile):
         return self.url
 
 
+def findall_tiles(context, spec):
+    request = context.REQUEST
+    la = ILayoutAware(context)
+    layout = la.customContentLayout if la.customContentLayout is not None else la.contentLayout if la.contentLayout is not None else la.content
+    if layout is None:
+        return []
+    urls = re.findall(r'(@@[\w\.]+/\w+)', layout)
+    urls = [url for url in urls if url.startswith("@@{}".format(spec))]
+    # TODO: maybe better to get tile data? using ITileDataManager(id)?
+    our_tile = request.response.headers.get('x-tile-url')
+    tiles = [context.unrestrictedTraverse(str(url)) for url in urls]
+    # mosaic get confused if we are doing this while creating a filter tile
+    if request.response.headers.get('x-tile-url'):
+        if our_tile:
+            request.response.headers['x-tile-url'] = our_tile
+        else:
+            del request.response.headers['x-tile-url']
+    return tiles
+
+
 @implementer(ICollectionish)
 @adapter(ILayoutBehaviorAdaptable)
 class CollectionishLayout(CollectionishCollection):
@@ -80,30 +100,18 @@ class CollectionishLayout(CollectionishCollection):
         if selector is None:
             selector = ""
         self.tile = None
-        la = ILayoutAware(self.context)
-        if not la.content:
-            return None if self.collection is None else self
-        urls = re.findall('(@@plone.app.standardtiles.contentlisting/[^"]+)', la.content)
-        # TODO: maybe better to get tile data? using ITileDataManager(id)?
-        our_tile = self.context.REQUEST.response.headers.get('x-tile-url')
-        for url in urls:
-            tile = self.context.unrestrictedTraverse(urls[0])
+        tiles = findall_tiles(self.context, "plone.app.standardtiles.contentlisting")
+        for tile in tiles:
             tile.update()
             tile_classes = tile.tile_class.split() + ['']
             # First tile that matches all the selector classes
             if all([_class in tile_classes for _class in selector.split(".")]):
                 self.tile = tile
                 break
-        if urls and self.tile is None:
+        if tiles and self.tile is None:
             # TODO: what if the class is inside a special template? Just pick first?
             # none of the selectors worked. Just pick any and hope it works?
             self.tile = tile
-        # mosaic get confused if we are doing this while creating a filter tile
-        if self.context.REQUEST.response.headers.get('x-tile-url'):
-            if our_tile:
-                self.context.REQUEST.response.headers['x-tile-url'] = our_tile
-            else:
-                del self.context.REQUEST.response.headers['x-tile-url']
         if self.tile is not None or self.collection is not None:
             return self
         else:
@@ -166,3 +174,13 @@ def validateFilterTileModify(tile, event):
             request=tile.context.REQUEST,
             type=u'warning',
         )
+        return False
+    return True
+
+
+def validateFilterMosaicModify(context, event):
+    # search the layout for any filters and then see if they have a matching listing
+    tiles = findall_tiles(context, "collective.collectionfilter.tiles.")
+    for tile in tiles:
+        if not validateFilterTileModify(tile, event):
+            break
