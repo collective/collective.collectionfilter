@@ -48,6 +48,10 @@
       name="collective.collectionfilter.SortOnIndexes"
       />
 
+  <adapter factory=".filteritems.CollectionishCollection"
+           provides="collective.collectionfilter.interfaces.ICollectionish"
+           for="plone.app.contenttypes.interfaces.ICollection" />
+
   <subscriber
       for="Products.CMFPlone.interfaces.IPloneSiteRoot
            zope.traversing.interfaces.IBeforeTraverseEvent"

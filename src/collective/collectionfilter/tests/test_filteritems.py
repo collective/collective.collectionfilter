@@ -207,8 +207,8 @@ class TestFilteritems(unittest.TestCase):
         self.assertEqual(len(result), 4)
         self.assertEqual(get_data_by_val(result, "all")["count"], 3)
 
-        # TODO: I'm not sure these counts are correct. It should represent how many results you will get if you click so should be smaller than this
-        # but I guess you need to turn on narrow down for that?
+        # TODO: I'm not sure these counts are correct. It should represent how many results you will get if you click
+        # so should be smaller than this but I guess you need to turn on narrow down for that?
         self.assertEqual(get_data_by_val(result, u"Süper")["count"], 2)
         self.assertEqual(get_data_by_val(result, u"Evänt")["count"], 1)
         self.assertEqual(get_data_by_val(result, u"Dokumänt")["count"], 2)
