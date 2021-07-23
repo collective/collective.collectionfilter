@@ -108,8 +108,8 @@ Scenario: Search filter
 
     # Searching for query keywords (https://github.com/collective/collective.collectionfilter/issues/85)
     When I search for "and Document"
-    Then should be 4 collection results
-      and Should be filter checkboxes  All (4)  Dokumänt (1)  Süper (1)
+    Then should be 1 collection results
+      and Should be filter checkboxes  All (1)  Dokumänt (1)  Süper (1)
     When I search for "or Document"
     Then should be 0 collection results
       and I should see 0 filter options on the page
