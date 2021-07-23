@@ -28,6 +28,7 @@ from zope.i18n import translate
 import plone.api
 import six
 import re
+from collections import OrderedDict
 
 
 try:
@@ -152,7 +153,7 @@ def get_filter_items(
     else:
         selected_values = current_idx_value
 
-    grouped_results = {}
+    grouped_results = OrderedDict()
     for brain in catalog_results:
 
         # Get filter value
