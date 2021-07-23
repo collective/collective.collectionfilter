@@ -165,6 +165,14 @@ def relative_to_absolute_path(path):
     return '/'.join(list(plone.api.portal.get().getPhysicalPath()) + path.split("/"))
 
 
+def sort_path(it):
+    return it["url"]
+
+
+def sort_title(it):
+    return it["title"].lower()
+
+
 @implementer(IGroupByCriteria)
 class GroupByCriteria:
     """Global utility for retrieving and manipulating groupby criterias.
@@ -196,7 +204,7 @@ class GroupByCriteria:
             index_modifier = None
             display_modifier = translate_value  # Allow to translate in this package domain per default.  # noqa
             groupby_modifier = None
-            sort_key_function = lambda it: it["title"].lower() # noqa
+            sort_key_function = sort_title
             css_modifier = None
             index_name = dict(getPath="path").get(it, it)
             idx = cat._catalog.indexes.get(index_name)
@@ -212,7 +220,7 @@ class GroupByCriteria:
                 css_modifier = path_indent
                 groupby_modifier = selected_path_children
                 index_modifier = relative_to_absolute_path
-                sort_key_function = lambda it: it["url"]  # noqa # TODO: should use orderinparent index
+                sort_key_function = sort_path  # TODO: should use orderinparent index
 
             # for portal_type or Type we have some special sauce as we need to translate via fti.i18n_domain.  # noqa
             if it == "portal_type":
