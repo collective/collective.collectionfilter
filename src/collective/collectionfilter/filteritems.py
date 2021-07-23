@@ -146,7 +146,6 @@ def get_filter_items(
 
     if groupby_modifier:
         # ensure all values associated with current selection are selected
-        portal = plone.api.portal.get()
         selected_values = current_idx_value + [
             val for selected in current_idx_value
             for val in groupby_modifier(selected, current_idx_value, narrow_down)]

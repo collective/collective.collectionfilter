@@ -114,7 +114,7 @@ def selected_path_children(value, query, narrow_down):
         This means we don't get overloaded with full tree of options. If no query then assume
         portal is the query so return top level folders.
      """
-    # Get path, remove portal root from path, remove leading 
+    # Get path, remove portal root from path, remove leading
     path = value
     portal = plone.api.portal.get()
     portal_parts = portal.getPhysicalPath()
