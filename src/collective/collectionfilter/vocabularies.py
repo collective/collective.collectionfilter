@@ -109,17 +109,23 @@ def translate_portal_type(value, *args, **kwargs):
     return term.title if term else value
 
 
-def selected_path_children(path, query):
+def selected_path_children(value, query, narrow_down):
     """ We only want the ancestors and direct child folders of current selections to be options.
         This means we don't get overloaded with full tree of options. If no query then assume
         portal is the query so return top level folders.
      """
-    # Get path, remove portal root from path, remove leading /
+    # Get path, remove portal root from path, remove leading 
+    path = value
     portal = plone.api.portal.get()
     portal_parts = portal.getPhysicalPath()
     portal_path = "/".join(list(portal_parts))
+    if not path.startswith(portal_path):
+        path = "/".join([portal_path, path])
     if not query:
         filters = ['']
+    elif not narrow_down:
+        # Will include top level and parents of selected
+        filters = [''] + query
     else:
         filters = query  # TODO: process it
     for filter in filters:

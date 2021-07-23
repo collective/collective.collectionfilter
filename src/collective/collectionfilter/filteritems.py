@@ -147,10 +147,9 @@ def get_filter_items(
     if groupby_modifier:
         # ensure all values associated with current selection are selected
         portal = plone.api.portal.get()
-        portal_path = "/".join(portal.getPhysicalPath())
         selected_values = current_idx_value + [
             val for selected in current_idx_value
-            for val in groupby_modifier("/".join([portal_path, selected]), current_idx_value)]
+            for val in groupby_modifier(selected, current_idx_value, narrow_down)]
     else:
         selected_values = current_idx_value
 
@@ -164,7 +163,7 @@ def get_filter_items(
         # decode it to unicode
         val = safe_decode(val)
         if groupby_modifier is not None:
-            val = groupby_modifier(val, current_idx_value)
+            val = groupby_modifier(val, current_idx_value, narrow_down)
         # Make sure it's iterable, as it's the case for e.g. the subject index.
         vals = safe_iterable(val)
 

@@ -302,9 +302,9 @@ class TestFilteritems(unittest.TestCase):
             narrow_down=False
         )
 
-        self.assertEqual(len(result), 3)
+        self.assertEqual(len(result), 4)
         self.assertOption(result, "all", 6, False, "All")
-        self.assertOption(result, "testfolder", 1, True, "Test Folder", css="pathLevel0")
+        self.assertOption(result, "testfolder", 3, True, "Test Folder", css="pathLevel0")
         self.assertOption(result, "testfolder/testsubfolder", 1, True, "Test Sub-Folder", css="pathLevel1")
         self.assertOption(result, "testfolder2", 1, False, "Test Folder2", css="pathLevel0")
 
