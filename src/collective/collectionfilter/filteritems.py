@@ -27,6 +27,7 @@ from zope.i18n import translate
 
 import plone.api
 import six
+import re
 
 
 try:
@@ -221,6 +222,8 @@ def get_filter_items(
                 " selected" if selected else "",
                 css_modifier(filter_value) if css_modifier else "",
             )
+            # HACK: Only used by dropdowns currently as they don't support css styles
+            level = int(next(iter(re.findall(r"pathLevel(\d+)", css_class)), 0))
 
             grouped_results[filter_value] = {
                 "title": title,
@@ -229,6 +232,7 @@ def get_filter_items(
                 "css_class": css_class,
                 "count": 1,
                 "selected": selected,
+                "level": level
             }
 
     # Entry to clear all filters
@@ -247,6 +251,7 @@ def get_filter_items(
             "css_class": "filterItem filter-all",
             "count": len(catalog_results),
             "selected": idx not in request_params,
+            "level": 0
         }
     ]
 

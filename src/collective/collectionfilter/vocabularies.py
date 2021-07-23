@@ -145,14 +145,11 @@ def path_to_title(path, idx, filter_type):
         # ctype = container[0].portal_type.lower()
     else:
         title = path.split("/")[-1]
-    if filter_type != "links":
-        # so dropdowns look indented
-        title = u" " * (len(path.split("/")) - 1) + title
     return title
 
 
 def path_indent(path):
-    level = len(path.split("/"))
+    level = max(0, len(path.split("/")) - 1)  # Put Top level at same level as All as easy enough it distiguish
     css_class = u"pathLevel{level}".format(level=level)
     return css_class
 

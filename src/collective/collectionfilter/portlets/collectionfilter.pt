@@ -21,7 +21,7 @@
             <label tal:attributes="for string:${view/filterClassName}-${item/value}">
               <span class="indicator"></span>
               <span class="filterLabel">
-                <span tal:replace="structure python:item['title'].replace('/', u'/\u00AD').replace(' ', u'&nbsp;')">Item</span>
+                <span tal:replace="structure python:item['title'].replace('/', u'/\u00AD')">Item</span>
                 <tal:show_count condition="view/settings/show_count">(<span tal:replace="item/count" />)</tal:show_count>
               </span>
 
@@ -40,7 +40,7 @@
                 data-url="${item/url}"
                 tal:attributes="selected python:'selected' if item['selected'] else None">
               <span class="filterLabel">
-                <span tal:replace="structure python:item['title'].replace('/', u'/\u00AD').replace(' ', u'&nbsp;')">Item</span>
+                <span tal:replace="structure python:(u'&nbsp;' * item['level'] * 3) + item['title'].replace('/', u'/\u00AD')">Item</span>
                 <tal:show_count condition="view/settings/show_count">(<span tal:replace="item/count" />)</tal:show_count>
               </span>
             </option>

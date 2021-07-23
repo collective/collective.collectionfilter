@@ -137,16 +137,16 @@ Scenario: Path Filter with Dropdown
     Given I've got a site with a collection
       and my collection has a collection filter  getPath  single  checkboxes_dropdowns  Narrow down filter options
      When I'm viewing the collection
-      and Should be filter options  All (6)  ${SPACE}${SPACE}Test Folder (2)  ${SPACE}${SPACE}Test Folder2 (1)
-     When Select Filter Option "${SPACE}${SPACE}Test Folder (2)"
-     Then Should be filter options  All (6)  ${SPACE}${SPACE}Test Folder (2)  ${SPACE}${SPACE}${SPACE}${SPACE}Test Sub-Folder (1)
+      and Should be filter options  All (6)  Test Folder (2)  Test Folder2 (1)
+     When Select Filter Option "Test Folder (2)"
+     Then Should be filter options  All (6)  Test Folder (2)  ${SPACE}${SPACE}${SPACE}Test Sub-Folder (1)
       and should be 2 collection results
 
 Scenario: Path Filter with Checkboxes
     Given I've got a site with a collection
       and my collection has a collection filter  getPath  or  checkboxes_dropdowns  Narrow down filter options
      When I'm viewing the collection
-     Then Should be filter checkboxes  All (6)  ${SPACE}${SPACE}Test Folder (2)  ${SPACE}${SPACE}Test Folder2 (1)
-     When Click Input "${SPACE}${SPACE}Test Folder (2)"
-     Then Should be filter checkboxes  All (6)  ${SPACE}${SPACE}Test Folder (2)  ${SPACE}${SPACE}${SPACE}${SPACE}Test Sub-Folder (1)
+     Then Should be filter checkboxes  All (6)  Test Folder (2)  Test Folder2 (1)
+     When Click Input "Test Folder (2)"
+     Then Should be filter checkboxes  All (6)  Test Folder (2)  Test Sub-Folder (1)
       and should be 2 collection results
