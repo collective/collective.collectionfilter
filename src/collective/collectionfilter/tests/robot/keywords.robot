@@ -585,6 +585,7 @@ Add contentlisting tile
     wait until element is visible  link=Select criteria
     select single select2      xpath=(//div[@id='formfield-plone-app-standardtiles-contentlisting-query']//div[@class='querystring-criteria-index'])[2]/div  Type
     select multi select2   xpath=(//div[@id='formfield-plone-app-standardtiles-contentlisting-query']//div[@class='querystring-criteria-value'])[2]/div  Event  Document
+    click element  css=.querystring-criteria-remove
 
     # TODO: no item count in plone 5.0
     Run Keyword by label  Item count   Input Text  ${batch}
