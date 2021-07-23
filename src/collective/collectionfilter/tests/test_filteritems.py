@@ -263,8 +263,8 @@ class TestFilteritems(unittest.TestCase):
 
         self.assertEqual(len(result), 3)
         self.assertOption(result, "all", 6, True)
-        self.assertOption(result, "testfolder", 2, False, "Test Folder", css="navTreeLevel1")
-        self.assertOption(result, "testfolder2", 1, False, "Test Folder2", css="navTreeLevel1")
+        self.assertOption(result, "testfolder", 2, False, "Test Folder", css="pathLevel0")
+        self.assertOption(result, "testfolder2", 1, False, "Test Folder2", css="pathLevel0")
 
     def test_pathfilter_level1(self):
         result = get_filter_items(
@@ -276,8 +276,8 @@ class TestFilteritems(unittest.TestCase):
         )
         self.assertEqual(len(result), 3)
         self.assertOption(result, "all", 2, False, "All")
-        self.assertOption(result, "testfolder", 2, True, "Test Folder", css="navTreeLevel1")
-        self.assertOption(result, "testfolder/testsubfolder", 1, False, "Test Sub-Folder", css="navTreeLevel2")
+        self.assertOption(result, "testfolder", 2, True, "Test Folder", css="pathLevel0")
+        self.assertOption(result, "testfolder/testsubfolder", 1, False, "Test Sub-Folder", css="pathLevel1")
 
     def test_pathfilter_level2(self):
         result = get_filter_items(
@@ -290,8 +290,8 @@ class TestFilteritems(unittest.TestCase):
 
         self.assertEqual(len(result), 3)
         self.assertOption(result, "all", 1, False, "All")
-        self.assertOption(result, "testfolder", 1, True, "Test Folder", css="navTreeLevel1")
-        self.assertOption(result, "testfolder/testsubfolder", 1, True, "Test Sub-Folder", css="navTreeLevel2")
+        self.assertOption(result, "testfolder", 1, True, "Test Folder", css="pathLevel0")
+        self.assertOption(result, "testfolder/testsubfolder", 1, True, "Test Sub-Folder", css="pathLevel1")
 
     def test_pathfilter_level2_nonarrow(self):
         result = get_filter_items(
@@ -304,9 +304,9 @@ class TestFilteritems(unittest.TestCase):
 
         self.assertEqual(len(result), 3)
         self.assertOption(result, "all", 6, False, "All")
-        self.assertOption(result, "testfolder", 1, True, "Test Folder", css="navTreeLevel1")
-        self.assertOption(result, "testfolder/testsubfolder", 1, True, "Test Sub-Folder", css="navTreeLevel2")
-        self.assertOption(result, "testfolder2", 1, False, "Test Folder2", css="navTreeLevel1")
+        self.assertOption(result, "testfolder", 1, True, "Test Folder", css="pathLevel0")
+        self.assertOption(result, "testfolder/testsubfolder", 1, True, "Test Sub-Folder", css="pathLevel1")
+        self.assertOption(result, "testfolder2", 1, False, "Test Folder2", css="pathLevel0")
 
     def test_pathfilter_level1_empty(self):
         result = get_filter_items(
@@ -318,7 +318,7 @@ class TestFilteritems(unittest.TestCase):
         )
 
         self.assertEqual(len(result), 2)
-        self.assertOption(result, "testfolder2", 1, True, "Test Folder2", css="navTreeLevel1")
+        self.assertOption(result, "testfolder2", 1, True, "Test Folder2", css="pathLevel0")
 
     def test_boolean_filter(self):
         """Validate boolean fields are shown with all values."""
