@@ -24,6 +24,7 @@ from plone.app.uuid.utils import uuidToObject
 from plone.i18n.normalizer import idnormalizer
 from plone.memoize import ram
 from plone.memoize.volatile import DontCache
+import re
 from six.moves.urllib.parse import urlencode
 from zope.component import getUtility
 from zope.globalrequest import getRequest
@@ -91,6 +92,8 @@ def get_filter_items(
     if not collection or not group_by:
         return None
     collection_url = collection.absolute_url()
+    option_url = "/".join([it for it in [collection_url, view_name] if it])
+
     collection = ICollectionish(collection).selectContent(content_selector)
     if (
         collection is None or not collection.content_selector
@@ -133,20 +136,23 @@ def get_filter_items(
 
     # Attribute name for getting filter value from brain
     metadata_attr = groupby_criteria[group_by]["metadata"]
-    # Optional modifier to set title from filter value
-    display_modifier = groupby_criteria[group_by].get("display_modifier", None)
-    # CSS modifier to set class on filter item
-    css_modifier = groupby_criteria[group_by].get("css_modifier", None)
+    # Optional modifier to modify the metadata value into one or more groupby values
+    groupby_modifier = groupby_criteria[group_by].get("groupby_modifier", None)
+    if not groupby_modifier:
+        def groupby_modifier(values, cur, narrow):
+            return values
     # Value blacklist
     value_blacklist = groupby_criteria[group_by].get("value_blacklist", None)
     # Allow value_blacklist to be callables for runtime-evaluation
     value_blacklist = (
         value_blacklist() if callable(value_blacklist) else value_blacklist
-    )  # noqa
+    ) or []  # noqa
     # fallback to title sorted values
     sort_key_function = groupby_criteria[group_by].get(
         "sort_key_function", lambda it: it["title"].lower()
     )
+
+    selected_values = current_idx_value + list(groupby_modifier(current_idx_value, current_idx_value, narrow_down))
 
     grouped_results = {}
     for brain in catalog_results:
@@ -171,53 +177,9 @@ def get_filter_items(
                 grouped_results[filter_value]["count"] += 1
                 continue
 
-            # Set title from filter value with modifications,
-            # e.g. uuid to title
-            title = filter_value
-            if filter_value is not EMPTY_MARKER and callable(display_modifier):
-                title = safe_decode(display_modifier(filter_value, idx))
-
-            # Build filter url query
-            _urlquery = urlquery.copy()
-            # Allow deselection
-            if filter_value in current_idx_value:
-                _urlquery[idx] = [it for it in current_idx_value if it != filter_value]
-            elif filter_type != "single":
-                # additive filter behavior
-                _urlquery[idx] = current_idx_value + [filter_value]
-                _urlquery[idx + "_op"] = filter_type  # additive operator
-            else:
-                _urlquery[idx] = filter_value
-
-            query_param = urlencode(safe_encode(_urlquery), doseq=True)
-            url = "/".join(
-                [
-                    it
-                    for it in [
-                        collection_url,
-                        view_name,
-                        "?" + query_param if query_param else None,
-                    ]
-                    if it
-                ]
-            )
-
-            # Set selected state
-            selected = filter_value in current_idx_value
-            css_class = "filterItem {0}{1} {2}".format(
-                "filter-" + idnormalizer.normalize(filter_value),
-                " selected" if selected else "",
-                css_modifier(filter_value) if css_modifier else "",
-            )
-
-            grouped_results[filter_value] = {
-                "title": title,
-                "url": url,
-                "value": filter_value,
-                "css_class": css_class,
-                "count": 1,
-                "selected": selected,
-            }
+            url = _build_url(option_url, urlquery, filter_value, current_idx_value, idx, filter_type)
+            grouped_results[filter_value] = \
+                _build_option(filter_value, url, selected_values, groupby_criteria[group_by])
 
     # Entry to clear all filters
     urlquery_all = {
@@ -246,6 +208,59 @@ def get_filter_items(
     ret += grouped_results
 
     return ret
+
+
+def _build_url(collection_url, urlquery, filter_value, current_idx_value, idx, filter_type):
+    # Build filter url query
+    _urlquery = urlquery.copy()
+    # Allow deselection
+    if filter_value in current_idx_value:
+        _urlquery[idx] = [it for it in current_idx_value if it != filter_value]
+    elif filter_type != "single":
+        # additive filter behavior
+        _urlquery[idx] = current_idx_value + [filter_value]
+        _urlquery[idx + "_op"] = filter_type  # additive operator
+    else:
+        _urlquery[idx] = filter_value
+
+    query_param = urlencode(safe_encode(_urlquery), doseq=True)
+    url = "/".join([it for it in [collection_url, "?" + query_param if query_param else None] if it])
+    return url
+
+
+def _build_option(filter_value, url, selected_values, groupby_options):
+    idx = groupby_options["index"]
+    # Optional modifier to set title from filter value
+    display_modifier = groupby_options.get("display_modifier", None)
+    # CSS modifier to set class on filter item
+    css_modifier = groupby_options.get("css_modifier", None)
+
+    # Set title from filter value with modifications,
+    # e.g. uuid to title
+    title = filter_value
+    if filter_value is not EMPTY_MARKER and callable(display_modifier):
+        title = display_modifier(filter_value, idx)
+        title = safe_decode(title)
+
+    # Set selected state
+    selected = filter_value in selected_values
+    css_class = "filterItem {0}{1} {2}".format(
+        "filter-" + idnormalizer.normalize(filter_value),
+        " selected" if selected else "",
+        css_modifier(filter_value) if css_modifier else "",
+    )
+    # HACK: Only used by dropdowns currently as they don't support css styles
+    level = int(next(iter(re.findall(r"pathLevel(\d+)", css_class)), 0))
+
+    return {
+        "title": title,
+        "url": url,
+        "value": filter_value,
+        "css_class": css_class,
+        "count": 1,
+        "selected": selected,
+        "level": level
+    }
 
 
 @implementer(ICollectionish)
