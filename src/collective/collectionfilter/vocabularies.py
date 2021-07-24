@@ -141,7 +141,7 @@ def selected_path_children(value, query, narrow_down):
             yield "/".join(sub_parts[:i])
 
 
-def path_to_title(path, idx, filter_type):
+def path_to_title(path, idx):
     portal = plone.api.portal.get()
     # ctype = "folder"
     path = "/".join(["/".join(portal.getPhysicalPath()), path])
