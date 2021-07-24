@@ -52,7 +52,7 @@
         <ul>
           <tal:items repeat="item results">
           <li class="${item/css_class}">
-            <a rel="nofollow" href="${item/url}" title="Count: ${item/count}"><span><span tal:replace="item/title">Item</span><tal:show_count 
+            <a rel="nofollow" href="${item/url}" title="Count: ${item/count}"><span><span tal:replace="structure item/title">Item</span><tal:show_count 
               condition="view/settings/show_count"> (<span tal:replace="item/count" />)</tal:show_count></span>
             </a>
           </li>

@@ -72,7 +72,7 @@
                 rel="nofollow"
                 href="${item/url}"
                 title="Count: ${item/count}">
-              <span tal:content="structure item/title">Item</span>
+              <span tal:replace="structure item/title">Item</span>
               <tal:show_count condition="view/settings/show_count">(<span tal:replace="item/count" />)</tal:show_count>
             </a>
           </li>
