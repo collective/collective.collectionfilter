@@ -207,6 +207,7 @@ class GroupByCriteria:
             sort_key_function = sort_title
             css_modifier = None
             index_name = dict(getPath="path").get(it, it)
+            name = dict(getPath="Folder").get(it, it)
             idx = cat._catalog.indexes.get(index_name)
             index_type = getattr(idx, "meta_type", None)
             if six.PY2 and index_type == "KeywordIndex":
@@ -231,6 +232,7 @@ class GroupByCriteria:
             self._groupby[it] = {
                 "index": index_name,
                 "metadata": it,
+                "groupby_name": name,
                 "display_modifier": display_modifier,
                 "css_modifier": css_modifier,
                 "index_modifier": index_modifier,
@@ -254,7 +256,7 @@ class GroupByCriteria:
 def GroupByCriteriaVocabulary(context):
     """Collection filter group by criteria."""
     groupby = getUtility(IGroupByCriteria).groupby
-    items = [SimpleTerm(title=_(it), value=it) for it in groupby.keys()]
+    items = [SimpleTerm(title=_(item.get("groupby_name", it)), value=it) for it, item in groupby.items()]
     return SimpleVocabulary(items)
 
 
