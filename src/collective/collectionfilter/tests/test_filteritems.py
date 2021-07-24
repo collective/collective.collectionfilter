@@ -70,7 +70,7 @@ class TestFilteritems(unittest.TestCase):
             self.assertIn(css, item["css_class"].split())
 
     def assertListingLen(self, results, option, length):
-        count = (ICollection(self.collection).results(
+        count = len(ICollection(self.collection).results(
             batch=False, brains=True, custom_query=make_query(qs(results, option))
         ))
         self.assertEqual(count, length, msg=u"Expected {} listing results, got {}".format(length, count))

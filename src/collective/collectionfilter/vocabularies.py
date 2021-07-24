@@ -210,6 +210,7 @@ class GroupByCriteria:
             name = dict(getPath="Folder").get(it, it)
             idx = cat._catalog.indexes.get(index_name)
             index_type = getattr(idx, "meta_type", None)
+            sort_on = None
             if six.PY2 and index_type == "KeywordIndex":
                 # in Py2 KeywordIndex accepts only utf-8 encoded values.
                 index_modifier = safe_encode
@@ -221,7 +222,8 @@ class GroupByCriteria:
                 css_modifier = path_indent
                 groupby_modifier = selected_path_children
                 index_modifier = relative_to_absolute_path
-                sort_key_function = sort_path  # TODO: should use orderinparent index
+                sort_key_function = None
+                sort_on = "getObjPositionInParent"
 
             # for portal_type or Type we have some special sauce as we need to translate via fti.i18n_domain.  # noqa
             if it == "portal_type":
@@ -239,6 +241,7 @@ class GroupByCriteria:
                 "groupby_modifier": groupby_modifier,
                 "value_blacklist": None,
                 "sort_key_function": sort_key_function,  # sort key function. defaults to a lower-cased title.  # noqa
+                "sort_on": sort_on,
             }
 
         modifiers = getAdapters((self,), IGroupByModifier)

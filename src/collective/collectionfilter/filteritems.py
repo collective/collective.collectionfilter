@@ -110,8 +110,13 @@ def get_filter_items(
         extra_ignores = [idx, idx + "_op"]
     urlquery = base_query(request_params, extra_ignores)
 
+    # Optional modifier to sort results so filters displayed in the correct order
+    sort_on = groupby_criteria[group_by].get("sort_on", None)
+
     # Get all collection results with additional filter defined by urlquery
     custom_query.update(urlquery)
+    if sort_on is not None:
+        custom_query['sort_on'] = sort_on
     custom_query = make_query(custom_query)
 
     catalog_results = collection.results(custom_query, request_params)
@@ -141,9 +146,12 @@ def get_filter_items(
         value_blacklist() if callable(value_blacklist) else value_blacklist
     )  # noqa
     # fallback to title sorted values
-    sort_key_function = groupby_criteria[group_by].get(
-        "sort_key_function", lambda it: it["title"].lower()
-    )
+    if sort_on:
+        sort_key_function = None
+    else:
+        sort_key_function = groupby_criteria[group_by].get(
+            "sort_key_function", lambda it: it["title"].lower()
+        )
 
     if groupby_modifier:
         # ensure all values associated with current selection are selected
