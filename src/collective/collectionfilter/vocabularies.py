@@ -109,36 +109,36 @@ def translate_portal_type(value, *args, **kwargs):
     return term.title if term else value
 
 
-def selected_path_children(value, query, narrow_down):
+def selected_path_children(values, query, narrow_down):
     """ We only want the ancestors and direct child folders of current selections to be options.
         This means we don't get overloaded with full tree of options. If no query then assume
         portal is the query so return top level folders.
      """
     # Get path, remove portal root from path, remove leading
-    path = value
-    portal = plone.api.portal.get()
-    portal_parts = portal.getPhysicalPath()
-    portal_path = "/".join(list(portal_parts))
-    if not path.startswith(portal_path):
-        path = "/".join([portal_path, path])
-    if not query:
-        filters = ['']
-    elif not narrow_down:
-        # Will include top level and parents of selected
-        filters = [''] + query
-    else:
-        filters = query  # TODO: process it
-    for filter in filters:
-        if not path.startswith('/'.join([portal_path, filter])):
-            continue
-        parts = path.split("/")
-        selected_parts = filter.split("/") if filter else []
-        sub_parts = parts[len(portal_parts): -1]  # We only want parents
-        sub_parts = sub_parts[:len(selected_parts) + 1]  # Only want direct descendents of whats been picked
-        if not sub_parts:
-            continue
-        for i in range(1, len(sub_parts) + 1):
-            yield "/".join(sub_parts[:i])
+    for path in values:
+        portal = plone.api.portal.get()
+        portal_parts = portal.getPhysicalPath()
+        portal_path = "/".join(list(portal_parts))
+        if not path.startswith(portal_path):
+            path = "/".join([portal_path, path])
+        if not query:
+            filters = ['']
+        elif not narrow_down:
+            # Will include top level and parents of selected
+            filters = [''] + query
+        else:
+            filters = query  # TODO: process it
+        for filter in filters:
+            if not path.startswith('/'.join([portal_path, filter])):
+                continue
+            parts = path.split("/")
+            selected_parts = filter.split("/") if filter else []
+            sub_parts = parts[len(portal_parts): -1]  # We only want parents
+            sub_parts = sub_parts[:len(selected_parts) + 1]  # Only want direct descendents of whats been picked
+            if not sub_parts:
+                continue
+            for i in range(1, len(sub_parts) + 1):
+                yield "/".join(sub_parts[:i])
 
 
 def path_to_title(path, idx):
@@ -239,7 +239,7 @@ class GroupByCriteria:
                 "css_modifier": css_modifier,
                 "index_modifier": index_modifier,
                 "groupby_modifier": groupby_modifier,
-                "value_blacklist": None,
+                "value_blacklist": None,  # TODO: groupby_modifier should replace value_blacklist
                 "sort_key_function": sort_key_function,  # sort key function. defaults to a lower-cased title.  # noqa
                 "sort_on": sort_on,
             }

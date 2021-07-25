@@ -105,11 +105,9 @@ def get_filter_items(
     idx = groupby_criteria[group_by]["index"]
     current_idx_value = safe_iterable(request_params.get(idx))
 
-    extra_ignores = []
-    if not narrow_down:
-        # Additive filtering is about adding other filter values of the same
-        # index.
-        extra_ignores = [idx, idx + "_op"]
+    # Additive filtering is about adding other filter values of the same
+    # index.
+    extra_ignores = [] if narrow_down else [idx, idx + "_op"]
     urlquery = base_query(request_params, extra_ignores)
 
     # Optional modifier to sort results so filters displayed in the correct order
@@ -122,6 +120,9 @@ def get_filter_items(
     custom_query = make_query(custom_query)
 
     catalog_results = collection.results(custom_query, request_params)
+    if not catalog_results:
+        return None
+    catalog_results_fullcount = len(catalog_results)
     if narrow_down and show_count:
         # we need the extra_ignores to get a true count
         # even when narrow_down filters the display of indexed values
@@ -129,55 +130,42 @@ def get_filter_items(
         count_query = {}
         count_urlquery = base_query(request_params, [idx, idx + "_op"])
         count_query.update(count_urlquery)
-        catalog_results_fullcount = collection.results(count_query, request_params)
-    if not catalog_results:
-        return None
+        catalog_results_fullcount = len(collection.results(count_query, request_params))
 
     # Attribute name for getting filter value from brain
     metadata_attr = groupby_criteria[group_by]["metadata"]
     # Optional modifier to modify the metadata value into one or more groupby values
     groupby_modifier = groupby_criteria[group_by].get("groupby_modifier", None)
+    if not groupby_modifier:
+        groupby_modifier = lambda values, cur, narrow: values  # noqa
     # Value blacklist
     value_blacklist = groupby_criteria[group_by].get("value_blacklist", None)
     # Allow value_blacklist to be callables for runtime-evaluation
-    value_blacklist = (
-        value_blacklist() if callable(value_blacklist) else value_blacklist
-    )  # noqa
-    # fallback to title sorted values
-    if sort_on:
-        sort_key_function = None
-    else:
-        sort_key_function = groupby_criteria[group_by].get(
-            "sort_key_function", lambda it: it["title"].lower()
-        )
+    value_blacklist = (value_blacklist() if callable(value_blacklist) else value_blacklist) or []
 
-    if groupby_modifier:
-        # ensure all values associated with current selection are selected
-        selected_values = current_idx_value + [
-            val for selected in current_idx_value
-            for val in groupby_modifier(selected, current_idx_value, narrow_down)]
-    else:
-        selected_values = current_idx_value
+    # fallback to title sorted values
+    sort_key_function = None if sort_on else groupby_criteria[group_by].get(
+        "sort_key_function", lambda it: it["title"].lower()
+    )
+
+    # ensure all values associated with current selection are selected
+    selected_values = current_idx_value + list(groupby_modifier(current_idx_value, current_idx_value, narrow_down))
 
     grouped_results = OrderedDict()
     for brain in catalog_results:
 
         # Get filter value
         val = getattr(brain, metadata_attr, None)
-        if callable(val):
-            val = val()
+        val = val() if callable(val) else val
         # decode it to unicode
         val = safe_decode(val)
-        if groupby_modifier is not None:
-            val = groupby_modifier(val, current_idx_value, narrow_down)
         # Make sure it's iterable, as it's the case for e.g. the subject index.
         vals = safe_iterable(val)
+        # allow excluding or extending the value per index
+        vals = groupby_modifier(vals, current_idx_value, narrow_down)
 
         for filter_value in vals:
-            if filter_value is None or isinstance(filter_value, Missing):
-                continue
-            if value_blacklist and filter_value in value_blacklist:
-                # Do not include blacklisted
+            if filter_value is None or isinstance(filter_value, Missing) or filter_value in value_blacklist:
                 continue
             if filter_value in grouped_results:
                 # Add counter, if filter value is already present
@@ -189,11 +177,7 @@ def get_filter_items(
                 _build_option(filter_value, url, selected_values, groupby_criteria[group_by])
 
     # Entry to clear all filters
-    urlquery_all = {
-        k: v for k, v in list(urlquery.items()) if k not in (idx, idx + "_op")
-    }
-    if narrow_down and show_count:
-        catalog_results = catalog_results_fullcount
+    urlquery_all = {k: v for k, v in list(urlquery.items()) if k not in (idx, idx + "_op")}
     ret = [
         {
             "title": translate(_("subject_all", default=u"All"), context=getRequest()),
@@ -202,19 +186,14 @@ def get_filter_items(
             ),
             "value": "all",
             "css_class": "filterItem filter-all",
-            "count": len(catalog_results),
+            "count": catalog_results_fullcount,
             "selected": idx not in request_params,
             "level": 0
         }
     ]
 
     grouped_results = list(grouped_results.values())
-
-    if callable(sort_key_function):
-        grouped_results = sorted(grouped_results, key=sort_key_function)
-
-    ret += grouped_results
-
+    ret += sorted(grouped_results, key=sort_key_function) if callable(sort_key_function) else grouped_results
     return ret
 
 
