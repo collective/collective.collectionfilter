@@ -137,7 +137,8 @@ def get_filter_items(
     # Optional modifier to modify the metadata value into one or more groupby values
     groupby_modifier = groupby_criteria[group_by].get("groupby_modifier", None)
     if not groupby_modifier:
-        groupby_modifier = lambda values, cur, narrow: values  # noqa
+        def groupby_modifier(values, cur, narrow):
+            return values
     # Value blacklist
     value_blacklist = groupby_criteria[group_by].get("value_blacklist", None)
     # Allow value_blacklist to be callables for runtime-evaluation
