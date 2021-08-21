@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from collective.collectionfilter import _
 from collective.collectionfilter.interfaces import IGroupByCriteria
+from collective.collectionfilter.interfaces import ICollectionish
 from collective.collectionfilter.query import make_query
 from collective.collectionfilter.utils import base_query
 from collective.collectionfilter.utils import safe_decode
@@ -20,6 +21,7 @@ from plone.memoize import ram
 from plone.memoize.volatile import DontCache
 from six.moves.urllib.parse import urlencode
 from zope.component import getUtility
+from zope.interface import implementer
 from zope.globalrequest import getRequest
 from zope.i18n import translate
 
@@ -45,6 +47,7 @@ def _results_cachekey(
     view_name="",
     cache_enabled=True,
     request_params=None,
+    content_selector="",
 ):
     if not cache_enabled:
         raise DontCache
@@ -56,6 +59,7 @@ def _results_cachekey(
         show_count,
         view_name,
         request_params,
+        content_selector,
         " ".join(plone.api.user.get_roles()),
         plone.api.portal.get_current_language(),
         str(plone.api.portal.get_tool("portal_catalog").getCounter()),
@@ -73,6 +77,7 @@ def get_filter_items(
     view_name="",
     cache_enabled=True,
     request_params=None,
+    content_selector="",
 ):
     request_params = request_params or {}
     custom_query = {}  # Additional query to filter the collection
@@ -81,25 +86,15 @@ def get_filter_items(
     if not collection or not group_by:
         return None
     collection_url = collection.absolute_url()
+    collection = ICollectionish(collection).selectContent(content_selector)
+    if collection is None or not collection.content_selector:  # e.g. when no listing tile
+        return None
 
     # Recursively transform all to unicode
     request_params = safe_decode(request_params)
     # Things break if sort_order is not a str
     if six.PY2 and "sort_order" in request_params:
         request_params["sort_order"] = str(request_params["sort_order"])
-
-    # Support for the Event Listing view from plone.app.event
-    collection_layout = collection.getLayout()
-    default_view = collection.restrictedTraverse(collection_layout)
-    if isinstance(default_view, EventListing):
-        mode = request_params.get("mode", "future")
-        date = request_params.get("date", None)
-        date = guess_date_from(date) if date else None
-        start, end = start_end_from_mode(mode, date, collection)
-        start, end = _prepare_range(collection, start, end)
-        custom_query.update(start_end_query(start, end))
-        # TODO: expand events. better yet, let collection.results
-        #       do that
 
     # Get index in question and the current filter value of this index, if set.
     groupby_criteria = getUtility(IGroupByCriteria).groupby
@@ -117,9 +112,7 @@ def get_filter_items(
     custom_query.update(urlquery)
     custom_query = make_query(custom_query)
 
-    catalog_results = ICollection(collection).results(
-        batch=False, brains=True, custom_query=custom_query
-    )
+    catalog_results = collection.results(custom_query, request_params)
     if narrow_down and show_count:
         # we need the extra_ignores to get a true count
         # even when narrow_down filters the display of indexed values
@@ -127,9 +120,7 @@ def get_filter_items(
         count_query = {}
         count_urlquery = base_query(request_params, [idx, idx + "_op"])
         count_query.update(count_urlquery)
-        catalog_results_fullcount = ICollection(collection).results(
-            batch=False, brains=True, custom_query=count_query
-        )
+        catalog_results_fullcount = collection.results(count_query, request_params)
     if not catalog_results:
         return None
 
@@ -248,3 +239,60 @@ def get_filter_items(
     ret += grouped_results
 
     return ret
+
+
+@implementer(ICollectionish)
+class CollectionishCollection(object):
+
+    def __init__(self, context):
+        self.context = context
+        self.collection = ICollection(self.context)
+
+    def selectContent(self, selector=""):
+        """ Collections can only have a single content """
+        return self
+
+    @property
+    def query(self):
+        return self.collection.query
+
+    @property
+    def sort_on(self):
+        return self.collection.sort_on
+
+    @property
+    def sort_order(self):
+        return self.collection.sort_order
+
+    @property
+    def sort_reversed(self):
+        return self.collection.sort_reversed
+
+    @property
+    def limit(self):
+        return self.collection.limit
+
+    @property
+    def item_count(self):
+        return self.collection.item_count
+
+    @property
+    def content_selector(self):
+        return u"#content-core"  # TODO: could look it up based on view?
+
+    def results(self, custom_query, request_params):
+
+        # Support for the Event Listing view from plone.app.event
+        collection_layout = self.context.getLayout()
+        default_view = self.context.restrictedTraverse(collection_layout)
+        if isinstance(default_view, EventListing):
+            mode = request_params.get("mode", "future")
+            date = request_params.get("date", None)
+            date = guess_date_from(date) if date else None
+            start, end = start_end_from_mode(mode, date, self.collection)
+            start, end = _prepare_range(self.collection, start, end)
+            custom_query.update(start_end_query(start, end))
+            # TODO: expand events. better yet, let collection.results
+            #        do that
+
+        return self.collection.results(batch=False, brains=True, custom_query=custom_query)

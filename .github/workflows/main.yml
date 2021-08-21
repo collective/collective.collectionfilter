@@ -17,13 +17,29 @@ jobs:
           - '5.1'
           - '5.2'
         python-version: ['2.7']
+        layer:
+          - Portlet_AjaxDisabled
+          - Portlet_AjaxEnabled
+          - Tile
+        coverage: ['no_coverage']
         include:
           - plone-version: 5.2
             python-version: 3.6
+            layer: Tile
+            coverage: coverage
           - plone-version: 5.2
             python-version: 3.7
+            layer: Portlet_AjaxDisabled
+            coverage: coverage
           - plone-version: 5.2
             python-version: 3.8
+            layer: Portlet_AjaxEnabled
+            coverage: coverage
+        exclude:
+          - plone-version: 5.0  
+            layer: Tile # standardtiles 2.3.2 does support using the request to query. embed might still be possible
+          - plone-version: 5.0  
+            layer: Portlet_AjaxEnabled  # passes but meaningless as it skips all the tests
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
@@ -49,10 +65,11 @@ jobs:
             ~/buildout-cache
             ~/extends
             ~/.cache/pip
-          # key: ${{ runner.os }}-buildout-${{ hashFiles('**/*.cfg') }}-${{ matrix.plone-version }}-${{ matrix.python-version }}
-          key: ${{ runner.os }}-buildout-${{ matrix.plone-version }}-${{ matrix.python-version }}
+          key: ${{ runner.os }}-${{ matrix.python-version }}-${{ matrix.plone-version }}-${{ hashFiles('**/*.cfg') }}
           restore-keys: |
-            ${{ runner.os }}-buildout-
+            ${{ runner.os }}-${{ matrix.python-version }}-${{ matrix.plone-version }}-
+            ${{ runner.os }}-${{ matrix.python-version }}-
+            ${{ runner.os }}-
       - name: setup buildout cache
         run: |
             mkdir -p ~/buildout-cache/{eggs,downloads}
@@ -70,43 +87,47 @@ jobs:
           bin/pip install zest.pocompile
           bin/pocompile src
       - name: test
+        if: ${{ matrix.coverage != 'coverage' }}
         run: |
             export DISPLAY=:99.0
             chromedriver --url-base=/wd/hub &
             sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
             sleep 3
-            bin/test --all 
+            bin/test --all  --layer ${{ matrix.layer }}
+      - name: createcoverage
+        if: ${{ matrix.coverage == 'coverage' }}
+        run: |
+            export DISPLAY=:99.0
+            chromedriver --url-base=/wd/hub &
+            sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
+            sleep 3
+            bin/createcoverage -t '--all --layer ${{ matrix.layer }}'
+            bin/coverage json -i
+      - name: Coveralls
+        if: ${{ matrix.coverage == 'coverage' }}
+        uses: AndreMiras/coveralls-python-action@develop
+        with:
+          parallel: true
+          flag-name: ${{ matrix.plone-version }}-${{ matrix.python-version }}-${{ matrix.layer }}     
       - name: code-analysis
+        if: always()
         run: echo "${{ matrix.plone-version }}" | grep 5.1 || bin/code-analysis  
       - name: Artifact Robot Test Report
         if: failure()
         uses: actions/upload-artifact@v1
         with:
-          name: test_results
+          name: test_results-${{ matrix.python-version }}-${{ matrix.plone-version }}-${{ matrix.layer }}
           path: ./parts/test
       - uses: actions/setup-python@v2
         if: failure()
         with:
           python-version: 2.7            
       - name: Robottest report
+        continue-on-error: true
         if: failure()
         run: |
             pip2.7 install popt || pip2.7 install --user  popt
             grep  --include=output.xml -Rl  FAIL parts/test | xargs --no-run-if-empty -n 1 popt
-      - name: createcoverage
-        run: |
-            export DISPLAY=:99.0
-            chromedriver --url-base=/wd/hub &
-            sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
-            sleep 3
-            bin/createcoverage -t '--all'
-            # bin/createcoverage
-            bin/coverage json -i
-      - name: Coveralls
-        uses: AndreMiras/coveralls-python-action@develop
-        with:
-          parallel: true
-          flag-name: ${{ matrix.plone-version }}-${{ matrix.python-version }}     
 
   coveralls_finish:
     needs: build
