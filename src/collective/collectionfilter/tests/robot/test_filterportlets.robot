@@ -124,14 +124,15 @@ Scenario: Search filter
     #   and should be 4 filter options
 
 Scenario: I can access search through ARIA
-  Manage portlets
-  Add search portlet
-  Go to  ${PLONE_URL}/testcollection
 
-  Wait Until Element Is Visible  xpath=//input[@name='SearchableText' and @aria-labelledby='filterSearch-SearchableText']
+  Given I've got a site with a collection
+    and my collection has a collection search
+    and I'm viewing the collection
+
+  Wait Until Element Is Visible  xpath=//input[@name='SearchableText' and @aria-labelledby='filterSearchable-text']
   Click element  xpath=//form[@role='search' and @id='searchForm']
 
-  Element should be focused  xpath=//input[@type='search' and @aria-labelledby='filterSearch-SearchableText']
+  Element should be focused  xpath=//input[@type='search' and @aria-labelledby='filterSearchable-text']
 
 
 

@@ -3,7 +3,7 @@
       tal:condition="view/available"
        i18n:domain="plone">
 
-  <header class="portletHeader" tal:condition="view/title" tal:content="view/title" id="${string:${view/filterClassName}-${view/title}}">Title</header>
+  <header class="portletHeader" tal:condition="view/title" tal:content="view/title" id="${string:${view/filterClassName}}">Title</header>
   <div class="searchContent">
     <form method="get" name="searchForm" role="search" action="${view/action_url}">
         <tal:urlquery repeat="item python:view.urlquery">
