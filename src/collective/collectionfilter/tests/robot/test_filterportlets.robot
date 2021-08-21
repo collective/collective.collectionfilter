@@ -129,10 +129,6 @@ Scenario: I can access search through ARIA
     and my collection has a collection search
     and I'm viewing the collection
 
-  Wait Until Element Is Visible  xpath=//input[@name='SearchableText' and @aria-labelledby='filterSearchable-text']
-  Click element  xpath=//form[@role='search' and @id='searchForm']
-
-  Element should be focused  xpath=//input[@type='search' and @aria-labelledby='filterSearchable-text']
-
-
-
+  Wait Until Element Is Visible  xpath=//input[@aria-labelledby='filterSearchable-text']
+  Click element  xpath=//input[@aria-labelledby='filterSearchable-text']
+  Element should be focused  xpath=//input[@aria-labelledby='filterSearchable-text']
