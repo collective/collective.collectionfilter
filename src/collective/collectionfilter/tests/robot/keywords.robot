@@ -207,6 +207,17 @@ Add sorting portlet
     Click element  css=.plone-modal-footer input#form-buttons-add
     Wait until page contains element  xpath=//div[contains(@class, 'portletAssignments')]//a[text()='Sort on']
 
+Add section portlet titled "${filter_title}"
+    Wait until page contains element  css=select.add-portlet
+    Select From List by label  css=select.add-portlet  Collection Section Filter
+    Wait until element is visible  css=input#form-widgets-header
+
+    Input text  css=input#form-widgets-header  ${filter_title}
+    #Select related filter collection
+    Click Input "Show count"
+    Click element  css=.plone-modal-footer input#form-buttons-add
+    Wait until page contains element  xpath=//div[contains(@class, 'portletAssignments')]//a[text()='${filter_title}']
+
 
 Set sorting Options
     [Arguments]   ${sort_on}  ${input_type}
@@ -338,6 +349,11 @@ My collection has a collection sorting portlet
     Manage portlets
     Add sorting portlet  ${sort_on}  links
 
+My collection has a collection section portlet
+    Go to  ${PLONE_URL}/testcollection
+    Manage Portlets
+    Add section portlet titled "My Section Filter"
+
 My collection has a collection info portlet
     [Arguments]  ${header}="Current Filter"  @{templates}  ${hide_when}=${None}
 
@@ -388,10 +404,10 @@ I search for "${search}"
 
 I should have a portlet titled "${filter_title}" with ${number_of_results} filter options
     ${portlet_title_xpath}  Convert to string  header[@class='portletHeader' and descendant-or-self::*[contains(text(), '${filter_title}')]]
-    ${filter_item_xpath}  Convert to string  div[contains(@class, 'filterContent')]//li[contains(@class, 'filterItem')]
+    ${filter_item_xpath}  Convert to string  *[contains(@class, 'portletContent')]//li[contains(@class, 'filterItem')]
 
     Page Should Contain Element  xpath=//${portlet_title_xpath}
-    Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//${portlet_title_xpath}/parent::*[contains(@class, 'collectionFilter')]//${filter_item_xpath}  limit=${number_of_results}
+    Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//${portlet_title_xpath}/parent::*[contains(@class, 'portlet')]//${filter_item_xpath}  limit=${number_of_results}
 
 I should have a filter with ${number_of_results} options
     Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//aside[contains(@class,'collectionFilter') and count(.//div[contains(@class, 'filterContent')]//li[contains(@class, 'filterItem')])=${number_of_results} ]  limit=1

@@ -1,0 +1,27 @@
+<aside class="portlet portletNavigationTree ${view/filterClassName}  sectionFilter"
+       data-pat-collectionfilter='${view/pat_options}'
+       tal:condition="view/available"
+       i18n:domain="plone">
+
+    <header class="portletHeader" tal:condition="view/title" tal:content="view/title">Title</header>
+    <nav class="portletContent" tal:define="results view/results">
+          <ul class="navTree navTreeLevel0">
+              <tal:items repeat="item results">
+               <li  class="navTreeItem">
+                   <ul class="navTree navTreeLevel${item/level}">
+                          <li class="${item/css_class}">
+                            <a
+                                rel="nofollow"
+                                href="${item/url}"
+                                title="Count: ${item/count}"
+                                class="contenttype-${item/contenttype}">
+                              <span tal:content="item/title">Item</span>
+                              <tal:show_count condition="view/settings/show_count">(<span tal:replace="item/count" />)</tal:show_count>
+                            </a>
+                          </li>
+                   </ul>
+               </li>
+              </tal:items>
+          </ul>
+    </nav>
+</aside>

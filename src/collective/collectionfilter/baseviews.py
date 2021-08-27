@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_inner
 from collective.collectionfilter import PLONE_VERSION
-from collective.collectionfilter.filteritems import ICollectionish, get_filter_items
+from collective.collectionfilter.filteritems import (
+    get_filter_items,
+    get_section_filter_items,
+    ICollectionish
+)
 from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.query import make_query
 from collective.collectionfilter.utils import base_query
@@ -172,6 +176,33 @@ class BaseFilterView(BaseView):
 
         results = self.results()
         return not (results is None or len(results) <= 2)  # 2 becayse we include "All"
+
+
+class BaseSectionView(BaseView):
+    @property
+    def input_type(self):
+        if self.settings.input_type == "links":
+            return "link"
+        elif self.settings.filter_type == "single":
+            if self.settings.input_type == "checkboxes_radiobuttons":
+                return "radio"
+            else:
+                return "dropdown"
+        else:
+            return "checkbox"
+
+    @property
+    def is_available(self):
+        return True
+
+    def results(self):
+        results = get_section_filter_items(
+            target_collection=self.collection_uuid,
+            view_name=self.settings.view_name,
+            cache_enabled=self.settings.cache_enabled,
+            request_params=self.top_request.form or {},
+        )
+        return results
 
 
 class BaseSearchView(BaseView):

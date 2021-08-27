@@ -9,6 +9,7 @@ from plone import api
 from Products.CMFPlone.browser.search import BAD_CHARS
 from Products.CMFPlone.browser.search import quote_chars
 from zope.component import getUtility
+import plone.api
 
 
 try:
@@ -93,5 +94,11 @@ def make_query(params_dict):
     if "sort_on" in params_dict:
         query_dict["sort_on"] = params_dict["sort_on"]
         query_dict["sort_order"] = params_dict.get("sort_order", "ascending")
+
+    # Filter by path if passed in
+    if 'path' in params_dict:
+        additional_paths = params_dict['path'].split('/')
+        query_dict['path'] = {'query': '/'.join(
+            list(plone.api.portal.get().getPhysicalPath()) + additional_paths)}
 
     return query_dict
