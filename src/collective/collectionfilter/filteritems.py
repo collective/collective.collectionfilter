@@ -78,6 +78,7 @@ def get_filter_items(
     cache_enabled=True,
     request_params=None,
     content_selector="",
+    include_all_option=True,
 ):
     request_params = request_params or {}
     custom_query = {}  # Additional query to filter the collection
@@ -229,7 +230,7 @@ def get_filter_items(
             "count": len(catalog_results),
             "selected": idx not in request_params,
         }
-    ]
+    ] if include_all_option else []
 
     grouped_results = list(grouped_results.values())
 

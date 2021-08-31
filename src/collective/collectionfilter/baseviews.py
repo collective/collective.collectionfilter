@@ -154,6 +154,7 @@ class BaseFilterView(BaseView):
             cache_enabled=self.settings.cache_enabled,
             request_params=self.top_request.form or {},
             content_selector=self.settings.content_selector,
+            include_all_option=self.settings.enable_all_filter_option
         )
         return results
 
