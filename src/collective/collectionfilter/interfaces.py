@@ -159,6 +159,16 @@ class ICollectionFilterSchema(ICollectionFilterBaseSchema):
         required=False,
     )
 
+    enable_all_filter_option = schema.Bool(
+        title=_(u"label_enable_all_filter_option", default=u"Enable 'all' filter"),  # noqa
+        description=_(
+            u"help_enable_all_filter_option",
+            default=u"Enabling this will show an 'all' option in the collection filter.",
+        ),
+        default=True,
+        required=False,
+    )
+
 
 #    list_scaling = schema.Choice(
 #        title=_('label_list_scaling', u'List scaling'),
