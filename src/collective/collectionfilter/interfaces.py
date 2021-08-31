@@ -160,7 +160,7 @@ class ICollectionFilterSchema(ICollectionFilterBaseSchema):
     )
 
     enable_all_filter_option = schema.Bool(
-        title=_(u"label_enable_all_filter_option", default=u"Enable 'all' filter"),  # noqa
+        title=_(u"label_enable_all_filter_option", default=u"Enable all filter option"),  # noqa
         description=_(
             u"help_enable_all_filter_option",
             default=u"Enabling this will show an 'all' option in the collection filter.",
