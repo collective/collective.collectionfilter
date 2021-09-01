@@ -48,6 +48,7 @@ def _results_cachekey(
     cache_enabled=True,
     request_params=None,
     content_selector="",
+    include_all_option=True,
 ):
     if not cache_enabled:
         raise DontCache
@@ -60,6 +61,7 @@ def _results_cachekey(
         view_name,
         request_params,
         content_selector,
+        include_all_option,
         " ".join(plone.api.user.get_roles()),
         plone.api.portal.get_current_language(),
         str(plone.api.portal.get_tool("portal_catalog").getCounter()),
