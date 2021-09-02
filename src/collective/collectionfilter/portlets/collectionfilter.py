@@ -27,8 +27,8 @@ class Assignment(base.Assignment):
     narrow_down = False
     view_name = None
     content_selector = "#content-core"
-    hide_if_empty = False,
-    enable_all_filter_option = True,
+    hide_if_empty = False
+    enable_all_filter_option = True
     # list_scaling = None
 
     def __init__(
