@@ -48,6 +48,14 @@ Scenario: Hide when no options
      then Should be 3 collection results
      then Should be 0 filter options
 
+Scenario: Disable all filter option
+
+    Given I've got a site with a collection
+      and my collection has a collection filter  Subject  or  checkboxes_dropdowns  Enable all filter option
+     When I'm viewing the collection
+     then Should be 3 collection results
+      and Should be filter checkboxes  All (3)  Dokumänt (2)  Evänt (1)  Süper (2)
+
 
 Scenario: show hidden filter if just narrowed down
 
