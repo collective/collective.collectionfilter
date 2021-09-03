@@ -156,6 +156,24 @@ class BaseFilterView(BaseView):
             content_selector=self.settings.content_selector,
             include_all_option=self.settings.enable_all_filter_option,
         )
+        if not getattr(self.request, "collectionfilter", None):
+            existing_query_string = self.request["QUERY_STRING"]
+            default_filter_query_string = "%s=%s" % (
+                self.settings.group_by,
+                results[0]["value"],
+            )
+            if existing_query_string:
+                default_filter_query_string = "&" + default_filter_query_string
+
+            query_string = (
+                existing_query_string
+                if self.settings.enable_all_filter_option
+                else existing_query_string + default_filter_query_string
+            )
+            self.request.response.redirect(
+                "%s?collectionfilter=1%s"
+                % (self.request["ACTUAL_URL"], query_string)
+            )
         return results
 
     @property
