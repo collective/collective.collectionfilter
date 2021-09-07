@@ -23,6 +23,7 @@ Breaking Change:
   This allows to copy and paste preconfigured collections for reuse without reconfiguring each filter element.
   [agitator]
 
+<<<<<<< HEAD
 - Fix search which include the terms "and", "or" and "not"
   [jeffersonbledsoe]
 
@@ -73,6 +74,13 @@ Bug fixes:
 - Add Section Filter portlet. Allows to filter results based on location in site.
   [instification, JeffersonBledsoe]
   
+=======
+Bug fixes:
+
+ - Use plone.memoize to cache groupby criteria
+   [instification]
+
+>>>>>>> instification/fix_global_groupby_criteria_utility
 
 3.2.1 (2019-08-07)
 ------------------
