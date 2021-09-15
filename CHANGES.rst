@@ -71,6 +71,11 @@ Bug fixes:
 - fix translation of ``filter_value``
   [petschki]
 
+Bug fixes:
+
+ - Use plone.memoize to cache groupby criteria
+   [instification]
+
 
 3.2.1 (2019-08-07)
 ------------------
