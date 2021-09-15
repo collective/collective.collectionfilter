@@ -70,6 +70,9 @@ Bug fixes:
   [tmassman]
 - fix translation of ``filter_value``
   [petschki]
+- Add Section Filter portlet. Allows to filter results based on location in site.
+  [instification, JeffersonBledsoe]
+  
 
 Bug fixes:
 

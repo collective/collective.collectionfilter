@@ -54,6 +54,18 @@
       edit_permission="plone.app.portlets.ManagePortlets"
       />
 
+  <plone:portlet
+      name="collective.collectionfilter.portlets.CollectionSectionFilter"
+      interface=".sectionfilter.ICollectionSectionPortlet"
+      assignment=".sectionfilter.Assignment"
+      renderer=".sectionfilter.Renderer"
+      addview=".sectionfilter.AddForm"
+      editview=".sectionfilter.EditForm"
+      view_permission="zope2.View"
+      edit_permission="plone.app.portlets.ManagePortlets"
+      />
+
+
   <genericsetup:registerProfile
       zcml:condition="not-installed collective.geolocationbehavior"
       name="default"
@@ -93,6 +105,15 @@
       title="Install new SortOn portlet"
       source="2"
       destination="3"
+      profile="collective.collectionfilter.portlets:default"
+      import_profile="collective.collectionfilter.portlets:default"
+      import_steps="portlets"
+      />
+
+    <genericsetup:upgradeDepends
+      title="Install new Section Filter portlet"
+      source="3"
+      destination="4"
       profile="collective.collectionfilter.portlets:default"
       import_profile="collective.collectionfilter.portlets:default"
       import_steps="portlets"

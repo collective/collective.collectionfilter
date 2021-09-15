@@ -67,6 +67,22 @@ def _results_cachekey(
     return cachekey
 
 
+def _section_results_cachekey(
+    method, target_collection, view_name, cache_enabled, request_params
+):
+    if not cache_enabled:
+        raise DontCache
+    cachekey = (
+        target_collection,
+        view_name,
+        request_params,
+        " ".join(plone.api.user.get_roles()),
+        plone.api.portal.get_current_language(),
+        str(plone.api.portal.get_tool("portal_catalog").getCounter()),
+    )
+    return cachekey
+
+
 @ram.cache(_results_cachekey)
 def get_filter_items(
     target_collection,
@@ -241,6 +257,195 @@ def get_filter_items(
     return ret
 
 
+
+@ram.cache(_section_results_cachekey)
+def get_section_filter_items(
+    target_collection, view_name="", cache_enabled=True, request_params=None
+):
+    request_params = request_params or {}
+    custom_query = {}  # Additional query to filter the collection
+
+    collection = uuidToObject(target_collection)
+    if not collection:
+        return None
+    collection_url = collection.absolute_url()
+    collection_layout = collection.getLayout()
+    default_view = collection.restrictedTraverse(collection_layout)
+
+    # Recursively transform all to unicode
+    request_params = safe_decode(request_params)
+
+    # Support for the Event Listing view from plone.app.event
+    if isinstance(default_view, EventListing):
+        mode = request_params.get("mode", "future")
+        date = request_params.get("date", None)
+        date = guess_date_from(date) if date else None
+        start, end = start_end_from_mode(mode, date, collection)
+        start, end = _prepare_range(collection, start, end)
+        custom_query.update(start_end_query(start, end))
+        # TODO: expand events. better yet, let collection.results
+        #       do that
+
+    current_path_value = request_params.get("path")
+    urlquery = base_query(request_params, ["path"])
+
+    # Get all collection results with additional filter defined by urlquery
+    custom_query.update(urlquery)
+    custom_query = make_query(custom_query)
+    catalog_results = ICollection(collection).results(
+        batch=False, brains=True, custom_query=custom_query
+    )
+
+    # Entry to clear all filters
+    urlquery_all = {k: v for k, v in urlquery.items() if k != "path"}
+    ret = [
+        {
+            "title": translate(
+                _("location_home", default=u"Home"), context=getRequest()
+            ),
+            "url": u"{0}/?{1}".format(
+                collection_url, urlencode(safe_encode(urlquery_all), doseq=True)
+            ),
+            "value": "all",
+            "css_class": "navTreeItem filterItem filter-all selected",
+            "count": len(catalog_results),
+            "level": 0,
+            "contenttype": "folder",
+        }
+    ]
+
+    if not catalog_results:
+        return ret
+
+    portal = plone.api.portal.get()
+    portal_path = portal.getPhysicalPath()
+    qspaths = current_path_value and current_path_value.split("/") or []
+    filtered_path = "/".join(list(portal_path) + qspaths)
+    grouped_results = {}
+    level = len(qspaths) + 1
+    for brain in catalog_results:
+
+        # Get path, remove portal root from path, remove leading /
+        path = brain.getPath()
+        if path.startswith(filtered_path):
+            path = path[len(filtered_path) + 1 :]  # noqa: E203
+        else:
+            continue
+
+        # If path is in the root, don't add anything to path
+        paths = path.split("/")
+        if len(paths) == 1:
+            continue
+
+        first_path = paths[0]
+        if first_path in grouped_results:
+            # Add counter, if path is already present
+            grouped_results[first_path]["count"] += 1
+            continue
+
+        title = first_path
+        ctype = "folder"
+        container = portal.portal_catalog.searchResults(
+            {
+                "path": {
+                    "query": "/".join(
+                        list(portal.getPhysicalPath()) + qspaths + [first_path]
+                    ),
+                    "depth": 0,
+                }
+            }
+        )
+        if len(container) > 0:
+            title = container[0].Title
+            ctype = container[0].portal_type.lower()
+
+        # Build filter url query
+        _urlquery = urlquery.copy()
+        _urlquery["path"] = "/".join(qspaths + [first_path])
+        query_param = urlencode(safe_encode(_urlquery), doseq=True)
+        url = u"/".join(
+            [
+                it
+                for it in [
+                    collection_url,
+                    view_name,
+                    "?" + query_param if query_param else None,
+                ]
+                if it
+            ]
+        )
+
+        css_class = "navTreeItem filterItem {0}".format(
+            "filter-" + idnormalizer.normalize(first_path)
+        )
+
+        grouped_results[first_path] = {
+            "title": title,
+            "url": url,
+            "value": first_path,
+            "css_class": css_class,
+            "count": 1,
+            "level": level,
+            "contenttype": ctype,
+        }
+
+    # Add the selected paths
+    item = portal
+    level = 0
+    for path in qspaths:
+        item = item.get(path, None)
+        if not item:
+            break
+
+        # Get the results just in this subfolder
+        item_path = "/".join(item.getPhysicalPath())[
+            len("/".join(portal_path)) + 1 :  # noqa: 203
+        ]
+        custom_query = {"path": item_path}
+        custom_query.update(urlquery)
+        custom_query = make_query(custom_query)
+        catalog_results = ICollection(collection).results(
+            batch=False, brains=True, custom_query=custom_query
+        )
+        level += 1
+        _urlquery = urlquery.copy()
+        _urlquery["path"] = "/".join(qspaths[: qspaths.index(path) + 1])
+        query_param = urlencode(safe_encode(_urlquery), doseq=True)
+        url = u"/".join(
+            [
+                it
+                for it in [
+                    collection_url,
+                    view_name,
+                    "?" + query_param if query_param else None,
+                ]
+                if it
+            ]
+        )
+        ret.append(
+            {
+                "title": item.Title(),
+                "url": url,
+                "value": path,
+                "css_class": "filter-%s selected"
+                % idnormalizer.normalize(path),
+                "count": len(catalog_results),
+                "level": level,
+                "contenttype": item.portal_type.lower(),
+            }
+        )
+
+    grouped_results = grouped_results.values()
+
+    # TODO: sortable option, probably should just sort by position in container
+    # if callable(sort_key_function):
+    #    grouped_results = sorted(grouped_results, key=sort_key_function)
+
+    ret += grouped_results
+
+    return ret
+
+
 @implementer(ICollectionish)
 class CollectionishCollection(object):
 
@@ -296,3 +501,4 @@ class CollectionishCollection(object):
             #        do that
 
         return self.collection.results(batch=False, brains=True, custom_query=custom_query)
+

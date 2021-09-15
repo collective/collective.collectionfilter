@@ -11,6 +11,7 @@ from plone.app.testing import IntegrationTesting
 from plone.app.testing import PloneSandboxLayer
 from plone.app.textfield.value import RichTextValue
 from plone.testing import z2
+import transaction
 from Products.PluginIndexes.BooleanIndex.BooleanIndex import BooleanIndex
 
 import json
@@ -102,9 +103,46 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
                 subject=[u"Dokumänt"],
                 exclude_from_nav=True,
             )
+            portal.invokeFactory(
+                "Folder",
+                id="testfolder",
+                title=u"Test Folder",
+            )
+            portal.invokeFactory(
+                "Folder",
+                id="testfolder2",
+                title=u"Test Folder2",
+            )
+            portal.invokeFactory(
+                "Folder",
+                id="testfolder3",
+                title=u"Test Folder3",
+            )
+            portal.testfolder.invokeFactory(
+                "Document",
+                id=u"testsubdoc",
+                title=u"Test Folder Document",
+            )
+            portal.testfolder.invokeFactory(
+                "Folder",
+                id=u"testsubfolder",
+                title=u"Test Sub-Folder",
+            )
+            portal.testfolder.testsubfolder.invokeFactory(
+                "Document",
+                id=u"testsubsubdoc",
+                title=u"Test Sub-Folder Document",
+            )
+            portal.testfolder2.invokeFactory(
+                "Document",
+                id=u"testsubdoc2",
+                title=u"Test Folder2 Document",
+            )
             doc = portal["testdoc"]
             doc.geolocation = Geolocation(47.4048832, 9.7587760701108)
             doc.reindexObject()
+
+            transaction.commit()
 
 
 COLLECTIVE_COLLECTIONFILTER_FIXTURE = CollectiveCollectionFilterLayer()

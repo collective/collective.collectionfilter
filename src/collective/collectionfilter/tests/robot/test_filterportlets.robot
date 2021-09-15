@@ -9,8 +9,6 @@ Test Setup  Default Setup
 Test Teardown  Default Teardown
 
 
-
-
 *** Test Cases ***************************************************************
 
 Scenario: Add filter to collection
@@ -124,3 +122,8 @@ Scenario: Search filter
     #   and should be 4 filter options
 
 
+Scenario: Add a section filter to a collection
+  Given I've got a site with a collection
+    and my collection has a collection section portlet
+   When I'm viewing the collection
+   Then I should see 3 filter options on the page

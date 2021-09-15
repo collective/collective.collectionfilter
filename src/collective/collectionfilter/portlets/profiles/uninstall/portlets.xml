@@ -16,5 +16,9 @@
       rempve="True"
       addview="collective.collectionfilter.portlets.CollectionMaps"
       />
+  <portlet
+      remove="True"
+      addview="collective.collectionfilter.portlets.CollectionSectionFilter"
+      />
 
 </portlets>

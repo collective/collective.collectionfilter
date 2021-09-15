@@ -33,6 +33,8 @@ There are three portlets/tiles available for filtering:
     is activated on a contenttype. See installation notes below)
 ``Collection Result Listing Sort``
     a list of indexes where the user can sort the filtered result listing
+``Section Filter``
+    a list of site sections (folders) you can filter on
 
 
 Filter Results of Collections
@@ -60,6 +62,7 @@ Use the package extra to install the required dependencies::
     eggs +=
         collective.collectionfilter[mosaic]
     ...
+
 
 The three tiles can be added within the Mosaic editor multiple times. Just select them in the ``Insert`` menu
 and assign a collection to it. To show the results of the collection simply add a
