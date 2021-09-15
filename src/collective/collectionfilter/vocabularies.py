@@ -135,12 +135,6 @@ class GroupByCriteria:
     @ram.cache(_groupby_cache_key)
     def groupby(self):
 
-        if self._groupby is not None:
-            # The groupby criteria are used at each IBeforeTraverseEvent - so
-            # on each request. This has to be fast, so exit early.
-            return self._groupby
-        self._groupby = {}
-
         cat = plone.api.portal.get_tool("portal_catalog")
         # get catalog metadata schema, but filter out items which cannot be
         # used for grouping
