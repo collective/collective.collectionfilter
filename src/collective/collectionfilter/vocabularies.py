@@ -54,20 +54,12 @@ DEFAULT_FILTER_TYPE = 'single'
 LIST_SCALING = ['No Scaling', 'Linear', 'Logarithmic']
 
 
-# Function for determining the cache key used by GroupByCreteria.
-# There should be a separate cache for each site and the cache should be
-# invalidated by modification to portal_catalog (changes to the indexes rather
-# than changes to cataloged items).
 def _groupby_cache_key(method, self):
     portal = plone.api.portal.get()
+    # cache key is shared across sites, so path is included
     site_path = '/'.join(portal.getPhysicalPath())
-    cache_key = site_path
-    # TODO: clear cache if portal_catalog is modified
-    # cat = portal.portal_catalog
-    # cat_changed = cat.undoable_transactions()[:1]
-    # cat_changed = len(cat_changed) > 0 and cat_changed[0]['time'] or ''
-    # cache_key = site_path + str(cat_changed)
-    return cache_key
+    count = plone.api.portal.get().portal_catalog.getCounter()
+    return '%s-%i' % (site_path, count)
 
 
 @implementer(IGroupByCriteria)
