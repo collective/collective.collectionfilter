@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from Products.CMFCore.interfaces import ICatalogTool
 from collective.collectionfilter import _
 from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.interfaces import IGroupByModifier
@@ -12,6 +13,7 @@ from plone.memoize import ram
 from zope.component import getAdapters
 from zope.component import getMultiAdapter
 from zope.component import getUtility
+from zope.component import queryUtility
 from zope.globalrequest import getRequest
 from zope.i18n import translate
 from zope.interface import implementer
@@ -114,8 +116,10 @@ def _groupby_cache_key(method, self):
     portal = plone.api.portal.get()
     # cache key is shared across sites, so path is included
     site_path = '/'.join(portal.getPhysicalPath())
-    count = plone.api.portal.get().portal_catalog.getCounter()
-    return '%s-%i' % (site_path, count)
+    catalog = queryUtility(ICatalogTool)
+    if catalog is None:
+        return site_path
+    return '%s-%s' % (site_path, str(catalog.getCounter()))
 
 
 @implementer(IGroupByCriteria)
