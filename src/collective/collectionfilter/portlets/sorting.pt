@@ -1,0 +1,52 @@
+<aside class="portlet ${view/filterClassName} collectionSortOn pat-collectionfilter"
+       tal:define="input_type view/settings/input_type"
+       data-pat-collectionfilter='${view/pat_options}'
+       tal:condition="view/available"
+       i18n:domain="collective.collectionfilter">
+
+  <header class="portletHeader" tal:condition="view/title" tal:content="view/title">Title</header>
+  <div class="portletContent filterContent" tal:define="results view/results">
+
+        <tal:if condition="python:input_type == 'checkboxes_dropdowns'">
+          <select name="sort_on">
+            <option value="" data-url="${view/ajax_url}" i18n:translate="">Select</option>
+          <tal:items repeat="item results">
+            <option
+                value="${item/value}"
+                data-url="${view/ajax_url}&sort_on=${item/value}&sort_order=ascending"
+                tal:attributes="selected python:'selected' if item['active'] and item['curr_order'] == 'ascending' else None">
+              <span class="filterLabel">
+                <span tal:replace="item/title">Item</span> <tal:block i18n:translate>(ascending)</tal:block>
+              </span>
+            </option>
+            <option
+                value="${item/value}"
+                data-url="${view/ajax_url}&sort_on=${item/value}&sort_order=descending"
+                tal:attributes="selected python:'selected' if item['active'] and item['curr_order'] == 'descending' else None">
+              <span class="filterLabel">
+                <span tal:replace="item/title">Item</span> <tal:block i18n:translate="">(descending)</tal:block>
+              </span>
+            </option>
+          </tal:items>
+          </select>
+        </tal:if>
+
+        <tal:if condition="python:input_type == 'links'">
+        <ul>
+          <tal:items repeat="item results">
+          <li tal:attributes="class python:'sortItem%s' % (' selected' if item['active'] else '')">
+            <a rel="nofollow"
+               href="${view/ajax_url}&sort_on=${item/value}&sort_order=${item/new_order}"
+               class="${item/value}">
+              <span>
+                <span tal:replace="item/title">Item</span>
+                <span tal:attributes="class python:'%s%s' % ('glyphicon glyphicon-sort-by-attributes' if item['curr_order'] else '', '-alt' if item['curr_order'] == 'descending' else '')"></span>
+              </span>
+            </a>
+          </li>
+          </tal:items>
+        </ul>
+        </tal:if>
+
+  </div>
+</aside>

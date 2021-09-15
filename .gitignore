@@ -34,4 +34,10 @@ pip-selfcheck.json
 share/
 var/
 pyvenv.cfg
+node_modules/
+.env
+.vscode/
 
+.python-version
+requirements.txt
+annotate.txt

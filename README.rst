@@ -1,11 +1,23 @@
 collective.collectionfilter
 ===========================
 
-Faceted navigation filter for collection results.
+|CI| |Coverage|
 
-This Plone 5 addon allows you to filter collections results for additional catalog metadata.
+|Workflows|
+
+.. |CI| image:: https://github.com/collective/collective.collectionfilter/workflows/CI/badge.svg
+   :target: https://github.com/collective/collective.collectionfilter/actions
+.. |Coverage| image:: https://coveralls.io/repos/github/collective/collective.collectionfilter/badge.svg
+   :target: https://coveralls.io/github/collective/collective.collectionfilter
+.. |Workflows| image:: http://github-actions.40ants.com/collective/collective.collectionfilter/matrix.svg
+   :target: https://github.com/collective/collective.collectionfilter/actions
+
+
+Faceted navigation filter for collection or contentlisting tiles.
+
+This Plone 5 addon allows you to filter listing results for fields which are indexed in the catalog 
+(Plones internal search tool).
 For example, you can add a subject filter, but also a filter for authors or portal types.
-This can also be used to build tag clouds.
 
 The filter types can be extended (see: ``collective.collectionfilter.vocabularies``).
 
@@ -19,29 +31,46 @@ There are three portlets/tiles available for filtering:
     a LeafletJS map which shows and filters ``IGeolocatable`` items on it
     (this feature is available if ``collective.geolocationbehavior`` is installed and the behavior
     is activated on a contenttype. See installation notes below)
+``Collection Result Listing Sort``
+    a list of indexes where the user can sort the filtered result listing
 
 
-Filter Results with portlets
+Filter Results of Collections
 ----------------------------
 
-Add as many of the filter portlets above to any context you want (most likely the source collection)
-and assign a collection with results to it.
+Add as many filter/search portlets directly to a collection.
 
-When you select values from the filter the results are loaded asynchronously inside the container
-with the selector defined in the field ``Content Selector``. Make sure the selector exists on the
-source collection template and on the target page which shows the filtered results.
+When you select values from the filter the results are loaded asynchronously onto the page (no page refresh).
+Unless you turn off ajax loading in the registery or are using Plone 5.0. If you are using special theme or view template
+you can customize ``Content Selector`` and/or ```View Template``` to ensure ajax loading works correctly.
+Make sure the selector exists on the source collection template and on the target page which shows the filtered results.
+
+It is also possible to use filter portlets that aren't directly on a collection by specifying a target collection.
+To use ajax loading you will need to ensure your content selector is visible on the page. If not using ajax loading selecting a filter
+option will redirect you to the collection.
 
 
 Mosaic Integration
 ------------------
 
+Use the package extra to install the required dependencies::
+
+    [buildout]
+    ...
+    eggs +=
+        collective.collectionfilter[mosaic]
+    ...
+
 The three tiles can be added within the Mosaic editor multiple times. Just select them in the ``Insert`` menu
 and assign a collection to it. To show the results of the collection simply add a
-``Existing Content`` tile which links to the same collection your filter tiles are assigned with.
+``Content Listing`` tile. 
 
-TODO: right now the collection needs a default_view template, which wraps the result list with a unique selector
-inside the ``#content-core`` container. so the collectionfilter can load the filtered result correctly from
-the collection into the container inside the existing content tile.
+It's possible to use multiple content listings and multiple filters on the same page by specifying additional unique classes in
+the listing tiles settings and then adding these classes to the ``Content Selector`` setting of the filter tile.
+
+If you want to use filter tiles with a collection then add a content listing tile with the setting to use the query from the context.
+It is also possible to use the ``Embed content`` tile if there is a unique selector on your collection view.
+
 
 
 Geolocation filter support
@@ -115,12 +144,12 @@ Write an adapter::
     @implementer(IGroupByModifier)
     @adapter(IGroupByCriteria)
     def groupby_modifier(groupby):
-        groupby._groupby['Subject']['display_modifier'] = lambda x: x.upper()
+        groupby._groupby['Subject']['display_modifier'] = lambda x, idx: x.upper()
         groupby._groupby['Subject']['sort_key_function'] = subjectsort
         groupby._groupby['my_new_index'] = {
             'index': 'my_new_index',
             'metadata': 'my_new_index_metadata_colum',
-            'display_modifier': lambda it: u'this is awesome: {0}'.format(it)
+            'display_modifier': lambda it, idx: u'this is awesome: {0}'.format(it)
         }
 
 Register the adapter::

@@ -3,13 +3,11 @@
       tal:condition="view/available"
        i18n:domain="plone">
 
-  <tal:if condition="view/settings/target_collection">
   <header class="portletHeader" tal:condition="view/title" tal:content="view/title">Title</header>
   <div class="searchContent">
     <form method="get" name="searchForm" role="form" action="${view/action_url}">
-        <input type="hidden" name="collectionfilter" value="1"/>
-        <tal:urlquery repeat="item python:view.urlquery.items()">
-          <input type="hidden" tal:attributes="name python:item[0]; value python:item[1]"/>
+        <tal:urlquery repeat="item python:view.urlquery">
+          <input type="hidden" name="${python:item[0]}" value="${python:item[1]}"/>
         </tal:urlquery>
         <input name="SearchableText" type="text"
             placeholder="Search"
@@ -19,5 +17,4 @@
         <button type="submit" i18n:translate="button_search">Search</button>
     </form>
   </div>
-  </tal:if>
 </aside>

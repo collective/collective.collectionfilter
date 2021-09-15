@@ -1,16 +1,20 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 from datetime import timedelta
+import os
 from plone import api
 from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FIXTURE
 from plone.app.robotframework.testing import REMOTE_LIBRARY_BUNDLE_FIXTURE
+from plone.app.testing import applyProfile
 from plone.app.testing import FunctionalTesting
 from plone.app.testing import IntegrationTesting
 from plone.app.testing import PloneSandboxLayer
-from plone.app.testing import applyProfile
 from plone.app.textfield.value import RichTextValue
 from plone.testing import z2
+from Products.PluginIndexes.BooleanIndex.BooleanIndex import BooleanIndex
+
 import json
+
 
 try:
     # Python 2: "unicode" is built-in
@@ -35,55 +39,71 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
         # The z3c.autoinclude feature is disabled in the Plone fixture base
         # layer.
         import plone.app.mosaic
+
         self.loadZCML(package=plone.app.mosaic)
         import collective.geolocationbehavior
+
         self.loadZCML(package=collective.geolocationbehavior)
         import collective.collectionfilter
+
         self.loadZCML(package=collective.collectionfilter)
         self.loadZCML(package=collective.collectionfilter.tests)
 
     def setUpPloneSite(self, portal):
-        applyProfile(portal, 'plone.app.mosaic:default')
-        applyProfile(portal, 'collective.geolocationbehavior:default')
-        applyProfile(portal, 'collective.collectionfilter:default')
-        applyProfile(portal, 'collective.collectionfilter.tests:testing')
+        from plone.formwidget.geolocation.geolocation import Geolocation
 
-        with api.env.adopt_roles(['Manager']):
+        applyProfile(portal, "plone.app.mosaic:default")
+        applyProfile(portal, "collective.geolocationbehavior:default")
+        applyProfile(portal, "collective.collectionfilter:default")
+        applyProfile(portal, "collective.collectionfilter.tests:testing")
+
+        catalog = api.portal.get_tool(name="portal_catalog")
+        if "exclude_from_nav" not in catalog.indexes():
+            catalog.addIndex(
+                "exclude_from_nav",
+                BooleanIndex("exclude_from_nav"),
+            )
+
+        with api.env.adopt_roles(["Manager"]):
             portal.invokeFactory(
-                'Collection',
-                id='testcollection',
-                title=u'Test Collection',
-                query=[{
-                    'i': 'portal_type',
-                    'o': 'plone.app.querystring.operation.selection.any',
-                    'v': ['Document', 'Event']
-                }],
+                "Collection",
+                id="testcollection",
+                title=u"Test Collection",
+                query=[
+                    {
+                        "i": "portal_type",
+                        "o": "plone.app.querystring.operation.selection.any",
+                        "v": ["Document", "Event"],
+                    }
+                ],
             )
             portal.invokeFactory(
-                'Event',
-                id='testevent',
-                title=u'Test Event',
+                "Event",
+                id="testevent",
+                title=u"Test Event",
                 start=datetime.now() + timedelta(days=1),
                 end=datetime.now() + timedelta(days=2),
-                subject=[u'Süper', u'Evänt'],
+                subject=[u"Süper", u"Evänt"],
+                exclude_from_nav=False,
             )
             portal.invokeFactory(
-                'Document',
-                id='testdoc',
-                title=u'Test Document 😉',
-                text=RichTextValue(u'Ein heißes Test Dokument'),
-                subject=[u'Süper', u'Dokumänt'],
+                "Document",
+                id="testdoc",
+                title=u"Test Document and Document 😉",
+                text=RichTextValue(u"Ein heißes Test Dokument", 'text/plain', 'text/html'),
+                subject=[u"Süper", u"Dokumänt"],
+                exclude_from_nav=False,
             )
             portal.invokeFactory(
-                'Document',
-                id='testdoc2',
-                title=u'Page 😉',
-                text=RichTextValue(u'Ein heißes Test Dokument'),
-                subject=[u'Dokumänt'],
+                "Document",
+                id="testdoc2",
+                title=u"Page 😉",
+                text=RichTextValue(u"Ein heiBes Test Dokument", 'text/plain', 'text/html'),
+                subject=[u"Dokumänt"],
+                exclude_from_nav=True,
             )
-            doc = portal['testdoc']
-            # doc.geolocation.latitude = 47.4048832
-            # doc.geolocation.longitude = 9.7587760701108
+            doc = portal["testdoc"]
+            doc.geolocation = Geolocation(47.4048832, 9.7587760701108)
             doc.reindexObject()
 
 
@@ -92,7 +112,7 @@ COLLECTIVE_COLLECTIONFILTER_FIXTURE = CollectiveCollectionFilterLayer()
 
 COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING = IntegrationTesting(
     bases=(COLLECTIVE_COLLECTIONFILTER_FIXTURE,),
-    name='CollectiveCollectionFilterLayer:IntegrationTesting',
+    name="CollectiveCollectionFilterLayer:IntegrationTesting",
 )
 
 COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING = FunctionalTesting(
@@ -101,7 +121,7 @@ COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING = FunctionalTesting(
         REMOTE_LIBRARY_BUNDLE_FIXTURE,
         z2.ZSERVER_FIXTURE,
     ),
-    name='CollectiveCollectionFilterLayer:AcceptanceTesting',
+    name="CollectiveCollectionFilterLayer:AcceptanceTesting",
 )
 
 
@@ -110,6 +130,7 @@ class CollectiveCollectionFilterAjaxEnabledLayer(CollectiveCollectionFilterLayer
         _set_ajax_enabled(True)
         super(CollectiveCollectionFilterAjaxEnabledLayer, self).setUpPloneSite(portal)
 
+
 AJAX_ENABLED_FIXTURE = CollectiveCollectionFilterAjaxEnabledLayer()
 COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED = FunctionalTesting(
     bases=(
@@ -117,7 +138,7 @@ COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED = FunctionalTesting(
         REMOTE_LIBRARY_BUNDLE_FIXTURE,
         z2.ZSERVER_FIXTURE,
     ),
-    name='CollectiveCollectionFilterLayer:AcceptanceTesting_AjaxEnabled',
+    name="CollectiveCollectionFilterLayer:AcceptanceTestingPortlet_AjaxEnabled",
 )
 
 
@@ -134,5 +155,26 @@ COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED = FunctionalTesting
         REMOTE_LIBRARY_BUNDLE_FIXTURE,
         z2.ZSERVER_FIXTURE,
     ),
-    name='CollectiveCollectionFilterLayer:AcceptanceTesting_AjaxDisabled',
+    name="CollectiveCollectionFilterLayer:AcceptanceTestingPortlet_AjaxDisabled",
+)
+
+
+class CollectiveCollectionFilterTilesLayer(CollectiveCollectionFilterLayer):
+    def setUpPloneSite(self, portal):
+        os.environ['ROBOT_USE_TILES'] = "True"
+        super(CollectiveCollectionFilterTilesLayer, self).setUpPloneSite(portal)
+
+    def tearDownPloneSite(self, portal):
+        super(CollectiveCollectionFilterTilesLayer, self).tearDownPloneSite(portal)
+        del os.environ['ROBOT_USE_TILES']
+
+
+TILES_FIXTURE = CollectiveCollectionFilterTilesLayer()
+COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_TILES = FunctionalTesting(
+    bases=(
+        TILES_FIXTURE,
+        REMOTE_LIBRARY_BUNDLE_FIXTURE,
+        z2.ZSERVER_FIXTURE,
+    ),
+    name="CollectiveCollectionFilterLayer:AcceptanceTesting_Tiles",
 )
