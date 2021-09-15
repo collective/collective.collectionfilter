@@ -9,10 +9,7 @@ try:
 except ImportError:
     from urlparse import urlparse, parse_qs
 
-from collective.collectionfilter.filteritems import (
-    get_filter_items,
-    get_section_filter_items,
-)
+from collective.collectionfilter.filteritems import get_filter_items
 from collective.collectionfilter.query import make_query
 from collective.collectionfilter.testing import (  # noqa
     COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING,
@@ -25,6 +22,14 @@ def get_data_by_val(result, val):
     for r in result:
         if r["value"] == val:
             return r
+
+
+def is_filter_selected(result, val):
+    filter = get_data_by_val(result, val)
+    if "selected" in filter["css_class"]:
+        return True
+
+    return False
 
 
 def qs(result, index):
@@ -47,17 +52,39 @@ class TestFilteritems(unittest.TestCase):
         self.collection = self.portal["testcollection"]
         self.collection_uid = self.collection.UID()
 
+    def assertOption(self, results, option, count, selected=None, title=None, css=None):
+        item = get_data_by_val(results, option)
+        self.assertIsNotNone(item, u"Filter option not found {option}".format(option=option))
+        is_selected = u"selected" if selected else u"unselected"
+        self.assertEqual(
+            item["count"], count,
+            msg=u"Test that the number of results for {} if {} is {} but got {}".format(
+                option, is_selected, count, item["count"])
+        )
+        if title is not None:
+            self.assertEqual(item["title"], title)
+        if selected is not None:
+            self.assertEqual(item["selected"], selected, msg=u"{} should be {} but isn't".format(
+                option, is_selected))
+        if css is not None:
+            self.assertIn(css, item["css_class"].split())
+
+    def assertListingLen(self, results, option, length):
+        count = len(ICollection(self.collection).results(
+            batch=False, brains=True, custom_query=make_query(qs(results, option))
+        ))
+        self.assertEqual(count, length, msg=u"Expected {} listing results, got {}".format(length, count))
+
     def test_filteritems(self):
         self.assertEqual(len(self.collection.results()), 6)
 
         result = get_filter_items(self.collection_uid, "Subject", cache_enabled=False)
 
         self.assertEqual(len(result), 4)
-        self.assertEqual(get_data_by_val(result, "all")["count"], 6)
-        self.assertEqual(get_data_by_val(result, "all")["selected"], True)
-        self.assertEqual(get_data_by_val(result, u"Süper")["count"], 2)
-        self.assertEqual(get_data_by_val(result, u"Evänt")["count"], 1)
-        self.assertEqual(get_data_by_val(result, u"Dokumänt")["count"], 2)
+        self.assertOption(result, u"all", 6, True)
+        self.assertOption(result, u"Süper", 2, False)
+        self.assertOption(result, u"Evänt", 1, False)
+        self.assertOption(result, u"Dokumänt", 2, False)
 
         result = get_filter_items(
             self.collection_uid,
@@ -67,7 +94,7 @@ class TestFilteritems(unittest.TestCase):
         )
 
         self.assertEqual(len(result), 4)
-        self.assertEqual(get_data_by_val(result, u"Süper")["selected"], True)
+        self.assertOption(result, u"Süper", 2, True)
 
         result = get_filter_items(
             self.collection_uid,
@@ -77,7 +104,7 @@ class TestFilteritems(unittest.TestCase):
         )
 
         self.assertEqual(len(result), 4)
-        self.assertEqual(get_data_by_val(result, u"Dokumänt")["selected"], True)
+        self.assertOption(result, u"Dokumänt", 2, True)
 
         # test narrowed down results
         narrowed_down_result = get_filter_items(
@@ -89,32 +116,23 @@ class TestFilteritems(unittest.TestCase):
             cache_enabled=False,
         )
 
-        self.assertEqual(
-            len(narrowed_down_result), 3, msg=u"narrowed result length should be 3"
-        )
-        self.assertEqual(
-            get_data_by_val(narrowed_down_result, u"Dokumänt")["selected"],
-            True,  # noqa
-            msg=u"Test that 'Dokumänt' is selected, matching the query",
-        )
-        self.assertEqual(
-            get_data_by_val(narrowed_down_result, u"all")["count"],
-            6,
-            msg=u"Test that there are 3 results if unselected",
-        )
+        self.assertEqual(len(narrowed_down_result), 3, msg=u"narrowed result length should be 3")
+        # Test that 'Dokumänt' is selected, matching the query
+        self.assertOption(narrowed_down_result, u"Dokumänt", 2, True)
+        # Test that there are 3 results if unselected
+        self.assertOption(narrowed_down_result, u"all", 6, False)
 
     def test_portal_type_filter(self):
         self.assertEqual(len(self.collection.results()), 6)
 
         result = get_filter_items(
-            self.collection_uid, "portal_type", cache_enabled=False
+            self.collection_uid, u"portal_type", cache_enabled=False
         )
 
         self.assertEqual(len(result), 3)
-        self.assertEqual(get_data_by_val(result, "all")["count"], 6)
-        self.assertEqual(get_data_by_val(result, "all")["selected"], True)
-        self.assertEqual(get_data_by_val(result, u"Event")["count"], 1)
-        self.assertEqual(get_data_by_val(result, u"Document")["count"], 5)
+        self.assertOption(result, u"all", 6, True)
+        self.assertOption(result, u"Event", 1, False)
+        self.assertOption(result, u"Document", 5, False)
 
         result = get_filter_items(
             self.collection_uid,
@@ -124,7 +142,7 @@ class TestFilteritems(unittest.TestCase):
         )
 
         self.assertEqual(len(result), 3)
-        self.assertEqual(get_data_by_val(result, u"Event")["selected"], True)
+        self.assertOption(result, "Event", 1, True)
 
         # test narrowed down results
         result = get_filter_items(
@@ -137,17 +155,8 @@ class TestFilteritems(unittest.TestCase):
         )
 
         self.assertEqual(len(result), 2)
-        self.assertEqual(
-            get_data_by_val(result, u"all")["count"],
-            6,
-            msg=u"Test that the number of results if unselected is 6",
-        )
-
-        self.assertEqual(
-            get_data_by_val(result, u"Event")["selected"],
-            True,
-            msg=u"Test that Event portal_type is selected matching the query",
-        )
+        self.assertOption(result, "all", 6, False)
+        self.assertOption(result, "Event", 1, True)
 
         # test operators option on FieldIndex
         result = get_filter_items(
@@ -162,8 +171,8 @@ class TestFilteritems(unittest.TestCase):
         )
 
         self.assertEqual(len(result), 3)
-        self.assertEqual(get_data_by_val(result, u"Event")["selected"], True)
-        self.assertEqual(get_data_by_val(result, u"Document")["selected"], True)  # noqa
+        self.assertOption(result, "Event", 1, True)
+        self.assertOption(result, "Document", 5, True)
 
         # and operator is ignored (same result as above)
         result = get_filter_items(
@@ -185,19 +194,15 @@ class TestFilteritems(unittest.TestCase):
         result = get_filter_items(self.collection_uid, "Subject", cache_enabled=False)
 
         self.assertEqual(len(result), 4)
-        self.assertEqual(get_data_by_val(result, "all")["count"], 6)
-        self.assertEqual(get_data_by_val(result, "all")["selected"], True)
-        self.assertEqual(get_data_by_val(result, u"Süper")["count"], 2)
-        self.assertEqual(get_data_by_val(result, u"Evänt")["count"], 1)
-        self.assertEqual(get_data_by_val(result, u"Dokumänt")["count"], 2)
+        self.assertOption(result, u"all", 6, True)
+        self.assertOption(result, u"Süper", 2, False)
+        self.assertOption(result, u"Evänt", 1, False)
+        self.assertOption(result, u"Dokumänt", 2, False)
 
         # Test url
         self.assertEqual(qs(result, u"Süper"), {"Subject": u"Süper"})
 
-        catalog_results = ICollection(self.collection).results(
-            batch=False, brains=True, custom_query=make_query(qs(result, u"Süper"))
-        )
-        self.assertEqual(len(catalog_results), 2)
+        self.assertListingLen(result, u"Süper", 2)
 
         result = get_filter_items(
             self.collection_uid,
@@ -208,15 +213,13 @@ class TestFilteritems(unittest.TestCase):
         )
 
         self.assertEqual(len(result), 4)
-        self.assertEqual(get_data_by_val(result, "all")["count"], 6)
+        self.assertOption(result, u"all", 6, False)
 
         # TODO: I'm not sure these counts are correct. It should represent how many results you will get if you click
         # so should be smaller than this but I guess you need to turn on narrow down for that?
-        self.assertEqual(get_data_by_val(result, u"Süper")["count"], 2)
-        self.assertEqual(get_data_by_val(result, u"Evänt")["count"], 1)
-        self.assertEqual(get_data_by_val(result, u"Dokumänt")["count"], 2)
-
-        self.assertEqual(get_data_by_val(result, u"Süper")["selected"], True)
+        self.assertOption(result, u"Süper", 2, True)
+        self.assertOption(result, u"Evänt", 1, False)
+        self.assertOption(result, u"Dokumänt", 2, False)
 
         self.assertEqual(qs(result, u"Süper"), {})
         self.assertEqual(
@@ -228,11 +231,7 @@ class TestFilteritems(unittest.TestCase):
         )
 
         # Narrow down by 2
-
-        catalog_results = ICollection(self.collection).results(
-            batch=False, brains=True, custom_query=make_query(qs(result, u"Dokumänt"))
-        )
-        self.assertEqual(len(catalog_results), 1)
+        self.assertListingLen(result, u"Dokumänt", 1)
 
         result = get_filter_items(
             self.collection_uid,
@@ -243,14 +242,9 @@ class TestFilteritems(unittest.TestCase):
         )
 
         self.assertEqual(len(result), 4)
-        self.assertEqual(get_data_by_val(result, "all")["count"], 6)
-        self.assertEqual(get_data_by_val(result, u"Süper")["count"], 2)
-
-        self.assertEqual(get_data_by_val(result, u"Evänt")["count"], 1)
-        self.assertEqual(get_data_by_val(result, u"Dokumänt")["count"], 2)
-
-        self.assertEqual(get_data_by_val(result, u"Süper")["selected"], True)
-        self.assertEqual(get_data_by_val(result, u"Dokumänt")["selected"], True)
+        self.assertOption(result, u"all", 6, False)
+        self.assertOption(result, u"Süper", 2, True)
+        self.assertOption(result, u"Dokumänt", 2, True)
 
         self.assertEqual(qs(result, u"Süper"), {"Subject": u"Dokumänt"})
         self.assertEqual(qs(result, u"Dokumänt"), {"Subject": u"Süper"})
@@ -260,80 +254,71 @@ class TestFilteritems(unittest.TestCase):
         )
 
         # Clicking on Event we should get 0 results as none will be in common
-        catalog_results = ICollection(self.collection).results(
-            batch=False, brains=True, custom_query=make_query(qs(result, u"Evänt"))
-        )
-        self.assertEqual(len(catalog_results), 0)
+        self.assertListingLen(result, u"Evänt", 0)
 
-    def test_sectionfilter(self):
-        def is_filter_selected(result, val):
-            filter = get_data_by_val(result, val)
-            if "selected" in filter["css_class"]:
-                return True
-
-            return False
-
+    def test_pathfilter_noquery(self):
         self.assertEqual(len(self.collection.results()), 6)
 
-        result_all = get_section_filter_items(
-            self.collection_uid, "", cache_enabled=False, request_params=None
-        )
+        result = get_filter_items(self.collection_uid, "getPath", cache_enabled=False)
 
-        self.assertEqual(len(result_all), 3)
-        self.assertEqual(get_data_by_val(result_all, "all")["count"], 6)
-        self.assertEqual(get_data_by_val(result_all, "all")["level"], 0)
-        self.assertEqual(get_data_by_val(result_all, "all")["title"], "Home")
-        self.assertEqual(is_filter_selected(result_all, "all"), True)
-        self.assertEqual(get_data_by_val(result_all, "testfolder")["count"], 2)
-        self.assertEqual(get_data_by_val(result_all, "testfolder")["level"], 1)
-        self.assertEqual(
-            get_data_by_val(result_all, "testfolder")["title"], "Test Folder"
-        )
-        self.assertEqual(is_filter_selected(result_all, "testfolder"), False)
-        self.assertEqual(get_data_by_val(result_all, "testfolder2")["count"], 1)
-        self.assertEqual(get_data_by_val(result_all, "testfolder2")["level"], 1)
-        self.assertEqual(
-            get_data_by_val(result_all, "testfolder2")["title"], "Test Folder2"
-        )
-        self.assertEqual(is_filter_selected(result_all, "testfolder2"), False)
+        self.assertEqual(len(result), 3)
+        self.assertOption(result, "all", 6, True)
+        self.assertOption(result, "testfolder", 2, False, "Test Folder", css="pathLevel0")
+        self.assertOption(result, "testfolder2", 1, False, "Test Folder2", css="pathLevel0")
 
-        result_folder = get_section_filter_items(
+    def test_pathfilter_level1(self):
+        result = get_filter_items(
             self.collection_uid,
-            "",
+            "getPath",
             cache_enabled=False,
             request_params={"path": "testfolder"},
+            narrow_down=True
         )
+        self.assertEqual(len(result), 3)
+        self.assertOption(result, "all", 2, False, "All")
+        self.assertOption(result, "testfolder", 2, True, "Test Folder", css="pathLevel0")
+        self.assertOption(result, "testfolder/testsubfolder", 1, False, "Test Sub-Folder", css="pathLevel1")
 
-        # Todo: Bug causing empty section filter to display.
-        # self.assertEqual(len(result_folder), 3)
-        self.assertEqual(is_filter_selected(result_folder, "testfolder"), True)
-
-        result_subfolder = get_section_filter_items(
+    def test_pathfilter_level2(self):
+        result = get_filter_items(
             self.collection_uid,
-            "",
+            "getPath",
             cache_enabled=False,
             request_params={"path": "testfolder/testsubfolder"},
+            narrow_down=True
         )
 
-        self.assertEqual(len(result_subfolder), 3)
-        self.assertEqual(
-            get_data_by_val(result_subfolder, "testsubfolder")["level"], 2
-        )
-        self.assertEqual(
-            is_filter_selected(result_subfolder, "testsubfolder"), True
-        )
+        self.assertEqual(len(result), 3)
+        self.assertOption(result, "all", 1, False, "All")
+        self.assertOption(result, "testfolder", 1, True, "Test Folder", css="pathLevel0")
+        self.assertOption(result, "testfolder/testsubfolder", 1, True, "Test Sub-Folder", css="pathLevel1")
 
-        result_folder2 = get_section_filter_items(
+    def test_pathfilter_level2_nonarrow(self):
+        result = get_filter_items(
             self.collection_uid,
-            "",
+            "getPath",
+            cache_enabled=False,
+            request_params={"path": "testfolder/testsubfolder"},
+            narrow_down=False
+        )
+
+        self.assertEqual(len(result), 4)
+        self.assertOption(result, "all", 6, False, "All")
+        self.assertOption(result, "testfolder", 3, True, "Test Folder", css="pathLevel0")
+        self.assertOption(result, "testfolder/testsubfolder", 1, True, "Test Sub-Folder", css="pathLevel1")
+        self.assertOption(result, "testfolder2", 1, False, "Test Folder2", css="pathLevel0")
+
+    def test_pathfilter_level1_empty(self):
+        result = get_filter_items(
+            self.collection_uid,
+            "getPath",
             cache_enabled=False,
             request_params={"path": "testfolder2"},
+            narrow_down=True
         )
 
-        self.assertEqual(len(result_folder2), 2)
-        self.assertEqual(
-            is_filter_selected(result_folder2, "testfolder2"), True
-        )
+        self.assertEqual(len(result), 2)
+        self.assertOption(result, "testfolder2", 1, True, "Test Folder2", css="pathLevel0")
 
     def test_boolean_filter(self):
         """Validate boolean fields are shown with all values."""
@@ -344,10 +329,9 @@ class TestFilteritems(unittest.TestCase):
         )
 
         self.assertEqual(len(result), 3)
-        self.assertEqual(get_data_by_val(result, "all")["count"], 6)
-        self.assertEqual(get_data_by_val(result, "all")["selected"], True)
-        self.assertEqual(get_data_by_val(result, True)["count"], 1)
-        self.assertEqual(get_data_by_val(result, False)["count"], 5)
+        self.assertOption(result, "all", 6, True)
+        self.assertOption(result, True, 1, False)
+        self.assertOption(result, False, 4, False)
 
         # test narrowed down results
         narrowed_down_result = get_filter_items(
@@ -362,16 +346,10 @@ class TestFilteritems(unittest.TestCase):
         self.assertEqual(
             len(narrowed_down_result), 2, msg=u"narrowed result length should be 2"
         )
-        self.assertEqual(
-            get_data_by_val(narrowed_down_result, True)["selected"],
-            True,  # noqa
-            msg=u"Test that 'Yes' is selected, matching the query",
-        )
-        self.assertEqual(
-            get_data_by_val(narrowed_down_result, u"all")["count"],
-            6,
-            msg=u"Test that there are 6 results if unselected",
-        )
+        # Test that 'Yes' is selected, matching the query
+        self.assertOption(narrowed_down_result, True, 1, True)
+        # Test that there are 6 results if unselected
+        self.assertOption(result, "all", 6, True)
 
         # test narrowed down results
         narrowed_down_result = get_filter_items(
@@ -386,13 +364,11 @@ class TestFilteritems(unittest.TestCase):
         self.assertEqual(
             len(narrowed_down_result), 2, msg=u"narrowed result length should be 2"
         )
+        # Test that 'No' is selected, matching the query
         self.assertEqual(
             get_data_by_val(narrowed_down_result, False)["selected"],
             True,  # noqa
-            msg=u"Test that 'No' is selected, matching the query",
         )
-        self.assertEqual(
-            get_data_by_val(narrowed_down_result, u"all")["count"],
-            6,
-            msg=u"Test that there are 6 results if unselected",
-        )
+        self.assertOption(narrowed_down_result, False, 4, True)
+        # Test that there are 6 results if unselected",
+        self.assertOption(narrowed_down_result, "all", 6, False)

@@ -27,6 +27,8 @@ from zope.i18n import translate
 
 import plone.api
 import six
+import re
+from collections import OrderedDict
 
 
 try:
@@ -102,6 +104,8 @@ def get_filter_items(
     if not collection or not group_by:
         return None
     collection_url = collection.absolute_url()
+    option_url = "/".join([it for it in [collection_url, view_name] if it])
+
     collection = ICollectionish(collection).selectContent(content_selector)
     if collection is None or not collection.content_selector:  # e.g. when no listing tile
         return None
@@ -117,18 +121,24 @@ def get_filter_items(
     idx = groupby_criteria[group_by]["index"]
     current_idx_value = safe_iterable(request_params.get(idx))
 
-    extra_ignores = []
-    if not narrow_down:
-        # Additive filtering is about adding other filter values of the same
-        # index.
-        extra_ignores = [idx, idx + "_op"]
+    # Additive filtering is about adding other filter values of the same
+    # index.
+    extra_ignores = [] if narrow_down else [idx, idx + "_op"]
     urlquery = base_query(request_params, extra_ignores)
+
+    # Optional modifier to sort results so filters displayed in the correct order
+    sort_on = groupby_criteria[group_by].get("sort_on", None)
 
     # Get all collection results with additional filter defined by urlquery
     custom_query.update(urlquery)
+    if sort_on is not None:
+        custom_query['sort_on'] = sort_on
     custom_query = make_query(custom_query)
 
     catalog_results = collection.results(custom_query, request_params)
+    if not catalog_results:
+        return None
+    catalog_results_fullcount = len(catalog_results)
     if narrow_down and show_count:
         # we need the extra_ignores to get a true count
         # even when narrow_down filters the display of indexed values
@@ -136,104 +146,55 @@ def get_filter_items(
         count_query = {}
         count_urlquery = base_query(request_params, [idx, idx + "_op"])
         count_query.update(count_urlquery)
-        catalog_results_fullcount = collection.results(count_query, request_params)
-    if not catalog_results:
-        return None
+        catalog_results_fullcount = len(collection.results(count_query, request_params))
 
     # Attribute name for getting filter value from brain
     metadata_attr = groupby_criteria[group_by]["metadata"]
-    # Optional modifier to set title from filter value
-    display_modifier = groupby_criteria[group_by].get("display_modifier", None)
-    # CSS modifier to set class on filter item
-    css_modifier = groupby_criteria[group_by].get("css_modifier", None)
+    # Optional modifier to modify the metadata value into one or more groupby values
+    groupby_modifier = groupby_criteria[group_by].get("groupby_modifier", None)
+    if not groupby_modifier:
+        def groupby_modifier(values, cur, narrow):
+            return values
     # Value blacklist
     value_blacklist = groupby_criteria[group_by].get("value_blacklist", None)
     # Allow value_blacklist to be callables for runtime-evaluation
-    value_blacklist = (
-        value_blacklist() if callable(value_blacklist) else value_blacklist
-    )  # noqa
+    value_blacklist = (value_blacklist() if callable(value_blacklist) else value_blacklist) or []
+
     # fallback to title sorted values
-    sort_key_function = groupby_criteria[group_by].get(
+    sort_key_function = None if sort_on else groupby_criteria[group_by].get(
         "sort_key_function", lambda it: it["title"].lower()
     )
 
-    grouped_results = {}
+    # ensure all values associated with current selection are selected
+    selected_values = current_idx_value + list(groupby_modifier(current_idx_value, current_idx_value, narrow_down))
+
+    grouped_results = OrderedDict()
     for brain in catalog_results:
 
         # Get filter value
         val = getattr(brain, metadata_attr, None)
-        if callable(val):
-            val = val()
+        val = val() if callable(val) else val
         # decode it to unicode
         val = safe_decode(val)
         # Make sure it's iterable, as it's the case for e.g. the subject index.
-        val = safe_iterable(val)
+        vals = safe_iterable(val)
+        # allow excluding or extending the value per index
+        vals = groupby_modifier(vals, current_idx_value, narrow_down)
 
-        for filter_value in val:
-            if filter_value is None or isinstance(filter_value, Missing):
-                continue
-            if value_blacklist and filter_value in value_blacklist:
-                # Do not include blacklisted
+        for filter_value in vals:
+            if filter_value is None or isinstance(filter_value, Missing) or filter_value in value_blacklist:
                 continue
             if filter_value in grouped_results:
                 # Add counter, if filter value is already present
                 grouped_results[filter_value]["count"] += 1
                 continue
 
-            # Set title from filter value with modifications,
-            # e.g. uuid to title
-            title = filter_value
-            if filter_value is not EMPTY_MARKER and callable(display_modifier):
-                title = safe_decode(display_modifier(filter_value, idx))
-
-            # Build filter url query
-            _urlquery = urlquery.copy()
-            # Allow deselection
-            if filter_value in current_idx_value:
-                _urlquery[idx] = [it for it in current_idx_value if it != filter_value]
-            elif filter_type != "single":
-                # additive filter behavior
-                _urlquery[idx] = current_idx_value + [filter_value]
-                _urlquery[idx + "_op"] = filter_type  # additive operator
-            else:
-                _urlquery[idx] = filter_value
-
-            query_param = urlencode(safe_encode(_urlquery), doseq=True)
-            url = "/".join(
-                [
-                    it
-                    for it in [
-                        collection_url,
-                        view_name,
-                        "?" + query_param if query_param else None,
-                    ]
-                    if it
-                ]
-            )
-
-            # Set selected state
-            selected = filter_value in current_idx_value
-            css_class = "filterItem {0}{1} {2}".format(
-                "filter-" + idnormalizer.normalize(filter_value),
-                " selected" if selected else "",
-                css_modifier(filter_value) if css_modifier else "",
-            )
-
-            grouped_results[filter_value] = {
-                "title": title,
-                "url": url,
-                "value": filter_value,
-                "css_class": css_class,
-                "count": 1,
-                "selected": selected,
-            }
+            url = _build_url(option_url, urlquery, filter_value, current_idx_value, idx, filter_type)
+            grouped_results[filter_value] = \
+                _build_option(filter_value, url, selected_values, groupby_criteria[group_by])
 
     # Entry to clear all filters
-    urlquery_all = {
-        k: v for k, v in list(urlquery.items()) if k not in (idx, idx + "_op")
-    }
-    if narrow_down and show_count:
-        catalog_results = catalog_results_fullcount
+    urlquery_all = {k: v for k, v in list(urlquery.items()) if k not in (idx, idx + "_op")}
     ret = [
         {
             "title": translate(_("subject_all", default=u"All"), context=getRequest()),
@@ -242,19 +203,68 @@ def get_filter_items(
             ),
             "value": "all",
             "css_class": "filterItem filter-all",
-            "count": len(catalog_results),
+            "count": catalog_results_fullcount,
             "selected": idx not in request_params,
+            "level": 0
         }
     ]
 
     grouped_results = list(grouped_results.values())
-
-    if callable(sort_key_function):
-        grouped_results = sorted(grouped_results, key=sort_key_function)
-
-    ret += grouped_results
-
+    ret += sorted(grouped_results, key=sort_key_function) if callable(sort_key_function) else grouped_results
     return ret
+
+
+def _build_url(collection_url, urlquery, filter_value, current_idx_value, idx, filter_type):
+    # Build filter url query
+    _urlquery = urlquery.copy()
+    # Allow deselection
+    if filter_value in current_idx_value:
+        _urlquery[idx] = [it for it in current_idx_value if it != filter_value]
+    elif filter_type != "single":
+        # additive filter behavior
+        _urlquery[idx] = current_idx_value + [filter_value]
+        _urlquery[idx + "_op"] = filter_type  # additive operator
+    else:
+        _urlquery[idx] = filter_value
+
+    query_param = urlencode(safe_encode(_urlquery), doseq=True)
+    url = "/".join([it for it in [collection_url, "?" + query_param if query_param else None] if it])
+    return url
+
+
+def _build_option(filter_value, url, selected_values, groupby_options):
+    idx = groupby_options["index"]
+    # Optional modifier to set title from filter value
+    display_modifier = groupby_options.get("display_modifier", None)
+    # CSS modifier to set class on filter item
+    css_modifier = groupby_options.get("css_modifier", None)
+
+    # Set title from filter value with modifications,
+    # e.g. uuid to title
+    title = filter_value
+    if filter_value is not EMPTY_MARKER and callable(display_modifier):
+        title = display_modifier(filter_value, idx)
+        title = safe_decode(title)
+
+    # Set selected state
+    selected = filter_value in selected_values
+    css_class = "filterItem {0}{1} {2}".format(
+        "filter-" + idnormalizer.normalize(filter_value),
+        " selected" if selected else "",
+        css_modifier(filter_value) if css_modifier else "",
+    )
+    # HACK: Only used by dropdowns currently as they don't support css styles
+    level = int(next(iter(re.findall(r"pathLevel(\d+)", css_class)), 0))
+
+    return {
+        "title": title,
+        "url": url,
+        "value": filter_value,
+        "css_class": css_class,
+        "count": 1,
+        "selected": selected,
+        "level": level
+    }
 
 
 

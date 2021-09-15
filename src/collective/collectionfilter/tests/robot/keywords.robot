@@ -251,6 +251,11 @@ Should be filter checkboxes
     [Arguments]  @{values}
     Wait until keyword succeeds  2s  1s  Labels Should Equal  xpath=//div[contains(@class, 'filterContent')]//span[@class='filterLabel']  @{values}
 
+Should be filter links
+    [Arguments]  @{values}
+    Wait until keyword succeeds  2s  1s  Labels Should Equal  xpath=//div[contains(@class, 'filterContent')]//*[contains(@class, 'filterItem')]  @{values}
+
+
 List Labels Should Equal
    [Arguments]  ${selector}  @{expect}
    @{options}=  get list items  ${selector}
@@ -269,7 +274,7 @@ Labels Should Equal
 Should be ${X} collection results
     # Wait until element is visible  css=#content-core
     # below should work for both collections and contentlisting tiles
-    Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//span[@class='summary']  limit=${X}
+    Wait until keyword succeeds  2s  1s  Page Should Contain Element  xpath=//span[@class='summary']  limit=${X}
 
 Should be ${X} pages
     ${X}=  evaluate  ${X} + 1  # need we have next or previous
@@ -600,6 +605,7 @@ Add contentlisting tile
     wait until element is visible  link=Select criteria
     select single select2      xpath=(//div[@id='formfield-plone-app-standardtiles-contentlisting-query']//div[@class='querystring-criteria-index'])[2]/div  Type
     select multi select2   xpath=(//div[@id='formfield-plone-app-standardtiles-contentlisting-query']//div[@class='querystring-criteria-value'])[2]/div  Event  Document
+    click element  css=.querystring-criteria-remove
 
     # TODO: no item count in plone 5.0
     Run Keyword by label  Item count   Input Text  ${batch}

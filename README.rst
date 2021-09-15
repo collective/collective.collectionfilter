@@ -105,10 +105,14 @@ It uses a data structure like this::
         it: {                   # Index name
             'index': it,             # Name of the index to use
             'metadata': it,          # Name of the metadata column to use
+            'groupby_name': it,      # Name to appear in selection of groupby, otherwise uses translated index name
             'display_modifier': _ ,  # Function to prepare the metadata column value for displaying
+            'css_modifier': None,    # add additiona; css classes. can include 'pathLevel{0-4}' to indent when displayed.
             'index_modifier': None,  # Function to transform the index search value.
+            'groupby_name': None,    # function to exclude or extend values to display
             'value_blacklist': [],   # Blacklist of index values, which should not included in the filter selection. Can be a callable.
             'sort_key_function': lambda it: it['title'].lower(),  # sort key function. defaults to a lower-cased title
+            'sort_on': None,         # sort based on order in index rather than sorting via function afterwards
         }
         for it in metadata
     }
