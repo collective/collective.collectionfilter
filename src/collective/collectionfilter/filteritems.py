@@ -50,6 +50,7 @@ def _results_cachekey(
     cache_enabled=True,
     request_params=None,
     content_selector="",
+    include_all_option=True,
 ):
     if not cache_enabled:
         raise DontCache
@@ -62,6 +63,7 @@ def _results_cachekey(
         view_name,
         request_params,
         content_selector,
+        include_all_option,
         " ".join(plone.api.user.get_roles()),
         plone.api.portal.get_current_language(),
         str(plone.api.portal.get_tool("portal_catalog").getCounter()),
@@ -96,6 +98,7 @@ def get_filter_items(
     cache_enabled=True,
     request_params=None,
     content_selector="",
+    include_all_option=True,
 ):
     request_params = request_params or {}
     custom_query = {}  # Additional query to filter the collection
@@ -207,7 +210,7 @@ def get_filter_items(
             "selected": idx not in request_params,
             "level": 0
         }
-    ]
+    ] if include_all_option else []
 
     grouped_results = list(grouped_results.values())
     ret += sorted(grouped_results, key=sort_key_function) if callable(sort_key_function) else grouped_results

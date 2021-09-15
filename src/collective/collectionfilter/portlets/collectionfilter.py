@@ -28,6 +28,7 @@ class Assignment(base.Assignment):
     view_name = None
     content_selector = "#content-core"
     hide_if_empty = False
+    enable_all_filter_option = True
     # list_scaling = None
 
     def __init__(
@@ -43,6 +44,7 @@ class Assignment(base.Assignment):
         view_name=None,
         content_selector="#content-core",
         hide_if_empty=False,
+        enable_all_filter_option=True,
         # list_scaling=None
     ):
         self.header = header
@@ -56,6 +58,7 @@ class Assignment(base.Assignment):
         self.view_name = view_name
         self.content_selector = content_selector
         self.hide_if_empty = hide_if_empty
+        self.enable_all_filter_option = enable_all_filter_option
         # self.list_scaling = list_scaling
 
     @property
