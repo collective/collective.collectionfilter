@@ -73,6 +73,7 @@ Bug fixes:
 - fix translation of ``filter_value``
   [petschki]
 
+
 3.2.1 (2019-08-07)
 ------------------
 
