@@ -12,4 +12,4 @@ class ISearchTile(Schema, ICollectionSearchSchema):
 
 @implementer(ISearchTile)
 class SearchTile(BaseFilterTile, BaseSearchView):
-    """ Search Tile """
+    """Search Tile"""
