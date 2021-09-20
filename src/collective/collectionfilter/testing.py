@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 from datetime import timedelta
-import os
 from plone import api
 from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FIXTURE
 from plone.app.robotframework.testing import REMOTE_LIBRARY_BUNDLE_FIXTURE
@@ -14,6 +13,7 @@ from plone.testing import z2
 from Products.PluginIndexes.BooleanIndex.BooleanIndex import BooleanIndex
 
 import json
+import os
 
 
 try:
@@ -90,7 +90,9 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
                 "Document",
                 id="testdoc",
                 title=u"Test Document and Document 😉",
-                text=RichTextValue(u"Ein heißes Test Dokument", 'text/plain', 'text/html'),
+                text=RichTextValue(
+                    u"Ein heißes Test Dokument", "text/plain", "text/html"
+                ),
                 subject=[u"Süper", u"Dokumänt"],
                 exclude_from_nav=False,
             )
@@ -98,7 +100,9 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
                 "Document",
                 id="testdoc2",
                 title=u"Page 😉",
-                text=RichTextValue(u"Ein heiBes Test Dokument", 'text/plain', 'text/html'),
+                text=RichTextValue(
+                    u"Ein heiBes Test Dokument", "text/plain", "text/html"
+                ),
                 subject=[u"Dokumänt"],
                 exclude_from_nav=True,
             )
@@ -161,12 +165,12 @@ COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED = FunctionalTesting
 
 class CollectiveCollectionFilterTilesLayer(CollectiveCollectionFilterLayer):
     def setUpPloneSite(self, portal):
-        os.environ['ROBOT_USE_TILES'] = "True"
+        os.environ["ROBOT_USE_TILES"] = "True"
         super(CollectiveCollectionFilterTilesLayer, self).setUpPloneSite(portal)
 
     def tearDownPloneSite(self, portal):
         super(CollectiveCollectionFilterTilesLayer, self).tearDownPloneSite(portal)
-        del os.environ['ROBOT_USE_TILES']
+        del os.environ["ROBOT_USE_TILES"]
 
 
 TILES_FIXTURE = CollectiveCollectionFilterTilesLayer()

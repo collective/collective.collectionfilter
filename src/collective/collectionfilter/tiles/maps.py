@@ -9,7 +9,7 @@ from zope.interface import implementer
 
 
 class IMapsTile(Schema, ICollectionMapsSchema):
-    """ schema for maps tile """
+    """schema for maps tile"""
 
 
 @implementer(IMapsTile)

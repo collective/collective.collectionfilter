@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from collective.collectionfilter import _
-from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.interfaces import ICollectionish
+from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.query import make_query
 from collective.collectionfilter.utils import base_query
 from collective.collectionfilter.utils import safe_decode
@@ -21,9 +21,9 @@ from plone.memoize import ram
 from plone.memoize.volatile import DontCache
 from six.moves.urllib.parse import urlencode
 from zope.component import getUtility
-from zope.interface import implementer
 from zope.globalrequest import getRequest
 from zope.i18n import translate
+from zope.interface import implementer
 
 import plone.api
 import six
@@ -87,7 +87,9 @@ def get_filter_items(
         return None
     collection_url = collection.absolute_url()
     collection = ICollectionish(collection).selectContent(content_selector)
-    if collection is None or not collection.content_selector:  # e.g. when no listing tile
+    if (
+        collection is None or not collection.content_selector
+    ):  # e.g. when no listing tile
         return None
 
     # Recursively transform all to unicode
@@ -243,13 +245,12 @@ def get_filter_items(
 
 @implementer(ICollectionish)
 class CollectionishCollection(object):
-
     def __init__(self, context):
         self.context = context
         self.collection = ICollection(self.context)
 
     def selectContent(self, selector=""):
-        """ Collections can only have a single content """
+        """Collections can only have a single content"""
         return self
 
     @property
@@ -295,4 +296,6 @@ class CollectionishCollection(object):
             # TODO: expand events. better yet, let collection.results
             #        do that
 
-        return self.collection.results(batch=False, brains=True, custom_query=custom_query)
+        return self.collection.results(
+            batch=False, brains=True, custom_query=custom_query
+        )
