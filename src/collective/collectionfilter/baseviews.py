@@ -287,7 +287,7 @@ def _exp_cachekey(method, self, target_collection, request):
         target_collection,
         json.dumps(request),
         self.settings.view_name,
-        self.settings.as_links
+        self.settings.as_links,
     )
 
 
@@ -312,8 +312,8 @@ class BaseInfoView(BaseView):
         results = len(catalog_results_fullcount)
 
         # Clean up filters and values
-        if 'collectionfilter' in query:
-            del query['collectionfilter']
+        if "collectionfilter" in query:
+            del query["collectionfilter"]
         groupby_criteria = getUtility(IGroupByCriteria).groupby
         q = []
         for group_by, value in query.items():
@@ -325,7 +325,7 @@ class BaseInfoView(BaseView):
             current_idx_value = safe_iterable(value)
             # Set title from filter value with modifications,
             # e.g. uuid to title
-            display_modifier = groupby_criteria[group_by].get('display_modifier', None)
+            display_modifier = groupby_criteria[group_by].get("display_modifier", None)
             titles = []
             for filter_value in current_idx_value:
                 title = filter_value
@@ -336,7 +336,9 @@ class BaseInfoView(BaseView):
                 # TODO: do we want no follow always?
                 # TODO: should support clearing filter? e.g. if single value, click to remove?
                 # Build filter url query
-                query_param = urlencode(safe_encode({group_by: filter_value}), doseq=True)
+                query_param = urlencode(
+                    safe_encode({group_by: filter_value}), doseq=True
+                )
                 url = "/".join(
                     [
                         it
@@ -366,7 +368,9 @@ class BaseInfoView(BaseView):
 
     def info_contents(self):
         request_params = self.top_request.form or {}
-        expression_context = self.get_expression_context(self.collection.getObject(), request_params)
+        expression_context = self.get_expression_context(
+            self.collection.getObject(), request_params
+        )
 
         parts = []
         for template in self.settings.template_type:
@@ -386,7 +390,9 @@ class BaseInfoView(BaseView):
         if target_collection is None:
             return False
         request_params = self.top_request.form or {}
-        expression_context = self.get_expression_context(target_collection.getObject(), request_params)
+        expression_context = self.get_expression_context(
+            target_collection.getObject(), request_params
+        )
 
         conditions = dict((k, (t, e)) for k, t, e in get_conditions())
         if not self.settings.hide_when:

@@ -12,4 +12,4 @@ class IInfoTile(Schema, ICollectionFilterInfoTile):
 
 @implementer(IInfoTile)
 class InfoTile(BaseFilterTile, BaseInfoView):
-    """ Info Tile """
+    """Info Tile"""

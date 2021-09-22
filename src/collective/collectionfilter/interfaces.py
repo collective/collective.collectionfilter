@@ -205,37 +205,34 @@ class ICollectionFilterResultListSort(ICollectionFilterBaseSchema):
 
 
 class ICollectionFilterInfo(ICollectionFilterBaseSchema):
-    """Schema for the result title/info
-    """
+    """Schema for the result title/info"""
+
     template_type = schema.Tuple(
-        title=_('label_template_type', u'Template Type'),
+        title=_("label_template_type", u"Template Type"),
         description=_(
-            'help_template_type',
-            u'What information to display about the search and results'
+            "help_template_type",
+            u"What information to display about the search and results",
         ),
         value_type=schema.Choice(
-            title=u'Parts',
+            title=u"Parts",
             vocabulary="collective.collectionfilter.TemplateParts",
         ),
         required=True,
     )
     # NB needed as InAndOut breaks tiles in 5.0
-    widget('template_type', SelectFieldWidget, pattern_options=dict(orderable=True))
+    widget("template_type", SelectFieldWidget, pattern_options=dict(orderable=True))
 
     hide_when = schema.Tuple(
-        title=_('label_hide_when', u'Hide when'),
-        description=_(
-            'help_hide_when',
-            u'Hide if all of these conditions are true'
-        ),
+        title=_("label_hide_when", u"Hide when"),
+        description=_("help_hide_when", u"Hide if all of these conditions are true"),
         value_type=schema.Choice(
-            title=u'Condition',
+            title=u"Condition",
             vocabulary="collective.collectionfilter.InfoConditions",
         ),
         required=False,
     )
     # NB needed as InAndOut breaks tiles in 5.0
-    widget('hide_when', SelectFieldWidget, pattern_options=dict(orderable=True))
+    widget("hide_when", SelectFieldWidget, pattern_options=dict(orderable=True))
 
     as_links = schema.Bool(
         title=_(u"label_display_as_links", default=u"Display as Links"),
@@ -249,7 +246,7 @@ class ICollectionFilterInfo(ICollectionFilterBaseSchema):
 
 
 class ICollectionFilterInfoTile(ICollectionFilterInfo):
-    """ Extra settings for tile """
+    """Extra settings for tile"""
 
     display_as_title = schema.Bool(
         title=_(u"label_display_as_title", default=u"Display as Title"),

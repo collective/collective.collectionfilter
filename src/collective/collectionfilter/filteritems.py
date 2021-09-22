@@ -11,6 +11,7 @@ from collective.collectionfilter.vocabularies import DEFAULT_FILTER_TYPE
 from collective.collectionfilter.vocabularies import EMPTY_MARKER
 from Missing import Missing
 from plone.app.contenttypes.behaviors.collection import ICollection
+
 try:
     from plone.app.blocks.layoutbehavior import ILayoutAware
 except ImportError:
