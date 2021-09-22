@@ -320,7 +320,7 @@ class BaseInfoView(BaseView):
             if group_by not in groupby_criteria:
                 continue
             # TODO: we actually have idx not group_by
-            # idx = groupby_criteria[group_by]['index']
+            idx = groupby_criteria[group_by]['index']
             value = safe_decode(value)
             current_idx_value = safe_iterable(value)
             # Set title from filter value with modifications,
@@ -330,7 +330,7 @@ class BaseInfoView(BaseView):
             for filter_value in current_idx_value:
                 title = filter_value
                 if filter_value is not EMPTY_MARKER and callable(display_modifier):
-                    title = safe_decode(display_modifier(filter_value))
+                    title = safe_decode(display_modifier(filter_value, idx))
                 # TODO: still no nice title for filter indexes? Should be able to get from query builder
                 # TODO: we don't know if filter is AND/OR to display that detail
                 # TODO: do we want no follow always?
