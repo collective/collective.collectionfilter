@@ -8,6 +8,25 @@
     <include package="plone.tiles" />
     <include package="plone.tiles" file="meta.zcml"/>
 
+
+  <adapter factory=".CollectionishLayout"
+           provides="collective.collectionfilter.interfaces.ICollectionish"
+           for="plone.app.blocks.layoutbehavior.ILayoutBehaviorAdaptable" 
+           />
+
+
+  <subscriber
+    for="collective.collectionfilter.tiles.BaseFilterTile
+         zope.lifecycleevent.IObjectModifiedEvent"
+    handler=".validateFilterTileModify"
+    />      
+
+  <subscriber
+    for="plone.app.blocks.layoutbehavior.ILayoutBehaviorAdaptable
+         zope.lifecycleevent.IObjectModifiedEvent"
+    handler=".validateFilterMosaicModify"
+    />      
+
     <plone:tile
         name="collective.collectionfilter.tiles.filter"
         title="Collection Filter Tile"

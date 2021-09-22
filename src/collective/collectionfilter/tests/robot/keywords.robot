@@ -75,9 +75,10 @@ Select InAndOut
     [Arguments]  ${label}  @{values}
     Wait until page contains element  xpath=//label[.//*[normalize-space(text())='${label}'] or normalize-space(text()) ='${label}']
     ${id}=  Get Element Attribute  xpath=//label[.//*[normalize-space(text())='${label}'] or normalize-space(text()) ='${label}']  for
-    :FOR  ${value}  IN  @{values}
-    \    Select from List by value  css=select#${id}-from  ${value}
-    \    Click element  css=#${id} button[name='from2toButton']
+    FOR  ${value}  IN  @{values}
+        Select from List by value  css=select#${id}-from  ${value}
+        Click element  css=#${id} button[name='from2toButton']
+    END
 
 
 Select single select2  
@@ -101,10 +102,11 @@ Select multi select2
     #select from list by label  xpath=(//select[@class='querystring-criteria-value-MultipleSelectionWidget'])[1]  Page
     ${select2}=  get webelement  ${locator}
     execute javascript  $(arguments[0]).select2("val",arguments[1])  ARGUMENTS  ${select2}  ${values}
-    :FOR  ${value}  IN  @{values} 
+    FOR  ${value}  IN  @{values} 
     # Hack to only find those in the tile popup up not the mosaic popup 
     #\    wait until element is visible  //*[contains(@class,'plone-modal ')]//li[@class='select2-search-choice']//*[contains(text(), '${value}')]
-    \    Wait until keyword succeeds  5s  1s  call method  ${select2}  find_elements  by=xpath  value=.//li[@class='select2-search-choice']//*[contains(text(), '${value}')]
+        Wait until keyword succeeds  5s  1s  call method  ${select2}  find_elements  by=xpath  value=.//li[@class='select2-search-choice']//*[contains(text(), '${value}')]
+    END
 
     # Click Element  xpath=(//div[@class='querystring-criteria-value'])[3]//input
     # wait until element is visible  css=.select2-result-label
@@ -228,7 +230,30 @@ Add Info portlet
 
 
 Should be ${X} filter options
-    Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//div[contains(@class, 'filterContent')]//*[contains(@class, 'filterItem')]  limit=${X}
+    Wait until keyword succeeds  2s  1s  Page Should Contain Element  xpath=//div[contains(@class, 'filterContent')]//*[contains(@class, 'filterItem')]  limit=${X}
+
+Should be filter options
+    [Arguments]  @{values}
+    Wait until keyword succeeds  2s  1s  List Labels Should Equal  xpath=//div[contains(@class, 'filterContent')]//select  @{values}
+
+Should be filter checkboxes
+    [Arguments]  @{values}
+    Wait until keyword succeeds  2s  1s  Labels Should Equal  xpath=//div[contains(@class, 'filterContent')]//span[@class='filterLabel']  @{values}
+
+List Labels Should Equal
+   [Arguments]  ${selector}  @{expect}
+   @{options}=  get list items  ${selector}
+   Should Be Equal  ${expect}  ${options}
+
+Labels Should Equal
+    [Arguments]  ${selector}  @{expect}
+    @{locators}=     Get Webelements    ${selector}
+    ${result}=       Create List
+    FOR   ${locator}   IN    @{locators}
+           ${name}=    Get Text    ${locator}
+           Append To List  ${result}  ${name}
+    END
+    Should Be Equal  ${expect}  ${result}
 
 Should be ${X} collection results
     # Wait until element is visible  css=#content-core
@@ -262,10 +287,12 @@ Ajax has completed
 I've got a site with a collection
     [arguments]  ${batch}=20
     Log in as site owner
-    run keyword if  ${USE_TILES}   run keyword  Enable mosaic layout for page  ${PLONE_URL}/testcollection  batch=${batch}
+    run keyword if  ${USE_TILES}   run keyword  Enable mosaic layout for page  ${PLONE_URL}/testdoc  batch=${batch}
     run keyword unless  ${USE_TILES}   Go to  ${PLONE_URL}/testcollection
     run keyword unless  ${USE_TILES}   Set Batch Size  ${batch}
 
+I've got a site without a listing
+    I've got a site with a collection  0
 
 My collection has a collection search
     run keyword if  ${USE_TILES}  My collection has a collection search tile 
@@ -287,7 +314,7 @@ My collection has a collection info
     run keyword unless  ${USE_TILES}  My collection has a collection info portlet  ${header}   @{templates}  hide_when=${hide_when} 
 
 I'm viewing the collection
-    run keyword if  ${USE_TILES}  Go to  ${PLONE_URL}/testcollection
+    run keyword if  ${USE_TILES}  Go to  ${PLONE_URL}/testdoc
     run keyword unless  ${USE_TILES}  Go to  ${PLONE_URL}/testcollection
     # Should be 3 collection results
 
@@ -334,14 +361,14 @@ Set Batch Size
     # Go to  ${PLONE_URL}/testcollection
 
 Edit Listing Tile
-    Go to  ${PLONE_URL}/testcollection/edit
+    Go to  ${PLONE_URL}/testdoc/edit
     #Wait until page contains element  css=.mosaic-btn-delete
     #Wait until page contains element   css=#mosaic-panel
     Wait Until Element Is Visible  css=.mosaic-toolbar
     #Unselect Frame
     #mouse over  css=.mosaic-plone.app.standardtiles.contentlisting-tile
     click element  css=.contentlisting-tile
-    click button  Edit
+    Edit Current Tile
 
 # --- Core Functionality ------------------------------------------------------
 I search for "${search}" with ajax
@@ -399,9 +426,10 @@ Results Are Sorted
     ${xpath}=    Set Variable    //span[@class='summary']
     ${count}=    Get Element Count    xpath=${xpath}
     ${names}=    Create List
-    :FOR    ${i}    IN RANGE    1    ${count} + 1
-    \    ${name}=    Get Text    xpath=(${xpath})[${i}]
-    \    Append To List    ${names}    ${name}
+    FOR    ${i}    IN RANGE    1    ${count} + 1
+        ${name}=    Get Text    xpath=(${xpath})[${i}]
+        Append To List    ${names}    ${name}
+    END
 
     ${sorted}=  copy list  ${names}  False
     sort list  ${sorted}
@@ -414,29 +442,29 @@ Results Are Sorted
 My collection has a collection filter tile
     [Arguments]  ${group_by}=Subject  ${op}=or  ${style}=checkboxes_dropdowns  @{options}
 
-    Go to  ${PLONE_URL}/testcollection/edit
+    Go to  ${PLONE_URL}/testdoc/edit
     Add filter tile  ${group_by}  ${op}  ${style}  @{options} 
     Save mosaic page
 
 My collection has a collection search tile
 
-    Go to  ${PLONE_URL}/testcollection/edit
+    Go to  ${PLONE_URL}/testdoc/edit
     Add search tile
     Save mosaic page
 
 My collection has a collection info tile
     [Arguments]  ${header}  @{templates}  ${hide_when}=${None}  ${as_title}=${False}
 
-    Go to  ${PLONE_URL}/testcollection/edit
-    Add info tile  @{templates}  hide_when=${hide_when}  as_title=${as_title}
+    Go to  ${PLONE_URL}/testdoc/edit
+    Add info tile  @{templates}  hide_when=${hide_when}
     Save mosaic page
 
 My collection has a collection sorting tile 
     [Arguments]  ${sort_on}
-    Go to  ${PLONE_URL}/testcollection/edit
+    Go to  ${PLONE_URL}/testdoc/edit
     Insert Tile "Collection Result Listing Sort"
     Set Sorting Options  ${sort_on}  links
-    Run Keyword by label  Content Selector  Input Text  .contentlisting-tile
+    # Run Keyword by label  Content Selector  Input Text  .contentlisting-tile
     Click element  css=.pattern-modal-buttons #buttons-save
     Drag tile
 #    Click button   Edit
@@ -444,7 +472,7 @@ My collection has a collection sorting tile
 
 
 Enable mosaic layout for page
-    [Arguments]  ${page}  ${batch}=20
+    [Arguments]  ${page}=${PLONE_URL}/testdoc  ${batch}=20
 
     go to  ${page}
     # Setup Mosaic display and open editor
@@ -453,12 +481,10 @@ Enable mosaic layout for page
     Click element  link=Mosaic layout
     Go to  ${page}/edit
 
-    wait until element is visible  css=.mosaic-toolbar
-
     # Create default layout if its a Page
-    # Wait Until Element Is Visible  css=.mosaic-select-layout
-    # Wait until Page contains element  xpath=//a[@data-value='default/basic.html']
-    # Click element  xpath=//a[@data-value='default/basic.html']
+    Wait Until Element Is Visible  css=.mosaic-select-layout
+    Wait until Page contains element  xpath=//a[@data-value='default/basic.html']
+    Click element  xpath=//a[@data-value='default/basic.html']
 
     # Enable layout editing
     Wait Until Element Is Visible  css=.mosaic-toolbar
@@ -467,24 +493,28 @@ Enable mosaic layout for page
     Click element  css=.mosaic-button-customizelayout
 
     # Add a embed content tile pointing to the collection
-    #Add existing content tile  /testcollection
-    Add contentlisting tile  ${batch}
+    #Add existing content tile  /testdoc
+    run keyword if  ${batch} > 0  Add contentlisting tile  ${batch}
 
     Save mosaic page with bug
 
+Edit mosaic page
+    [Arguments]  ${page}=${PLONE_URL}/testdoc
+    Go to  ${page}/edit
+    Wait Until Element Is Visible  css=.mosaic-toolbar
 
 Save mosaic page with bug
     Wait Until Element Is Visible  css=.mosaic-button-save   timeout=5 sec
     Click button  css=.mosaic-button-save
     # HACK: Due to bug. If you save it once it works? https://github.com/plone/plone.app.mosaic/issues/421
-    Run Keyword And Ignore Error  handle alert
-    Wait until page contains  Changes saved   timeout=10 sec
+    run keyword and ignore error  alert should not be present  timeout=2 sec
+    Wait until page contains  Changes saved   timeout=2 sec
 
 
 Save mosaic page
     Wait Until Element Is Visible  css=.mosaic-button-save   timeout=5 sec
     Click button  css=.mosaic-button-save
-    Wait until page contains  Changes saved   timeout=10 sec
+    Wait until page contains  Changes saved   timeout=2 sec
 
 
 Add filter tile
@@ -492,12 +522,12 @@ Add filter tile
 
     Insert Tile "Collection Filter"
     Drag tile
-    Click button   Edit
+    Edit Current Tile
 #    Wait until element is visible  xpath=//div[@class='plone-modal-dialog' and .//*[contains(text(), 'Collection')]]
     #run keyword if  $collection_name  set relateditem  formfield-collective-collectionfilter-tiles-filter-target_collection  ${collection_name}
 
     Set Filter Options  ${group_by}  ${filter_type}  ${input_type}  @{options}
-    Run Keyword by label  Content Selector  Input Text  .contentlisting-tile
+    # Run Keyword by label  Content Selector  Input Text  .contentlisting-tile
 
     Click element  css=.pattern-modal-buttons #buttons-save
 
@@ -507,9 +537,9 @@ Add search tile
 
     Insert tile "Collection Search"
     Drag tile
-    Click button  Edit
+    Edit Current Tile
     run keyword if  $collection_name  set relateditem  formfield-collective-collectionfilter-tiles-search-target_collection  ${collection_name}
-    Run Keyword by label  Content Selector  Input Text  .contentlisting-tile
+    # Run Keyword by label  Content Selector  Input Text  .contentlisting-tile
     Click element  css=.pattern-modal-buttons #buttons-save
 
 
@@ -547,7 +577,7 @@ Add contentlisting tile
     [Arguments]  ${batch}=20
     Insert tile "Content listing"
     Drag tile
-    Click button  Edit
+    Edit Current Tile
     # TODO: test using this method
     # Run Keyword by label  Use query parameters from content  click element
 
@@ -561,13 +591,17 @@ Add contentlisting tile
 
     Click element  css=.pattern-modal-buttons #buttons-save
 
+Edit Current Tile
+    Click Button  css=.mosaic-selected-tile .mosaic-btn-settings
+    
 
 Drag tile
     Wait until page contains element  css=.mosaic-helper-tile-new
     Wait until element is visible  css=.mosaic-helper-tile-new
     Update element style  css=.mosaic-IDublinCore-description-tile .mosaic-divider-bottom  display  block
-    Mouse over  css=.mosaic-IDublinCore-description-tile .mosaic-divider-bottom
+    Mouse over  xpath=(//*[contains(@class,'movable')])[last()-1]
     Click element  css=.mosaic-selected-divider
+    #Click element  xpath=(//*[contains(@class,'movable')])[last()-1]
 
 Filter by
     [Arguments]  ${filter}

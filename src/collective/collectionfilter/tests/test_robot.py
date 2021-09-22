@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from collective.collectionfilter.testing import (  # noqa
     COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED,
-    COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_TILES,
 )
 from collective.collectionfilter.testing import (
     COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED,
+)
+from collective.collectionfilter.testing import (
+    COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_TILES,
 )
 from plone import api
 from plone.app.testing import ROBOT_TEST_LEVEL
@@ -27,25 +29,53 @@ def test_suite():
     for robot_test in robot_tests:
         if api.env.plone_version() < "5.1" and "ajaxenabled" in robot_test:
             continue
-        elif api.env.plone_version() < "5.1":
-            test_layer = (
-                (ROBOT_TEST_LEVEL, COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_TILES),
-                (ROBOT_TEST_LEVEL, COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED),
-            )
         elif "ajaxenabled" in robot_test:
             test_layer = (
-                (ROBOT_TEST_LEVEL, COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED),
+                (
+                    ROBOT_TEST_LEVEL,
+                    COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED,
+                ),
             )
         elif "ajaxdisabled" in robot_test:
             test_layer = (
-                (ROBOT_TEST_LEVEL, COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED),
+                (
+                    ROBOT_TEST_LEVEL,
+                    COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED,
+                ),
+            )
+        elif "_tiles" in robot_test:
+            test_layer = (
+                (
+                    ROBOT_TEST_LEVEL,
+                    COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_TILES,
+                ),
+            )
+        elif api.env.plone_version() < "5.1":
+            test_layer = (
+                (
+                    ROBOT_TEST_LEVEL,
+                    COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_TILES,
+                ),
+                (
+                    ROBOT_TEST_LEVEL,
+                    COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED,
+                ),
             )
         else:
             # We will run generic tests with and without ajax to test everything
             test_layer = (
-                (ROBOT_TEST_LEVEL, COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_TILES),
-                (ROBOT_TEST_LEVEL, COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED),
-                (ROBOT_TEST_LEVEL, COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED),
+                (
+                    ROBOT_TEST_LEVEL,
+                    COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_TILES,
+                ),
+                (
+                    ROBOT_TEST_LEVEL,
+                    COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED,
+                ),
+                (
+                    ROBOT_TEST_LEVEL,
+                    COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED,
+                ),
             )
         for level, layer in test_layer:
             robottestsuite = robotsuite.RobotTestSuite(robot_test)

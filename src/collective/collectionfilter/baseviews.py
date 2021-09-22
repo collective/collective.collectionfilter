@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_inner
 from collective.collectionfilter import PLONE_VERSION
-from collective.collectionfilter.filteritems import ICollectionish, get_filter_items
+from collective.collectionfilter.filteritems import get_filter_items
+from collective.collectionfilter.filteritems import ICollectionish
 from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.query import make_query
 from collective.collectionfilter.utils import base_query
@@ -101,9 +102,23 @@ class BaseView(object):
                 "collectionUUID": self.collection_uuid,
                 "reloadURL": self.reload_url,
                 "ajaxLoad": self.ajax_load,
-                "contentSelector": self.settings.content_selector,
+                "contentSelector": self.content_selector,
             }
         )
+
+    @property
+    def content_selector(self):
+        if self.settings.content_selector:
+            return self.settings.content_selector
+
+        collectionish = (
+            ICollectionish(self.collection.getObject()) if self.collection else None
+        )
+        selector = collectionish.content_selector
+        if collectionish is None or not selector:
+            return u"#content-core"
+        else:
+            return selector
 
     @property
     def ajax_load(self):
@@ -145,6 +160,7 @@ class BaseFilterView(BaseView):
             view_name=self.settings.view_name,
             cache_enabled=self.settings.cache_enabled,
             request_params=self.top_request.form or {},
+            content_selector=self.settings.content_selector,
         )
         return results
 
@@ -220,7 +236,11 @@ class BaseSearchView(BaseView):
 
 class BaseSortOnView(BaseView):
     def results(self):
-        collection = ICollectionish(self.collection.getObject())
+        collection = ICollectionish(self.collection.getObject()).selectContent(
+            self.settings.content_selector
+        )
+        if collection is None:
+            return
         curr_val = self.top_request.get("sort_on", collection.sort_on)
         curr_order = self.top_request.get(
             "sort_order", "descending" if collection.sort_reversed else "ascending"
@@ -419,7 +439,11 @@ if HAS_GEOLOCATION:
             # defined by urlquery
             custom_query = base_query(request_params)
             custom_query = make_query(custom_query)
-            return ICollectionish(collection).results(custom_query, request_params)
+            return (
+                ICollectionish(collection)
+                .selectContent(self.settings.content_selector)
+                .results(custom_query, request_params)
+            )
 
         @property
         def data_geojson(self):

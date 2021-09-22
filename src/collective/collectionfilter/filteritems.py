@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from collective.collectionfilter import _
+from collective.collectionfilter.interfaces import ICollectionish
 from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.query import make_query
 from collective.collectionfilter.utils import base_query
@@ -24,17 +25,13 @@ from plone.i18n.normalizer import idnormalizer
 from plone.memoize import ram
 from plone.memoize.volatile import DontCache
 from six.moves.urllib.parse import urlencode
-from zope.component import adapter
 from zope.component import getUtility
-from zope.component import getMultiAdapter
-from zope.interface import Interface
-from zope.interface import implementer
 from zope.globalrequest import getRequest
 from zope.i18n import translate
+from zope.interface import implementer
 
 import plone.api
 import six
-import re
 
 
 try:
@@ -55,6 +52,7 @@ def _results_cachekey(
     view_name="",
     cache_enabled=True,
     request_params=None,
+    content_selector="",
 ):
     if not cache_enabled:
         raise DontCache
@@ -66,6 +64,7 @@ def _results_cachekey(
         show_count,
         view_name,
         request_params,
+        content_selector,
         " ".join(plone.api.user.get_roles()),
         plone.api.portal.get_current_language(),
         str(plone.api.portal.get_tool("portal_catalog").getCounter()),
@@ -83,6 +82,7 @@ def get_filter_items(
     view_name="",
     cache_enabled=True,
     request_params=None,
+    content_selector="",
 ):
     request_params = request_params or {}
     custom_query = {}  # Additional query to filter the collection
@@ -91,7 +91,11 @@ def get_filter_items(
     if not collection or not group_by:
         return None
     collection_url = collection.absolute_url()
-    collection = ICollectionish(collection)
+    collection = ICollectionish(collection).selectContent(content_selector)
+    if (
+        collection is None or not collection.content_selector
+    ):  # e.g. when no listing tile
+        return None
 
     # Recursively transform all to unicode
     request_params = safe_decode(request_params)
@@ -244,16 +248,15 @@ def get_filter_items(
     return ret
 
 
-class ICollectionish(Interface):
-    "Adapts object similar to ICollection if has contentlisting tile, or if collection"
-
-
 @implementer(ICollectionish)
 class CollectionishCollection(object):
-
     def __init__(self, context):
         self.context = context
         self.collection = ICollection(self.context)
+
+    def selectContent(self, selector=""):
+        """Collections can only have a single content"""
+        return self
 
     @property
     def query(self):
@@ -279,6 +282,10 @@ class CollectionishCollection(object):
     def item_count(self):
         return self.collection.item_count
 
+    @property
+    def content_selector(self):
+        return u"#content-core"  # TODO: could look it up based on view?
+
     def results(self, custom_query, request_params):
 
         # Support for the Event Listing view from plone.app.event
@@ -294,74 +301,6 @@ class CollectionishCollection(object):
             # TODO: expand events. better yet, let collection.results
             #        do that
 
-        return self.collection.results(batch=False, brains=True, custom_query=custom_query)
-
-
-if ILayoutAware is not None:
-    @implementer(ICollectionish)
-    @adapter(ILayoutBehaviorAdaptable)
-    class CollectionishLayout(CollectionishCollection):
-        """Provide interface for either objects with contentlisting tiles or collections or both"""
-
-        tile = None
-
-        def __init__(self, context):
-            self.context = context
-
-            la = ILayoutAware(self.context)
-            if la.content:
-                urls = re.findall('(@@plone.app.standardtiles.contentlisting/[^"]+)', la.content)
-                if urls:
-                    # TODO: maybe better to get tile data? using ITileDataManager(id)?
-                    url = context.REQUEST.response.headers.get('x-tile-url')
-                    tile = self.context.unrestrictedTraverse(urls[0])
-                    tile.update()
-                    if context.REQUEST.response.headers.get('x-tile-url'):
-                        if url:
-                            context.REQUEST.response.headers['x-tile-url'] = url
-                        else:
-                            del context.REQUEST.response.headers['x-tile-url']
-
-                    # print(context.REQUEST.response.headers)
-                    self.tile = tile
-            if self.tile is None:
-                # Could still be a ILayoutAware collection
-                try:
-                    self.collection = ICollection(self.context)
-                except TypeError:
-                    raise TypeError("No contentlisting tile or Collection found")
-            else:
-                self.collection = self.tile  # to get properties
-
-        @property
-        def sort_reversed(self):
-            if self.tile is not None:
-                return self.sort_order == "reverse"
-            else:
-                return self.collection.sort_reversed
-
-        def results(self, custom_query, request_params):
-            """Search results"""
-            if self.tile is None:
-                return super(CollectionishLayout, self).results(custom_query, request_params)
-
-            builder = getMultiAdapter(
-                (self.context, self.context.REQUEST), name="querybuilderresults"
-            )
-
-            # Include query parameters from request if not set to ignore
-            contentFilter = {}
-            if not getattr(self.tile, "ignore_request_params", False):
-                contentFilter = dict(self.context.REQUEST.get("contentFilter", {}))
-
-            # TODO: handle events extra params
-
-            return builder(
-                query=self.query,
-                sort_on=self.sort_on or "getObjPositionInParent",
-                sort_order=self.sort_order,
-                limit=self.limit,
-                batch=False,
-                brains=True,
-                custom_query=custom_query if custom_query is not None else contentFilter,
-            )
+        return self.collection.results(
+            batch=False, brains=True, custom_query=custom_query
+        )
