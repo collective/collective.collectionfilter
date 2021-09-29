@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_inner
 from collective.collectionfilter import PLONE_VERSION
-from collective.collectionfilter.filteritems import get_filter_items
-from collective.collectionfilter.filteritems import ICollectionish
+from collective.collectionfilter.filteritems import (
+    get_filter_items,
+    ICollectionish,
+    _build_url,
+    _build_option,
+)
 from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.query import make_query
 from collective.collectionfilter.utils import base_query
@@ -412,7 +416,7 @@ class BaseInfoView(BaseView):
         return field[0]
 
     def get_field_values(self, field):
-        value = field[1]
+        content_value = field[1]
         index = field[0]
         groupby_criteria = getUtility(IGroupByCriteria).groupby
         request_params = self.top_request.form
@@ -422,7 +426,7 @@ class BaseInfoView(BaseView):
         collection = uuidToObject(self.settings.target_collection)
 
         # TODO: Refactor the following copied lines from collective.collectionfitler.filteritems into a function
-        field_value = value() if callable(value) else value
+        field_value = content_value() if callable(content_value) else content_value
         # decode it to unicode
         field_value = safe_decode(field_value)
         # Make sure it's iterable, as it's the case for e.g. the subject index.
@@ -434,13 +438,14 @@ class BaseInfoView(BaseView):
             groupby_modifier = lambda values, cur, narrow: values
 
         field_values = groupby_modifier(field_values, field_value, False)
-        url = _build_url(collection_url=collection.absolute_url(), urlquery=urlquery, filter_value=value, current_idx_value=[], idx=index, filter_type="single")
-        field_value = _build_option(filter_value=field_value, url=url, selected_values=[value], groupby_options=groupby_criteria[index])
 
-        if not isinstance(field_value, list):
-            field_value = [field_value]
+        field_data = []
+        for value in field_values:
+            url = _build_url(collection_url=collection.absolute_url(), urlquery=urlquery, filter_value=value, current_idx_value=[], idx=index, filter_type="single")
+            data = _build_option(filter_value=value, url=url, selected_values=[value], groupby_options=groupby_criteria[index])
+            field_data.append(data)
 
-        return field_value
+        return field_data
 
     @property
     def is_available(self):
