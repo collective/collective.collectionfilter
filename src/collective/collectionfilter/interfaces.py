@@ -244,6 +244,28 @@ class ICollectionFilterInfo(ICollectionFilterBaseSchema):
         required=False,
     )
 
+    context_aware = schema.Bool(
+        title=_(u"label_info_context_aware_mode", default=u"Context aware mode"),
+        description=_(
+            u"label_info_context_aware_mode",
+            default=u"Filter options can be displayed as links which reset the search to just this value.",
+        ),
+        default=True,
+        required=False,
+    )
+
+    context_aware_fields = schema.List(
+        title=_(u"label_info_context_aware_group_by", u"Fields to display"),
+        description=u"The title numbers which this page is a part of",
+        required=False,
+        value_type=schema.Choice(
+            required=False,
+            vocabulary="collective.collectionfilter.GroupByCriteria",
+        )
+    )
+    
+    
+
 
 class ICollectionFilterInfoTile(ICollectionFilterInfo):
     """Extra settings for tile"""

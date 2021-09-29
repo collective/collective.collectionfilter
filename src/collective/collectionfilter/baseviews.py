@@ -384,6 +384,64 @@ class BaseInfoView(BaseView):
         line = line.replace(u" ,", u",").replace(" :", ":")
         return line
 
+    def is_content_context(self):
+        if not self.settings.context_aware:
+            return False
+
+        target_collection_id = self.settings.target_collection
+
+        if uuidToObject(target_collection_id) == self.context:
+            return False
+
+        return True
+
+    def get_fields(self):
+        fields = self.settings.context_aware_fields
+        # TODO: Get the friendly name for the group_by instead of the id
+        return [
+            (field, getattr(self.context, field))
+            for field in fields
+            if hasattr(self.context, field)
+        ]
+
+    def get_field_title(self, field):
+        """
+            Field is a tuple, where the first index is the name of the field and the second the values for that field
+            Returns the friendly version of the title
+        """
+        return field[0]
+
+    def get_field_values(self, field):
+        value = field[1]
+        index = field[0]
+        groupby_criteria = getUtility(IGroupByCriteria).groupby
+        request_params = self.top_request.form
+        request_params = safe_decode(request_params)
+        extra_ignores = [index, index + "_op"]
+        urlquery = base_query(request_params, extra_ignores)
+        collection = uuidToObject(self.settings.target_collection)
+
+        # TODO: Refactor the following copied lines from collective.collectionfitler.filteritems into a function
+        field_value = value() if callable(value) else value
+        # decode it to unicode
+        field_value = safe_decode(field_value)
+        # Make sure it's iterable, as it's the case for e.g. the subject index.
+        field_values = safe_iterable(field_value)
+        # allow excluding or extending the field_valueue per index
+        groupby_modifier = groupby_criteria[index].get("groupby_modifier", None)
+
+        if not groupby_modifier:
+            groupby_modifier = lambda values, cur, narrow: values
+
+        field_values = groupby_modifier(field_values, field_value, False)
+        url = _build_url(collection_url=collection.absolute_url(), urlquery=urlquery, filter_value=value, current_idx_value=[], idx=index, filter_type="single")
+        field_value = _build_option(filter_value=field_value, url=url, selected_values=[value], groupby_options=groupby_criteria[index])
+
+        if not isinstance(field_value, list):
+            field_value = [field_value]
+
+        return field_value
+
     @property
     def is_available(self):
         target_collection = self.collection

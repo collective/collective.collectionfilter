@@ -23,6 +23,7 @@ class Assignment(base.Assignment):
     template_type = []
     hide_when = []
     as_links = True
+    context_aware = False
 
     def __init__(
         self,
@@ -33,6 +34,7 @@ class Assignment(base.Assignment):
         template_type=[],
         hide_when=[],
         as_links=True,
+        context_aware=False,
     ):
         self.header = header
         self.target_collection = target_collection
@@ -41,6 +43,7 @@ class Assignment(base.Assignment):
         self.template_type = template_type
         self.hide_when = hide_when
         self.as_links = as_links
+        self.context_aware = context_aware
 
     @property
     def portlet_id(self):
