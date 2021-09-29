@@ -4,21 +4,27 @@
   i18n:domain="collective.collectionfilter"
   tal:define="is_content_context view/is_content_context;">
 
+  <header class="portletHeader"
+    tal:condition="view/title"
+    tal:content="view/title">Title</header>
+
   <div class="portletContent filterInfoContent">
-
-    <div tal:condition="is_content_context"
+    <dl tal:condition="is_content_context"
       tal:define="fields view/get_fields">
-
-      <dl>
-        <tal:repeat repeat="field fields">
-          <dt>${python:view.get_field_title(field)}</dt>
-          <tal:repeat repeat="field_value python:view.get_field_values(field)">
-            <dd>${field_value/title}</dd>
-          </tal:repeat>
-
+      <tal:repeat repeat="field fields">
+        <dt>${python:view.get_field_title(field)}</dt>
+        <tal:repeat repeat="field_value python:view.get_field_values(field)">
+          <!-- <dd>${field_value/title} -->
+          <dd>
+            <a rel="nofollow"
+              href="${field_value/url}">
+                  ${field_value/title}
+            </a>
+          </dd>
         </tal:repeat>
-      </dl>
-    </div>
+
+      </tal:repeat>
+    </dl>
 
 
     <div tal:condition="not:is_content_context"
