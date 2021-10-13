@@ -10,8 +10,12 @@ Breaking Change:
 
 Bug Fixes:
 
+- Fix edge cases where "All" wasn't translated.
+  [agitator]
+
 - Ensure a `GroupByCriteria`'s `sort_key_function` function `lower()` call gets a string.
   [jensens]
+
 - Fixed searches for only non-alphanumeric characters causing an exception to be displayed.
   [JeffersonBledsoe]
 
