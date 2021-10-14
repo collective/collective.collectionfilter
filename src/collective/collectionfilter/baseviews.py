@@ -435,7 +435,7 @@ class BaseInfoView(BaseView):
         groupby_modifier = groupby_criteria[index].get("groupby_modifier", None)
 
         if not groupby_modifier:
-            groupby_modifier = lambda values, cur, narrow: values
+            groupby_modifier = lambda values, cur, narrow: values  # noqa: E731
 
         field_values = groupby_modifier(field_values, field_value, False)
 

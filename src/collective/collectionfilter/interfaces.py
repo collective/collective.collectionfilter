@@ -263,8 +263,6 @@ class ICollectionFilterInfo(ICollectionFilterBaseSchema):
             vocabulary="collective.collectionfilter.GroupByCriteria",
         )
     )
-    
-    
 
 
 class ICollectionFilterInfoTile(ICollectionFilterInfo):
