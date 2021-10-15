@@ -189,7 +189,11 @@ def get_filter_items(
         catalog_results = catalog_results_fullcount
     ret = [
         {
-            "title": translate(_("subject_all", default=u"All"), context=getRequest()),
+            "title": translate(
+                _("subject_all", default=u"All"),
+                context=getRequest(),
+                target_language=plone.api.portal.get_current_language(),
+            ),
             "url": u"{0}/?{1}".format(
                 collection_url, urlencode(safe_encode(urlquery_all), doseq=True)
             ),
