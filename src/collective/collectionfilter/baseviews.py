@@ -392,9 +392,7 @@ class BaseInfoView(BaseView):
         if not self.settings.context_aware:
             return False
 
-        target_collection_id = self.settings.target_collection
-
-        if uuidToObject(target_collection_id) == self.context:
+        if self.collection.getObject() == self.context:
             return False
 
         return True
@@ -423,7 +421,7 @@ class BaseInfoView(BaseView):
         request_params = safe_decode(request_params)
         extra_ignores = [index, index + "_op"]
         urlquery = base_query(request_params, extra_ignores)
-        collection = uuidToObject(self.settings.target_collection)
+        collection = self.collection.getObject()
 
         # TODO: Refactor the following copied lines from collective.collectionfitler.filteritems into a function
         field_value = content_value() if callable(content_value) else content_value
