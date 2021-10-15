@@ -35,6 +35,7 @@ class Assignment(base.Assignment):
         hide_when=[],
         as_links=True,
         context_aware=False,
+        context_aware_fields=[]
     ):
         self.header = header
         self.target_collection = target_collection
@@ -44,6 +45,7 @@ class Assignment(base.Assignment):
         self.hide_when = hide_when
         self.as_links = as_links
         self.context_aware = context_aware
+        self.context_aware_fields = context_aware_fields
 
     @property
     def portlet_id(self):
