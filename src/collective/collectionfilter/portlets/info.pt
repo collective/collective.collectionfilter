@@ -12,11 +12,12 @@
     <dl tal:condition="is_content_context"
       tal:define="fields view/get_fields">
       <tal:repeat repeat="field fields">
-        <dt>${python:view.get_field_title(field)}</dt>
+        <dt class="filterInfoContent__term">${python:view.get_field_title(field)}</dt>
         <tal:repeat repeat="field_value python:view.get_field_values(field)">
           <!-- <dd>${field_value/title} -->
-          <dd>
+          <dd class="filterInfoContent__definition">
             <a rel="nofollow"
+              class="filterItem"
               href="${field_value/url}">
                   ${field_value/title}
             </a>
