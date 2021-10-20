@@ -37,6 +37,64 @@ except ImportError:
         pass
 
 
+def _build_url(
+    collection_url, urlquery, filter_value, current_idx_value, idx, filter_type
+):
+    # Build filter url query
+    _urlquery = urlquery.copy()
+    # Allow deselection
+    if filter_value in current_idx_value:
+        _urlquery[idx] = [it for it in current_idx_value if it != filter_value]
+    elif filter_type != "single":
+        # additive filter behavior
+        _urlquery[idx] = current_idx_value + [filter_value]
+        _urlquery[idx + "_op"] = filter_type  # additive operator
+    else:
+        _urlquery[idx] = filter_value
+
+    query_param = urlencode(safe_encode(_urlquery), doseq=True)
+    return "/".join(
+        [
+            it
+            for it in [collection_url, "?" + query_param if query_param else None]
+            if it
+        ]
+    )
+
+
+def _build_option(filter_value, url, current_idx_value, groupby_options):
+    idx = groupby_options["index"]
+    # Optional modifier to set title from filter value
+    display_modifier = groupby_options.get("display_modifier", None)
+    # CSS modifier to set class on filter item
+    css_modifier = groupby_options.get("css_modifier", None)
+
+    # Set title from filter value with modifications,
+    # e.g. uuid to title
+    title = filter_value
+    if filter_value is not EMPTY_MARKER and callable(display_modifier):
+        title = display_modifier(filter_value, idx)
+        title = safe_decode(title)
+
+    # Set selected state
+    selected = filter_value in current_idx_value
+    css_class = "filterItem {0}{1} {2}".format(
+        "filter-" + idnormalizer.normalize(filter_value),
+        " selected" if selected else "",
+        css_modifier(filter_value) if css_modifier else "",
+    )
+
+    return {
+        "title": title,
+        "url": url,
+        "value": filter_value,
+        "css_class": css_class,
+        "count": 1,
+        "selected": selected,
+    }
+    pass
+
+
 def _results_cachekey(
     method,
     target_collection,
@@ -127,10 +185,6 @@ def get_filter_items(
 
     # Attribute name for getting filter value from brain
     metadata_attr = groupby_criteria[group_by]["metadata"]
-    # Optional modifier to set title from filter value
-    display_modifier = groupby_criteria[group_by].get("display_modifier", None)
-    # CSS modifier to set class on filter item
-    css_modifier = groupby_criteria[group_by].get("css_modifier", None)
     # Value blacklist
     value_blacklist = groupby_criteria[group_by].get("value_blacklist", None)
     # Allow value_blacklist to be callables for runtime-evaluation
@@ -165,53 +219,22 @@ def get_filter_items(
                 grouped_results[filter_value]["count"] += 1
                 continue
 
-            # Set title from filter value with modifications,
-            # e.g. uuid to title
-            title = filter_value
-            if filter_value is not EMPTY_MARKER and callable(display_modifier):
-                title = safe_decode(display_modifier(filter_value, idx))
+            option_url = "/".join([it for it in [collection_url, view_name] if it])
 
-            # Build filter url query
-            _urlquery = urlquery.copy()
-            # Allow deselection
-            if filter_value in current_idx_value:
-                _urlquery[idx] = [it for it in current_idx_value if it != filter_value]
-            elif filter_type != "single":
-                # additive filter behavior
-                _urlquery[idx] = current_idx_value + [filter_value]
-                _urlquery[idx + "_op"] = filter_type  # additive operator
-            else:
-                _urlquery[idx] = filter_value
-
-            query_param = urlencode(safe_encode(_urlquery), doseq=True)
-            url = "/".join(
-                [
-                    it
-                    for it in [
-                        collection_url,
-                        view_name,
-                        "?" + query_param if query_param else None,
-                    ]
-                    if it
-                ]
+            url = _build_url(
+                collection_url=option_url,
+                urlquery=urlquery,
+                filter_value=filter_value,
+                current_idx_value=current_idx_value,
+                idx=idx,
+                filter_type=filter_type,
             )
-
-            # Set selected state
-            selected = filter_value in current_idx_value
-            css_class = "filterItem {0}{1} {2}".format(
-                "filter-" + idnormalizer.normalize(filter_value),
-                " selected" if selected else "",
-                css_modifier(filter_value) if css_modifier else "",
+            grouped_results[filter_value] = _build_option(
+                filter_value=filter_value,
+                url=url,
+                current_idx_value=current_idx_value,
+                groupby_options=groupby_criteria[group_by],
             )
-
-            grouped_results[filter_value] = {
-                "title": title,
-                "url": url,
-                "value": filter_value,
-                "css_class": css_class,
-                "count": 1,
-                "selected": selected,
-            }
 
     # Entry to clear all filters
     urlquery_all = {
