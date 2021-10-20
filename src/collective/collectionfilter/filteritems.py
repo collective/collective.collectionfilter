@@ -201,18 +201,18 @@ def get_filter_items(
 
         # Get filter value
         val = getattr(brain, metadata_attr, None)
-        if callable(val):
-            val = val()
+        val = val() if callable(val) else val
         # decode it to unicode
         val = safe_decode(val)
         # Make sure it's iterable, as it's the case for e.g. the subject index.
         val = safe_iterable(val)
 
         for filter_value in val:
-            if filter_value is None or isinstance(filter_value, Missing):
-                continue
-            if value_blacklist and filter_value in value_blacklist:
-                # Do not include blacklisted
+            if (
+                filter_value is None
+                or isinstance(filter_value, Missing)
+                or filter_value in value_blacklist
+            ):
                 continue
             if filter_value in grouped_results:
                 # Add counter, if filter value is already present
