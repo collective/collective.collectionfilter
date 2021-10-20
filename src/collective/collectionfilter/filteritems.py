@@ -219,6 +219,7 @@ def get_filter_items(
         k: v for k, v in list(urlquery.items()) if k not in (idx, idx + "_op")
     }
     if narrow_down and show_count:
+        # TODO: catalog_results_fullcount is possibly undefined
         catalog_results = catalog_results_fullcount
     ret = [
         {
