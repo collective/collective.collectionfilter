@@ -144,6 +144,7 @@ def get_filter_items(
     if not collection or not group_by:
         return None
     collection_url = collection.absolute_url()
+    option_url = "/".join([it for it in [collection_url, view_name] if it])
     collection = ICollectionish(collection).selectContent(content_selector)
     if (
         collection is None or not collection.content_selector
@@ -161,8 +162,7 @@ def get_filter_items(
     idx = groupby_criteria[group_by]["index"]
     current_idx_value = safe_iterable(request_params.get(idx))
 
-    # Additive filtering is about adding other filter values of the same
-    # index.
+    # Additive filtering is about adding other filter values of the same index.
     extra_ignores = [] if narrow_down else [idx, idx + "_op"]
 
     urlquery = base_query(request_params, extra_ignores)
@@ -218,8 +218,6 @@ def get_filter_items(
                 # Add counter, if filter value is already present
                 grouped_results[filter_value]["count"] += 1
                 continue
-
-            option_url = "/".join([it for it in [collection_url, view_name] if it])
 
             url = _build_url(
                 collection_url=option_url,
