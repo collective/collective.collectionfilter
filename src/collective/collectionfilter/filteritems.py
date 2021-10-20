@@ -103,11 +103,10 @@ def get_filter_items(
     idx = groupby_criteria[group_by]["index"]
     current_idx_value = safe_iterable(request_params.get(idx))
 
-    extra_ignores = []
-    if not narrow_down:
-        # Additive filtering is about adding other filter values of the same
-        # index.
-        extra_ignores = [idx, idx + "_op"]
+    # Additive filtering is about adding other filter values of the same
+    # index.
+    extra_ignores = [] if narrow_down else [idx, idx + "_op"]
+
     urlquery = base_query(request_params, extra_ignores)
 
     # Get all collection results with additional filter defined by urlquery
