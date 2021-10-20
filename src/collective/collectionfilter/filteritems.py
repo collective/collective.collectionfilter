@@ -186,7 +186,7 @@ def get_filter_items(
     # Attribute name for getting filter value from brain
     metadata_attr = groupby_criteria[group_by]["metadata"]
     # Value blacklist
-    value_blacklist = groupby_criteria[group_by].get("value_blacklist", None)
+    value_blacklist = groupby_criteria[group_by].get("value_blacklist", None) or []
     # Allow value_blacklist to be callables for runtime-evaluation
     value_blacklist = (
         value_blacklist() if callable(value_blacklist) else value_blacklist
