@@ -210,8 +210,8 @@ def get_filter_items(
         for filter_value in val:
             if (
                 filter_value is None
-                or isinstance(filter_value, Missing)
-                or filter_value in value_blacklist
+                or isinstance(filter_value, Missing)  # noqa: W503
+                or filter_value in value_blacklist  # noqa: W503
             ):
                 continue
             if filter_value in grouped_results:
