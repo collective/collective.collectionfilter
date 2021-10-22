@@ -92,7 +92,6 @@ def _build_option(filter_value, url, current_idx_value, groupby_options):
         "count": 1,
         "selected": selected,
     }
-    pass
 
 
 def _results_cachekey(
