@@ -24,7 +24,6 @@ from plone.app.uuid.utils import uuidToObject
 from plone.i18n.normalizer import idnormalizer
 from plone.memoize import ram
 from plone.memoize.volatile import DontCache
-import re
 from six.moves.urllib.parse import urlencode
 from zope.component import getUtility
 from zope.globalrequest import getRequest
@@ -150,7 +149,6 @@ def get_filter_items(
         return None
     collection_url = collection.absolute_url()
     option_url = "/".join([it for it in [collection_url, view_name] if it])
-
     collection = ICollectionish(collection).selectContent(content_selector)
     if (
         collection is None or not collection.content_selector
@@ -196,7 +194,7 @@ def get_filter_items(
     # Allow value_blacklist to be callables for runtime-evaluation
     value_blacklist = (
         value_blacklist() if callable(value_blacklist) else value_blacklist
-    )
+    )  # noqa
     # fallback to title sorted values
     sort_key_function = groupby_criteria[group_by].get(
         "sort_key_function", lambda it: it["title"].lower()
