@@ -440,7 +440,7 @@ class BaseInfoView(BaseView):
         field_data = []
         for value in field_values:
             url = _build_url(collection_url=collection.absolute_url(), urlquery=urlquery, filter_value=value, current_idx_value=[], idx=index, filter_type="single")
-            data = _build_option(filter_value=value, url=url, selected_values=[value], groupby_options=groupby_criteria[index])
+            data = _build_option(filter_value=value, url=url, current_idx_value=[value], groupby_options=groupby_criteria[index])
             field_data.append(data)
 
         return field_data
