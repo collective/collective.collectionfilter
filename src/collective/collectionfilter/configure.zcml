@@ -47,6 +47,14 @@
       component=".vocabularies.SortOnIndexesVocabulary"
       name="collective.collectionfilter.SortOnIndexes"
       />
+  <utility
+      component=".vocabularies.TemplatePartsVocabulary"
+      name="collective.collectionfilter.TemplateParts"
+      />
+  <utility
+      component=".vocabularies.InfoConditionsVocabulary"
+      name="collective.collectionfilter.InfoConditions"
+      />
 
   <adapter factory=".filteritems.CollectionishCollection"
            provides="collective.collectionfilter.interfaces.ICollectionish"

@@ -114,6 +114,11 @@ Scenario: Search filter
     Then should be 4 collection results
       and Should be filter checkboxes  All (4)  Dokumänt (1)  Süper (1)
 
+    When I search for "& - * $"
+    # Checking for no error rather than results as Plone 5.2 will display no
+    #   results for a 'bad' query, while Plone 5.1/ 5.0 will display all of the results
+    Then page should not contain  error
+
     # Searching for query keywords (https://github.com/collective/collective.collectionfilter/issues/85)
     When I search for "and Document"
     Then should be 1 collection results

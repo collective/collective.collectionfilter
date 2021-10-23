@@ -3,7 +3,7 @@
 .collectionFilter,
 .portlet.collectionFilter,
 .collectionSortOn,
-.portlet.collectionSortOn  {
+.portlet.collectionSortOn {
   position: relative;
   background: white;
   .edit-link {
@@ -11,7 +11,7 @@
     right: 0;
     bottom: -0.5em;
     label {
-        display: none;
+      display: none;
     }
   }
 }
@@ -42,6 +42,7 @@
 .collectionSortOn .filterContent,
 .portlet.collectionSortOn .filterContent {
   padding: 1em;
+
   > ul {
     padding: 0;
     list-style: none;
@@ -50,21 +51,23 @@
       list-style-type: none;
       padding: 2px;
 
-      input[type="radio"], input[type="checkbox"] {
+      input[type="radio"],
+      input[type="checkbox"] {
         margin: 0.3em 0.5em 0 0;
         line-height: normal;
         position: absolute;
       }
       label {
         display: inline-block;
-        .filterControl, .filterLabel{
-            display: inline-block;
-            vertical-align: top;
+        .filterControl,
+        .filterLabel {
+          display: inline-block;
+          vertical-align: top;
         }
         .filterControl {
-            margin-right: 0.5em;
+          margin-right: 0.5em;
         }
-        .filterLabel{
+        .filterLabel {
           -webkit-hyphens: auto;
           -moz-hyphens: auto;
           hyphens: auto;
@@ -102,26 +105,12 @@
       }
     }
 
-
     li.selected a {
-        font-weight: bold;
+      font-weight: bold;
     }
-    li.pathLevel1 {
-      margin-left: 30px;
-    }
-    li.pathLevel2 {
-      margin-left: 45px;
-    }
-    li.pathLevel3 {
-      margin-left: 60px;
-    }
-    li.pathLevel4 {
-      margin-left: 75px;
-    }
-
     ul {
-        padding-left:15px;
-        list-style: none;
+      padding-left: 15px;
+      list-style: none;
     }
   }
   label {
@@ -133,6 +122,22 @@
   }
 }
 
-.sectionFilter li.selected a > span{
+.pat-collectionfilter .filterInfoContent {
+  margin-top: 0.5em;
+
+  .filterInfoContent__term {
+    @media (min-width: 480px) {
+      box-sizing: border-box;
+      float: left;
+      clear: left;
+      padding-right: 5px;
+    }
+  }
+  .filterInfoContent__definition {
+  }
+}
+
+.sectionFilter li.selected a > span {
   font-weight: bold;
 }
+

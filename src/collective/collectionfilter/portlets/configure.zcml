@@ -43,6 +43,17 @@
       />
 
   <plone:portlet
+      name="collective.collectionfilter.portlets.CollectionInfo"
+      interface=".info.ICollectionFilterInfoPortlet"
+      assignment=".info.Assignment"
+      renderer=".info.Renderer"
+      addview=".info.AddForm"
+      editview=".info.EditForm"
+      view_permission="zope2.View"
+      edit_permission="plone.app.portlets.ManagePortlets"
+      />
+
+  <plone:portlet
       zcml:condition="installed collective.geolocationbehavior"
       name="collective.collectionfilter.portlets.CollectionMaps"
       interface=".maps.ICollectionMapsPortlet"

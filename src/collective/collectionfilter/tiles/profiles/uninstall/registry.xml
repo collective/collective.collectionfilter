@@ -5,6 +5,7 @@
       <element remove="True">collective.collectionfilter.tiles.filter</element>
       <element remove="True">collective.collectionfilter.tiles.search</element>
       <element remove="True">collective.collectionfilter.tiles.sortOn</element>
+      <element remove="True">collective.collectionfilter.tiles.info</element>
       <element remove="True">collective.collectionfilter.tiles.maps</element>
     </value>
   </record>
@@ -22,6 +23,11 @@
   <records
       remove="True"
       prefix="plone.app.mosaic.app_tiles.collective_collectionfilter_tiles_sort_on"
+      interface="plone.app.mosaic.interfaces.ITile"/>
+
+  <records
+      remove="True"
+      prefix="plone.app.mosaic.app_tiles.collective_collectionfilter_tiles_info"
       interface="plone.app.mosaic.interfaces.ITile"/>
 
   <records

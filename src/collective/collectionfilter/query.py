@@ -11,6 +11,8 @@ from Products.CMFPlone.browser.search import quote_chars
 from zope.component import getUtility
 import plone.api
 
+from Products.CMFPlone.UnicodeSplitter.config import rxGlob_U
+
 
 try:
     from Products.CMFPlone.browser.search import quote
@@ -29,6 +31,8 @@ ENCODED_BAD_CHARS = safe_decode(BAD_CHARS)
 
 
 def sanitise_search_query(query):
+    if not rxGlob_U.findall(query):
+        return u""
     for char in ENCODED_BAD_CHARS:
         query = query.replace(char, " ")
     clean_query = [quote(token) for token in query.split()]

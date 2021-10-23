@@ -20,4 +20,9 @@
       title="Collection Section Filter"
       description="This portlet allows filtering of collection results based on their position in the site."
       />
+  <portlet
+      addview="collective.collectionfilter.portlets.CollectionInfo"
+      title="Collection Filter Search Info"
+      description="This portlet shows search criteria and results summary information"
+      />
 </portlets>

@@ -8,6 +8,22 @@ Breaking Change:
 - Add idx parameter to display_modifier call, so that we can use the index name to resolve the correct translated taxonomy titles in collective.taxonomy. This means that the display_modifier method in the groupby_modifier adapters needs to expect this parameter too!
   [MrTango]
 
+Bug Fixes:
+
+- Fix edge cases where "All" wasn't translated.
+  [agitator]
+
+- Ensure a `GroupByCriteria`'s `sort_key_function` function `lower()` call gets a string.
+  [jensens]
+
+- Fixed searches for only non-alphanumeric characters causing an exception to be displayed.
+  [JeffersonBledsoe]
+
+Other:
+
+- Code-Style Black and Isort
+  [jensens]
+
 
 3.5.1 (2021-05-26)
 ----------------
