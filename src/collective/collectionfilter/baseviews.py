@@ -297,6 +297,13 @@ def _exp_cachekey(method, self, target_collection, request):
     )
 
 
+def _field_title_cache_key(method, self, field_id):
+    return (
+        field_id[0],
+        self.context.getTypeInfo().id
+    )
+
+
 class BaseInfoView(BaseView):
 
     # TODO: should just cache on request?
@@ -408,10 +415,13 @@ class BaseInfoView(BaseView):
             if hasattr(self.context, field)
         ]
 
+    # Cache this function based on the index id and the dexterity type
+    @ram.cache(_field_title_cache_key)
     def get_field_title(self, field):
         """
             Field is a tuple, where the first index is the name of the field and the second the values for that field
-            Returns the friendly version of the title
+            Returns the friendly version of the title when possible, falling
+              back to the ID if a firiendly name can't be found.
         """
         index_id = field[0]
 
@@ -420,7 +430,6 @@ class BaseInfoView(BaseView):
                 if field_id == index_id:
                     return field_object.title
 
-        # Fallback to returning the ID if we can't find a friendly name for the field for the given index.
         return index_id
 
     def get_field_values(self, field):
