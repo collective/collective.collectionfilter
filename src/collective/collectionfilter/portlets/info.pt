@@ -9,9 +9,8 @@
     tal:content="view/title">Title</header>
 
   <div class="portletContent filterInfoContent">
-    <dl tal:condition="is_content_context"
-      tal:define="fields view/get_fields">
-      <tal:repeat repeat="field fields">
+    <dl tal:condition="is_content_context">
+      <tal:repeat repeat="field view/get_fields_to_display">
         <dt class="filterInfoContent__term">${python:view.get_field_title(field)}</dt>
         <tal:repeat repeat="field_value python:view.get_field_values(field)">
           <!-- <dd>${field_value/title} -->

@@ -21,6 +21,7 @@ from collective.collectionfilter.vocabularies import EMPTY_MARKER
 from plone.api.portal import get_registry_record as getrec
 from plone.app.uuid.utils import uuidToCatalogBrain
 from plone.app.uuid.utils import uuidToObject
+from plone.dexterity.utils import iterSchemata
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize import instance
 from plone.uuid.interfaces import IUUID
@@ -30,6 +31,7 @@ from six.moves.urllib.parse import urlencode
 from zope.component import getUtility
 from zope.component import queryUtility
 from zope.i18n import translate
+from zope.schema import getFieldsInOrder
 from zope.schema.interfaces import IVocabularyFactory
 from Products.CMFCore.Expression import Expression, getExprContext
 from plone import api
@@ -342,6 +344,13 @@ def _exp_cachekey(method, self, target_collection, request):
     )
 
 
+def _field_title_cache_key(method, self, field_id):
+    return (
+        field_id[0],
+        self.context.getTypeInfo().id
+    )
+
+
 class BaseInfoView(BaseView):
 
     # TODO: should just cache on request?
@@ -444,7 +453,7 @@ class BaseInfoView(BaseView):
 
         return True
 
-    def get_fields(self):
+    def get_fields_to_display(self):
         fields = self.settings.context_aware_fields
         # TODO: Get the friendly name for the group_by instead of the id
         return [
@@ -453,12 +462,22 @@ class BaseInfoView(BaseView):
             if hasattr(self.context, field)
         ]
 
+    # Cache this function based on the index id and the dexterity type
+    @ram.cache(_field_title_cache_key)
     def get_field_title(self, field):
         """
             Field is a tuple, where the first index is the name of the field and the second the values for that field
-            Returns the friendly version of the title
+            Returns the friendly version of the title when possible, falling
+              back to the ID if a firiendly name can't be found.
         """
-        return field[0]
+        index_id = field[0]
+
+        for schema in iterSchemata(context=self.context):
+            for field_id, field_object in getFieldsInOrder(schema=schema):
+                if field_id == index_id:
+                    return field_object.title
+
+        return index_id
 
     def get_field_values(self, field):
         content_value = field[1]
