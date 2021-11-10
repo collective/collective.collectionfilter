@@ -27,7 +27,7 @@ from plone.memoize import instance
 from plone.uuid.interfaces import IUUID
 from Products.CMFPlone.utils import get_top_request
 from Products.CMFPlone.utils import safe_unicode
-from six.moves.urllib.parse import urlencode
+from six.moves.urllib.parse import urlencode, parse_qsl
 from zope.component import getUtility
 from zope.component import queryUtility
 from zope.i18n import translate
@@ -172,21 +172,17 @@ class BaseFilterView(BaseView):
         )
         if not getattr(self.request, "collectionfilter", None):
             existing_query_string = self.request["QUERY_STRING"]
-            default_filter_query_string = "%s=%s" % (
-                self.settings.group_by,
-                results[0]["value"],
-            )
-            if existing_query_string:
-                default_filter_query_string = "&" + default_filter_query_string
+            # Using `parse_qsl` then converting to a list as `parse_qs` ends up producing lists for the values
+            query_object = dict(parse_qsl(existing_query_string))
 
-            query_string = (
-                existing_query_string
-                if self.settings.enable_all_filter_option
-                else existing_query_string + default_filter_query_string
-            )
+            if self.settings.group_by not in query_object:
+                query_object[self.settings.group_by] = results[0]["value"]
+
+            query_object['collectionfilter'] = 1
+
             self.request.response.redirect(
-                "%s?collectionfilter=1%s"
-                % (self.request["ACTUAL_URL"], query_string)
+                "%s?%s"
+                % (self.request["ACTUAL_URL"], urlencode(query_object))
             )
         return results
 
