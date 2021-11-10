@@ -171,7 +171,7 @@ class BaseFilterView(BaseView):
                 else existing_query_string + default_filter_query_string
             )
             self.request.response.redirect(
-                "%s?collectionfilter=1%s"
+                "%s?collectionfilter=1&%s"
                 % (self.request["ACTUAL_URL"], query_string)
             )
         return results
