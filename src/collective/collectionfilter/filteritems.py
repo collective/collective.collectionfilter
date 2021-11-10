@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from collective.collectionfilter import _
-from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.interfaces import ICollectionish
+from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.query import make_query
 from collective.collectionfilter.utils import base_query
 from collective.collectionfilter.utils import safe_decode
@@ -21,9 +21,9 @@ from plone.memoize import ram
 from plone.memoize.volatile import DontCache
 from six.moves.urllib.parse import urlencode
 from zope.component import getUtility
-from zope.interface import implementer
 from zope.globalrequest import getRequest
 from zope.i18n import translate
+from zope.interface import implementer
 
 import plone.api
 import six
@@ -35,6 +35,63 @@ except ImportError:
 
     class EventListing(object):
         pass
+
+
+def _build_url(
+    collection_url, urlquery, filter_value, current_idx_value, idx, filter_type
+):
+    # Build filter url query
+    _urlquery = urlquery.copy()
+    # Allow deselection
+    if filter_value in current_idx_value:
+        _urlquery[idx] = [it for it in current_idx_value if it != filter_value]
+    elif filter_type != "single":
+        # additive filter behavior
+        _urlquery[idx] = current_idx_value + [filter_value]
+        _urlquery[idx + "_op"] = filter_type  # additive operator
+    else:
+        _urlquery[idx] = filter_value
+
+    query_param = urlencode(safe_encode(_urlquery), doseq=True)
+    return "/".join(
+        [
+            it
+            for it in [collection_url, "?" + query_param if query_param else None]
+            if it
+        ]
+    )
+
+
+def _build_option(filter_value, url, current_idx_value, groupby_options):
+    idx = groupby_options["index"]
+    # Optional modifier to set title from filter value
+    display_modifier = groupby_options.get("display_modifier", None)
+    # CSS modifier to set class on filter item
+    css_modifier = groupby_options.get("css_modifier", None)
+
+    # Set title from filter value with modifications,
+    # e.g. uuid to title
+    title = filter_value
+    if filter_value is not EMPTY_MARKER and callable(display_modifier):
+        title = display_modifier(filter_value, idx)
+        title = safe_decode(title)
+
+    # Set selected state
+    selected = filter_value in current_idx_value
+    css_class = "filterItem {0}{1} {2}".format(
+        "filter-" + idnormalizer.normalize(filter_value),
+        " selected" if selected else "",
+        css_modifier(filter_value) if css_modifier else "",
+    )
+
+    return {
+        "title": title,
+        "url": url,
+        "value": filter_value,
+        "css_class": css_class,
+        "count": 1,
+        "selected": selected,
+    }
 
 
 def _results_cachekey(
@@ -89,8 +146,11 @@ def get_filter_items(
     if not collection or not group_by:
         return None
     collection_url = collection.absolute_url()
+    option_url = "/".join([it for it in [collection_url, view_name] if it])
     collection = ICollectionish(collection).selectContent(content_selector)
-    if collection is None or not collection.content_selector:  # e.g. when no listing tile
+    if (
+        collection is None or not collection.content_selector
+    ):  # e.g. when no listing tile
         return None
 
     # Recursively transform all to unicode
@@ -104,11 +164,9 @@ def get_filter_items(
     idx = groupby_criteria[group_by]["index"]
     current_idx_value = safe_iterable(request_params.get(idx))
 
-    extra_ignores = []
-    if not narrow_down:
-        # Additive filtering is about adding other filter values of the same
-        # index.
-        extra_ignores = [idx, idx + "_op"]
+    # Additive filtering is about adding other filter values of the same index.
+    extra_ignores = [] if narrow_down else [idx, idx + "_op"]
+
     urlquery = base_query(request_params, extra_ignores)
 
     # Get all collection results with additional filter defined by urlquery
@@ -129,12 +187,8 @@ def get_filter_items(
 
     # Attribute name for getting filter value from brain
     metadata_attr = groupby_criteria[group_by]["metadata"]
-    # Optional modifier to set title from filter value
-    display_modifier = groupby_criteria[group_by].get("display_modifier", None)
-    # CSS modifier to set class on filter item
-    css_modifier = groupby_criteria[group_by].get("css_modifier", None)
     # Value blacklist
-    value_blacklist = groupby_criteria[group_by].get("value_blacklist", None)
+    value_blacklist = groupby_criteria[group_by].get("value_blacklist", None) or []
     # Allow value_blacklist to be callables for runtime-evaluation
     value_blacklist = (
         value_blacklist() if callable(value_blacklist) else value_blacklist
@@ -149,81 +203,53 @@ def get_filter_items(
 
         # Get filter value
         val = getattr(brain, metadata_attr, None)
-        if callable(val):
-            val = val()
+        val = val() if callable(val) else val
         # decode it to unicode
         val = safe_decode(val)
         # Make sure it's iterable, as it's the case for e.g. the subject index.
         val = safe_iterable(val)
 
         for filter_value in val:
-            if filter_value is None or isinstance(filter_value, Missing):
-                continue
-            if value_blacklist and filter_value in value_blacklist:
-                # Do not include blacklisted
+            if (
+                filter_value is None
+                or isinstance(filter_value, Missing)
+                or filter_value in value_blacklist
+            ):
                 continue
             if filter_value in grouped_results:
                 # Add counter, if filter value is already present
                 grouped_results[filter_value]["count"] += 1
                 continue
 
-            # Set title from filter value with modifications,
-            # e.g. uuid to title
-            title = filter_value
-            if filter_value is not EMPTY_MARKER and callable(display_modifier):
-                title = safe_decode(display_modifier(filter_value, idx))
-
-            # Build filter url query
-            _urlquery = urlquery.copy()
-            # Allow deselection
-            if filter_value in current_idx_value:
-                _urlquery[idx] = [it for it in current_idx_value if it != filter_value]
-            elif filter_type != "single":
-                # additive filter behavior
-                _urlquery[idx] = current_idx_value + [filter_value]
-                _urlquery[idx + "_op"] = filter_type  # additive operator
-            else:
-                _urlquery[idx] = filter_value
-
-            query_param = urlencode(safe_encode(_urlquery), doseq=True)
-            url = "/".join(
-                [
-                    it
-                    for it in [
-                        collection_url,
-                        view_name,
-                        "?" + query_param if query_param else None,
-                    ]
-                    if it
-                ]
+            url = _build_url(
+                collection_url=option_url,
+                urlquery=urlquery,
+                filter_value=filter_value,
+                current_idx_value=current_idx_value,
+                idx=idx,
+                filter_type=filter_type,
             )
-
-            # Set selected state
-            selected = filter_value in current_idx_value
-            css_class = "filterItem {0}{1} {2}".format(
-                "filter-" + idnormalizer.normalize(filter_value),
-                " selected" if selected else "",
-                css_modifier(filter_value) if css_modifier else "",
+            grouped_results[filter_value] = _build_option(
+                filter_value=filter_value,
+                url=url,
+                current_idx_value=current_idx_value,
+                groupby_options=groupby_criteria[group_by],
             )
-
-            grouped_results[filter_value] = {
-                "title": title,
-                "url": url,
-                "value": filter_value,
-                "css_class": css_class,
-                "count": 1,
-                "selected": selected,
-            }
 
     # Entry to clear all filters
     urlquery_all = {
         k: v for k, v in list(urlquery.items()) if k not in (idx, idx + "_op")
     }
     if narrow_down and show_count:
+        # TODO: catalog_results_fullcount is possibly undefined
         catalog_results = catalog_results_fullcount
     ret = [
         {
-            "title": translate(_("subject_all", default=u"All"), context=getRequest()),
+            "title": translate(
+                _("subject_all", default=u"All"),
+                context=getRequest(),
+                target_language=plone.api.portal.get_current_language(),
+            ),
             "url": u"{0}/?{1}".format(
                 collection_url, urlencode(safe_encode(urlquery_all), doseq=True)
             ),
@@ -246,13 +272,12 @@ def get_filter_items(
 
 @implementer(ICollectionish)
 class CollectionishCollection(object):
-
     def __init__(self, context):
         self.context = context
         self.collection = ICollection(self.context)
 
     def selectContent(self, selector=""):
-        """ Collections can only have a single content """
+        """Collections can only have a single content"""
         return self
 
     @property
@@ -298,4 +323,6 @@ class CollectionishCollection(object):
             # TODO: expand events. better yet, let collection.results
             #        do that
 
-        return self.collection.results(batch=False, brains=True, custom_query=custom_query)
+        return self.collection.results(
+            batch=False, brains=True, custom_query=custom_query
+        )
