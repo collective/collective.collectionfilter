@@ -170,7 +170,7 @@ class BaseFilterView(BaseView):
             content_selector=self.settings.content_selector,
             include_all_option=self.settings.enable_all_filter_option,
         )
-        if not getattr(self.request, "collectionfilter", None):
+        if not getattr(self.request, "collectionfilter", None) and results:
             existing_query_string = self.request["QUERY_STRING"]
             # Using `parse_qsl` then converting to a list as `parse_qs` ends up producing lists for the values
             query_object = dict(parse_qsl(existing_query_string))
