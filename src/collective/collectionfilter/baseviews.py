@@ -171,7 +171,7 @@ class BaseFilterView(BaseView):
 
             self.request.response.redirect(
                 "%s?%s"
-                % (self.request["ACTUAL_URL"], urlencode(query_object))
+                % (self.request["ACTUAL_URL"], urlencode(safe_encode(query_object)))
             )
         return results
 
