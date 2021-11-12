@@ -164,7 +164,7 @@ class BaseFilterView(BaseView):
             # Using `parse_qsl` then converting to a list as `parse_qs` ends up producing lists for the values
             query_object = dict(parse_qsl(existing_query_string))
 
-            if self.settings.group_by not in query_object:
+            if self.settings.group_by not in query_object and not self.settings.enable_all_filter_option:
                 query_object[self.settings.group_by] = results[0]["value"]
 
             query_object['collectionfilter'] = 1
