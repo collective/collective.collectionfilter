@@ -110,7 +110,7 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
                 "Folder",
                 id="testfolder2",
                 title=u"Test Folder2",
-            ) # Important create testfolder2 first to test order in parent
+            )  # Important create testfolder2 first to test order in parent
             portal.invokeFactory(
                 "Folder",
                 id="testfolder",
