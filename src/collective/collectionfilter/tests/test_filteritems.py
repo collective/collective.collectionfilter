@@ -308,6 +308,17 @@ class TestFilteritems(unittest.TestCase):
         self.assertOption(result, "testfolder/testsubfolder", 1, True, "Test Sub-Folder", css="pathLevel1")
         self.assertOption(result, "testfolder2", 1, False, "Test Folder2", css="pathLevel0")
 
+    def test_pathfilter_sort_position_in_folder(self):
+        result = get_filter_items(
+            self.collection_uid,
+            "getPath",
+            cache_enabled=False,
+            request_params={"path": "testfolder/testsubfolder"},
+            narrow_down=False
+        )
+        # testfolder2 was created before testfolder so should be displayed first
+        self.assertListEqual([o['value'] for o in result], ["all", "testfolder2", "testfolder", "testfolder/testsubfolder"])
+
     def test_pathfilter_level1_empty(self):
         result = get_filter_items(
             self.collection_uid,
