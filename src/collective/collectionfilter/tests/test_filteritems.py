@@ -331,7 +331,7 @@ class TestFilteritems(unittest.TestCase):
         self.assertEqual(len(result), 3)
         self.assertOption(result, "all", 6, True)
         self.assertOption(result, True, 1, False)
-        self.assertOption(result, False, 4, False)
+        self.assertOption(result, False, 5, False)
 
         # test narrowed down results
         narrowed_down_result = get_filter_items(
@@ -369,6 +369,6 @@ class TestFilteritems(unittest.TestCase):
             get_data_by_val(narrowed_down_result, False)["selected"],
             True,  # noqa
         )
-        self.assertOption(narrowed_down_result, False, 4, True)
+        self.assertOption(narrowed_down_result, False, 5, True)
         # Test that there are 6 results if unselected",
         self.assertOption(narrowed_down_result, "all", 6, False)
