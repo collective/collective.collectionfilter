@@ -169,8 +169,12 @@ def sort_path(it):
     return it["url"]
 
 
-def sort_title(it):
-    return it["title"].lower()
+def sort_key_title(it):
+    """default sort key function uses a lower-cased title."""
+    title = it["title"]
+    if title is None:
+        return ""
+    return title.lower()
 
 
 @implementer(IGroupByCriteria)
@@ -204,7 +208,7 @@ class GroupByCriteria:
             index_modifier = None
             display_modifier = translate_value  # Allow to translate in this package domain per default.  # noqa
             groupby_modifier = None
-            sort_key_function = sort_title
+            sort_key_function = sort_key_title
             css_modifier = None
             index_name = dict(getPath="path").get(it, it)
             name = dict(getPath="Folder").get(it, it)

@@ -477,7 +477,7 @@ My collection has a collection sorting tile
 
 
 Enable mosaic layout for page
-    [Arguments]  ${page}  ${batch}=20
+    [Arguments]  ${page}=${PLONE_URL}/testdoc  ${batch}=20
 
     go to  ${page}
     # Setup Mosaic display and open editor
@@ -503,6 +503,10 @@ Enable mosaic layout for page
 
     Save mosaic page with bug
 
+Edit mosaic page
+    [Arguments]  ${page}=${PLONE_URL}/testdoc
+    Go to  ${page}/edit
+    Wait Until Element Is Visible  css=.mosaic-toolbar
 
 Save mosaic page with bug
     Wait Until Element Is Visible  css=.mosaic-button-save   timeout=5 sec
