@@ -18,6 +18,7 @@ from zope.interface import provider
 from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
+from OFS.interfaces import IOrderedContainer
 
 import plone.api
 import six
@@ -154,6 +155,25 @@ def path_to_title(path, idx):
     return title
 
 
+def path_to_folder_sort_key(item):
+    "return tuple of position in parent for each parent in path to correctly sort"
+    path = item['value']
+    portal = plone.api.portal.get()
+    # ctype = "folder"
+    key = []
+    parts = path.split("/")
+    for i in range(0, len(parts)):
+        # TODO: is there a better way than waking up parents?
+        parent = portal.unrestrictedTraverse(parts[:i])
+        ordered = IOrderedContainer(parent, None)
+        if ordered is not None:
+            pos = ordered.getObjectPosition(parts[i])
+        else:
+            pos = -1
+        key.append(pos)
+    return key
+
+
 def path_indent(path):
     level = max(0, len(path.split("/")) - 1)  # Put Top level at same level as All as easy enough it distiguish
     css_class = u"pathLevel{level}".format(level=level)
@@ -163,10 +183,6 @@ def path_indent(path):
 def relative_to_absolute_path(path):
     # Ensure query string only needs relative path. Internal search needs full path
     return '/'.join(list(plone.api.portal.get().getPhysicalPath()) + path.split("/"))
-
-
-def sort_path(it):
-    return it["url"]
 
 
 def sort_key_title(it):
@@ -226,8 +242,8 @@ class GroupByCriteria:
                 css_modifier = path_indent
                 groupby_modifier = selected_path_children
                 index_modifier = relative_to_absolute_path
-                sort_key_function = None
-                sort_on = "getObjPositionInParent"
+                sort_key_function = path_to_folder_sort_key
+                # sort_on = "getObjPositionInParent"
 
             # for portal_type or Type we have some special sauce as we need to translate via fti.i18n_domain.  # noqa
             if it == "portal_type":
