@@ -144,12 +144,11 @@ def selected_path_children(values, query, narrow_down):
 
 def path_to_title(path, idx):
     portal = plone.api.portal.get()
-    # ctype = "folder"
     path = "/".join(["/".join(portal.getPhysicalPath()), path])
-    container = portal.portal_catalog.searchResults({"path": {"query": path}, "depth": 0})
+    # TODO: this should have some cache on it? or a way to get the title from the metadata to save queries?
+    container = portal.portal_catalog.searchResults({"path": {"query": path, "depth": 0}})
     if len(container) > 0:
         title = container[0].Title
-        # ctype = container[0].portal_type.lower()
     else:
         title = path.split("/")[-1]
     return title
