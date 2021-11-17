@@ -8,7 +8,10 @@ Breaking Change:
 - Add idx parameter to display_modifier call, so that we can use the index name to resolve the correct translated taxonomy titles in collective.taxonomy. This means that the display_modifier method in the groupby_modifier adapters needs to expect this parameter too!
   [MrTango]
 
-Bug Fixes:
+Bug fixes:
+
+ - Use plone.memoize to cache groupby criteria
+   [instification]
 
 - Fix edge cases where "All" wasn't translated.
   [agitator]

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from Products.CMFCore.interfaces import ICatalogTool
 from collective.collectionfilter import _
 from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.interfaces import IGroupByModifier
@@ -8,9 +9,11 @@ from plone.app.vocabularies.types import (  # noqa: E501
     ReallyUserFriendlyTypesVocabularyFactory,
 )
 from plone.registry.interfaces import IRegistry
+from plone.memoize import ram
 from zope.component import getAdapters
 from zope.component import getMultiAdapter
 from zope.component import getUtility
+from zope.component import queryUtility
 from zope.globalrequest import getRequest
 from zope.i18n import translate
 from zope.interface import implementer
@@ -109,7 +112,16 @@ def translate_portal_type(value, *args, **kwargs):
     return term.title if term else value
 
 
-def sort_key_title(it):
+def _groupby_cache_key(method, self):
+    portal = plone.api.portal.get()
+    # cache key is shared across sites, so path is included
+    site_path = '/'.join(portal.getPhysicalPath())
+    catalog = queryUtility(ICatalogTool)
+    if catalog is None:
+        return site_path
+    return '%s-%s' % (site_path, str(catalog.getCounter()))
+
+  def sort_key_title(it):
     """default sort key function uses a lower-cased title."""
     title = it["title"]
     if title is None:
@@ -127,17 +139,12 @@ class GroupByCriteria:
 
     """
 
-    _groupby = None
+    _groupby = {}
     groupby_modify = {}
 
     @property
+    @ram.cache(_groupby_cache_key)
     def groupby(self):
-
-        if self._groupby is not None:
-            # The groupby criteria are used at each IBeforeTraverseEvent - so
-            # on each request. This has to be fast, so exit early.
-            return self._groupby
-        self._groupby = {}
 
         cat = plone.api.portal.get_tool("portal_catalog")
         # get catalog metadata schema, but filter out items which cannot be
