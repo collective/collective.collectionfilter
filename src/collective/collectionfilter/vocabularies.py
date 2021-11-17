@@ -111,10 +111,10 @@ def translate_portal_type(value, *args, **kwargs):
 
 
 def selected_path_children(values, query, narrow_down):
-    """ We only want the ancestors and direct child folders of current selections to be options.
-        This means we don't get overloaded with full tree of options. If no query then assume
-        portal is the query so return top level folders.
-     """
+    """We only want the ancestors and direct child folders of current selections to be options.
+    This means we don't get overloaded with full tree of options. If no query then assume
+    portal is the query so return top level folders.
+    """
     # Get path, remove portal root from path, remove leading
     for path in values:
         portal = plone.api.portal.get()
@@ -123,19 +123,21 @@ def selected_path_children(values, query, narrow_down):
         if not path.startswith(portal_path):
             path = "/".join([portal_path, path])
         if not query:
-            filters = ['']
+            filters = [""]
         elif not narrow_down:
             # Will include top level and parents of selected
-            filters = [''] + query
+            filters = [""] + query
         else:
             filters = query  # TODO: process it
         for filter in filters:
-            if not path.startswith('/'.join([portal_path, filter])):
+            if not path.startswith("/".join([portal_path, filter])):
                 continue
             parts = path.split("/")
             selected_parts = filter.split("/") if filter else []
             sub_parts = parts[len(portal_parts): -1]  # We only want parents
-            sub_parts = sub_parts[:len(selected_parts) + 1]  # Only want direct descendents of whats been picked
+            sub_parts = sub_parts[
+                : len(selected_parts) + 1
+            ]  # Only want direct descendents of whats been picked
             if not sub_parts:
                 continue
             for i in range(1, len(sub_parts) + 1):
@@ -146,7 +148,9 @@ def path_to_title(path, idx):
     portal = plone.api.portal.get()
     path = "/".join(["/".join(portal.getPhysicalPath()), path])
     # TODO: this should have some cache on it? or a way to get the title from the metadata to save queries?
-    container = portal.portal_catalog.searchResults({"path": {"query": path, "depth": 0}})
+    container = portal.portal_catalog.searchResults(
+        {"path": {"query": path, "depth": 0}}
+    )
     if len(container) > 0:
         title = container[0].Title
     else:
@@ -156,7 +160,7 @@ def path_to_title(path, idx):
 
 def path_to_folder_sort_key(item):
     "return tuple of position in parent for each parent in path to correctly sort"
-    path = item['value']
+    path = item["value"]
     portal = plone.api.portal.get()
     # ctype = "folder"
     key = []
@@ -174,14 +178,16 @@ def path_to_folder_sort_key(item):
 
 
 def path_indent(path):
-    level = max(0, len(path.split("/")) - 1)  # Put Top level at same level as All as easy enough it distiguish
+    level = max(
+        0, len(path.split("/")) - 1
+    )  # Put Top level at same level as All as easy enough it distiguish
     css_class = u"pathLevel{level}".format(level=level)
     return css_class
 
 
 def relative_to_absolute_path(path):
     # Ensure query string only needs relative path. Internal search needs full path
-    return '/'.join(list(plone.api.portal.get().getPhysicalPath()) + path.split("/"))
+    return "/".join(list(plone.api.portal.get().getPhysicalPath()) + path.split("/"))
 
 
 def sort_key_title(it):
@@ -217,7 +223,9 @@ class GroupByCriteria:
         cat = plone.api.portal.get_tool("portal_catalog")
         # get catalog metadata schema, but filter out items which cannot be
         # used for grouping
-        metadata = [it for it in cat.schema() if it not in GROUPBY_BLACKLIST] + ['getPath']
+        metadata = [it for it in cat.schema() if it not in GROUPBY_BLACKLIST] + [
+            "getPath"
+        ]
 
         for it in metadata:
             index_modifier = None
@@ -278,7 +286,10 @@ class GroupByCriteria:
 def GroupByCriteriaVocabulary(context):
     """Collection filter group by criteria."""
     groupby = getUtility(IGroupByCriteria).groupby
-    items = [SimpleTerm(title=_(item.get("groupby_name", it)), value=it) for it, item in groupby.items()]
+    items = [
+        SimpleTerm(title=_(item.get("groupby_name", it)), value=it)
+        for it, item in groupby.items()
+    ]
     return SimpleVocabulary(items)
 
 

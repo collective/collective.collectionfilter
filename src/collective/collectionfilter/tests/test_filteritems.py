@@ -54,26 +54,39 @@ class TestFilteritems(unittest.TestCase):
 
     def assertOption(self, results, option, count, selected=None, title=None, css=None):
         item = get_data_by_val(results, option)
-        self.assertIsNotNone(item, u"Filter option not found {option}".format(option=option))
+        self.assertIsNotNone(
+            item, u"Filter option not found {option}".format(option=option)
+        )
         is_selected = u"selected" if selected else u"unselected"
         self.assertEqual(
-            item["count"], count,
+            item["count"],
+            count,
             msg=u"Test that the number of results for {} if {} is {} but got {}".format(
-                option, is_selected, count, item["count"])
+                option, is_selected, count, item["count"]
+            ),
         )
         if title is not None:
             self.assertEqual(item["title"], title)
         if selected is not None:
-            self.assertEqual(item["selected"], selected, msg=u"{} should be {} but isn't".format(
-                option, is_selected))
+            self.assertEqual(
+                item["selected"],
+                selected,
+                msg=u"{} should be {} but isn't".format(option, is_selected),
+            )
         if css is not None:
             self.assertIn(css, item["css_class"].split())
 
     def assertListingLen(self, results, option, length):
-        count = len(ICollection(self.collection).results(
-            batch=False, brains=True, custom_query=make_query(qs(results, option))
-        ))
-        self.assertEqual(count, length, msg=u"Expected {} listing results, got {}".format(length, count))
+        count = len(
+            ICollection(self.collection).results(
+                batch=False, brains=True, custom_query=make_query(qs(results, option))
+            )
+        )
+        self.assertEqual(
+            count,
+            length,
+            msg=u"Expected {} listing results, got {}".format(length, count),
+        )
 
     def test_filteritems(self):
         self.assertEqual(len(self.collection.results()), 6)
@@ -116,7 +129,9 @@ class TestFilteritems(unittest.TestCase):
             cache_enabled=False,
         )
 
-        self.assertEqual(len(narrowed_down_result), 3, msg=u"narrowed result length should be 3")
+        self.assertEqual(
+            len(narrowed_down_result), 3, msg=u"narrowed result length should be 3"
+        )
         # Test that 'Dokumänt' is selected, matching the query
         self.assertOption(narrowed_down_result, u"Dokumänt", 2, True)
         # Test that there are 3 results if unselected
@@ -263,8 +278,12 @@ class TestFilteritems(unittest.TestCase):
 
         self.assertEqual(len(result), 3)
         self.assertOption(result, "all", 6, True)
-        self.assertOption(result, "testfolder", 2, False, "Test Folder", css="pathLevel0")
-        self.assertOption(result, "testfolder2", 1, False, "Test Folder2", css="pathLevel0")
+        self.assertOption(
+            result, "testfolder", 2, False, "Test Folder", css="pathLevel0"
+        )
+        self.assertOption(
+            result, "testfolder2", 1, False, "Test Folder2", css="pathLevel0"
+        )
 
     def test_pathfilter_level1(self):
         result = get_filter_items(
@@ -272,12 +291,21 @@ class TestFilteritems(unittest.TestCase):
             "getPath",
             cache_enabled=False,
             request_params={"path": "testfolder"},
-            narrow_down=True
+            narrow_down=True,
         )
         self.assertEqual(len(result), 3)
         self.assertOption(result, "all", 2, False, "All")
-        self.assertOption(result, "testfolder", 2, True, "Test Folder", css="pathLevel0")
-        self.assertOption(result, "testfolder/testsubfolder", 1, False, "Test Sub-Folder", css="pathLevel1")
+        self.assertOption(
+            result, "testfolder", 2, True, "Test Folder", css="pathLevel0"
+        )
+        self.assertOption(
+            result,
+            "testfolder/testsubfolder",
+            1,
+            False,
+            "Test Sub-Folder",
+            css="pathLevel1",
+        )
 
     def test_pathfilter_level2(self):
         result = get_filter_items(
@@ -285,13 +313,22 @@ class TestFilteritems(unittest.TestCase):
             "getPath",
             cache_enabled=False,
             request_params={"path": "testfolder/testsubfolder"},
-            narrow_down=True
+            narrow_down=True,
         )
 
         self.assertEqual(len(result), 3)
         self.assertOption(result, "all", 1, False, "All")
-        self.assertOption(result, "testfolder", 1, True, "Test Folder", css="pathLevel0")
-        self.assertOption(result, "testfolder/testsubfolder", 1, True, "Test Sub-Folder", css="pathLevel1")
+        self.assertOption(
+            result, "testfolder", 1, True, "Test Folder", css="pathLevel0"
+        )
+        self.assertOption(
+            result,
+            "testfolder/testsubfolder",
+            1,
+            True,
+            "Test Sub-Folder",
+            css="pathLevel1",
+        )
 
     def test_pathfilter_level2_nonarrow(self):
         result = get_filter_items(
@@ -299,14 +336,25 @@ class TestFilteritems(unittest.TestCase):
             "getPath",
             cache_enabled=False,
             request_params={"path": "testfolder/testsubfolder"},
-            narrow_down=False
+            narrow_down=False,
         )
 
         self.assertEqual(len(result), 4)
         self.assertOption(result, "all", 6, False, "All")
-        self.assertOption(result, "testfolder", 3, True, "Test Folder", css="pathLevel0")
-        self.assertOption(result, "testfolder/testsubfolder", 1, True, "Test Sub-Folder", css="pathLevel1")
-        self.assertOption(result, "testfolder2", 1, False, "Test Folder2", css="pathLevel0")
+        self.assertOption(
+            result, "testfolder", 3, True, "Test Folder", css="pathLevel0"
+        )
+        self.assertOption(
+            result,
+            "testfolder/testsubfolder",
+            1,
+            True,
+            "Test Sub-Folder",
+            css="pathLevel1",
+        )
+        self.assertOption(
+            result, "testfolder2", 1, False, "Test Folder2", css="pathLevel0"
+        )
 
     def test_pathfilter_sort_position_in_folder(self):
         result = get_filter_items(
@@ -314,10 +362,13 @@ class TestFilteritems(unittest.TestCase):
             "getPath",
             cache_enabled=False,
             request_params={"path": "testfolder/testsubfolder"},
-            narrow_down=False
+            narrow_down=False,
         )
         # testfolder2 was created before testfolder so should be displayed first
-        self.assertListEqual([o['value'] for o in result], ["all", "testfolder2", "testfolder", "testfolder/testsubfolder"])
+        self.assertListEqual(
+            [o["value"] for o in result],
+            ["all", "testfolder2", "testfolder", "testfolder/testsubfolder"],
+        )
 
     def test_pathfilter_level1_empty(self):
         result = get_filter_items(
@@ -325,11 +376,13 @@ class TestFilteritems(unittest.TestCase):
             "getPath",
             cache_enabled=False,
             request_params={"path": "testfolder2"},
-            narrow_down=True
+            narrow_down=True,
         )
 
         self.assertEqual(len(result), 2)
-        self.assertOption(result, "testfolder2", 1, True, "Test Folder2", css="pathLevel0")
+        self.assertOption(
+            result, "testfolder2", 1, True, "Test Folder2", css="pathLevel0"
+        )
 
     def test_boolean_filter(self):
         """Validate boolean fields are shown with all values."""

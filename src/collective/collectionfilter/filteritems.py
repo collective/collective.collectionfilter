@@ -94,7 +94,7 @@ def _build_option(filter_value, url, selected, groupby_options):
         "css_class": css_class,
         "count": 1,
         "selected": selected,
-        "level": level
+        "level": level,
     }
 
 
@@ -176,7 +176,7 @@ def get_filter_items(
     # Get all collection results with additional filter defined by urlquery
     custom_query.update(urlquery)
     if sort_on is not None:
-        custom_query['sort_on'] = sort_on
+        custom_query["sort_on"] = sort_on
     custom_query = make_query(custom_query)
 
     catalog_results = collection.results(custom_query, request_params)
@@ -197,20 +197,30 @@ def get_filter_items(
     # Optional modifier to modify the metadata value into one or more groupby values
     groupby_modifier = groupby_criteria[group_by].get("groupby_modifier", None)
     if not groupby_modifier:
+
         def groupby_modifier(values, cur, narrow):
             return values
+
     # Value blacklist
     value_blacklist = groupby_criteria[group_by].get("value_blacklist", None) or []
     # Allow value_blacklist to be callables for runtime-evaluation
-    value_blacklist = (value_blacklist() if callable(value_blacklist) else value_blacklist) or []
+    value_blacklist = (
+        value_blacklist() if callable(value_blacklist) else value_blacklist
+    ) or []
 
     # fallback to title sorted values
-    sort_key_function = None if sort_on else groupby_criteria[group_by].get(
-        "sort_key_function", lambda it: it["title"].lower()
+    sort_key_function = (
+        None
+        if sort_on
+        else groupby_criteria[group_by].get(
+            "sort_key_function", lambda it: it["title"].lower()
+        )
     )
 
     # ensure all values associated with current selection are selected
-    selected_values = current_idx_value + list(groupby_modifier(current_idx_value, current_idx_value, narrow_down))
+    selected_values = current_idx_value + list(
+        groupby_modifier(current_idx_value, current_idx_value, narrow_down)
+    )
 
     grouped_results = OrderedDict()
     for brain in catalog_results:
@@ -273,12 +283,16 @@ def get_filter_items(
             "css_class": "filterItem filter-all",
             "count": catalog_results_fullcount,
             "selected": idx not in request_params,
-            "level": 0
+            "level": 0,
         }
     ]
 
     grouped_results = list(grouped_results.values())
-    ret += sorted(grouped_results, key=sort_key_function) if callable(sort_key_function) else grouped_results
+    ret += (
+        sorted(grouped_results, key=sort_key_function)
+        if callable(sort_key_function)
+        else grouped_results
+    )
     return ret
 
 
