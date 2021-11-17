@@ -134,7 +134,7 @@ def selected_path_children(values, query, narrow_down):
                 continue
             parts = path.split("/")
             selected_parts = filter.split("/") if filter else []
-            sub_parts = parts[len(portal_parts): -1]  # We only want parents
+            sub_parts = parts[len(portal_parts) : -1]  # We only want parents
             sub_parts = sub_parts[
                 : len(selected_parts) + 1
             ]  # Only want direct descendents of whats been picked
