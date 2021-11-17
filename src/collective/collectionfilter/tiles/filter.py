@@ -12,4 +12,4 @@ class IFilterTile(Schema, ICollectionFilterSchema):
 
 @implementer(IFilterTile)
 class FilterTile(BaseFilterTile, BaseFilterView):
-    """ Filter Tile """
+    """Filter Tile"""

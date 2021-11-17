@@ -121,6 +121,13 @@ def _groupby_cache_key(method, self):
         return site_path
     return '%s-%s' % (site_path, str(catalog.getCounter()))
 
+  def sort_key_title(it):
+    """default sort key function uses a lower-cased title."""
+    title = it["title"]
+    if title is None:
+        return ""
+    return title.lower()
+
 
 @implementer(IGroupByCriteria)
 class GroupByCriteria:
@@ -169,9 +176,7 @@ class GroupByCriteria:
                 "css_modifier": None,
                 "index_modifier": index_modifier,
                 "value_blacklist": None,
-                "sort_key_function": lambda it: it[
-                    "title"
-                ].lower(),  # sort key function. defaults to a lower-cased title.  # noqa
+                "sort_key_function": sort_key_title,
             }
 
         modifiers = getAdapters((self,), IGroupByModifier)
