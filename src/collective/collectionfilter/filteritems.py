@@ -311,7 +311,7 @@ def get_filter_items(
     return ret
 
 
-def _build_url(collection_url, urlquery, filter_value, current_idx_value, idx, filter_type):
+def _build_url(collection_url, urlquery, filter_value, current_idx_value, idx, filter_type, allow_all_for_first_option=True):
     # Build filter url query
     _urlquery = urlquery.copy()
     # Allow deselection
