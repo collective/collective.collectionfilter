@@ -45,13 +45,13 @@ except ImportError:
 
 
 def _build_url(
-    collection_url, urlquery, filter_value, current_idx_value, idx, filter_type
+    collection_url, urlquery, filter_value, current_idx_value, idx, filter_type, allow_all_for_first_option=True
 ):
     # Build filter url query
     _urlquery = urlquery.copy()
     # Allow deselection
     if filter_value in current_idx_value:
-        _urlquery[idx] = [it for it in current_idx_value if it != filter_value]
+        _urlquery[idx] = [it for it in current_idx_value if it != filter_value and not allow_all_for_first_option]
     elif filter_type != "single":
         # additive filter behavior
         _urlquery[idx] = current_idx_value + [filter_value]
@@ -271,6 +271,7 @@ def get_filter_items(
                 current_idx_value=current_idx_value,
                 idx=idx,
                 filter_type=filter_type,
+                allow_all_for_first_option=include_all_option
             )
             grouped_results[filter_value] = _build_option(
                 filter_value=filter_value,
