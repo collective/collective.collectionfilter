@@ -9,11 +9,11 @@
       addview="collective.collectionfilter.portlets.CollectionSearch"
       />
   <portlet
-      rempve="True"
+      remove="True"
       addview="collective.collectionfilter.portlets.CollectionSortOn"
       />
   <portlet
-      rempve="True"
+      remove="True"
       addview="collective.collectionfilter.portlets.CollectionMaps"
       />
   <portlet
