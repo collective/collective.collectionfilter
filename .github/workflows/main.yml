@@ -39,7 +39,13 @@ jobs:
             python-version: 3.8
             layer: Portlet_AjaxEnabled
           - plone-version: 5.2
-            python-version: ['3.6','3.7','3.8'] 
+            python-version: 3.6 
+            layer: unit
+          - plone-version: 5.2
+            python-version: 3.7 
+            layer: unit
+          - plone-version: 5.2
+            python-version: 3.8 
             layer: unit
         exclude:
           - plone-version: 5.0
