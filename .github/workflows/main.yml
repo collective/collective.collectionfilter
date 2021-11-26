@@ -20,6 +20,7 @@ jobs:
           - Portlet_AjaxDisabled
           - Portlet_AjaxEnabled
           - Tile
+          - unit
         coverage: ['no_coverage']
         include:
           - plone-version: 5.2
@@ -88,22 +89,35 @@ jobs:
           bin/buildout -t 10 -Nc test-${{ matrix.plone-version }}.x.cfg
           bin/pip install zest.pocompile
           bin/pocompile src
-      - name: test
-        if: ${{ matrix.coverage != 'coverage' }}
+      - name: test robot
+        if: ${{ matrix.coverage != 'coverage' && matrix.layer != 'unit' }}
         run: |
             export DISPLAY=:99.0
             chromedriver --url-base=/wd/hub &
             sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
             sleep 3
+            bin/test --all  --layer ${{ matrix.layer }} --list-tests            
             bin/test --all  --layer ${{ matrix.layer }}
+      - name: test unit
+        if: ${{ matrix.coverage != 'coverage' && matrix.layer == 'unit' }}
+        run: |
+            bin/test --unit --list-tests            
+            bin/test --unit
       - name: createcoverage
-        if: ${{ matrix.coverage == 'coverage' }}
+        if: ${{ matrix.coverage == 'coverage' && matrix.layer != 'unit' }}
         run: |
             export DISPLAY=:99.0
             chromedriver --url-base=/wd/hub &
             sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
             sleep 3
+            bin/test --all  --layer ${{ matrix.layer }} --list-tests            
             bin/createcoverage -t '--all --layer ${{ matrix.layer }}'
+            bin/coverage json -i
+      - name: createcoverage
+        if: ${{ matrix.coverage == 'coverage' && matrix.layer == 'unit' }}
+        run: |
+            bin/test --unit --list-tests            
+            bin/createcoverage -t '--unit'
             bin/coverage json -i
       - name: Coveralls
         if: ${{ matrix.coverage == 'coverage' }}
