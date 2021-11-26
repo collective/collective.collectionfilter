@@ -38,6 +38,9 @@ jobs:
           - plone-version: 5.2
             python-version: 3.8
             layer: Portlet_AjaxEnabled
+          - plone-version: 5.2
+            python-version: ['3.6','3.7','3.8'] 
+            layer: unit
         exclude:
           - plone-version: 5.0
             layer: Tile # standardtiles 2.3.2 does support using the request to query. embed might still be possible
