@@ -159,6 +159,8 @@ class BaseFilterView(BaseView):
             content_selector=self.settings.content_selector,
             include_all_option=self.settings.enable_all_filter_option,
         )
+        # In order to handle filters with no "All" option we need redirect urls that 
+        # haven't been processed yet picking default options for those filters
         if not getattr(self.request, "collectionfilter", None) and results:
             existing_query_string = self.request["QUERY_STRING"]
             # Using `parse_qsl` then converting to a list as `parse_qs` ends up producing lists for the values
@@ -174,7 +176,7 @@ class BaseFilterView(BaseView):
 
             self.request.response.redirect(
                 "%s?%s"
-                % (self.request["ACTUAL_URL"], urlencode(safe_encode(query_object)))
+                % (self.request["URL0"], urlencode(safe_encode(query_object)))
             )
         return results
 
