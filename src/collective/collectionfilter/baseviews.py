@@ -159,7 +159,7 @@ class BaseFilterView(BaseView):
             content_selector=self.settings.content_selector,
             include_all_option=self.settings.enable_all_filter_option,
         )
-        # In order to handle filters with no "All" option we need redirect urls that 
+        # In order to handle filters with no "All" option we need redirect urls that
         # haven't been processed yet picking default options for those filters
         if not getattr(self.request, "collectionfilter", None) and results:
             existing_query_string = self.request["QUERY_STRING"]
