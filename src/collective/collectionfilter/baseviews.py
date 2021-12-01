@@ -160,16 +160,23 @@ class BaseFilterView(BaseView):
             include_all_option=self.settings.enable_all_filter_option,
         )
 
-        # In order to handle filters with no "All" option we need redirect urls that
-        # haven't been processed yet picking default options for those filters
-        if getattr(self.request, "collectionfilter", None) or not results:
-            # assume we already fixed
-            return results
-        if self.request.response.headers.get("x-tile-url"):
+        if (
+            self.request.response.headers.get("x-tile-url")
+            and self.request.get("PARENT_REQUEST") is None
+        ):
             # We are in the edit mosaic page so we don't want to redirect
             return results
 
-        existing_query_string = self.request["QUERY_STRING"]
+        # In the case of tiles we are in a subrequest (ie tile). We need to really redirect
+        req = self.request.get("PARENT_REQUEST", self.request)
+
+        # In order to handle filters with no "All" option we need redirect urls that
+        # haven't been processed yet picking default options for those filters
+        if getattr(req, "collectionfilter", None) or not results:
+            # assume we already fixed the params
+            return results
+
+        existing_query_string = req["QUERY_STRING"]
         # Using `parse_qsl` then converting to a list as `parse_qs` ends up producing lists for the values
         query_object = dict(parse_qsl(existing_query_string))
 
@@ -181,8 +188,15 @@ class BaseFilterView(BaseView):
 
         query_object["collectionfilter"] = 1
 
-        # In the case of tiles we are in a subrequest (ie tile). We need to really redirect
-        req = self.request.get("PARENT_REQUEST", self.request)
+        # if req['HTTP_COOKIE']:
+        #     # when saving a tile the redirect hides teh status message.
+        #     # The statusmessage is in HTTP_COOKIES but removed from req.cookies
+        #     c = Cookie.Cookie()
+        #     c.load(req['HTTP_COOKIE'])
+        #     if "statusmessages" in c:
+        #         # TODO: set using proper interface
+        #         req.response.setCookie("statusmessages", c['statusmessages'].value)
+
         req.response.redirect(
             "%s?%s" % (req["ACTUAL_URL"], urlencode(safe_encode(query_object)))
         )
