@@ -159,25 +159,33 @@ class BaseFilterView(BaseView):
             content_selector=self.settings.content_selector,
             include_all_option=self.settings.enable_all_filter_option,
         )
+
         # In order to handle filters with no "All" option we need redirect urls that
         # haven't been processed yet picking default options for those filters
-        if not getattr(self.request, "collectionfilter", None) and results:
-            existing_query_string = self.request["QUERY_STRING"]
-            # Using `parse_qsl` then converting to a list as `parse_qs` ends up producing lists for the values
-            query_object = dict(parse_qsl(existing_query_string))
+        if getattr(self.request, "collectionfilter", None) or not results:
+            # assume we already fixed
+            return results
+        if self.request.response.headers.get("x-tile-url"):
+            # We are in the edit mosaic page so we don't want to redirect
+            return results
 
-            if (
-                self.settings.group_by not in query_object
-                and not self.settings.enable_all_filter_option
-            ):
-                query_object[self.settings.group_by] = results[0]["value"]
+        existing_query_string = self.request["QUERY_STRING"]
+        # Using `parse_qsl` then converting to a list as `parse_qs` ends up producing lists for the values
+        query_object = dict(parse_qsl(existing_query_string))
 
-            query_object["collectionfilter"] = 1
+        if (
+            self.settings.group_by not in query_object
+            and not self.settings.enable_all_filter_option
+        ):
+            query_object[self.settings.group_by] = results[0]["value"]
 
-            self.request.response.redirect(
-                "%s?%s"
-                % (self.request["URL0"], urlencode(safe_encode(query_object)))
-            )
+        query_object["collectionfilter"] = 1
+
+        # In the case of tiles we are in a subrequest (ie tile). We need to really redirect
+        req = self.request.get("PARENT_REQUEST", self.request)
+        req.response.redirect(
+            "%s?%s" % (req["ACTUAL_URL"], urlencode(safe_encode(query_object)))
+        )
         return results
 
     @property
