@@ -50,7 +50,7 @@ Scenario: Info on keyword search
 
 Scenario: Combine info templates
     Given I've got a site with a collection
-      and my collection has a collection info  Current Filters  search_for  search_quoted  filter_colon_value  comma  with  result_count  results
+      and my collection has a collection info  Current Filters  search_for  search_quoted  filter_colon_value  with  result_count  results
       and my collection has a collection search
       and my collection has a collection filter  Subject  and  checkboxes_dropdowns
      When I'm viewing the collection
@@ -63,7 +63,7 @@ Scenario: Combine info templates
 
 Scenario: Info with custom text
     Given I've got a site with a collection
-      and my collection has a collection info  Current Filters  search_quoted  Custom text  comma  with  result_count  results
+      and my collection has a collection info  Current Filters  search_quoted  Custom text  ,  with  result_count  results
       and my collection has a collection search
      When I'm viewing the collection
       and I search for "Document"
@@ -85,7 +85,7 @@ Scenario: Hide on any filter
 
 Scenario: Display as title
     Given I've got a site with a collection
-      and my collection has a collection info  Current Filters  search_for  search_quoted  filter_colon_value  comma  with  result_count  results  as_title=${True}
+      and my collection has a collection info  Current Filters  search_for  search_quoted  filter_colon_value  with  result_count  results  as_title=${True}
       and my collection has a collection filter  Subject
      When I'm viewing the collection
       and Click Input "Süper (2)"

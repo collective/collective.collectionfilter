@@ -302,19 +302,18 @@ def SortOnIndexesVocabulary(context):
 
 DEFAULT_TEMPLATES = OrderedDict(
     [
-        ("search_for", (u"Search for", u"string:Search for")),
         (
             "filter_colon_value",
             (
                 u"{Filter}: {value}, ...",
-                u'python: u", ".join(u"{}: {}".format(k,u"/".join(v)) for k, v in query)',
+                u"""python: u", ".join(u"{}: {}".format(k,u"/".join(v)) for k, v in query)""",
             ),
         ),
         (
             "value_comma",
             (
                 u"{value}, ...",
-                u'python: ", u".join(u"{}".format(v) for _,values in query for v in values)',
+                u"""python: ", u".join(u"{}".format(v) for _,values in query for v in values)""",
             ),
         ),
         (
@@ -324,15 +323,10 @@ DEFAULT_TEMPLATES = OrderedDict(
                 u"""python: u", ".join(u'"{}" {}'.format(u"/".join(v),k) for k, v in query)""",
             ),
         ),
-        ("with_keywords", (u"with keywords", u"string:with keywords")),
         (
             "search_quoted",
             (u'"{search}"', u"""python: u'"{}"'.format(search) if search else '' """),
         ),
-        ("hyphen", (u" - ", u"string:-")),
-        ("comma", (u", ", u"string:, ")),
-        ("has_returned", (u"has returned", u"string:has returned")),
-        ("with", (u"with", u"string:with")),
         ("result_count", (u"{results}", u"python:str(results)")),
         ("results", (u"results", u"python: 'result' if results == 1 else 'results'")),
         (
