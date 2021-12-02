@@ -61,6 +61,14 @@ Scenario: Combine info templates
       and I search for "Event"
      Then Should be Info with text: Search for "Event" Subject: Süper/Evänt, with 1 result
 
+Scenario: Info with custom text
+    Given I've got a site with a collection
+      and my collection has a collection info  Current Filters  search_quoted  Custom text  comma  with  result_count  results
+      and my collection has a collection search
+     When I'm viewing the collection
+      and I search for "Document"
+     then Should be Info with text: "Document" Custom text, with 1 result
+
 Scenario: Hide on any filter
     Given I've got a site with a collection
       and my collection has a collection info  Current Filters  result_count   hide_when=any_filter
