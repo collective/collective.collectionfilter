@@ -387,9 +387,14 @@ class BaseInfoView(BaseView):
 
         parts = []
         for template in self.settings.template_type:
-            _, exp = DEFAULT_TEMPLATES.get(template)
-            # TODO: precompile templates
-            text = Expression(exp)(expression_context)
+            template_definition = DEFAULT_TEMPLATES.get(template)
+            text = None
+            if template_definition:
+                _, exp = DEFAULT_TEMPLATES.get(template)
+                # TODO: precompile templates
+                text = Expression(exp)(expression_context)
+            else:
+                text = template
             if text:
                 parts.append(text)
         line = u" ".join(parts)

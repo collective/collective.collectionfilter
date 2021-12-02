@@ -4,7 +4,7 @@ from collective.collectionfilter import PLONE_VERSION
 from collective.collectionfilter import utils
 from plone.api.portal import get_registry_record as getrec
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
-from plone.app.z3cform.widget import SelectFieldWidget
+from plone.app.z3cform.widget import SelectFieldWidget, AjaxSelectFieldWidget
 from plone.autoform.directives import widget
 from zope import schema
 from zope.interface import Interface
@@ -213,14 +213,16 @@ class ICollectionFilterInfo(ICollectionFilterBaseSchema):
             "help_template_type",
             u"What information to display about the search and results",
         ),
-        value_type=schema.Choice(
-            title=u"Parts",
-            vocabulary="collective.collectionfilter.TemplateParts",
-        ),
+        value_type=schema.TextLine(),
         required=True,
     )
-    # NB needed as InAndOut breaks tiles in 5.0
-    widget("template_type", SelectFieldWidget, pattern_options=dict(orderable=True))
+    # Fix tiles in 5.0 and allow users to set custom parts of the template
+    widget(
+        "template_type",
+        AjaxSelectFieldWidget,
+        vocabulary='collective.collectionfilter.TemplateParts',
+        pattern_options=dict(orderable=True)
+    )
 
     hide_when = schema.Tuple(
         title=_("label_hide_when", u"Hide when"),
