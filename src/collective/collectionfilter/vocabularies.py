@@ -345,7 +345,27 @@ DEFAULT_TEMPLATES = OrderedDict(
 
 @provider(IVocabularyFactory)
 def TemplatePartsVocabulary(context):
-    items = [SimpleTerm(title=v[0], value=k) for k, v in DEFAULT_TEMPLATES.items()]
+    """
+    The vocabulary consists of a tuple containing the id of the template part
+    and a tuple within that tuple containing the title viewed by in the interface and the TAL expression for the template part.
+    """
+    items = [
+        SimpleTerm(token=k, title=v[0], value=v[1])
+        for k, v in DEFAULT_TEMPLATES.items()
+    ]
+    groupby = getUtility(IGroupByCriteria).groupby
+    for groupby_criteria in groupby.keys():
+        items.append(SimpleTerm(
+            token=u"value_{}".format(groupby_criteria),
+            title=u"Value of {}".format(_(groupby_criteria)),
+            value=u"""python:'{}'""".format(groupby_criteria),
+        ))
+        items.append(SimpleTerm(
+            token=u"name{}".format(groupby_criteria),
+            title=u"{}".format(_(groupby_criteria)),
+            value=u"""string:'{}'""".format(groupby_criteria),
+        ))
+
     return SimpleVocabulary(items)
 
 
