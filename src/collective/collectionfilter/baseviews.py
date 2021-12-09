@@ -15,7 +15,6 @@ from collective.collectionfilter.utils import safe_decode
 from collective.collectionfilter.utils import safe_encode
 from collective.collectionfilter.utils import safe_iterable
 from collective.collectionfilter.vocabularies import TEXT_IDX
-from collective.collectionfilter.vocabularies import DEFAULT_TEMPLATES
 from collective.collectionfilter.vocabularies import get_conditions
 from collective.collectionfilter.vocabularies import EMPTY_MARKER
 from plone.api.portal import get_registry_record as getrec
@@ -428,13 +427,30 @@ class BaseInfoView(BaseView):
             self.collection.getObject(), request_params
         )
 
+        parts_vocabulary_factory = getUtility(
+            IVocabularyFactory, "collective.collectionfilter.TemplateParts"
+        )
+        parts_vocabulary = parts_vocabulary_factory(self.context)
+
         parts = []
         for template in self.settings.template_type:
-            _, exp = DEFAULT_TEMPLATES.get(template)
-            # TODO: precompile templates
-            text = Expression(exp)(expression_context)
+            text = None
+            try:
+                # This vocab term lookup will throw a LookupError if the term doesn't exist in the built-ins
+                template_definition_term = parts_vocabulary.getTermByToken(template)
+                exp = template_definition_term.value
+                # TODO: precompile templates
+                text = Expression(exp)(expression_context)
+
+                if isinstance(text, list):
+                    text = u", ".join(text)
+
+            except LookupError:
+                text = template
+
             if text:
                 parts.append(text)
+
         line = u" ".join(parts)
         # TODO: should be more generic i18n way to do this?
         line = line.replace(u" ,", u",").replace(" :", ":")
