@@ -437,7 +437,7 @@ class BaseInfoView(BaseView):
             text = None
             try:
                 # This vocab term lookup will throw a LookupError if the term doesn't exist in the built-ins
-                template_definition_term = parts_vocabulary.getTermByToken(template)
+                template_definition_term = parts_vocabulary.getTerm(template)
                 exp = template_definition_term.value
                 # TODO: precompile templates
                 text = Expression(exp)(expression_context)
