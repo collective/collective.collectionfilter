@@ -398,6 +398,10 @@ class BaseInfoView(BaseView):
                 exp = template_definition_term.value
                 # TODO: precompile templates
                 text = Expression(exp)(expression_context)
+
+                if isinstance(text, list):
+                    text = u", ".join(text)
+
             except LookupError:
                 text = template
 
