@@ -357,13 +357,13 @@ def TemplatePartsVocabulary(context):
     for groupby_criteria in groupby.keys():
         items.append(SimpleTerm(
             token=u"value_{}".format(groupby_criteria),
-            title=u"Value of {}".format(_(groupby_criteria)),
-            value=u"""python:'{}'""".format(groupby_criteria),
+            title=u"{{Value of {}}}".format(_(groupby_criteria)),
+            value=u"""python:dict(query).get('{0}', '')""".format(groupby_criteria),
         ))
         items.append(SimpleTerm(
-            token=u"name{}".format(groupby_criteria),
+            token=u"name_{}".format(groupby_criteria),
             title=u"{}".format(_(groupby_criteria)),
-            value=u"""string:'{}'""".format(groupby_criteria),
+            value=u"""string:{}""".format(groupby_criteria),
         ))
 
     return SimpleVocabulary(items)
