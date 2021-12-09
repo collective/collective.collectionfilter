@@ -2,6 +2,7 @@ Changelog
 =========
 
 4.0 (unreleased)
+----------------
 
 Breaking Change:
 
@@ -9,6 +10,9 @@ Breaking Change:
   [MrTango]
 
 Bug Fixes:
+
+- Hide uninstall profiles from install view.
+  [jensens]
 
 - Fix edge cases where "All" wasn't translated.
   [agitator]
