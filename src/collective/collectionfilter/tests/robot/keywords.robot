@@ -309,8 +309,8 @@ My collection has a collection sorting
     run keyword unless  ${USE_TILES}  My collection has a collection sorting portlet  ${sort_on}
 
 My collection has a collection info
-    [Arguments]  ${header}="Current Filter"  @{templates}  ${hide_when}=${None}
-    run keyword if  ${USE_TILES}  My collection has a collection info tile  ${header}   @{templates}  hide_when=${hide_when} 
+    [Arguments]  ${header}="Current Filter"  @{templates}  ${hide_when}=${None}  ${as_title}=${False}
+    run keyword if  ${USE_TILES}  My collection has a collection info tile  ${header}   @{templates}  hide_when=${hide_when}  as_title=${as_title}
     run keyword unless  ${USE_TILES}  My collection has a collection info portlet  ${header}   @{templates}  hide_when=${hide_when} 
 
 I'm viewing the collection
@@ -453,7 +453,7 @@ My collection has a collection search tile
     Save mosaic page
 
 My collection has a collection info tile
-    [Arguments]  ${header}  @{templates}  ${hide_when}=${None}
+    [Arguments]  ${header}  @{templates}  ${hide_when}=${None}  ${as_title}=${False}
 
     Go to  ${PLONE_URL}/testdoc/edit
     Add info tile  @{templates}  hide_when=${hide_when}
@@ -545,13 +545,14 @@ Add search tile
 
 
 Add info tile
-    [Arguments]   @{templates}  ${hide_when}=${None}  ${collection_name}=${None}
+    [Arguments]   @{templates}  ${hide_when}=${None}  ${collection_name}=${None}  ${as_title}=${False}
 
     Insert tile "Collection Filter Info"
     run keyword if  $collection_name  set relateditem  formfield-collective-collectionfilter-tiles-info-target_collection  ${collection_name}
     # Complete filter form
     Set Info Settings  collective-collectionfilter-tiles-info  @{templates}  hide_when=${hide_when}
-    # Run Keyword by label  Content Selector  Input Text  .contentlisting-tile
+    Run Keyword by label  Content Selector  Input Text  .contentlisting-tile
+    run keyword if  ${as_title}   Set Options  Display as Title
 
     Click element  css=.pattern-modal-buttons #buttons-save
     Drag tile

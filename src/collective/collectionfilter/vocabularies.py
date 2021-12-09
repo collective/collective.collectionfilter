@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from collections import OrderedDict
 from collective.collectionfilter import _
 from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.interfaces import IGroupByModifier
@@ -117,6 +118,70 @@ def sort_key_title(it):
     return title.lower()
 
 
+def selected_path_children(value, query, narrow_down):
+    """ We only want the ancestors and direct child folders of current selections to be options.
+        This means we don't get overloaded with full tree of options. If no query then assume
+        portal is the query so return top level folders.
+     """
+    # Get path, remove portal root from path, remove leading
+    path = value
+    portal = plone.api.portal.get()
+    portal_parts = portal.getPhysicalPath()
+    portal_path = "/".join(list(portal_parts))
+    if not path.startswith(portal_path):
+        path = "/".join([portal_path, path])
+    if not query:
+        filters = ['']
+    elif not narrow_down:
+        # Will include top level and parents of selected
+        filters = [''] + query
+    else:
+        filters = query  # TODO: process it
+    for filter in filters:
+        if not path.startswith('/'.join([portal_path, filter])):
+            continue
+        parts = path.split("/")
+        selected_parts = filter.split("/") if filter else []
+        sub_parts = parts[len(portal_parts): -1]  # We only want parents
+        sub_parts = sub_parts[:len(selected_parts) + 1]  # Only want direct descendents of whats been picked
+        if not sub_parts:
+            continue
+        for i in range(1, len(sub_parts) + 1):
+            yield "/".join(sub_parts[:i])
+
+
+def path_to_title(path, idx):
+    portal = plone.api.portal.get()
+    # ctype = "folder"
+    path = "/".join(["/".join(portal.getPhysicalPath()), path])
+    container = portal.portal_catalog.searchResults({"path": {"query": path}, "depth": 0})
+    if len(container) > 0:
+        title = container[0].Title
+        # ctype = container[0].portal_type.lower()
+    else:
+        title = path.split("/")[-1]
+    return title
+
+
+def path_indent(path):
+    level = max(0, len(path.split("/")) - 1)  # Put Top level at same level as All as easy enough it distiguish
+    css_class = u"pathLevel{level}".format(level=level)
+    return css_class
+
+
+def relative_to_absolute_path(path):
+    # Ensure query string only needs relative path. Internal search needs full path
+    return '/'.join(list(plone.api.portal.get().getPhysicalPath()) + path.split("/"))
+
+
+def sort_path(it):
+    return it["url"]
+
+
+def sort_title(it):
+    return it["title"].lower()
+
+
 @implementer(IGroupByCriteria)
 class GroupByCriteria:
     """Global utility for retrieving and manipulating groupby criterias.
@@ -232,4 +297,106 @@ def SortOnIndexesVocabulary(context):
     items = [
         SimpleTerm(title=_(v["title"]), value=k) for k, v in sortable_indexes.items()
     ]  # noqa
+    return SimpleVocabulary(items)
+
+
+DEFAULT_TEMPLATES = OrderedDict(
+    [
+        ("search_for", (u"Search for", u"string:Search for")),
+        (
+            "filter_colon_value",
+            (
+                u"{Filter}: {value}, ...",
+                u'python: u", ".join(u"{}: {}".format(k,u"/".join(v)) for k, v in query)',
+            ),
+        ),
+        (
+            "value_comma",
+            (
+                u"{value}, ...",
+                u'python: ", u".join(u"{}".format(v) for _,values in query for v in values)',
+            ),
+        ),
+        (
+            "value_quoted_filter",
+            (
+                u'"{value}" {Filter}, ...',
+                u"""python: u", ".join(u'"{}" {}'.format(u"/".join(v),k) for k, v in query)""",
+            ),
+        ),
+        ("with_keywords", (u"with keywords", u"string:with keywords")),
+        (
+            "search_quoted",
+            (u'"{search}"', u"""python: u'"{}"'.format(search) if search else '' """),
+        ),
+        ("hyphen", (u" - ", u"string:-")),
+        ("comma", (u", ", u"string:, ")),
+        ("has_returned", (u"has returned", u"string:has returned")),
+        ("with", (u"with", u"string:with")),
+        ("result_count", (u"{results}", u"python:str(results)")),
+        ("results", (u"results", u"python: 'result' if results == 1 else 'results'")),
+        (
+            "documents",
+            (u"documents", u"python: 'document' if results == 1 else 'documents'"),
+        ),
+    ]
+)
+
+
+@provider(IVocabularyFactory)
+def TemplatePartsVocabulary(context):
+    """
+    The vocabulary consists of a tuple containing the id of the template part
+    and a tuple within that tuple containing the title viewed by in the interface and the TAL expression for the template part.
+    """
+    items = [
+        SimpleTerm(token=k, title=v[0], value=v[1])
+        for k, v in DEFAULT_TEMPLATES.items()
+    ]
+    groupby = getUtility(IGroupByCriteria).groupby
+    for groupby_criteria in groupby.keys():
+        items.append(SimpleTerm(
+            token=u"value_{}".format(groupby_criteria),
+            title=u"{{Value of {}}}".format(_(groupby_criteria)),
+            value=u"""python:dict(query).get('{0}', '')""".format(groupby_criteria),
+        ))
+        items.append(SimpleTerm(
+            token=u"name_{}".format(groupby_criteria),
+            title=u"{}".format(_(groupby_criteria)),
+            value=u"""string:{}""".format(groupby_criteria),
+        ))
+
+    return SimpleVocabulary(items)
+
+
+def get_conditions():
+    items = [
+        ("any_filter", u"Any filter", "query"),
+        ("no_filter", u"No filter", "not:query"),
+        ("search", u"Keyword search", "search"),
+        ("no_search", u"Keyword search", "not:search"),
+        ("results", u"Results", "results"),
+        ("no_results", u"No Results", "not:results"),
+    ]
+    groupby = getUtility(IGroupByCriteria).groupby
+    for it in groupby.keys():
+        i = (
+            "filter_{}".format(it),
+            u"Filtered by {}".format(_(it)),
+            "python:'{}' in query".format(it),
+        )
+        items.append(i)
+        i = (
+            "no_filter_{}".format(it),
+            u"Not Filtered by {}".format(_(it)),
+            "python:'{}' not in query".format(it),
+        )
+        items.append(i)
+    return items
+
+
+@provider(IVocabularyFactory)
+def InfoConditionsVocabulary(context):
+
+    items = [SimpleTerm(title=title, value=id) for id, title, _ in get_conditions()]
     return SimpleVocabulary(items)

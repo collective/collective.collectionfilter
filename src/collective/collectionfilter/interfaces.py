@@ -204,6 +204,81 @@ class ICollectionFilterResultListSort(ICollectionFilterBaseSchema):
     )
 
 
+class ICollectionFilterInfo(ICollectionFilterBaseSchema):
+    """Schema for the result title/info"""
+
+    template_type = schema.Tuple(
+        title=_("label_template_type", u"Template Type"),
+        description=_(
+            "help_template_type",
+            u"What information to display about the search and results",
+        ),
+        value_type=schema.Choice(
+            title=u"Parts",
+            vocabulary="collective.collectionfilter.TemplateParts",
+        ),
+        required=True,
+    )
+    # NB needed as InAndOut breaks tiles in 5.0
+    widget("template_type", SelectFieldWidget, pattern_options=dict(orderable=True))
+
+    hide_when = schema.Tuple(
+        title=_("label_hide_when", u"Hide when"),
+        description=_("help_hide_when", u"Hide if all of these conditions are true"),
+        value_type=schema.Choice(
+            title=u"Condition",
+            vocabulary="collective.collectionfilter.InfoConditions",
+        ),
+        required=False,
+    )
+    # NB needed as InAndOut breaks tiles in 5.0
+    widget("hide_when", SelectFieldWidget, pattern_options=dict(orderable=True))
+
+    as_links = schema.Bool(
+        title=_(u"label_display_as_links", default=u"Display as Links"),
+        description=_(
+            u"help_display_as_links",
+            default=u"Filter options can be displayed as links which reset the search to just this value.",
+        ),
+        default=True,
+        required=False,
+    )
+
+    context_aware = schema.Bool(
+        title=_(u"label_info_context_aware_mode", default=u"Context aware mode"),
+        description=_(
+            u"label_info_context_aware_mode",
+            default=u"Filter options can be displayed as links which reset the search to just this value.",
+        ),
+        default=True,
+        required=False,
+    )
+
+    context_aware_fields = schema.List(
+        title=_(u"label_info_context_aware_group_by", u"Fields to display"),
+        description=u"The title numbers which this page is a part of",
+        required=False,
+        value_type=schema.Choice(
+            required=False,
+            vocabulary="collective.collectionfilter.GroupByCriteria",
+        )
+    )
+
+
+class ICollectionFilterInfoTile(ICollectionFilterInfo):
+    """Extra settings for tile"""
+
+    display_as_title = schema.Bool(
+        title=_(u"label_display_as_title", default=u"Display as Title"),
+        description=_(
+            u"help_display_as_title",
+            default=u"Appear as a page title",
+        ),
+        default=False,
+        required=False,
+    )
+
+
 class IGroupByCriteria(Interface):
     """Interface for the GroupByCriteria utility.
 
