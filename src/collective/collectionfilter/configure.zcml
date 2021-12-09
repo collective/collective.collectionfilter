@@ -72,5 +72,8 @@
       description='Extension profile for Plone.'
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
-
+  <utility
+      factory=".setuphandlers.HiddenProfiles"
+      name="collective.collectionfilter-hiddenprofiles"
+      />
 </configure>
