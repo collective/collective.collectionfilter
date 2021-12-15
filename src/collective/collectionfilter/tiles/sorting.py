@@ -14,4 +14,4 @@ class ISortOnTile(Schema, ICollectionFilterResultListSort):
 
 @implementer(ISortOnTile)
 class SortOnTile(BaseFilterTile, BaseSortOnView):
-    """ Sorting Tile """
+    """Sorting Tile"""

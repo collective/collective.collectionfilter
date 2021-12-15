@@ -496,25 +496,26 @@ Enable mosaic layout for page
     #Add existing content tile  /testdoc
     run keyword if  ${batch} > 0  Add contentlisting tile  ${batch}
 
-    Save mosaic page with bug
+    Save mosaic page
 
 Edit mosaic page
     [Arguments]  ${page}=${PLONE_URL}/testdoc
     Go to  ${page}/edit
     Wait Until Element Is Visible  css=.mosaic-toolbar
 
-Save mosaic page with bug
-    Wait Until Element Is Visible  css=.mosaic-button-save   timeout=5 sec
-    Click button  css=.mosaic-button-save
-    # HACK: Due to bug. If you save it once it works? https://github.com/plone/plone.app.mosaic/issues/421
-    run keyword and ignore error  alert should not be present  timeout=2 sec
-    Wait until page contains  Changes saved   timeout=2 sec
-
-
 Save mosaic page
     Wait Until Element Is Visible  css=.mosaic-button-save   timeout=5 sec
     Click button  css=.mosaic-button-save
+    # HACK: Due to bug. If you save it once it works? https://github.com/plone/plone.app.mosaic/issues/421
+    # You get a "do you want to leave site" popup
+    run keyword and ignore error  alert should not be present  timeout=1 sec
     Wait until page contains  Changes saved   timeout=2 sec
+
+
+# Save mosaic page
+#     Wait Until Element Is Visible  css=.mosaic-button-save   timeout=5 sec
+#     Click button  css=.mosaic-button-save
+#     Wait until page contains  Changes saved   timeout=2 sec
 
 
 Add filter tile

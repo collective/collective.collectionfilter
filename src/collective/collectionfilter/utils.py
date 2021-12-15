@@ -2,6 +2,8 @@
 from plone import api
 from Products.CMFCore.interfaces import IFolderish
 from Products.CMFPlone.utils import safe_unicode
+
+
 try:
     from plone.app.blocks.layoutbehavior import ILayoutAware
 except ImportError:
@@ -28,8 +30,7 @@ def target_collection_types(context):
     else:
         default = ["Collection"]
     return api.portal.get_registry_record(
-        "collective.collectionfilter.target_collection_types",
-        default=default
+        "collective.collectionfilter.target_collection_types", default=default
     )
 
 

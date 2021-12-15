@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_inner
-from Products.CMFPlone.utils import get_top_request
-from Products.CMFPlone.utils import safe_unicode
-from Products.Five import BrowserView
 from collective.collectionfilter import PLONE_VERSION
-from collective.collectionfilter.filteritems import ICollectionish, get_filter_items
+from collective.collectionfilter.filteritems import get_filter_items
+from collective.collectionfilter.filteritems import ICollectionish
 from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.query import make_query
 from collective.collectionfilter.utils import base_query
@@ -18,6 +16,9 @@ from plone.app.uuid.utils import uuidToCatalogBrain
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize import instance
 from plone.uuid.interfaces import IUUID
+from Products.CMFPlone.utils import get_top_request
+from Products.CMFPlone.utils import safe_unicode
+from Products.Five import BrowserView
 from six.moves.urllib.parse import urlencode
 from zope.component import getUtility
 from zope.component import queryUtility
@@ -106,7 +107,9 @@ class BaseView(object):
         if self.settings.content_selector:
             return self.settings.content_selector
 
-        collectionish = ICollectionish(self.collection.getObject()) if self.collection else None
+        collectionish = (
+            ICollectionish(self.collection.getObject()) if self.collection else None
+        )
         selector = collectionish.content_selector
         if collectionish is None or not selector:
             return u"#content-core"
@@ -229,7 +232,9 @@ class BaseSearchView(BaseView):
 
 class BaseSortOnView(BaseView):
     def results(self):
-        collection = ICollectionish(self.collection.getObject()).selectContent(self.settings.content_selector)
+        collection = ICollectionish(self.collection.getObject()).selectContent(
+            self.settings.content_selector
+        )
         if collection is None:
             return
         curr_val = self.top_request.get("sort_on", collection.sort_on)
@@ -326,7 +331,7 @@ if HAS_GEOLOCATION:
             }
             return json.dumps(config)
 
-            
+
     class GeoJSON(BaseView, BrowserView):
 
         def __call__(self):
@@ -382,7 +387,7 @@ if HAS_GEOLOCATION:
 
             custom_query = {}  # Additional query to filter the collection
 
-            collection = uuidToObject(self.collection_uuid)
+            collection = api.content.get(UID=self.collection_uuid)
             if not collection:
                 return None
 
@@ -393,5 +398,8 @@ if HAS_GEOLOCATION:
             # defined by urlquery
             custom_query = base_query(request_params)
             custom_query = make_query(custom_query)
-            return ICollectionish(collection).selectContent(self.settings.content_selector).results(
-                custom_query, request_params)
+            return (
+                ICollectionish(collection)
+                .selectContent(self.settings.content_selector)
+                .results(custom_query, request_params)
+            )

@@ -3,7 +3,6 @@ name: CI
 on:
   push:
     branches-ignore:
-      - "master"
       - "releases/**"
 
 jobs:
@@ -12,34 +11,52 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        plone-version: 
+        plone-version:
           - '5.0'
           - '5.1'
           - '5.2'
-        python-version: ['2.7']
+        python-version: ['2.7', '3.6', '3.7', '3.8']
         layer:
           - Portlet_AjaxDisabled
           - Portlet_AjaxEnabled
           - Tile
-        coverage: ['no_coverage']
-        include:
-          - plone-version: 5.2
-            python-version: 3.6
-            layer: Tile
-            coverage: coverage
-          - plone-version: 5.2
-            python-version: 3.7
-            layer: Portlet_AjaxDisabled
-            coverage: coverage
-          - plone-version: 5.2
-            python-version: 3.8
-            layer: Portlet_AjaxEnabled
-            coverage: coverage
+          - unit
+        coverage: ['no_coverage', 'coverage']
         exclude:
-          - plone-version: 5.0  
+          - plone-version: 5.0
             layer: Tile # standardtiles 2.3.2 does support using the request to query. embed might still be possible
-          - plone-version: 5.0  
+          - plone-version: 5.0
             layer: Portlet_AjaxEnabled  # passes but meaningless as it skips all the tests
+          # Only 5.2+ runs on py3
+          - plone-version: 5.0
+            python-version: 3.6
+          - plone-version: 5.0
+            python-version: 3.7
+          - plone-version: 5.0
+            python-version: 3.8
+          - plone-version: 5.1
+            python-version: 3.6
+          - plone-version: 5.1
+            python-version: 3.7
+          - plone-version: 5.1
+            python-version: 3.8
+          # Save some time by not running all the robot tests
+          - python-version: 3.6
+            layer: Portlet_AjaxDisabled
+          - python-version: 3.7
+            layer: Portlet_AjaxDisabled
+          - python-version: 3.6
+            layer: Tile
+          - python-version: 3.7
+            layer: Tile
+          # save some time only running coverage on the 5.2 tests
+          - plone-version: 5.0
+            coverage: coverage
+          - plone-version: 5.1
+            coverage: coverage
+          - plone-version: 5.2
+            coverage: no_coverage
+          
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
@@ -51,13 +68,13 @@ jobs:
           sudo apt-get update -y
           # sudo apt-get install -y build-essentials
           sudo apt-get install -y libxml2-dev libxslt-dev python-dev
-          # sudo apt-get install py-pip  
+          # sudo apt-get install py-pip
           pip install \
             virtualenv wheel
       - uses: nanasess/setup-chromedriver@master
         # with:
         #   # Optional: do not specify to match Chrome's version
-        #   chromedriver-version: '77.0.3865.40'            
+        #   chromedriver-version: '77.0.3865.40'
       - name: Cache multiple paths
         uses: actions/cache@v2
         with:
@@ -86,32 +103,50 @@ jobs:
           bin/buildout -t 10 -Nc test-${{ matrix.plone-version }}.x.cfg
           bin/pip install zest.pocompile
           bin/pocompile src
-      - name: test
-        if: ${{ matrix.coverage != 'coverage' }}
+      - name: test robot
+        if: ${{ matrix.coverage != 'coverage' && matrix.layer != 'unit' }}
         run: |
             export DISPLAY=:99.0
             chromedriver --url-base=/wd/hub &
             sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
             sleep 3
+            bin/test --all  --layer ${{ matrix.layer }} --list-tests            
             bin/test --all  --layer ${{ matrix.layer }}
+      - name: test unit
+        if: ${{ matrix.coverage != 'coverage' && matrix.layer == 'unit' }}
+        run: |
+            bin/test --unit --list-tests            
+            bin/test --unit
       - name: createcoverage
-        if: ${{ matrix.coverage == 'coverage' }}
+        if: ${{ matrix.coverage == 'coverage' && matrix.layer != 'unit' }}
         run: |
             export DISPLAY=:99.0
             chromedriver --url-base=/wd/hub &
             sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
             sleep 3
+            bin/test --all  --layer ${{ matrix.layer }} --list-tests            
             bin/createcoverage -t '--all --layer ${{ matrix.layer }}'
+            bin/coverage json -i
+      - name: createcoverage
+        if: ${{ matrix.coverage == 'coverage' && matrix.layer == 'unit' }}
+        run: |
+            bin/test --unit --list-tests            
+            bin/createcoverage -t '--unit'
             bin/coverage json -i
       - name: Coveralls
         if: ${{ matrix.coverage == 'coverage' }}
         uses: AndreMiras/coveralls-python-action@develop
         with:
           parallel: true
-          flag-name: ${{ matrix.plone-version }}-${{ matrix.python-version }}-${{ matrix.layer }}     
+          flag-name: ${{ matrix.plone-version }}-${{ matrix.python-version }}-${{ matrix.layer }}
       - name: code-analysis
         if: always()
-        run: echo "${{ matrix.plone-version }}" | grep 5.1 || bin/code-analysis  
+        run: echo "${{ matrix.plone-version }}" | grep 5.1 || bin/code-analysis
+      - name: black
+        if: ${{ matrix.python-version == '3.8' }}
+        run: |
+          pip install black
+          black --check src
       - name: Artifact Robot Test Report
         if: failure()
         uses: actions/upload-artifact@v1
@@ -121,7 +156,7 @@ jobs:
       - uses: actions/setup-python@v2
         if: failure()
         with:
-          python-version: 2.7            
+          python-version: 2.7
       - name: Robottest report
         continue-on-error: true
         if: failure()
