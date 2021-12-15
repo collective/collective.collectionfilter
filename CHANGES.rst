@@ -23,6 +23,9 @@ Bug Fixes:
 - Fixed searches for only non-alphanumeric characters causing an exception to be displayed.
   [JeffersonBledsoe]
 
+- fix filteritems for `FilterTile.content_selector` when multiple contentlisting tiles are on one page.
+  [petschki]
+
 Other:
 
 - Code-Style Black and Isort

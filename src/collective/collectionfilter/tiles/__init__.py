@@ -88,16 +88,13 @@ class CollectionishLayout(CollectionishCollection):
         """Adapt either collections or contentlisting tile. The name is sorted content selector"""
         self.context = context
 
-        self.selectContent("")  # get first tile
-
-        if self.tile is None:
-            # Could still be a ILayoutAware collection
-            try:
-                self.collection = ICollection(self.context)
-            except TypeError:
-                self.collection = None
-        else:
-            self.collection = self.tile  # to get properties
+        # self.context might not be adaptable
+        # make sure you select the right content with
+        # selectContent(selector) after initialization
+        try:
+            self.collection = ICollection(self.context)
+        except TypeError:
+            self.collection = None
 
     def selectContent(self, selector=None):
         """Pick tile that selector will match, otherwise pick first one.
@@ -119,7 +116,10 @@ class CollectionishLayout(CollectionishCollection):
             # TODO: what if the class is inside a special template? Just pick first?
             # none of the selectors worked. Just pick any and hope it works?
             self.tile = tile
-        if self.tile is not None or self.collection is not None:
+        if self.tile is not None:
+            # we have to set self.collection always to self.tile to get the
+            # correct query
+            self.collection = self.tile
             return self
         else:
             return None
