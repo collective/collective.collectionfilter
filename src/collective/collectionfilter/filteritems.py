@@ -27,6 +27,8 @@ from zope.interface import implementer
 
 import plone.api
 import six
+import re
+from collections import OrderedDict
 
 
 try:
@@ -62,7 +64,7 @@ def _build_url(
     )
 
 
-def _build_option(filter_value, url, current_idx_value, groupby_options):
+def _build_option(filter_value, url, selected, groupby_options):
     idx = groupby_options["index"]
     # Optional modifier to set title from filter value
     display_modifier = groupby_options.get("display_modifier", None)
@@ -77,12 +79,13 @@ def _build_option(filter_value, url, current_idx_value, groupby_options):
         title = safe_decode(title)
 
     # Set selected state
-    selected = filter_value in current_idx_value
     css_class = "filterItem {0}{1} {2}".format(
         "filter-" + idnormalizer.normalize(filter_value),
         " selected" if selected else "",
         css_modifier(filter_value) if css_modifier else "",
     )
+    # HACK: Only used by dropdowns currently as they don't support css styles
+    level = int(next(iter(re.findall(r"pathLevel(\d+)", css_class)), 0))
 
     return {
         "title": title,
@@ -91,6 +94,7 @@ def _build_option(filter_value, url, current_idx_value, groupby_options):
         "css_class": css_class,
         "count": 1,
         "selected": selected,
+        "level": level,
     }
 
 
@@ -124,7 +128,7 @@ def _results_cachekey(
     return cachekey
 
 
-@ram.cache(_results_cachekey)
+@ram.cache(_results_cachekey)  # noqa
 def get_filter_items(
     target_collection,
     group_by,
@@ -166,11 +170,19 @@ def get_filter_items(
 
     urlquery = base_query(request_params, extra_ignores)
 
+    # Optional modifier to sort results so filters displayed in the correct order
+    sort_on = groupby_criteria[group_by].get("sort_on", None)
+
     # Get all collection results with additional filter defined by urlquery
     custom_query.update(urlquery)
+    if sort_on is not None:
+        custom_query["sort_on"] = sort_on
     custom_query = make_query(custom_query)
 
     catalog_results = collection.results(custom_query, request_params)
+    if not catalog_results:
+        return None
+    catalog_results_fullcount = len(catalog_results)
     if narrow_down and show_count:
         # we need the extra_ignores to get a true count
         # even when narrow_down filters the display of indexed values
@@ -178,24 +190,39 @@ def get_filter_items(
         count_query = {}
         count_urlquery = base_query(request_params, [idx, idx + "_op"])
         count_query.update(count_urlquery)
-        catalog_results_fullcount = collection.results(count_query, request_params)
-    if not catalog_results:
-        return None
+        catalog_results_fullcount = len(collection.results(count_query, request_params))
 
     # Attribute name for getting filter value from brain
     metadata_attr = groupby_criteria[group_by]["metadata"]
+    # Optional modifier to modify the metadata value into one or more groupby values
+    groupby_modifier = groupby_criteria[group_by].get("groupby_modifier", None)
+    if not groupby_modifier:
+
+        def groupby_modifier(values, cur, narrow):
+            return values
+
     # Value blacklist
     value_blacklist = groupby_criteria[group_by].get("value_blacklist", None) or []
     # Allow value_blacklist to be callables for runtime-evaluation
     value_blacklist = (
         value_blacklist() if callable(value_blacklist) else value_blacklist
-    )  # noqa
+    ) or []
+
     # fallback to title sorted values
-    sort_key_function = groupby_criteria[group_by].get(
-        "sort_key_function", lambda it: it["title"].lower()
+    sort_key_function = (
+        None
+        if sort_on
+        else groupby_criteria[group_by].get(
+            "sort_key_function", lambda it: it["title"].lower()
+        )
     )
 
-    grouped_results = {}
+    # ensure all values associated with current selection are selected
+    selected_values = current_idx_value + list(
+        groupby_modifier(current_idx_value, current_idx_value, narrow_down)
+    )
+
+    grouped_results = OrderedDict()
     for brain in catalog_results:
 
         # Get filter value
@@ -204,9 +231,11 @@ def get_filter_items(
         # decode it to unicode
         val = safe_decode(val)
         # Make sure it's iterable, as it's the case for e.g. the subject index.
-        val = safe_iterable(val)
+        vals = safe_iterable(val)
+        # allow excluding or extending the value per index
+        vals = groupby_modifier(vals, current_idx_value, narrow_down)
 
-        for filter_value in val:
+        for filter_value in vals:
             if (
                 filter_value is None
                 or isinstance(filter_value, Missing)
@@ -229,7 +258,7 @@ def get_filter_items(
             grouped_results[filter_value] = _build_option(
                 filter_value=filter_value,
                 url=url,
-                current_idx_value=current_idx_value,
+                selected=filter_value in selected_values,
                 groupby_options=groupby_criteria[group_by],
             )
 
@@ -252,18 +281,18 @@ def get_filter_items(
             ),
             "value": "all",
             "css_class": "filterItem filter-all",
-            "count": len(catalog_results),
+            "count": catalog_results_fullcount,
             "selected": idx not in request_params,
+            "level": 0,
         }
     ]
 
     grouped_results = list(grouped_results.values())
-
-    if callable(sort_key_function):
-        grouped_results = sorted(grouped_results, key=sort_key_function)
-
-    ret += grouped_results
-
+    ret += (
+        sorted(grouped_results, key=sort_key_function)
+        if callable(sort_key_function)
+        else grouped_results
+    )
     return ret
 
 

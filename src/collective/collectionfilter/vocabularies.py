@@ -18,6 +18,7 @@ from zope.interface import provider
 from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
+from OFS.interfaces import IOrderedContainer
 
 import plone.api
 import six
@@ -109,6 +110,86 @@ def translate_portal_type(value, *args, **kwargs):
     return term.title if term else value
 
 
+def selected_path_children(values, query, narrow_down):
+    """We only want the ancestors and direct child folders of current selections to be options.
+    This means we don't get overloaded with full tree of options. If no query then assume
+    portal is the query so return top level folders.
+    """
+    # Get path, remove portal root from path, remove leading
+    for path in values:
+        portal = plone.api.portal.get()
+        portal_parts = portal.getPhysicalPath()
+        portal_path = "/".join(list(portal_parts))
+        if not path.startswith(portal_path):
+            path = "/".join([portal_path, path])
+        if not query:
+            filters = [""]
+        elif not narrow_down:
+            # Will include top level and parents of selected
+            filters = [""] + query
+        else:
+            filters = query  # TODO: process it
+        for filter in filters:
+            if not path.startswith("/".join([portal_path, filter])):
+                continue
+            parts = path.split("/")
+            selected_parts = filter.split("/") if filter else []
+            sub_parts = parts[len(portal_parts) : -1]  # We only want parents
+            sub_parts = sub_parts[
+                : len(selected_parts) + 1
+            ]  # Only want direct descendents of whats been picked
+            if not sub_parts:
+                continue
+            for i in range(1, len(sub_parts) + 1):
+                yield "/".join(sub_parts[:i])
+
+
+def path_to_title(path, idx):
+    portal = plone.api.portal.get()
+    path = "/".join(["/".join(portal.getPhysicalPath()), path])
+    # TODO: this should have some cache on it? or a way to get the title from the metadata to save queries?
+    container = portal.portal_catalog.searchResults(
+        {"path": {"query": path, "depth": 0}}
+    )
+    if len(container) > 0:
+        title = container[0].Title
+    else:
+        title = path.split("/")[-1]
+    return title
+
+
+def path_to_folder_sort_key(item):
+    "return tuple of position in parent for each parent in path to correctly sort"
+    path = item["value"]
+    portal = plone.api.portal.get()
+    # ctype = "folder"
+    key = []
+    parts = path.split("/")
+    for i in range(0, len(parts)):
+        # TODO: is there a better way than waking up parents?
+        parent = portal.unrestrictedTraverse(parts[:i])
+        ordered = IOrderedContainer(parent, None)
+        if ordered is not None:
+            pos = ordered.getObjectPosition(parts[i])
+        else:
+            pos = -1
+        key.append(pos)
+    return key
+
+
+def path_indent(path):
+    level = max(
+        0, len(path.split("/")) - 1
+    )  # Put Top level at same level as All as easy enough it distiguish
+    css_class = u"pathLevel{level}".format(level=level)
+    return css_class
+
+
+def relative_to_absolute_path(path):
+    # Ensure query string only needs relative path. Internal search needs full path
+    return "/".join(list(plone.api.portal.get().getPhysicalPath()) + path.split("/"))
+
+
 def sort_key_title(it):
     """default sort key function uses a lower-cased title."""
     title = it["title"]
@@ -142,19 +223,34 @@ class GroupByCriteria:
         cat = plone.api.portal.get_tool("portal_catalog")
         # get catalog metadata schema, but filter out items which cannot be
         # used for grouping
-        metadata = [it for it in cat.schema() if it not in GROUPBY_BLACKLIST]
+        metadata = [it for it in cat.schema() if it not in GROUPBY_BLACKLIST] + [
+            "getPath"
+        ]
 
         for it in metadata:
             index_modifier = None
             display_modifier = translate_value  # Allow to translate in this package domain per default.  # noqa
-            idx = cat._catalog.indexes.get(it)
-            if six.PY2 and getattr(idx, "meta_type", None) == "KeywordIndex":
+            groupby_modifier = None
+            sort_key_function = sort_key_title
+            css_modifier = None
+            index_name = dict(getPath="path").get(it, it)
+            name = dict(getPath="Folder").get(it, it)
+            idx = cat._catalog.indexes.get(index_name)
+            index_type = getattr(idx, "meta_type", None)
+            sort_on = None
+            if six.PY2 and index_type == "KeywordIndex":
                 # in Py2 KeywordIndex accepts only utf-8 encoded values.
                 index_modifier = safe_encode
-
-            if getattr(idx, "meta_type", None) == "BooleanIndex":
+            elif index_type == "BooleanIndex":
                 index_modifier = make_bool
                 display_modifier = get_yes_no_title
+            elif index_type == "ExtendedPathIndex":
+                display_modifier = path_to_title
+                css_modifier = path_indent
+                groupby_modifier = selected_path_children
+                index_modifier = relative_to_absolute_path
+                sort_key_function = path_to_folder_sort_key
+                # sort_on = "getObjPositionInParent"
 
             # for portal_type or Type we have some special sauce as we need to translate via fti.i18n_domain.  # noqa
             if it == "portal_type":
@@ -163,13 +259,16 @@ class GroupByCriteria:
                 display_modifier = translate_messagefactory
 
             self._groupby[it] = {
-                "index": it,
+                "index": index_name,
                 "metadata": it,
+                "groupby_name": name,
                 "display_modifier": display_modifier,
-                "css_modifier": None,
+                "css_modifier": css_modifier,
                 "index_modifier": index_modifier,
-                "value_blacklist": None,
-                "sort_key_function": sort_key_title,
+                "groupby_modifier": groupby_modifier,
+                "value_blacklist": None,  # TODO: groupby_modifier should replace value_blacklist
+                "sort_key_function": sort_key_function,  # sort key function. defaults to a lower-cased title.  # noqa
+                "sort_on": sort_on,
             }
 
         modifiers = getAdapters((self,), IGroupByModifier)
@@ -187,7 +286,10 @@ class GroupByCriteria:
 def GroupByCriteriaVocabulary(context):
     """Collection filter group by criteria."""
     groupby = getUtility(IGroupByCriteria).groupby
-    items = [SimpleTerm(title=_(it), value=it) for it in groupby.keys()]
+    items = [
+        SimpleTerm(title=_(item.get("groupby_name", it)), value=it)
+        for it, item in groupby.items()
+    ]
     return SimpleVocabulary(items)
 
 

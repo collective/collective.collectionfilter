@@ -82,10 +82,10 @@ jobs:
             ~/buildout-cache
             ~/extends
             ~/.cache/pip
-          key: ${{ runner.os }}-${{ matrix.python-version }}-${{ matrix.plone-version }}-${{ hashFiles('**/*.cfg') }}
+          key: ${{ runner.os }}-${{ matrix.plone-version }}-${{ matrix.python-version }}-${{ hashFiles('**/*.cfg') }}
           restore-keys: |
-            ${{ runner.os }}-${{ matrix.python-version }}-${{ matrix.plone-version }}-
-            ${{ runner.os }}-${{ matrix.python-version }}-
+            ${{ runner.os }}-${{ matrix.plone-version }}-${{ matrix.python-version }}-
+            ${{ runner.os }}-${{ matrix.plone-version }}-
             ${{ runner.os }}-
       - name: setup buildout cache
         run: |
