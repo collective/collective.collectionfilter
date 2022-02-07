@@ -311,24 +311,6 @@ def get_filter_items(
     return ret
 
 
-def _build_url(collection_url, urlquery, filter_value, current_idx_value, idx, filter_type, allow_all_for_first_option=True):
-    # Build filter url query
-    _urlquery = urlquery.copy()
-    # Allow deselection
-    if filter_value in current_idx_value:
-        _urlquery[idx] = [it for it in current_idx_value if it != filter_value]
-    elif filter_type != "single":
-        # additive filter behavior
-        _urlquery[idx] = current_idx_value + [filter_value]
-        _urlquery[idx + "_op"] = filter_type  # additive operator
-    else:
-        _urlquery[idx] = filter_value
-
-    query_param = urlencode(safe_encode(_urlquery), doseq=True)
-    url = "/".join([it for it in [collection_url, "?" + query_param if query_param else None] if it])
-    return url
-
-
 @ram.cache(_section_results_cachekey)
 def get_section_filter_items(
     target_collection, view_name="", cache_enabled=True, request_params=None
