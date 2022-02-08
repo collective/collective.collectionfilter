@@ -6,11 +6,14 @@ Changelog
 
 Breaking Change:
 
-- Add idx parameter to display_modifier call, so that we can use the index name to resolve the correct translated taxonomy titles in collective.taxonomy. 
+- Add idx parameter to display_modifier call, so that we can use the index name to resolve the correct translated taxonomy titles in collective.taxonomy.
   This means that the display_modifier method in the groupby_modifier adapters needs to expect this parameter too!
   [MrTango]
 
 Features:
+
+- Support and Test Plone 6.
+  [jensens]
 
 - Add a module global COLLECTIONISH_TARGETS to c.c.tiles to register other tiles with collections than plone.app.standardtiles.contentlisting.
   [jensens]
