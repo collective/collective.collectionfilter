@@ -6,8 +6,14 @@ Changelog
 
 Breaking Change:
 
-- Add idx parameter to display_modifier call, so that we can use the index name to resolve the correct translated taxonomy titles in collective.taxonomy. This means that the display_modifier method in the groupby_modifier adapters needs to expect this parameter too!
+- Add idx parameter to display_modifier call, so that we can use the index name to resolve the correct translated taxonomy titles in collective.taxonomy. 
+  This means that the display_modifier method in the groupby_modifier adapters needs to expect this parameter too!
   [MrTango]
+
+Features:
+
+- Add a module global COLLECTIONISH_TARGETS to c.c.tiles to register other tiles with collections than plone.app.standardtiles.contentlisting.
+  [jensens]
 
 Bug Fixes:
 
@@ -22,6 +28,7 @@ Bug Fixes:
 
 - Fixed searches for only non-alphanumeric characters causing an exception to be displayed.
   [JeffersonBledsoe]
+
 
 Other:
 

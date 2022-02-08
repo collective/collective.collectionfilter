@@ -15,6 +15,12 @@ from zope.interface import implementer
 import re
 
 
+# tile names actijg collectionish
+COLLECTIONISH_TARGETS = [
+    "plone.app.standardtiles.contentlisting",
+]
+
+
 class DictDataWrapper(object):
     def __init__(self, data):
         self.data = data
@@ -51,6 +57,8 @@ class BaseFilterTile(PersistentTile):
 
 
 def findall_tiles(context, spec):
+    if not isinstance(spec, list):
+        spec = [spec]
     request = context.REQUEST
     la = ILayoutAware(context)
     layout = (
@@ -62,8 +70,10 @@ def findall_tiles(context, spec):
     )
     if layout is None:
         return []
-    urls = re.findall(r"(@@[\w\.]+/\w+)", layout)
-    urls = [url for url in urls if url.startswith("@@{}".format(spec))]
+    possible_urls = re.findall(r"(@@[\w\.]+/\w+)", layout)
+    urls = []
+    for name in spec:
+        urls += [url for url in possible_urls if url.startswith("@@{}".format(name))]
     # TODO: maybe better to get tile data? using ITileDataManager(id)?
     our_tile = request.response.headers.get("x-tile-url")
     tiles = [context.unrestrictedTraverse(str(url)) for url in urls]
@@ -107,7 +117,7 @@ class CollectionishLayout(CollectionishCollection):
         if selector is None:
             selector = ""
         self.tile = None
-        tiles = findall_tiles(self.context, "plone.app.standardtiles.contentlisting")
+        tiles = findall_tiles(self.context, COLLECTIONISH_TARGETS)
         for tile in tiles:
             tile.update()
             tile_classes = tile.tile_class.split() + [""]
@@ -121,22 +131,19 @@ class CollectionishLayout(CollectionishCollection):
             self.tile = tile
         if self.tile is not None or self.collection is not None:
             return self
-        else:
-            return None
 
     @property
     def sort_reversed(self):
         if self.tile is not None:
             return self.sort_order == "reverse"
-        else:
-            return self.collection.sort_reversed
+        return self.collection.sort_reversed
 
     @property
     def content_selector(self):
         """will return None if no tile or colleciton found"""
         if self.collection is None:
-            return None
-        elif self.tile is None:
+            return
+        if self.tile is None:
             return super(CollectionishLayout, self).content_selector
         classes = ["contentlisting-tile"]
         if self.tile.tile_class:
