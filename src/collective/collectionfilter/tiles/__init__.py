@@ -140,13 +140,13 @@ class CollectionishLayout(CollectionishCollection):
 
     @property
     def content_selector(self):
-        """will return None if no tile or colleciton found"""
+        """will return None if no tile or collection found"""
         if self.collection is None:
             return
         if self.tile is None:
             return super(CollectionishLayout, self).content_selector
         classes = ["contentlisting-tile"]
-        if self.tile.tile_class:
+        if getattr(self.tile, "tile_class", ""):
             classes += self.tile.tile_class.split()
         return "." + ".".join(classes)
 
