@@ -120,7 +120,7 @@ class CollectionishLayout(CollectionishCollection):
         tiles = findall_tiles(self.context, COLLECTIONISH_TARGETS)
         for tile in tiles:
             tile.update()
-            tile_classes = tile.tile_class.split() + [""]
+            tile_classes = getattr(tile, "tile_class", "").split() + [""]
             # First tile that matches all the selector classes
             if all([_class in tile_classes for _class in selector.split(".")]):
                 self.tile = tile
