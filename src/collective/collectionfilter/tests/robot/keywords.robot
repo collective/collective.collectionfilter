@@ -207,17 +207,6 @@ Add sorting portlet
     Click element  css=.plone-modal-footer input#form-buttons-add
     Wait until page contains element  xpath=//div[contains(@class, 'portletAssignments')]//a[text()='Sort on']
 
-Add section portlet titled "${filter_title}"
-    Wait until page contains element  css=select.add-portlet
-    Select From List by label  css=select.add-portlet  Collection Section Filter
-    Wait until element is visible  css=input#form-widgets-header
-
-    Input text  css=input#form-widgets-header  ${filter_title}
-    #Select related filter collection
-    Click Input "Show count"
-    Click element  css=.plone-modal-footer input#form-buttons-add
-    Wait until page contains element  xpath=//div[contains(@class, 'portletAssignments')]//a[text()='${filter_title}']
-
 
 Set sorting Options
     [Arguments]   ${sort_on}  ${input_type}
@@ -251,11 +240,6 @@ Should be filter checkboxes
     [Arguments]  @{values}
     Wait until keyword succeeds  2s  1s  Labels Should Equal  xpath=//div[contains(@class, 'filterContent')]//span[@class='filterLabel']  @{values}
 
-Should be filter links
-    [Arguments]  @{values}
-    Wait until keyword succeeds  2s  1s  Labels Should Equal  xpath=//div[contains(@class, 'filterContent')]//*[contains(@class, 'filterItem')]  @{values}
-
-
 List Labels Should Equal
    [Arguments]  ${selector}  @{expect}
    @{options}=  get list items  ${selector}
@@ -274,7 +258,7 @@ Labels Should Equal
 Should be ${X} collection results
     # Wait until element is visible  css=#content-core
     # below should work for both collections and contentlisting tiles
-    Wait until keyword succeeds  2s  1s  Page Should Contain Element  xpath=//span[@class='summary']  limit=${X}
+    Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//span[@class='summary']  limit=${X}
 
 Should be ${X} pages
     ${X}=  evaluate  ${X} + 1  # need we have next or previous
@@ -325,8 +309,8 @@ My collection has a collection sorting
     run keyword unless  ${USE_TILES}  My collection has a collection sorting portlet  ${sort_on}
 
 My collection has a collection info
-    [Arguments]  ${header}="Current Filter"  @{templates}  ${hide_when}=${None}  ${as_title}=${False}
-    run keyword if  ${USE_TILES}  My collection has a collection info tile  ${header}   @{templates}  hide_when=${hide_when}  as_title=${as_title}
+    [Arguments]  ${header}="Current Filter"  @{templates}  ${hide_when}=${None}
+    run keyword if  ${USE_TILES}  My collection has a collection info tile  ${header}   @{templates}  hide_when=${hide_when} 
     run keyword unless  ${USE_TILES}  My collection has a collection info portlet  ${header}   @{templates}  hide_when=${hide_when} 
 
 I'm viewing the collection
@@ -353,11 +337,6 @@ My collection has a collection sorting portlet
     Go to  ${PLONE_URL}/testcollection
     Manage portlets
     Add sorting portlet  ${sort_on}  links
-
-My collection has a collection section portlet
-    Go to  ${PLONE_URL}/testcollection
-    Manage Portlets
-    Add section portlet titled "My Section Filter"
 
 My collection has a collection info portlet
     [Arguments]  ${header}="Current Filter"  @{templates}  ${hide_when}=${None}
@@ -409,10 +388,10 @@ I search for "${search}"
 
 I should have a portlet titled "${filter_title}" with ${number_of_results} filter options
     ${portlet_title_xpath}  Convert to string  header[@class='portletHeader' and descendant-or-self::*[contains(text(), '${filter_title}')]]
-    ${filter_item_xpath}  Convert to string  *[contains(@class, 'portletContent')]//li[contains(@class, 'filterItem')]
+    ${filter_item_xpath}  Convert to string  div[contains(@class, 'filterContent')]//li[contains(@class, 'filterItem')]
 
     Page Should Contain Element  xpath=//${portlet_title_xpath}
-    Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//${portlet_title_xpath}/parent::*[contains(@class, 'portlet')]//${filter_item_xpath}  limit=${number_of_results}
+    Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//${portlet_title_xpath}/parent::*[contains(@class, 'collectionFilter')]//${filter_item_xpath}  limit=${number_of_results}
 
 I should have a filter with ${number_of_results} options
     Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//aside[contains(@class,'collectionFilter') and count(.//div[contains(@class, 'filterContent')]//li[contains(@class, 'filterItem')])=${number_of_results} ]  limit=1
@@ -474,7 +453,7 @@ My collection has a collection search tile
     Save mosaic page
 
 My collection has a collection info tile
-    [Arguments]  ${header}  @{templates}  ${hide_when}=${None}  ${as_title}=${False}
+    [Arguments]  ${header}  @{templates}  ${hide_when}=${None}
 
     Go to  ${PLONE_URL}/testdoc/edit
     Add info tile  @{templates}  hide_when=${hide_when}
@@ -517,25 +496,26 @@ Enable mosaic layout for page
     #Add existing content tile  /testdoc
     run keyword if  ${batch} > 0  Add contentlisting tile  ${batch}
 
-    Save mosaic page with bug
+    Save mosaic page
 
 Edit mosaic page
     [Arguments]  ${page}=${PLONE_URL}/testdoc
     Go to  ${page}/edit
     Wait Until Element Is Visible  css=.mosaic-toolbar
 
-Save mosaic page with bug
-    Wait Until Element Is Visible  css=.mosaic-button-save   timeout=5 sec
-    Click button  css=.mosaic-button-save
-    # HACK: Due to bug. If you save it once it works? https://github.com/plone/plone.app.mosaic/issues/421
-    run keyword and ignore error  alert should not be present  timeout=2 sec
-    Wait until page contains  Changes saved   timeout=2 sec
-
-
 Save mosaic page
     Wait Until Element Is Visible  css=.mosaic-button-save   timeout=5 sec
     Click button  css=.mosaic-button-save
-    Wait until page contains  Changes saved   timeout=2 sec
+    # HACK: Due to bug. If you save it once it works? https://github.com/plone/plone.app.mosaic/issues/421
+    # You get a "do you want to leave site" popup
+    run keyword and ignore error  alert should not be present  timeout=1 sec
+    # Wait until page contains  Changes saved   timeout=2 sec
+
+
+# Save mosaic page
+#     Wait Until Element Is Visible  css=.mosaic-button-save   timeout=5 sec
+#     Click button  css=.mosaic-button-save
+#     Wait until page contains  Changes saved   timeout=2 sec
 
 
 Add filter tile
@@ -565,14 +545,13 @@ Add search tile
 
 
 Add info tile
-    [Arguments]   @{templates}  ${hide_when}=${None}  ${collection_name}=${None}  ${as_title}=${False}
+    [Arguments]   @{templates}  ${hide_when}=${None}  ${collection_name}=${None}
 
     Insert tile "Collection Filter Info"
     run keyword if  $collection_name  set relateditem  formfield-collective-collectionfilter-tiles-info-target_collection  ${collection_name}
     # Complete filter form
     Set Info Settings  collective-collectionfilter-tiles-info  @{templates}  hide_when=${hide_when}
-    Run Keyword by label  Content Selector  Input Text  .contentlisting-tile
-    run keyword if  ${as_title}   Set Options  Display as Title
+    # Run Keyword by label  Content Selector  Input Text  .contentlisting-tile
 
     Click element  css=.pattern-modal-buttons #buttons-save
     Drag tile
@@ -606,8 +585,6 @@ Add contentlisting tile
     wait until element is visible  link=Select criteria
     select single select2      xpath=(//div[@id='formfield-plone-app-standardtiles-contentlisting-query']//div[@class='querystring-criteria-index'])[2]/div  Type
     select multi select2   xpath=(//div[@id='formfield-plone-app-standardtiles-contentlisting-query']//div[@class='querystring-criteria-value'])[2]/div  Event  Document
-    click element  css=.querystring-criteria-remove
-
     # TODO: no item count in plone 5.0
     Run Keyword by label  Item count   Input Text  ${batch}
 

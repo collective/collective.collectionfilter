@@ -167,22 +167,46 @@ class BaseFilterView(BaseView):
             cache_enabled=self.settings.cache_enabled,
             request_params=self.top_request.form or {},
             content_selector=self.settings.content_selector,
-            include_all_option=self.settings.enable_all_filter_option,
+            default_filtering_behaviour=self.settings.default_filtering_behaviour,
         )
-        if not getattr(self.request, "collectionfilter", None) and results:
-            existing_query_string = self.request["QUERY_STRING"]
-            # Using `parse_qsl` then converting to a list as `parse_qs` ends up producing lists for the values
-            query_object = dict(parse_qsl(existing_query_string))
 
-            if self.settings.group_by not in query_object and not self.settings.enable_all_filter_option:
+        if (
+            self.request.response.headers.get("x-tile-url")
+            and self.request.get("PARENT_REQUEST") is None
+        ):
+            # We are in the edit mosaic page so we don't want to redirect
+            return results
+
+        # In the case of tiles we are in a subrequest (ie tile). We need to really redirect
+        req = self.request.get("PARENT_REQUEST", self.request)
+
+        # In order to handle filters with no "All" option we need redirect urls that
+        # haven't been processed yet picking default options for those filters
+        if getattr(req, "collectionfilter", None) or not results:
+            # assume we already fixed the params
+            return results
+
+        existing_query_string = req["QUERY_STRING"]
+        # Using `parse_qsl` then converting to a list as `parse_qs` ends up producing lists for the values
+        query_object = dict(parse_qsl(existing_query_string))
+
+        if self.settings.group_by not in query_object:
+            if self.settings.default_filtering_behaviour == "Select first":
                 query_object[self.settings.group_by] = results[0]["value"]
+        query_object["collectionfilter"] = 1
 
-            query_object['collectionfilter'] = 1
+        # if req['HTTP_COOKIE']:
+        #     # when saving a tile the redirect hides teh status message.
+        #     # The statusmessage is in HTTP_COOKIES but removed from req.cookies
+        #     c = Cookie.Cookie()
+        #     c.load(req['HTTP_COOKIE'])
+        #     if "statusmessages" in c:
+        #         # TODO: set using proper interface
+        #         req.response.setCookie("statusmessages", c['statusmessages'].value)
 
-            self.request.response.redirect(
-                "%s?%s"
-                % (self.request["ACTUAL_URL"], urlencode(safe_encode(query_object)))
-            )
+        req.response.redirect(
+            "%s?%s" % (req["ACTUAL_URL"], urlencode(safe_encode(query_object)))
+        )
         return results
 
     @property

@@ -45,13 +45,23 @@ except ImportError:
 
 
 def _build_url(
-    collection_url, urlquery, filter_value, current_idx_value, idx, filter_type, allow_all_for_first_option=True
+    collection_url,
+    urlquery,
+    filter_value,
+    current_idx_value,
+    idx,
+    filter_type,
+    default_filtering_behaviour="Show all",
 ):
     # Build filter url query
     _urlquery = urlquery.copy()
     # Allow deselection
-    if filter_value in current_idx_value:
-        _urlquery[idx] = [it for it in current_idx_value if it != filter_value and not allow_all_for_first_option]
+    if filter_value in current_idx_value and default_filtering_behaviour == "Show all":
+        _urlquery[idx] = [
+            it
+            for it in current_idx_value
+            if it != filter_value
+        ]
     elif filter_type != "single":
         # additive filter behavior
         _urlquery[idx] = current_idx_value + [filter_value]
@@ -67,7 +77,7 @@ def _build_url(
             if it
         ]
     )
-    
+
 
 def _build_option(filter_value, url, current_idx_value, groupby_options):
     idx = groupby_options["index"]
@@ -116,7 +126,7 @@ def _results_cachekey(
     cache_enabled=True,
     request_params=None,
     content_selector="",
-    include_all_option=True,
+    default_filtering_behaviour="Show all",
 ):
     if not cache_enabled:
         raise DontCache
@@ -129,7 +139,7 @@ def _results_cachekey(
         view_name,
         request_params,
         content_selector,
-        include_all_option,
+        default_filtering_behaviour,
         " ".join(plone.api.user.get_roles()),
         plone.api.portal.get_current_language(),
         str(plone.api.portal.get_tool("portal_catalog").getCounter()),
@@ -164,7 +174,7 @@ def get_filter_items(
     cache_enabled=True,
     request_params=None,
     content_selector="",
-    include_all_option=True,
+    default_filtering_behaviour="Show all",
 ):
     request_params = request_params or {}
     custom_query = {}  # Additional query to filter the collection
@@ -271,7 +281,7 @@ def get_filter_items(
                 current_idx_value=current_idx_value,
                 idx=idx,
                 filter_type=filter_type,
-                allow_all_for_first_option=include_all_option
+                default_filtering_behaviour=default_filtering_behaviour,
             )
             grouped_results[filter_value] = _build_option(
                 filter_value=filter_value,
@@ -304,8 +314,7 @@ def get_filter_items(
             "selected": idx not in request_params,
             "level": 0
         }
-    ] if include_all_option else []
-
+    ] if default_filtering_behaviour == "Show all" else []
     grouped_results = list(grouped_results.values())
     ret += sorted(grouped_results, key=sort_key_function) if callable(sort_key_function) else grouped_results
     return ret

@@ -182,6 +182,7 @@ def sort_path(it):
 def sort_title(it):
     return it["title"].lower()
 
+
 # Function for determining the cache key used by GroupByCreteria.
 # There should be a separate cache for each site and the cache should be
 # invalidated by modification to portal_catalog (changes to the indexes rather
