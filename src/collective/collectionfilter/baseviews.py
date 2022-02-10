@@ -157,7 +157,7 @@ class BaseFilterView(BaseView):
             cache_enabled=self.settings.cache_enabled,
             request_params=self.top_request.form or {},
             content_selector=self.settings.content_selector,
-            include_all_option=self.settings.enable_all_filter_option,
+            default_filtering_behaviour=self.settings.default_filtering_behaviour,
         )
 
         if (
@@ -180,12 +180,9 @@ class BaseFilterView(BaseView):
         # Using `parse_qsl` then converting to a list as `parse_qs` ends up producing lists for the values
         query_object = dict(parse_qsl(existing_query_string))
 
-        if (
-            self.settings.group_by not in query_object
-            and not self.settings.enable_all_filter_option
-        ):
-            query_object[self.settings.group_by] = results[0]["value"]
-
+        if self.settings.group_by not in query_object:
+            if self.settings.default_filtering_behaviour == "Select first":
+                query_object[self.settings.group_by] = results[0]["value"]
         query_object["collectionfilter"] = 1
 
         # if req['HTTP_COOKIE']:

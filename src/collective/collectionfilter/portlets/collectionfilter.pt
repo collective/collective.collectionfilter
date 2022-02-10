@@ -6,17 +6,18 @@
 
   <header class="portletHeader" tal:condition="view/title" tal:content="view/title">Title</header>
   <div class="portletContent filterContent" tal:define="results view/results">
-
+    <tal:define define="selected_items python:[result for result in results if result['selected']]">
         <tal:if condition="python:input_type in ('checkbox', 'radio')">
         <ul>
           <tal:items repeat="item results">
-          <li class="${item/css_class} ${input_type}">
-            <input
-                name="${view/filter_id}"
+            <li class="${item/css_class} ${input_type}"
+              tal:define="item_selected item/selected;">
+              <input name="${view/filter_id}"
                 type="${input_type}"
                 value="${item/value}"
                 data-url="${item/url}"
-                tal:attributes="checked python:'checked' if item['selected'] else None;
+                tal:attributes="checked python:'checked' if item_selected else None;
+                                disabled python:'disabled' if item_selected and len(selected_items) == 1 and view.settings.default_filtering_behaviour == 'Select first' else None;
                                 id string:${view/filterClassName}-${item/value}">
             <label tal:attributes="for string:${view/filterClassName}-${item/value}">
               <span class="indicator"></span>
@@ -65,6 +66,6 @@
           </tal:items>
         </ul>
         </tal:if>
-
+    </tal:define>
   </div>
 </aside>

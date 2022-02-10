@@ -44,16 +44,16 @@ def _build_url(
     current_idx_value,
     idx,
     filter_type,
-    allow_all_for_first_option=True,
+    default_filtering_behaviour="Show all",
 ):
     # Build filter url query
     _urlquery = urlquery.copy()
     # Allow deselection
-    if filter_value in current_idx_value:
+    if filter_value in current_idx_value and default_filtering_behaviour == "Show all":
         _urlquery[idx] = [
             it
             for it in current_idx_value
-            if it != filter_value and not allow_all_for_first_option
+            if it != filter_value
         ]
     elif filter_type != "single":
         # additive filter behavior
@@ -115,7 +115,7 @@ def _results_cachekey(
     cache_enabled=True,
     request_params=None,
     content_selector="",
-    include_all_option=True,
+    default_filtering_behaviour="Show all",
 ):
     if not cache_enabled:
         raise DontCache
@@ -128,7 +128,7 @@ def _results_cachekey(
         view_name,
         request_params,
         content_selector,
-        include_all_option,
+        default_filtering_behaviour,
         " ".join(plone.api.user.get_roles()),
         plone.api.portal.get_current_language(),
         str(plone.api.portal.get_tool("portal_catalog").getCounter()),
@@ -147,7 +147,7 @@ def get_filter_items(
     cache_enabled=True,
     request_params=None,
     content_selector="",
-    include_all_option=True,
+    default_filtering_behaviour="Show all",
 ):
     request_params = request_params or {}
     custom_query = {}  # Additional query to filter the collection
@@ -238,7 +238,7 @@ def get_filter_items(
                 current_idx_value=current_idx_value,
                 idx=idx,
                 filter_type=filter_type,
-                allow_all_for_first_option=include_all_option,
+                default_filtering_behaviour=default_filtering_behaviour,
             )
             grouped_results[filter_value] = _build_option(
                 filter_value=filter_value,
@@ -271,7 +271,7 @@ def get_filter_items(
                 "selected": idx not in request_params,
             }
         ]
-        if include_all_option
+        if default_filtering_behaviour == "Show all"
         else []
     )
 
