@@ -20,6 +20,10 @@ Features:
 
 Bug Fixes:
 
+- Not every metadata entry has an index with same name.
+  Ignore if not a pair.
+  [jensens]
+
 - Fix/Workaround for #59 (Int fields in indexes are not working).
   [jensens]
 

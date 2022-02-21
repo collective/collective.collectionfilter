@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from re import L
 from collective.collectionfilter import _
 from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.interfaces import IGroupByModifier
@@ -142,9 +143,13 @@ class GroupByCriteria:
         metadata = [it for it in cat.schema() if it not in GROUPBY_BLACKLIST]
 
         for it in metadata:
+            idx = cat._catalog.indexes.get(it)
+            if not idx:
+                # collectionfilter needs both, metadata and index entries.
+                continue
+
             index_modifier = None
             display_modifier = translate_value  # Allow to translate in this package domain per default.  # noqa
-            idx = cat._catalog.indexes.get(it)
             if six.PY2 and getattr(idx, "meta_type", None) == "KeywordIndex":
                 # in Py2 KeywordIndex accepts only utf-8 encoded values.
                 index_modifier = safe_encode
@@ -153,7 +158,7 @@ class GroupByCriteria:
                 index_modifier = make_bool
                 display_modifier = get_yes_no_title
 
-            if idx in INTEGER_IDXS:
+            if idx.getId() in INTEGER_IDXS:
                 index_modifier = int
 
             # for portal_type or Type we have some special sauce as we need to translate via fti.i18n_domain.  # noqa
