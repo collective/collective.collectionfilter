@@ -67,6 +67,7 @@ TRUTHY = [
     safe_encode("yes"),
 ]
 
+
 def translate_value(value, *args, **kwargs):
     return translate(_(value), context=getRequest())
 

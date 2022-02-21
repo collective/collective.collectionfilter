@@ -20,6 +20,9 @@ Features:
 
 Bug Fixes:
 
+- Fix/Workaround for #59 (Int fields in indexes are not working).
+  [jensens]
+
 - Hide uninstall profiles from install view.
   [jensens]
 
