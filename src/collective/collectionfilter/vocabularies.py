@@ -88,6 +88,12 @@ def make_bool(value):
     return value in TRUTHY
 
 
+def make_int(value):
+    if isinstance(value, (list, tuple)):
+        return [int(val) for val in value]
+    return int(value)
+
+
 def yes_no(value):
     """Return i18n message for a value."""
     if value:
@@ -159,7 +165,7 @@ class GroupByCriteria:
                 display_modifier = get_yes_no_title
 
             if idx.getId() in INTEGER_IDXS:
-                index_modifier = int
+                index_modifier = make_int
 
             # for portal_type or Type we have some special sauce as we need to translate via fti.i18n_domain.  # noqa
             if it == "portal_type":
