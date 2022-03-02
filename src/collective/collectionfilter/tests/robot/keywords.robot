@@ -147,10 +147,15 @@ Select related filter collection
     Wait until page contains element  partial link=Test Collection
     Click element  partial link=Test Collection
 
+_Click dropdown option "${option}"
+    ${value} =	Get Substring	${option}  9  # 9 characters in `dropdown_`
+    Click element  css=option[value="${value}"]
+
 Set Options 
     [Arguments]  @{options}
     FOR    ${option}    IN    @{options}
-        Click Input "${option}"
+        Run Keyword If  'dropdown_' in '${option}'  _Click dropdown option "${option}"
+        ...  ELSE  Click Input "${option}"
     END
 
 # ---- CF stuff
