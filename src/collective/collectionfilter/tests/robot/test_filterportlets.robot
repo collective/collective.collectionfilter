@@ -53,7 +53,7 @@ Scenario: Hide when no options
 Scenario: Disable all filter option
 
     Given I've got a site with a collection
-      and my collection has a collection filter  Subject  or  checkboxes_dropdowns  Enable all filter option  # The 'Enable all filter option' argument here is toggling it off, so it is disabled
+      and my collection has a collection filter  Subject  or  checkboxes_dropdowns  dropdown_Select first  # The 'Enable all filter option' argument here is toggling it off, so it is disabled
      When I'm viewing the collection
      Then Should be 2 collection results
       and Should be filter checkboxes  Dokumänt (2)  Evänt (1)  Süper (2)
