@@ -57,11 +57,7 @@ def _build_url(
     _urlquery = urlquery.copy()
     # Allow deselection
     if filter_value in current_idx_value and default_filtering_behaviour == "Show all":
-        _urlquery[idx] = [
-            it
-            for it in current_idx_value
-            if it != filter_value
-        ]
+        _urlquery[idx] = [it for it in current_idx_value if it != filter_value]
     elif filter_type != "single":
         # additive filter behavior
         _urlquery[idx] = current_idx_value + [filter_value]
@@ -217,8 +213,6 @@ def get_filter_items(
     custom_query = make_query(custom_query)
 
     catalog_results = collection.results(custom_query, request_params)
-    if not catalog_results:
-        return None
     catalog_results_fullcount = len(catalog_results)
     if narrow_down and show_count:
         # we need the extra_ignores to get a true count
@@ -228,6 +222,9 @@ def get_filter_items(
         count_urlquery = base_query(request_params, [idx, idx + "_op"])
         count_query.update(count_urlquery)
         catalog_results_fullcount = len(collection.results(count_query, request_params))
+
+    if not catalog_results:
+        return []
 
     # Attribute name for getting filter value from brain
     metadata_attr = groupby_criteria[group_by]["metadata"]
