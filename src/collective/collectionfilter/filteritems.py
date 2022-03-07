@@ -193,7 +193,7 @@ def get_filter_items(
         count_query.update(count_urlquery)
         catalog_results_fullcount = collection.results(count_query, request_params)
     if not catalog_results:
-        return None
+        return []
 
     # Attribute name for getting filter value from brain
     metadata_attr = groupby_criteria[group_by]["metadata"]
