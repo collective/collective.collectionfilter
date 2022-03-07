@@ -147,10 +147,15 @@ Select related filter collection
     Wait until page contains element  partial link=Test Collection
     Click element  partial link=Test Collection
 
+_Click dropdown option "${option}"
+    ${value} =	Get Substring	${option}  9  # 9 characters in `dropdown_`
+    Click element  css=option[value="${value}"]
+
 Set Options 
     [Arguments]  @{options}
     FOR    ${option}    IN    @{options}
-        Click Input "${option}"
+        Run Keyword If  'dropdown_' in '${option}'  _Click dropdown option "${option}"
+        ...  ELSE  Click Input "${option}"
     END
 
 # ---- CF stuff
@@ -509,7 +514,7 @@ Save mosaic page
     # HACK: Due to bug. If you save it once it works? https://github.com/plone/plone.app.mosaic/issues/421
     # You get a "do you want to leave site" popup
     run keyword and ignore error  alert should not be present  timeout=1 sec
-    Wait until page contains  Changes saved   timeout=2 sec
+    # Wait until page contains  Changes saved   timeout=2 sec
 
 
 # Save mosaic page
@@ -585,7 +590,6 @@ Add contentlisting tile
     wait until element is visible  link=Select criteria
     select single select2      xpath=(//div[@id='formfield-plone-app-standardtiles-contentlisting-query']//div[@class='querystring-criteria-index'])[2]/div  Type
     select multi select2   xpath=(//div[@id='formfield-plone-app-standardtiles-contentlisting-query']//div[@class='querystring-criteria-value'])[2]/div  Event  Document
-
     # TODO: no item count in plone 5.0
     Run Keyword by label  Item count   Input Text  ${batch}
 

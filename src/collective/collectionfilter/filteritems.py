@@ -38,12 +38,18 @@ except ImportError:
 
 
 def _build_url(
-    collection_url, urlquery, filter_value, current_idx_value, idx, filter_type
+    collection_url,
+    urlquery,
+    filter_value,
+    current_idx_value,
+    idx,
+    filter_type,
+    default_filtering_behaviour="Show all",
 ):
     # Build filter url query
     _urlquery = urlquery.copy()
     # Allow deselection
-    if filter_value in current_idx_value:
+    if filter_value in current_idx_value and default_filtering_behaviour == "Show all":
         _urlquery[idx] = [it for it in current_idx_value if it != filter_value]
     elif filter_type != "single":
         # additive filter behavior
@@ -105,6 +111,7 @@ def _results_cachekey(
     cache_enabled=True,
     request_params=None,
     content_selector="",
+    default_filtering_behaviour="Show all",
 ):
     if not cache_enabled:
         raise DontCache
@@ -117,6 +124,7 @@ def _results_cachekey(
         view_name,
         request_params,
         content_selector,
+        default_filtering_behaviour,
         " ".join(plone.api.user.get_roles()),
         plone.api.portal.get_current_language(),
         str(plone.api.portal.get_tool("portal_catalog").getCounter()),
@@ -135,6 +143,7 @@ def get_filter_items(
     cache_enabled=True,
     request_params=None,
     content_selector="",
+    default_filtering_behaviour="Show all",
 ):
     request_params = request_params or {}
     custom_query = {}  # Additional query to filter the collection
@@ -180,7 +189,7 @@ def get_filter_items(
         count_query.update(count_urlquery)
         catalog_results_fullcount = collection.results(count_query, request_params)
     if not catalog_results:
-        return None
+        return []
 
     # Attribute name for getting filter value from brain
     metadata_attr = groupby_criteria[group_by]["metadata"]
@@ -225,6 +234,7 @@ def get_filter_items(
                 current_idx_value=current_idx_value,
                 idx=idx,
                 filter_type=filter_type,
+                default_filtering_behaviour=default_filtering_behaviour,
             )
             grouped_results[filter_value] = _build_option(
                 filter_value=filter_value,
@@ -240,22 +250,26 @@ def get_filter_items(
     if narrow_down and show_count:
         # TODO: catalog_results_fullcount is possibly undefined
         catalog_results = catalog_results_fullcount
-    ret = [
-        {
-            "title": translate(
-                _("subject_all", default=u"All"),
-                context=getRequest(),
-                target_language=plone.api.portal.get_current_language(),
-            ),
-            "url": u"{0}/?{1}".format(
-                collection_url, urlencode(safe_encode(urlquery_all), doseq=True)
-            ),
-            "value": "all",
-            "css_class": "filterItem filter-all",
-            "count": len(catalog_results),
-            "selected": idx not in request_params,
-        }
-    ]
+    ret = (
+        [
+            {
+                "title": translate(
+                    _("subject_all", default=u"All"),
+                    context=getRequest(),
+                    target_language=plone.api.portal.get_current_language(),
+                ),
+                "url": u"{0}/?{1}".format(
+                    collection_url, urlencode(safe_encode(urlquery_all), doseq=True)
+                ),
+                "value": "all",
+                "css_class": "filterItem filter-all",
+                "count": len(catalog_results),
+                "selected": idx not in request_params,
+            }
+        ]
+        if default_filtering_behaviour == "Show all"
+        else []
+    )
 
     grouped_results = list(grouped_results.values())
 
