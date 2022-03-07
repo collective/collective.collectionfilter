@@ -50,11 +50,7 @@ def _build_url(
     _urlquery = urlquery.copy()
     # Allow deselection
     if filter_value in current_idx_value and default_filtering_behaviour == "Show all":
-        _urlquery[idx] = [
-            it
-            for it in current_idx_value
-            if it != filter_value
-        ]
+        _urlquery[idx] = [it for it in current_idx_value if it != filter_value]
     elif filter_type != "single":
         # additive filter behavior
         _urlquery[idx] = current_idx_value + [filter_value]

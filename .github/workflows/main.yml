@@ -144,8 +144,9 @@ jobs:
         run: echo "${{ matrix.plone-version }}" | grep 5.1 || bin/code-analysis
       - name: black
         if: ${{ matrix.python-version == '3.8' }}
+          # black dropped Python2.7 support in 22.1.0 (it's first stable release)
         run: |
-          pip install black
+          pip install black==21.12b0
           black --check src
       - name: Artifact Robot Test Report
         if: failure()

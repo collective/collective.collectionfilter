@@ -174,7 +174,8 @@ class ICollectionFilterSchema(ICollectionFilterBaseSchema):
     # )
     default_filtering_behaviour = schema.Choice(
         title=_(
-            u"label_default_filtering_behaviour", default=u"Default filtering behaviour."
+            u"label_default_filtering_behaviour",
+            default=u"Default filtering behaviour.",
         ),  # noqa
         description=_(
             u"help_default_filtering_behaviour",
