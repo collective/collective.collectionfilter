@@ -12,6 +12,9 @@ Breaking Change:
 
 Features:
 
+- Add checkbox to reverse output the filters.
+  [jensens]
+
 - Support and Test Plone 6.
   [jensens]
 

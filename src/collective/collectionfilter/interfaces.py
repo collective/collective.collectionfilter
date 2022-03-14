@@ -138,8 +138,18 @@ class ICollectionFilterSchema(ICollectionFilterBaseSchema):
         vocabulary="collective.collectionfilter.InputType",
     )
 
+    reverse = schema.Bool(
+        title=_(u"label_reverse", default=u"Reverse sort filter"),
+        description=_(
+            u"help_reverse",
+            default=u"Reverse the sorting of th list of filter options."
+        ),
+        default=False,
+        required=False,
+    )
+
     narrow_down = schema.Bool(
-        title=_(u"label_narrow_down", default=u"Narrow down filter options"),  # noqa
+        title=_(u"label_narrow_down", default=u"Narrow down filter options"),
         description=_(
             u"help_narrow_down",
             default=u"Narrow down the filter options when a filter of this group is applied."  # noqa
@@ -151,7 +161,7 @@ class ICollectionFilterSchema(ICollectionFilterBaseSchema):
     )
 
     hide_if_empty = schema.Bool(
-        title=_(u"label_hide_if_empty", default=u"Hide if empty"),  # noqa
+        title=_(u"label_hide_if_empty", default=u"Hide if empty"),
         description=_(
             u"help_hide_if_empty",
             default=u"Don't display if there is 1 or no options without selecting a filter yet.",
