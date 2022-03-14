@@ -58,6 +58,7 @@ GROUPBY_BLACKLIST = [
     "start",
     "sync_uid",
     "total_comments",
+    "TranslationGroup",
 ] + GEOLOC_IDX  # latitude/longitude is handled as a range filter ... see query.py  # noqa
 DEFAULT_FILTER_TYPE = "single"
 LIST_SCALING = ["No Scaling", "Linear", "Logarithmic"]
@@ -147,13 +148,11 @@ class GroupByCriteria:
         # get catalog metadata schema, but filter out items which cannot be
         # used for grouping
         metadata = [it for it in cat.schema() if it not in GROUPBY_BLACKLIST]
-
         for it in metadata:
-            idx = cat._catalog.indexes.get(it)
-            if not idx:
+            if it not in cat.indexes():
                 # collectionfilter needs both, metadata and index entries.
                 continue
-
+            idx = cat._catalog.indexes.get(it)
             index_modifier = None
             display_modifier = translate_value  # Allow to translate in this package domain per default.  # noqa
             if six.PY2 and getattr(idx, "meta_type", None) == "KeywordIndex":
