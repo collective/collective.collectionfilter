@@ -42,6 +42,7 @@ def _build_url(
 ):
     # Build filter url query
     _urlquery = urlquery.copy()
+
     # Allow deselection
     if filter_value in current_idx_value:
         _urlquery[idx] = [it for it in current_idx_value if it != filter_value]
@@ -192,7 +193,7 @@ def get_filter_items(
     # Allow value_blacklist to be callables for runtime-evaluation
     value_blacklist = (
         value_blacklist() if callable(value_blacklist) else value_blacklist
-    )  # noqa
+    )
     # fallback to title sorted values
     sort_key_function = groupby_criteria[group_by].get(
         "sort_key_function", lambda it: it["title"].lower()
@@ -216,6 +217,9 @@ def get_filter_items(
                 or filter_value in value_blacklist
             ):
                 continue
+            if isinstance(filter_value, int):
+                # if indexed value is an integer, convert to string
+                filter_value = str(filter_value)
             if filter_value in grouped_results:
                 # Add counter, if filter value is already present
                 grouped_results[filter_value]["count"] += 1

@@ -135,13 +135,11 @@ class BaseFilterView(BaseView):
     def input_type(self):
         if self.settings.input_type == "links":
             return "link"
-        elif self.settings.filter_type == "single":
+        if self.settings.filter_type == "single":
             if self.settings.input_type == "checkboxes_radiobuttons":
                 return "radio"
-            else:
-                return "dropdown"
-        else:
-            return "checkbox"
+            return "dropdown"
+        return "checkbox"
 
     # results is called twice inside the template in view/available and view/results.  But its expensive so we cache it
     # but just the the lifetime of the view

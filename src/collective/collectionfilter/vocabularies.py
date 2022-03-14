@@ -197,7 +197,7 @@ class GroupByCriteria:
 def GroupByCriteriaVocabulary(context):
     """Collection filter group by criteria."""
     groupby = getUtility(IGroupByCriteria).groupby
-    items = [SimpleTerm(title=_(it), value=it) for it in groupby.keys()]
+    items = [SimpleTerm(value=it, token=str(it), title=_(it)) for it in groupby.keys()]
     return SimpleVocabulary(items)
 
 
@@ -219,10 +219,10 @@ def InputTypeVocabulary(context):
         SimpleTerm(
             title=_("inputtype_checkboxes_radiobuttons"),
             value="checkboxes_radiobuttons",
-        ),  # noqa
+        ),
         SimpleTerm(
             title=_("inputtype_checkboxes_dropdowns"), value="checkboxes_dropdowns"
-        ),  # noqa
+        ),
     ]
     return SimpleVocabulary(items)
 
@@ -241,5 +241,5 @@ def SortOnIndexesVocabulary(context):
     sortable_indexes = reader().get("sortable_indexes")
     items = [
         SimpleTerm(title=_(v["title"]), value=k) for k, v in sortable_indexes.items()
-    ]  # noqa
+    ]
     return SimpleVocabulary(items)
