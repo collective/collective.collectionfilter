@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from re import L
 from collective.collectionfilter import _
 from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.interfaces import IGroupByModifier
