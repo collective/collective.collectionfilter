@@ -60,6 +60,11 @@ jobs:
             echo "[buildout]" > $HOME/.buildout/default.cfg
             echo "download-cache = $HOME/buildout-cache/downloads" >> $HOME/.buildout/default.cfg
             echo "eggs-directory = $HOME/buildout-cache/eggs" >> $HOME/.buildout/default.cfg
+      - name: bootstrap buildout
+        run: |
+          python -m venv .
+          bin/pip install -r requirements-${{ matrix.plone-version }}.x.txt
+          ls -al
       - name: buildout
         run: |
           bin/buildout -t 10 -Nc test-${{ matrix.plone-version }}.x.cfg
