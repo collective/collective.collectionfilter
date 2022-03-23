@@ -142,7 +142,7 @@ class ICollectionFilterSchema(ICollectionFilterBaseSchema):
         title=_(u"label_reverse", default=u"Reverse sort filter"),
         description=_(
             u"help_reverse",
-            default=u"Reverse the sorting of th list of filter options."
+            default=u"Reverse the sorting of th list of filter options.",
         ),
         default=False,
         required=False,
