@@ -15,16 +15,28 @@ jobs:
           - '5.2'
           - '6.0'
         python-version:
+          - '2.7'
           - '3.7'
           - '3.8'
           - '3.9'
-        include:
-          - plone-version: '5.2'
-            python-version: '2.7'
+        # see testing.py for layer names
+        layer:
+          - 'IntegrationTesting'
+          - 'AcceptanceTestingPortlet_AjaxDisabled'
+          - 'AcceptanceTestingPortlet_AjaxEnabled'
+          - 'AcceptanceTesting_Tiles'
         exclude:
           - plone-version: '5.2'
             python-version: '3.9'
-
+          - plone-version: '6.0'
+            python-version: '2.7'
+          # robot tests need rewrite for plone 6!
+          - plone-version: '6.0'
+            layer: 'AcceptanceTestingPortlet_AjaxDisabled'
+          - plone-version: '6.0'
+            layer: 'AcceptanceTestingPortlet_AjaxEnabled'
+          - plone-version: '6.0'
+            layer: 'AcceptanceTesting_Tiles'
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
@@ -77,25 +89,34 @@ jobs:
           bin/buildout -t 10 -Nc test-${{ matrix.plone-version }}.x.cfg
           bin/pip install zest.pocompile
           bin/pocompile src
-      - name: test integration
-        run: bin/test --layer IntegrationTesting
-      - name: test acceptance
-        # robot tests need rewrite for plone 6!
-        if: ${{ matrix.plone-version == '5.2' }}
+      - name: test
         run: |
             export DISPLAY=:99.0
             chromedriver --url-base=/wd/hub &
             sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
-            sleep 3
-            bin/test --all --layer AcceptanceTesting
+            sleep 2
+            bin/test --all --layer ${{ matrix.layer }}
+      - name: createcoverage
+        run: |
+            export DISPLAY=:99.0
+            chromedriver --url-base=/wd/hub &
+            sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
+            sleep 2
+            bin/createcoverage -t '--all --layer ${{ matrix.layer }}'
+            bin/coverage json -i
       - name: code-analysis
         if: ${{ matrix.plone-version == '5.2' }}
         run: bin/code-analysis
+      - name: Coveralls
+        uses: AndreMiras/coveralls-python-action@develop
+        with:
+          parallel: true
+          flag-name: ${{ matrix.plone-version }}-${{ matrix.python-version }}-${{ matrix.layer }}
       - name: Artifact Robot Test Report
         if: failure()
         uses: actions/upload-artifact@v1
         with:
-          name: test_results-${{ matrix.python-version }}-${{ matrix.plone-version }}
+          name: test_results-${{ matrix.python-version }}-${{ matrix.plone-version }}-${{ matrix.layer }}
           path: ./parts/test
 
   coveralls_finish:
