@@ -87,7 +87,7 @@ jobs:
             chromedriver --url-base=/wd/hub &
             sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
             sleep 3
-            bin/test --layer AcceptanceTesting
+            bin/test --all --layer AcceptanceTesting
       - name: code-analysis
         if: ${{ matrix.plone-version == '5.2' }}
         run: bin/code-analysis
