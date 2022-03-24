@@ -14,14 +14,16 @@ jobs:
         plone-version:
           - '5.2'
           - '6.0'
-        python-version: ['3.7', '3.8', '3.9']
-        layer:
-          - Portlet_AjaxDisabled
-          - Portlet_AjaxEnabled
-          - Tile
+        python-version:
+          - '3.7'
+          - '3.8'
+          - '3.9'
         exclude:
-          - plone-version: 5.2
-            python-version: 3.9
+          - plone-version: '5.2'
+            python-version: '3.9'
+        include:
+          - plone-version: '5.2'
+            python-version: '2.7'
 
     steps:
       - uses: actions/checkout@v2
@@ -60,7 +62,14 @@ jobs:
             echo "[buildout]" > $HOME/.buildout/default.cfg
             echo "download-cache = $HOME/buildout-cache/downloads" >> $HOME/.buildout/default.cfg
             echo "eggs-directory = $HOME/buildout-cache/eggs" >> $HOME/.buildout/default.cfg
-      - name: bootstrap buildout
+      - name: bootstrap buildout py2
+        if: ${{ matrix.python-version == '2.7'}}
+        run: |
+          virtualenv .
+          bin/pip install -r requirements-${{ matrix.plone-version }}.x.txt
+          ls -al
+      - name: bootstrap buildout py3
+        if: ${{ matrix.python-version != '2.7'}}
         run: |
           python -m venv .
           bin/pip install -r requirements-${{ matrix.plone-version }}.x.txt
@@ -74,9 +83,8 @@ jobs:
         run: |
             export DISPLAY=:99.0
             chromedriver --url-base=/wd/hub &
-            sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
             sleep 3
-            bin/test --all  --layer ${{ matrix.layer }}
+            bin/test --all
       - name: code-analysis
         if: ${{ matrix.plone-version == '5.2' }}
         run: bin/code-analysis
@@ -84,7 +92,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v1
         with:
-          name: test_results-${{ matrix.python-version }}-${{ matrix.plone-version }}-${{ matrix.layer }}
+          name: test_results-${{ matrix.python-version }}-${{ matrix.plone-version }}
           path: ./parts/test
 
   coveralls_finish:
