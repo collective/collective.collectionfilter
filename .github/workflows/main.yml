@@ -18,12 +18,12 @@ jobs:
           - '3.7'
           - '3.8'
           - '3.9'
-        exclude:
-          - plone-version: '5.2'
-            python-version: '3.9'
         include:
           - plone-version: '5.2'
             python-version: '2.7'
+        exclude:
+          - plone-version: '5.2'
+            python-version: '3.9'
 
     steps:
       - uses: actions/checkout@v2
@@ -67,24 +67,27 @@ jobs:
         run: |
           virtualenv .
           bin/pip install -r requirements-${{ matrix.plone-version }}.x.txt
-          ls -al
       - name: bootstrap buildout py3
         if: ${{ matrix.python-version != '2.7'}}
         run: |
           python -m venv .
           bin/pip install -r requirements-${{ matrix.plone-version }}.x.txt
-          ls -al
       - name: buildout
         run: |
           bin/buildout -t 10 -Nc test-${{ matrix.plone-version }}.x.cfg
           bin/pip install zest.pocompile
           bin/pocompile src
-      - name: test
+      - name: test integration
+        run: bin/test --layer IntegrationTesting
+      - name: test acceptance
+        # robot tests need rewrite for plone 6!
+        if: ${{ matrix.plone-version == '5.2' }}
         run: |
             export DISPLAY=:99.0
             chromedriver --url-base=/wd/hub &
+            sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
             sleep 3
-            bin/test --all
+            bin/test --layer AcceptanceTesting
       - name: code-analysis
         if: ${{ matrix.plone-version == '5.2' }}
         run: bin/code-analysis
