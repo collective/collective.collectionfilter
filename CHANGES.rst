@@ -6,7 +6,12 @@ Changelog
 
 Breaking Change:
 
-- Add idx parameter to display_modifier call, so that we can use the index name to resolve the correct translated taxonomy titles in collective.taxonomy. This means that the display_modifier method in the groupby_modifier adapters needs to expect this parameter too!
+- Remove Plone 5.0 and 5.1 support.
+  [petschki]
+
+- Add idx parameter to display_modifier call, so that we can use the index name to resolve the correct translated
+  taxonomy titles in collective.taxonomy. This means that the display_modifier method in the groupby_modifier adapters
+  needs to expect this parameter too!
   [MrTango]
 
 Bug Fixes:
