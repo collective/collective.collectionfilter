@@ -12,66 +12,31 @@ jobs:
       fail-fast: false
       matrix:
         plone-version:
-          - '5.0'
-          - '5.1'
           - '5.2'
           - '6.0'
-        python-version: ['2.7', '3.6', '3.7', '3.8', '3.9']
+        python-version:
+          - '2.7'
+          - '3.7'
+          - '3.8'
+          - '3.9'
+        # see testing.py for layer names
         layer:
-          - Portlet_AjaxDisabled
-          - Portlet_AjaxEnabled
-          - Tile
-          - unit
-        coverage: ['no_coverage', 'coverage']
+          - 'IntegrationTesting'
+          - 'AcceptanceTestingPortlet_AjaxDisabled'
+          - 'AcceptanceTestingPortlet_AjaxEnabled'
+          - 'AcceptanceTesting_Tiles'
         exclude:
-          - plone-version: 5.0
-            layer: Tile # standardtiles 2.3.2 does support using the request to query. embed might still be possible
-          - plone-version: 5.0
-            layer: Portlet_AjaxEnabled  # passes but meaningless as it skips all the tests
-          # Only 5.2+ runs on py3
-          - plone-version: 5.0
-            python-version: 3.6
-          - plone-version: 5.0
-            python-version: 3.7
-          - plone-version: 5.0
-            python-version: 3.8
-          - plone-version: 5.0
-            python-version: 3.9
-          - plone-version: 5.1
-            python-version: 3.6
-          - plone-version: 5.1
-            python-version: 3.7
-          - plone-version: 5.1
-            python-version: 3.8
-          - plone-version: 5.1
-            python-version: 3.9
-          # 5.2 does not run on 3.9
-          - plone-version: 5.2
-            python-version: 3.9
-          # 6.0 does not run on 2.7/3.6
-          - plone-version: 6.0
-            python-version: 2.7
-          - plone-version: 6.0
-            python-version: 3.6
-          # Save some time by not running all the robot tests
-          - python-version: 3.6
-            layer: Portlet_AjaxDisabled
-          - python-version: 3.7
-            layer: Portlet_AjaxDisabled
-          - python-version: 3.6
-            layer: Tile
-          - python-version: 3.7
-            layer: Tile
-          # save some time only running coverage on the 5.2 tests
-          - plone-version: 5.0
-            coverage: coverage
-          - plone-version: 5.1
-            coverage: coverage
-          - plone-version: 5.2
-            coverage: no_coverage
-          - plone-version: 6.0
-            coverage: coverage
-
+          - plone-version: '5.2'
+            python-version: '3.9'
+          - plone-version: '6.0'
+            python-version: '2.7'
+          # robot tests need rewrite for plone 6!
+          - plone-version: '6.0'
+            layer: 'AcceptanceTestingPortlet_AjaxDisabled'
+          - plone-version: '6.0'
+            layer: 'AcceptanceTestingPortlet_AjaxEnabled'
+          - plone-version: '6.0'
+            layer: 'AcceptanceTesting_Tiles'
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
@@ -109,82 +74,50 @@ jobs:
             echo "[buildout]" > $HOME/.buildout/default.cfg
             echo "download-cache = $HOME/buildout-cache/downloads" >> $HOME/.buildout/default.cfg
             echo "eggs-directory = $HOME/buildout-cache/eggs" >> $HOME/.buildout/default.cfg
-      - name: bootstrap buildout (old-school)
-        if: ${{ matrix.python-version == '2.7' }}
+      - name: bootstrap buildout py2
+        if: ${{ matrix.python-version == '2.7'}}
         run: |
-          ./bootstrap.sh test-${{ matrix.plone-version }}.x.cfg
-          ls -al
-      - name: bootstrap buildout (new-way)
-        if: ${{ matrix.python-version != '2.7' }}
+          virtualenv .
+          bin/pip install -r requirements-${{ matrix.plone-version }}.x.txt
+      - name: bootstrap buildout py3
+        if: ${{ matrix.python-version != '2.7'}}
         run: |
           python -m venv .
           bin/pip install -r requirements-${{ matrix.plone-version }}.x.txt
-          ls -al
       - name: buildout
         run: |
           bin/buildout -t 10 -Nc test-${{ matrix.plone-version }}.x.cfg
           bin/pip install zest.pocompile
           bin/pocompile src
-      - name: test robot
-        if: ${{ matrix.coverage != 'coverage' && matrix.layer != 'unit' }}
+      - name: code-analysis
+        if: ${{ matrix.plone-version == '5.2' }}
+        run: bin/code-analysis
+      - name: test
         run: |
             export DISPLAY=:99.0
             chromedriver --url-base=/wd/hub &
-            sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
-            sleep 3
-            bin/test --all  --layer ${{ matrix.layer }} --list-tests
-            bin/test --all  --layer ${{ matrix.layer }}
-      - name: test unit
-        if: ${{ matrix.coverage != 'coverage' && matrix.layer == 'unit' }}
-        run: |
-            bin/test --unit --list-tests
-            bin/test --unit
+            sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+            sleep 2
+            bin/test --all --layer ${{ matrix.layer }}
       - name: createcoverage
-        if: ${{ matrix.coverage == 'coverage' && matrix.layer != 'unit' }}
         run: |
             export DISPLAY=:99.0
             chromedriver --url-base=/wd/hub &
-            sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
-            sleep 3
-            bin/test --all  --layer ${{ matrix.layer }} --list-tests
+            sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+            sleep 2
             bin/createcoverage -t '--all --layer ${{ matrix.layer }}'
             bin/coverage json -i
-      - name: createcoverage
-        if: ${{ matrix.coverage == 'coverage' && matrix.layer == 'unit' }}
-        run: |
-            bin/test --unit --list-tests
-            bin/createcoverage -t '--unit'
-            bin/coverage json -i
       - name: Coveralls
-        if: ${{ matrix.coverage == 'coverage' }}
         uses: AndreMiras/coveralls-python-action@develop
         with:
           parallel: true
           flag-name: ${{ matrix.plone-version }}-${{ matrix.python-version }}-${{ matrix.layer }}
-      - name: code-analysis
-        if: ${{ matrix.plone-version == '5.2' }}
-        run: bin/code-analysis
-      - name: black
-        if: ${{ matrix.python-version == '3.9' }}
-        run: |
-          pip install "black==21.12b0"
-          black --check src
       - name: Artifact Robot Test Report
         if: failure()
         uses: actions/upload-artifact@v1
         with:
           name: test_results-${{ matrix.python-version }}-${{ matrix.plone-version }}-${{ matrix.layer }}
           path: ./parts/test
-      - uses: actions/setup-python@v2
-        if: failure()
-        with:
-          python-version: 2.7
-      - name: Robottest report
-        continue-on-error: true
-        if: failure()
-        run: |
-            pip2.7 install popt || pip2.7 install --user  popt
-            grep  --include=output.xml -Rl  FAIL parts/test | xargs --no-run-if-empty -n 1 popt
 
   coveralls_finish:
     needs: build

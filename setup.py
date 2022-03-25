@@ -23,8 +23,6 @@ setup(
     ),
     classifiers=[
         "Framework :: Plone",
-        "Framework :: Plone :: 5.0",
-        "Framework :: Plone :: 5.1",
         "Framework :: Plone :: 5.2",
         "Framework :: Plone :: 6.0",
         "Framework :: Plone :: Addon",
@@ -51,7 +49,7 @@ setup(
     install_requires=[
         "setuptools",
         "plone.api >= 1.5.1",
-        "Products.CMFPlone >= 5.0",
+        "Products.CMFPlone >= 5.2",
         "plone.app.contenttypes",
     ],
     extras_require={
