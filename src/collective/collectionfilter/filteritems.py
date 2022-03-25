@@ -217,7 +217,7 @@ def get_filter_items(
                 or filter_value in value_blacklist
             ):
                 continue
-            if type(filter_value) ==  int:
+            if type(filter_value) == int:
                 # if indexed value is an integer, convert to string
                 filter_value = str(filter_value)
             if filter_value in grouped_results:
