@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_inner
-from collective.collectionfilter import PLONE_VERSION
 from collective.collectionfilter.filteritems import get_filter_items
 from collective.collectionfilter.filteritems import ICollectionish
 from collective.collectionfilter.interfaces import IGroupByCriteria
@@ -118,10 +117,6 @@ class BaseView(object):
 
     @property
     def ajax_load(self):
-        if PLONE_VERSION < "5.1":
-            # Due to bug in AJAX load pattern makes it hard to make it work in 5.0.x
-            return False
-
         values = api.portal.get_registry_record("plone.patternoptions")
         if "collectionfilter" in values:
             filterOptions = json.loads(values["collectionfilter"])

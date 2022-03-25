@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from collective.collectionfilter import _
-from collective.collectionfilter import PLONE_VERSION
 from collective.collectionfilter import utils
 from plone.api.portal import get_registry_record as getrec
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
@@ -26,11 +25,6 @@ def pattern_options():
         "recentlyUsed": True,
         "selectableTypes": utils.target_collection_types,
     }
-    if PLONE_VERSION < "5.1":
-        del options["basePath"]
-        options["selectableTypes"] = [
-            "Collection",
-        ]
     return options
 
 
