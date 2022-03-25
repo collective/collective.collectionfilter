@@ -14,7 +14,25 @@ Breaking Change:
   needs to expect this parameter too!
   [MrTango]
 
+Features:
+
+- Add checkbox to reverse output the filters.
+  [jensens]
+
+- Support and Test Plone 6.
+  [jensens]
+
+- Add a module global COLLECTIONISH_TARGETS to c.c.tiles to register other tiles with collections than plone.app.standardtiles.contentlisting.
+  [jensens]
+
 Bug Fixes:
+
+- Not every metadata entry has an index with same name.
+  Ignore if not a pair.
+  [jensens]
+
+- Fix/Workaround for #59 (Int fields in indexes are not working).
+  [jensens]
 
 - Hide uninstall profiles from install view.
   [jensens]
@@ -27,6 +45,7 @@ Bug Fixes:
 
 - Fixed searches for only non-alphanumeric characters causing an exception to be displayed.
   [JeffersonBledsoe]
+
 
 Other:
 

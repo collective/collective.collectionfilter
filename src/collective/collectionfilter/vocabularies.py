@@ -26,6 +26,7 @@ import six
 # Use this EMPTY_MARKER for your custom indexer to index empty criterions.
 EMPTY_MARKER = "__EMPTY__"
 TEXT_IDX = "SearchableText"
+INTEGER_IDXS = []
 GEOLOC_IDX = [
     "latitude",
     "longitude",
@@ -56,9 +57,16 @@ GROUPBY_BLACKLIST = [
     "start",
     "sync_uid",
     "total_comments",
+    "TranslationGroup",
 ] + GEOLOC_IDX  # latitude/longitude is handled as a range filter ... see query.py  # noqa
 DEFAULT_FILTER_TYPE = "single"
 LIST_SCALING = ["No Scaling", "Linear", "Logarithmic"]
+TRUTHY = [
+    safe_encode("true"),
+    safe_encode("1"),
+    safe_encode("t"),
+    safe_encode("yes"),
+]
 
 
 def translate_value(value, *args, **kwargs):
@@ -71,30 +79,26 @@ def translate_messagefactory(value, *args, **kwargs):
 
 def make_bool(value):
     """Transform into a boolean value."""
-    truthy = [
-        safe_encode("true"),
-        safe_encode("1"),
-        safe_encode("t"),
-        safe_encode("yes"),
-    ]
+
     if value is None:
         return
     if isinstance(value, bool):
         return value
-    value = safe_encode(value)
-    value = value.lower()
-    if value in truthy:
-        return True
-    else:
-        return False
+    value = safe_encode(value).lower()
+    return value in TRUTHY
+
+
+def make_int(value):
+    if isinstance(value, (list, tuple)):
+        return [int(val) for val in value]
+    return int(value)
 
 
 def yes_no(value):
     """Return i18n message for a value."""
     if value:
         return _(u"Yes")
-    else:
-        return _(u"No")
+    return _(u"No")
 
 
 def get_yes_no_title(item, *args, **kwargs):
@@ -143,11 +147,13 @@ class GroupByCriteria:
         # get catalog metadata schema, but filter out items which cannot be
         # used for grouping
         metadata = [it for it in cat.schema() if it not in GROUPBY_BLACKLIST]
-
         for it in metadata:
+            if it not in cat.indexes():
+                # collectionfilter needs both, metadata and index entries.
+                continue
+            idx = cat._catalog.indexes.get(it)
             index_modifier = None
             display_modifier = translate_value  # Allow to translate in this package domain per default.  # noqa
-            idx = cat._catalog.indexes.get(it)
             if six.PY2 and getattr(idx, "meta_type", None) == "KeywordIndex":
                 # in Py2 KeywordIndex accepts only utf-8 encoded values.
                 index_modifier = safe_encode
@@ -155,6 +161,9 @@ class GroupByCriteria:
             if getattr(idx, "meta_type", None) == "BooleanIndex":
                 index_modifier = make_bool
                 display_modifier = get_yes_no_title
+
+            if idx.getId() in INTEGER_IDXS:
+                index_modifier = make_int
 
             # for portal_type or Type we have some special sauce as we need to translate via fti.i18n_domain.  # noqa
             if it == "portal_type":
@@ -187,7 +196,7 @@ class GroupByCriteria:
 def GroupByCriteriaVocabulary(context):
     """Collection filter group by criteria."""
     groupby = getUtility(IGroupByCriteria).groupby
-    items = [SimpleTerm(title=_(it), value=it) for it in groupby.keys()]
+    items = [SimpleTerm(value=it, token=str(it), title=_(it)) for it in groupby.keys()]
     return SimpleVocabulary(items)
 
 
@@ -209,10 +218,10 @@ def InputTypeVocabulary(context):
         SimpleTerm(
             title=_("inputtype_checkboxes_radiobuttons"),
             value="checkboxes_radiobuttons",
-        ),  # noqa
+        ),
         SimpleTerm(
             title=_("inputtype_checkboxes_dropdowns"), value="checkboxes_dropdowns"
-        ),  # noqa
+        ),
     ]
     return SimpleVocabulary(items)
 
@@ -231,5 +240,5 @@ def SortOnIndexesVocabulary(context):
     sortable_indexes = reader().get("sortable_indexes")
     items = [
         SimpleTerm(title=_(v["title"]), value=k) for k, v in sortable_indexes.items()
-    ]  # noqa
+    ]
     return SimpleVocabulary(items)
