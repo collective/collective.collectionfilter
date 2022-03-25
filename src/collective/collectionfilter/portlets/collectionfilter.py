@@ -58,7 +58,7 @@ class Assignment(base.Assignment):
         self.view_name = view_name
         self.content_selector = content_selector
         self.hide_if_empty = hide_if_empty
-        self.reverse = hide_if_empty
+        self.reverse = reverse
         # self.list_scaling = list_scaling
 
     @property
