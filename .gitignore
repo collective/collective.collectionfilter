@@ -41,3 +41,4 @@ node_modules/
 .python-version
 requirements.txt
 annotate.txt
+local.cfg
