@@ -4,6 +4,9 @@ from plone.app.portlets.portlets.base import Renderer
 from Products.CMFPlone.utils import get_top_request
 from Products.CMFPlone.utils import safe_unicode
 
+from collective.collectionfilter.interfaces import ICollectionish
+from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
+
 
 PLONE_VERSION = env.plone_version()
 
@@ -27,4 +30,9 @@ class BasePortletRenderer(Renderer):
 
     @property
     def available(self):
+        if not (
+            ISyndicatableCollection.providedBy(self.context)
+            or ICollectionish.providedBy(self.context)
+        ):
+            return False
         return self.is_available

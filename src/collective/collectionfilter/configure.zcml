@@ -55,6 +55,11 @@
     provides="collective.collectionfilter.interfaces.ICollectionish"
     for="plone.app.contenttypes.interfaces.ICollection" />
 
+  <adapter
+    factory=".filteritems.CollectionishCollection"
+    provides="collective.collectionfilter.interfaces.ICollectionish"
+    for="plone.app.contenttypes.behaviors.collection.ISyndicatableCollection" />
+
   <subscriber
     for="Products.CMFPlone.interfaces.IPloneSiteRoot
            zope.traversing.interfaces.IBeforeTraverseEvent"
