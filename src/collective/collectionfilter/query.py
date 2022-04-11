@@ -8,9 +8,8 @@ from logging import getLogger
 from plone import api
 from Products.CMFPlone.browser.search import BAD_CHARS
 from Products.CMFPlone.browser.search import quote_chars
-from zope.component import getUtility
-
 from Products.CMFPlone.UnicodeSplitter.config import rxGlob_U
+from zope.component import getUtility
 
 
 try:
@@ -31,12 +30,12 @@ ENCODED_BAD_CHARS = safe_decode(BAD_CHARS)
 
 def sanitise_search_query(query):
     if not rxGlob_U.findall(query):
-        return u""
+        return ""
     for char in ENCODED_BAD_CHARS:
         query = query.replace(char, " ")
     clean_query = [quote(token) for token in query.split()]
     clean_query = quote_chars(clean_query)
-    return u" ".join(clean_query)
+    return " ".join(clean_query)
 
 
 def make_query(params_dict):

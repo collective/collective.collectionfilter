@@ -35,18 +35,18 @@ class ICollectionish(Interface):
 class ICollectionFilterBaseSchema(Interface):
 
     header = schema.TextLine(
-        title=_("label_header", default=u"Filter title"),
-        description=_("help_header", u"Title of the rendered filter."),
+        title=_("label_header", default="Filter title"),
+        description=_("help_header", "Title of the rendered filter."),
         required=False,
     )
 
     target_collection = schema.Choice(
-        title=_(u"label_target_collection", default=u"Alternative Target Collection"),
+        title=_("label_target_collection", default="Alternative Target Collection"),
         description=_(
-            u"help_target_collection",
-            default=u"We use the current context as collection. As an alternative you can select a different "
-            u"collection as source for the filter items "
-            u"and where the filter is applied.",
+            "help_target_collection",
+            default="We use the current context as collection. As an alternative you can select a different "
+            "collection as source for the filter items "
+            "and where the filter is applied.",
         ),
         required=False,
         vocabulary="plone.app.vocabularies.Catalog",
@@ -56,23 +56,23 @@ class ICollectionFilterBaseSchema(Interface):
     )
 
     view_name = schema.TextLine(
-        title=_("label_view_name", default=u"Result listing view name"),
+        title=_("label_view_name", default="Result listing view name"),
         description=_(
             "help_view_name",
-            default=u"Optional view name, if the result listing should be"
-            u" rendered with a special view. Can be used to direct the request"
-            u" to a tile.",
+            default="Optional view name, if the result listing should be"
+            " rendered with a special view. Can be used to direct the request"
+            " to a tile.",
         ),
         required=False,
         default=None,
     )
 
     content_selector = schema.TextLine(
-        title=_("label_content_selector", default=u"Content Selector"),
+        title=_("label_content_selector", default="Content Selector"),
         description=_(
             "help_content_selector",
-            default=u"If your tile or collection has a special class or id for ajax replacement use it here."
-            u" Selector will need to work for unthemed view and current page.",
+            default="If your tile or collection has a special class or id for ajax replacement use it here."
+            " Selector will need to work for unthemed view and current page.",
         ),
         required=False,
     )
@@ -82,83 +82,83 @@ class ICollectionFilterSchema(ICollectionFilterBaseSchema):
     """Schema for the filter."""
 
     group_by = schema.Choice(
-        title=_("label_groupby", u"Group by"),
+        title=_("label_groupby", "Group by"),
         description=_(
-            "help_groupby", u"Select the criteria to group the collection results by."
+            "help_groupby", "Select the criteria to group the collection results by."
         ),
         required=True,
         vocabulary="collective.collectionfilter.GroupByCriteria",
     )
 
     show_count = schema.Bool(
-        title=_(u"label_show_count", default=u"Show count"),
+        title=_("label_show_count", default="Show count"),
         description=_(
-            u"help_show_count", default=u"Show the result count for each filter group."
+            "help_show_count", default="Show the result count for each filter group."
         ),
         default=False,
         required=False,
     )
 
     cache_enabled = schema.Bool(
-        title=_(u"label_cache_enabled", default=u"Enable Cache"),
+        title=_("label_cache_enabled", default="Enable Cache"),
         description=_(
-            u"help_cache_enabled",
-            default=u"Enable caching of filter items. The cache is cleared as"
-            u" soon as the database has any changes.",
+            "help_cache_enabled",
+            default="Enable caching of filter items. The cache is cleared as"
+            " soon as the database has any changes.",
         ),
         default=True,
         required=False,
     )
 
     filter_type = schema.Choice(
-        title=_("label_filter_type", u"Filter Type"),
+        title=_("label_filter_type", "Filter Type"),
         description=_(
             "help_filter_type",
-            u"Select if single or multiple criterias can be selected and if all (and) or any (or) of the selected criterias must be met."  # noqa
-            u"Some index types like ``FieldIndex`` (e.g. Type index) only support the any (or) criteria when set to multiple criterias and ignore, if all (and) is set.",  # noqa
+            "Select if single or multiple criterias can be selected and if all (and) or any (or) of the selected criterias must be met."  # noqa
+            "Some index types like ``FieldIndex`` (e.g. Type index) only support the any (or) criteria when set to multiple criterias and ignore, if all (and) is set.",  # noqa
         ),
         required=True,
         vocabulary="collective.collectionfilter.FilterType",
     )
 
     input_type = schema.Choice(
-        title=_("label_input_type", u"Input Type"),
+        title=_("label_input_type", "Input Type"),
         description=_(
             "help_input_type",
-            u"Select how the UI of the collection filter should be rendered. "
-            u"Wether as links, as checkboxes and radiobuttons or checkboxes and dropdowns.",  # noqa
+            "Select how the UI of the collection filter should be rendered. "
+            "Wether as links, as checkboxes and radiobuttons or checkboxes and dropdowns.",  # noqa
         ),
         required=True,
         vocabulary="collective.collectionfilter.InputType",
     )
 
     reverse = schema.Bool(
-        title=_(u"label_reverse", default=u"Reverse sort filter"),
+        title=_("label_reverse", default="Reverse sort filter"),
         description=_(
-            u"help_reverse",
-            default=u"Reverse the sorting of th list of filter options.",
+            "help_reverse",
+            default="Reverse the sorting of th list of filter options.",
         ),
         default=False,
         required=False,
     )
 
     narrow_down = schema.Bool(
-        title=_(u"label_narrow_down", default=u"Narrow down filter options"),
+        title=_("label_narrow_down", default="Narrow down filter options"),
         description=_(
-            u"help_narrow_down",
-            default=u"Narrow down the filter options when a filter of this group is applied."  # noqa
-            u" Only options, which are available in the result set will then be displayed."  # noqa
-            u" Other filter groups can still narrow down this one, though.",
+            "help_narrow_down",
+            default="Narrow down the filter options when a filter of this group is applied."  # noqa
+            " Only options, which are available in the result set will then be displayed."  # noqa
+            " Other filter groups can still narrow down this one, though.",
         ),  # noqa
         default=False,
         required=False,
     )
 
     hide_if_empty = schema.Bool(
-        title=_(u"label_hide_if_empty", default=u"Hide if empty"),
+        title=_("label_hide_if_empty", default="Hide if empty"),
         description=_(
-            u"help_hide_if_empty",
-            default=u"Don't display if there is 1 or no options without selecting a filter yet.",
+            "help_hide_if_empty",
+            default="Don't display if there is 1 or no options without selecting a filter yet.",
         ),
         default=False,
         required=False,
@@ -185,10 +185,10 @@ class ICollectionFilterResultListSort(ICollectionFilterBaseSchema):
     """Schema for the result list sorting."""
 
     sort_on = schema.Tuple(
-        title=_("label_sort_on", u"Enabled sort indexes"),
-        description=_("help_sort_on", u"Select the indexes which can be sorted on."),
+        title=_("label_sort_on", "Enabled sort indexes"),
+        description=_("help_sort_on", "Select the indexes which can be sorted on."),
         value_type=schema.Choice(
-            title=u"Index",
+            title="Index",
             vocabulary="collective.collectionfilter.SortOnIndexes",
         ),
         required=True,
@@ -197,11 +197,11 @@ class ICollectionFilterResultListSort(ICollectionFilterBaseSchema):
     widget("sort_on", SelectFieldWidget, pattern_options=dict(orderable=True))
 
     input_type = schema.Choice(
-        title=_("label_input_type", u"Input Type"),
+        title=_("label_input_type", "Input Type"),
         description=_(
             "help_input_type",
-            u"Select how the UI of the collection filter should be rendered. "
-            u"Wether as links, as checkboxes and radiobuttons or checkboxes and dropdowns.",  # noqa
+            "Select how the UI of the collection filter should be rendered. "
+            "Wether as links, as checkboxes and radiobuttons or checkboxes and dropdowns.",  # noqa
         ),
         required=True,
         vocabulary="collective.collectionfilter.InputType",
@@ -250,19 +250,19 @@ if HAS_GEOLOCATION:
         """schema for maps filtering"""
 
         narrow_down = schema.Bool(
-            title=_(u"label_narrow_down_results", default=u"Narrow down result"),
+            title=_("label_narrow_down_results", default="Narrow down result"),
             description=_(
-                u"help_narrow_down_results",
-                default=u"Narrow down the result after zooming/moving the map.",
+                "help_narrow_down_results",
+                default="Narrow down the result after zooming/moving the map.",
             ),
             default=False,
             required=False,
         )
 
         default_map_layer = schema.Choice(
-            title=_(u"default_map_layer", u"Default map layer"),
+            title=_("default_map_layer", "Default map layer"),
             description=_(
-                u"help_default_map_layer", default=u"Set the default map layer"
+                "help_default_map_layer", default="Set the default map layer"
             ),
             required=False,
             defaultFactory=map_layer_default,
@@ -270,8 +270,8 @@ if HAS_GEOLOCATION:
         )
 
         map_layers = schema.List(
-            title=_(u"label_map_layers", u"Map Layers"),
-            description=_(u"help_map_layers", default=u"Set the available map layers"),
+            title=_("label_map_layers", "Map Layers"),
+            description=_("help_map_layers", default="Set the available map layers"),
             required=False,
             defaultFactory=map_layers_default,
             missing_value=[],

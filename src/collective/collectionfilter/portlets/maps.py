@@ -18,7 +18,7 @@ class ICollectionMapsPortlet(ICollectionMapsSchema, IPortletDataProvider):
 @implementer(ICollectionMapsPortlet)
 class Assignment(base.Assignment):
 
-    header = u""
+    header = ""
     target_collection = None
     view_name = None
     content_selector = "#content-core"
@@ -28,7 +28,7 @@ class Assignment(base.Assignment):
 
     def __init__(
         self,
-        header=u"",
+        header="",
         target_collection=None,
         view_name=None,
         content_selector="#content-core",
@@ -49,7 +49,7 @@ class Assignment(base.Assignment):
         if self.header:
             return self.header
         else:
-            return _(u"Collection Maps")
+            return _("Collection Maps")
 
 
 class Renderer(BasePortletRenderer, BaseMapsView):
@@ -59,8 +59,8 @@ class Renderer(BasePortletRenderer, BaseMapsView):
 class AddForm(base.AddForm):
 
     schema = ICollectionMapsPortlet
-    label = _(u"Add Collection Maps Portlet")
-    description = _(u"This portlet allows map filtering in collection results.")
+    label = _("Add Collection Maps Portlet")
+    description = _("This portlet allows map filtering in collection results.")
 
     def create(self, data):
         return Assignment(**data)
@@ -69,5 +69,5 @@ class AddForm(base.AddForm):
 class EditForm(base.EditForm):
 
     schema = ICollectionMapsPortlet
-    label = _(u"Edit Collection Maps Portlet")
-    description = _(u"This portlet allows map filtering in collection results.")
+    label = _("Edit Collection Maps Portlet")
+    description = _("This portlet allows map filtering in collection results.")

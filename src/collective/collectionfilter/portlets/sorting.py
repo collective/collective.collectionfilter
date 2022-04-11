@@ -20,18 +20,18 @@ class ICollectionFilterSortOnPortlet(
 @implementer(ICollectionFilterSortOnPortlet)
 class Assignment(base.Assignment):
 
-    header = u""
+    header = ""
     target_collection = None
     view_name = None
-    sort_on = u""
+    sort_on = ""
     input_type = "links"
     content_selector = "#content-core"
 
     def __init__(
         self,
-        header=u"",
+        header="",
         target_collection=None,
-        sort_on=u"",
+        sort_on="",
         input_type="links",
         view_name=None,
         content_selector="#content-core",
@@ -53,7 +53,7 @@ class Assignment(base.Assignment):
         if self.header:
             return self.header
         else:
-            return _(u"Collection Result Sorting")
+            return _("Collection Result Sorting")
 
 
 class Renderer(BasePortletRenderer, BaseSortOnView):
@@ -63,8 +63,8 @@ class Renderer(BasePortletRenderer, BaseSortOnView):
 class AddForm(base.AddForm):
 
     schema = ICollectionFilterSortOnPortlet
-    label = _(u"Add Collection Result Listing Sort Portlet")
-    description = _(u"This portlet shows sorting options for the result listing.")
+    label = _("Add Collection Result Listing Sort Portlet")
+    description = _("This portlet shows sorting options for the result listing.")
 
     def create(self, data):
         return Assignment(**data)
@@ -73,5 +73,5 @@ class AddForm(base.AddForm):
 class EditForm(base.EditForm):
 
     schema = ICollectionFilterSortOnPortlet
-    label = _(u"Edit Collection Result Listing Sort Portlet")
-    description = _(u"This portlet shows sorting options for the result listing.")
+    label = _("Edit Collection Result Listing Sort Portlet")
+    description = _("This portlet shows sorting options for the result listing.")

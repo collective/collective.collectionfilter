@@ -52,52 +52,52 @@ class TestFilteritems(unittest.TestCase):
         self.assertEqual(len(result), 4)
         self.assertEqual(get_data_by_val(result, "all")["count"], 3)
         self.assertEqual(get_data_by_val(result, "all")["selected"], True)
-        self.assertEqual(get_data_by_val(result, u"Süper")["count"], 2)
-        self.assertEqual(get_data_by_val(result, u"Evänt")["count"], 1)
-        self.assertEqual(get_data_by_val(result, u"Dokumänt")["count"], 2)
+        self.assertEqual(get_data_by_val(result, "Süper")["count"], 2)
+        self.assertEqual(get_data_by_val(result, "Evänt")["count"], 1)
+        self.assertEqual(get_data_by_val(result, "Dokumänt")["count"], 2)
 
         result = get_filter_items(
             self.collection_uid,
             "Subject",
-            request_params={"Subject": u"Süper"},
+            request_params={"Subject": "Süper"},
             cache_enabled=False,
         )
 
         self.assertEqual(len(result), 4)
-        self.assertEqual(get_data_by_val(result, u"Süper")["selected"], True)
+        self.assertEqual(get_data_by_val(result, "Süper")["selected"], True)
 
         result = get_filter_items(
             self.collection_uid,
             "Subject",
-            request_params={"Subject": u"Dokumänt"},
+            request_params={"Subject": "Dokumänt"},
             cache_enabled=False,
         )
 
         self.assertEqual(len(result), 4)
-        self.assertEqual(get_data_by_val(result, u"Dokumänt")["selected"], True)
+        self.assertEqual(get_data_by_val(result, "Dokumänt")["selected"], True)
 
         # test narrowed down results
         narrowed_down_result = get_filter_items(
             self.collection_uid,
             "Subject",
-            request_params={"Subject": u"Dokumänt"},
+            request_params={"Subject": "Dokumänt"},
             narrow_down=True,
             show_count=True,
             cache_enabled=False,
         )
 
         self.assertEqual(
-            len(narrowed_down_result), 3, msg=u"narrowed result length should be 3"
+            len(narrowed_down_result), 3, msg="narrowed result length should be 3"
         )
         self.assertEqual(
-            get_data_by_val(narrowed_down_result, u"Dokumänt")["selected"],
+            get_data_by_val(narrowed_down_result, "Dokumänt")["selected"],
             True,  # noqa
-            msg=u"Test that 'Dokumänt' is selected, matching the query",
+            msg="Test that 'Dokumänt' is selected, matching the query",
         )
         self.assertEqual(
-            get_data_by_val(narrowed_down_result, u"all")["count"],
+            get_data_by_val(narrowed_down_result, "all")["count"],
             3,
-            msg=u"Test that there are 3 results if unselected",
+            msg="Test that there are 3 results if unselected",
         )
 
     def test_portal_type_filter(self):
@@ -110,24 +110,24 @@ class TestFilteritems(unittest.TestCase):
         self.assertEqual(len(result), 3)
         self.assertEqual(get_data_by_val(result, "all")["count"], 3)
         self.assertEqual(get_data_by_val(result, "all")["selected"], True)
-        self.assertEqual(get_data_by_val(result, u"Event")["count"], 1)
-        self.assertEqual(get_data_by_val(result, u"Document")["count"], 2)
+        self.assertEqual(get_data_by_val(result, "Event")["count"], 1)
+        self.assertEqual(get_data_by_val(result, "Document")["count"], 2)
 
         result = get_filter_items(
             self.collection_uid,
             "portal_type",
-            request_params={"portal_type": u"Event"},
+            request_params={"portal_type": "Event"},
             cache_enabled=False,
         )
 
         self.assertEqual(len(result), 3)
-        self.assertEqual(get_data_by_val(result, u"Event")["selected"], True)
+        self.assertEqual(get_data_by_val(result, "Event")["selected"], True)
 
         # test narrowed down results
         result = get_filter_items(
             self.collection_uid,
             "portal_type",
-            request_params={"portal_type": u"Event"},
+            request_params={"portal_type": "Event"},
             narrow_down=True,
             show_count=True,
             cache_enabled=False,
@@ -135,15 +135,15 @@ class TestFilteritems(unittest.TestCase):
 
         self.assertEqual(len(result), 2)
         self.assertEqual(
-            get_data_by_val(result, u"all")["count"],
+            get_data_by_val(result, "all")["count"],
             3,
-            msg=u"Test that the number of results if unselected is 3",
+            msg="Test that the number of results if unselected is 3",
         )
 
         self.assertEqual(
-            get_data_by_val(result, u"Event")["selected"],
+            get_data_by_val(result, "Event")["selected"],
             True,
-            msg=u"Test that Event portal_type is selected matching the query",
+            msg="Test that Event portal_type is selected matching the query",
         )
 
         # test operators option on FieldIndex
@@ -159,8 +159,8 @@ class TestFilteritems(unittest.TestCase):
         )
 
         self.assertEqual(len(result), 3)
-        self.assertEqual(get_data_by_val(result, u"Event")["selected"], True)
-        self.assertEqual(get_data_by_val(result, u"Document")["selected"], True)  # noqa
+        self.assertEqual(get_data_by_val(result, "Event")["selected"], True)
+        self.assertEqual(get_data_by_val(result, "Document")["selected"], True)  # noqa
 
         # and operator is ignored (same result as above)
         result = get_filter_items(
@@ -184,22 +184,22 @@ class TestFilteritems(unittest.TestCase):
         self.assertEqual(len(result), 4)
         self.assertEqual(get_data_by_val(result, "all")["count"], 3)
         self.assertEqual(get_data_by_val(result, "all")["selected"], True)
-        self.assertEqual(get_data_by_val(result, u"Süper")["count"], 2)
-        self.assertEqual(get_data_by_val(result, u"Evänt")["count"], 1)
-        self.assertEqual(get_data_by_val(result, u"Dokumänt")["count"], 2)
+        self.assertEqual(get_data_by_val(result, "Süper")["count"], 2)
+        self.assertEqual(get_data_by_val(result, "Evänt")["count"], 1)
+        self.assertEqual(get_data_by_val(result, "Dokumänt")["count"], 2)
 
         # Test url
-        self.assertEqual(qs(result, u"Süper"), {"Subject": u"Süper"})
+        self.assertEqual(qs(result, "Süper"), {"Subject": "Süper"})
 
         catalog_results = ICollection(self.collection).results(
-            batch=False, brains=True, custom_query=make_query(qs(result, u"Süper"))
+            batch=False, brains=True, custom_query=make_query(qs(result, "Süper"))
         )
         self.assertEqual(len(catalog_results), 2)
 
         result = get_filter_items(
             self.collection_uid,
             "Subject",
-            request_params={"Subject": u"Süper"},
+            request_params={"Subject": "Süper"},
             filter_type="and",
             cache_enabled=False,
         )
@@ -209,56 +209,56 @@ class TestFilteritems(unittest.TestCase):
 
         # TODO: I'm not sure these counts are correct. It should represent how many results you will get if you click
         # so should be smaller than this but I guess you need to turn on narrow down for that?
-        self.assertEqual(get_data_by_val(result, u"Süper")["count"], 2)
-        self.assertEqual(get_data_by_val(result, u"Evänt")["count"], 1)
-        self.assertEqual(get_data_by_val(result, u"Dokumänt")["count"], 2)
+        self.assertEqual(get_data_by_val(result, "Süper")["count"], 2)
+        self.assertEqual(get_data_by_val(result, "Evänt")["count"], 1)
+        self.assertEqual(get_data_by_val(result, "Dokumänt")["count"], 2)
 
-        self.assertEqual(get_data_by_val(result, u"Süper")["selected"], True)
+        self.assertEqual(get_data_by_val(result, "Süper")["selected"], True)
 
-        self.assertEqual(qs(result, u"Süper"), {})
+        self.assertEqual(qs(result, "Süper"), {})
         self.assertEqual(
-            qs(result, u"Dokumänt"),
-            {"Subject_op": "and", "Subject": [u"Süper", u"Dokumänt"]},
+            qs(result, "Dokumänt"),
+            {"Subject_op": "and", "Subject": ["Süper", "Dokumänt"]},
         )
         self.assertEqual(
-            qs(result, u"Evänt"), {"Subject_op": "and", "Subject": [u"Süper", u"Evänt"]}
+            qs(result, "Evänt"), {"Subject_op": "and", "Subject": ["Süper", "Evänt"]}
         )
 
         # Narrow down by 2
 
         catalog_results = ICollection(self.collection).results(
-            batch=False, brains=True, custom_query=make_query(qs(result, u"Dokumänt"))
+            batch=False, brains=True, custom_query=make_query(qs(result, "Dokumänt"))
         )
         self.assertEqual(len(catalog_results), 1)
 
         result = get_filter_items(
             self.collection_uid,
             "Subject",
-            request_params={"Subject": [u"Süper", u"Dokumänt"]},
+            request_params={"Subject": ["Süper", "Dokumänt"]},
             filter_type="and",
             cache_enabled=False,
         )
 
         self.assertEqual(len(result), 4)
         self.assertEqual(get_data_by_val(result, "all")["count"], 3)
-        self.assertEqual(get_data_by_val(result, u"Süper")["count"], 2)
+        self.assertEqual(get_data_by_val(result, "Süper")["count"], 2)
 
-        self.assertEqual(get_data_by_val(result, u"Evänt")["count"], 1)
-        self.assertEqual(get_data_by_val(result, u"Dokumänt")["count"], 2)
+        self.assertEqual(get_data_by_val(result, "Evänt")["count"], 1)
+        self.assertEqual(get_data_by_val(result, "Dokumänt")["count"], 2)
 
-        self.assertEqual(get_data_by_val(result, u"Süper")["selected"], True)
-        self.assertEqual(get_data_by_val(result, u"Dokumänt")["selected"], True)
+        self.assertEqual(get_data_by_val(result, "Süper")["selected"], True)
+        self.assertEqual(get_data_by_val(result, "Dokumänt")["selected"], True)
 
-        self.assertEqual(qs(result, u"Süper"), {"Subject": u"Dokumänt"})
-        self.assertEqual(qs(result, u"Dokumänt"), {"Subject": u"Süper"})
+        self.assertEqual(qs(result, "Süper"), {"Subject": "Dokumänt"})
+        self.assertEqual(qs(result, "Dokumänt"), {"Subject": "Süper"})
         self.assertEqual(
-            qs(result, u"Evänt"),
-            {"Subject": [u"Süper", u"Dokumänt", u"Evänt"], "Subject_op": "and"},
+            qs(result, "Evänt"),
+            {"Subject": ["Süper", "Dokumänt", "Evänt"], "Subject_op": "and"},
         )
 
         # Clicking on Event we should get 0 results as none will be in common
         catalog_results = ICollection(self.collection).results(
-            batch=False, brains=True, custom_query=make_query(qs(result, u"Evänt"))
+            batch=False, brains=True, custom_query=make_query(qs(result, "Evänt"))
         )
         self.assertEqual(len(catalog_results), 0)
 
@@ -287,17 +287,17 @@ class TestFilteritems(unittest.TestCase):
         )
 
         self.assertEqual(
-            len(narrowed_down_result), 2, msg=u"narrowed result length should be 2"
+            len(narrowed_down_result), 2, msg="narrowed result length should be 2"
         )
         self.assertEqual(
             get_data_by_val(narrowed_down_result, True)["selected"],
             True,  # noqa
-            msg=u"Test that 'Yes' is selected, matching the query",
+            msg="Test that 'Yes' is selected, matching the query",
         )
         self.assertEqual(
-            get_data_by_val(narrowed_down_result, u"all")["count"],
+            get_data_by_val(narrowed_down_result, "all")["count"],
             3,
-            msg=u"Test that there are 3 results if unselected",
+            msg="Test that there are 3 results if unselected",
         )
 
         # test narrowed down results
@@ -311,15 +311,15 @@ class TestFilteritems(unittest.TestCase):
         )
 
         self.assertEqual(
-            len(narrowed_down_result), 2, msg=u"narrowed result length should be 2"
+            len(narrowed_down_result), 2, msg="narrowed result length should be 2"
         )
         self.assertEqual(
             get_data_by_val(narrowed_down_result, False)["selected"],
             True,  # noqa
-            msg=u"Test that 'No' is selected, matching the query",
+            msg="Test that 'No' is selected, matching the query",
         )
         self.assertEqual(
-            get_data_by_val(narrowed_down_result, u"all")["count"],
+            get_data_by_val(narrowed_down_result, "all")["count"],
             3,
-            msg=u"Test that there are 3 results if unselected",
+            msg="Test that there are 3 results if unselected",
         )

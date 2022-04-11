@@ -17,9 +17,9 @@ class ICollectionFilterPortlet(ICollectionFilterSchema, IPortletDataProvider):
 @implementer(ICollectionFilterPortlet)
 class Assignment(base.Assignment):
 
-    header = u""
+    header = ""
     target_collection = None
-    group_by = u""
+    group_by = ""
     show_count = False
     cache_enabled = True
     filter_type = DEFAULT_FILTER_TYPE
@@ -33,9 +33,9 @@ class Assignment(base.Assignment):
 
     def __init__(
         self,
-        header=u"",
+        header="",
         target_collection=None,
-        group_by=u"",
+        group_by="",
         show_count=False,
         cache_enabled=True,
         filter_type=DEFAULT_FILTER_TYPE,
@@ -71,7 +71,7 @@ class Assignment(base.Assignment):
         if self.header:
             return self.header
         else:
-            return _(u"Collection Filter")
+            return _("Collection Filter")
 
 
 class Renderer(BasePortletRenderer, BaseFilterView):
@@ -81,10 +81,10 @@ class Renderer(BasePortletRenderer, BaseFilterView):
 class AddForm(base.AddForm):
 
     schema = ICollectionFilterPortlet
-    label = _(u"Add Collection Filter Portlet")
+    label = _("Add Collection Filter Portlet")
     description = _(
-        u"This portlet shows grouped criteria of collection results and "
-        u"allows filtering of collection results."
+        "This portlet shows grouped criteria of collection results and "
+        "allows filtering of collection results."
     )
 
     def create(self, data):
@@ -94,8 +94,8 @@ class AddForm(base.AddForm):
 class EditForm(base.EditForm):
 
     schema = ICollectionFilterPortlet
-    label = _(u"Edit Collection Filter Portlet")
+    label = _("Edit Collection Filter Portlet")
     description = _(
-        u"This portlet shows grouped criteria of collection results and "
-        u"allows filtering of collection results."
+        "This portlet shows grouped criteria of collection results and "
+        "allows filtering of collection results."
     )

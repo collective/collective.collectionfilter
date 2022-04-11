@@ -97,8 +97,8 @@ def make_int(value):
 def yes_no(value):
     """Return i18n message for a value."""
     if value:
-        return _(u"Yes")
-    return _(u"No")
+        return _("Yes")
+    return _("No")
 
 
 def get_yes_no_title(item, *args, **kwargs):
