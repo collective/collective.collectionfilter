@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from collective.collectionfilter.portlets.collectionfilter import (  # noqa
     ICollectionFilterPortlet,
 )
@@ -36,14 +37,14 @@ def upgrade_portlet_input_type(ctx):
                     as_input = getattr(assignment, "as_input")
                     if as_input:
                         logger.info(
-                            u"Set {0} input_type to ``checkboxes_radiobuttons``".format(
+                            "Set {0} input_type to ``checkboxes_radiobuttons``".format(
                                 assignment
                             )
                         )  # noqa
                         setattr(assignment, "input_type", "checkboxes_radiobuttons")
                     else:
                         logger.info(
-                            u"Set {0} input_type to ``links``".format(assignment)
+                            "Set {0} input_type to ``links``".format(assignment)
                         )  # noqa
                         setattr(assignment, "input_type", "links")
 

@@ -250,11 +250,11 @@ def get_filter_items(
     ret = [
         {
             "title": translate(
-                _("subject_all", default=u"All"),
+                _("subject_all", default="All"),
                 context=getRequest(),
                 target_language=plone.api.portal.get_current_language(),
             ),
-            "url": u"{0}/?{1}".format(
+            "url": "{0}/?{1}".format(
                 collection_url, urlencode(safe_encode(urlquery_all), doseq=True)
             ),
             "value": "all",
@@ -313,7 +313,7 @@ class CollectionishCollection(object):
 
     @property
     def content_selector(self):
-        return u"#content-core"  # TODO: could look it up based on view?
+        return "#content-core"  # TODO: could look it up based on view?
 
     def results(self, custom_query, request_params):
 

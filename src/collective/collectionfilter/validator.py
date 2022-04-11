@@ -42,7 +42,7 @@ class TargetCollectionValidator(validator.SimpleFieldValidator):
         if portlet and (collection is None or collection.content_selector is None):
             raise Invalid(
                 _(
-                    u"Context is not a collection or has a contentlisting tile, please set a target."
+                    "Context is not a collection or has a contentlisting tile, please set a target."
                 )
             )
         return True

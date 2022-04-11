@@ -16,14 +16,14 @@ class ICollectionSearchPortlet(ICollectionSearchSchema, IPortletDataProvider):
 @implementer(ICollectionSearchPortlet)
 class Assignment(base.Assignment):
 
-    header = u""
+    header = ""
     target_collection = None
     view_name = None
     content_selector = "#content-core"
 
     def __init__(
         self,
-        header=u"",
+        header="",
         target_collection=None,
         view_name=None,
         content_selector="#content-core",
@@ -38,7 +38,7 @@ class Assignment(base.Assignment):
         if self.header:
             return self.header
         else:
-            return _(u"Collection Search")
+            return _("Collection Search")
 
 
 class Renderer(BasePortletRenderer, BaseSearchView):
@@ -48,8 +48,8 @@ class Renderer(BasePortletRenderer, BaseSearchView):
 class AddForm(base.AddForm):
 
     schema = ICollectionSearchPortlet
-    label = _(u"Add Collection Search Portlet")
-    description = _(u"This portlet allows fulltext search in collection results.")
+    label = _("Add Collection Search Portlet")
+    description = _("This portlet allows fulltext search in collection results.")
 
     def create(self, data):
         return Assignment(**data)
@@ -58,5 +58,5 @@ class AddForm(base.AddForm):
 class EditForm(base.EditForm):
 
     schema = ICollectionSearchPortlet
-    label = _(u"Edit Collection Search Portlet")
-    description = _(u"This portlet allows fulltext search in collection results.")
+    label = _("Edit Collection Search Portlet")
+    description = _("This portlet allows fulltext search in collection results.")
