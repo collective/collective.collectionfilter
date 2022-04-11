@@ -18,16 +18,9 @@ import pytz
 import six
 
 
-try:
-    # Python 2: "unicode" is built-in
-    unicode
-except NameError:
-    unicode = str
-
-
 def _set_ajax_enabled(should_enable_ajax):
     pattern_options = api.portal.get_registry_record("plone.patternoptions")
-    data = {"collectionfilter": unicode(json.dumps({"ajaxLoad": should_enable_ajax}))}
+    data = {"collectionfilter": str(json.dumps({"ajaxLoad": should_enable_ajax}))}
     pattern_options.update(data)
     api.portal.set_registry_record("plone.patternoptions", pattern_options)
 
@@ -70,7 +63,7 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
             portal.invokeFactory(
                 "Collection",
                 id="testcollection",
-                title=u"Test Collection",
+                title="Test Collection",
                 query=[
                     {
                         "i": "portal_type",
@@ -87,30 +80,30 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
             portal.invokeFactory(
                 "Event",
                 id="testevent",
-                title=u"Test Event",
+                title="Test Event",
                 start=now + timedelta(days=1),
                 end=now + timedelta(days=2),
-                subject=[u"Süper", u"Evänt"],
+                subject=["Süper", "Evänt"],
                 exclude_from_nav=False,
             )
             portal.invokeFactory(
                 "Document",
                 id="testdoc",
-                title=u"Test Document and Document 😉",
+                title="Test Document and Document 😉",
                 text=RichTextValue(
-                    u"Ein heißes Test Dokument", "text/plain", "text/html"
+                    "Ein heißes Test Dokument", "text/plain", "text/html"
                 ),
-                subject=[u"Süper", u"Dokumänt"],
+                subject=["Süper", "Dokumänt"],
                 exclude_from_nav=False,
             )
             portal.invokeFactory(
                 "Document",
                 id="testdoc2",
-                title=u"Page 😉",
+                title="Page 😉",
                 text=RichTextValue(
-                    u"Ein heiBes Test Dokument", "text/plain", "text/html"
+                    "Ein heiBes Test Dokument", "text/plain", "text/html"
                 ),
-                subject=[u"Dokumänt"],
+                subject=["Dokumänt"],
                 exclude_from_nav=True,
             )
             doc = portal["testdoc"]
