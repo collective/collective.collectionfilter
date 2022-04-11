@@ -41,3 +41,8 @@ node_modules/
 .python-version
 requirements.txt
 annotate.txt
+venv/
+.tox/
+reports/
+.coverage*
+local.cfg
