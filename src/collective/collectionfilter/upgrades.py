@@ -5,10 +5,12 @@ from collective.collectionfilter.portlets.collectionfilter import (  # noqa
 from plone.portlets.interfaces import ILocalPortletAssignable
 from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets.interfaces import IPortletManager
+from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.GenericSetup.interfaces import ISetupTool
 from zope.component import getMultiAdapter
 from zope.component import getUtilitiesFor
+from zope.component import getUtility
 from zope.component.hooks import getSite
 
 import logging
@@ -66,3 +68,36 @@ def reapply_profile(context):
         context,
         "profile-collective.collectionfilter:default",
     )
+
+
+def upgrade_to_plone6(context):
+    # Delete deprecated keys in the registry
+    keys_to_delete = [
+        "plone.bundles/collectionfilter-bundle.compile",
+        "plone.bundles/collectionfilter-bundle.develop_css",
+        "plone.bundles/collectionfilter-bundle.develop_javascript",
+        "plone.bundles/collectionfilter-bundle.last_compilation",
+        "plone.bundles/collectionfilter-bundle.merge_with",
+        "plone.bundles/collectionfilter-bundle.resources",
+        "plone.bundles/collectionfilter-bundle.stub_js_modules",
+        "plone.resources/collectionfilter-bundle.conf",
+        "plone.resources/collectionfilter-bundle.css",
+        "plone.resources/collectionfilter-bundle.deps",
+        "plone.resources/collectionfilter-bundle.export",
+        "plone.resources/collectionfilter-bundle.init",
+        "plone.resources/collectionfilter-bundle.js",
+        "plone.resources/collectionfilter-bundle.url",
+        "plone.resources/collectionfilter.conf",
+        "plone.resources/collectionfilter.css",
+        "plone.resources/collectionfilter.deps",
+        "plone.resources/collectionfilter.export",
+        "plone.resources/collectionfilter.init",
+        "plone.resources/collectionfilter.js",
+        "plone.resources/collectionfilter.url",
+    ]
+    registry = getUtility(IRegistry)
+    for key in keys_to_delete:
+        if key in registry.records.keys():
+            del registry.records[key]
+
+    reapply_profile(context)

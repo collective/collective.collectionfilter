@@ -13,64 +13,19 @@
   </record>
 
   <records prefix="plone.resources/collectionfilter"
-           interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++resource++collective.collectionfilter/collectionfilter.js</value>
-      <value key="css">
-        <element>++resource++collective.collectionfilter/collectionfilter.less</element>
-      </value>
-  </records>
+           interface='Products.CMFPlone.interfaces.IResourceRegistry' remove="True" />
 
   <records prefix="plone.resources/collectionfilter-bundle"
-           interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++resource++collective.collectionfilter/collectionfilter-bundle.js</value>
-      <value key="css">
-        <element>++resource++collective.collectionfilter/collectionfilter.less</element>
-      </value>
-  </records>
-
-  <records prefix="plone.bundles/collectionfilter-bundle"
-              interface='Products.CMFPlone.interfaces.IBundleRegistry'>
-    <value key="resources">
-      <element>collectionfilter-bundle</element>
-    </value>
+           interface='Products.CMFPlone.interfaces.IResourceRegistry' remove="True" />
+  
+  <records prefix="plone.bundles/collectionfilter-bundle" interface='Products.CMFPlone.interfaces.IBundleRegistry'>
     <value key="enabled">True</value>
-    <value key="depends">plone</value>
-    <value key="compile">True</value>
-    <value key="merge_with">default</value>
-    <value key="jscompilation">++resource++collective.collectionfilter/collectionfilter-bundle-compiled.js</value>
-    <value key="csscompilation">++resource++collective.collectionfilter/collectionfilter-bundle-compiled.css</value>
-    <value key="last_compilation">2020-05-06 14:30:00</value>
-    <value key="stub_js_modules">
-      <element>backbone</element>
-      <element>bootstrap-dropdown</element>
-      <element>bootstrap-tooltip</element>
-      <element>jquery.event.drag</element>
-      <element>jquery.event.drop</element>
-      <element>jquery.form</element>
-      <element>jquery</element>
-      <element>mockup-i18n</element>
-      <element>mockup-patterns-autotoc</element>
-      <element>mockup-patterns-backdrop</element>
-      <element>mockup-patterns-base</element>
-      <element>mockup-patterns-contentloader</element>
-      <element>mockup-patterns-modal</element>
-      <element>mockup-patterns-moment</element>
-      <element>mockup-patterns-pickadate</element>
-      <element>mockup-patterns-select2</element>
-      <element>mockup-router</element>
-      <element>mockup-utils</element>
-      <element>pat-base</element>
-      <element>pat-compat</element>
-      <element>pat-logger</element>
-      <element>pat-mockup-parser</element>
-      <element>pat-registry</element>
-      <element>pat-utils</element>
-      <element>pat-leaflet</element>
-      <element>select2</element>
-      <element>translate</element>
-      <element>underscore</element>
-      <element>moment</element>
-    </value>
+    <value key="jscompilation">++plone++collectionfilter/collectionfilter.min.js</value>
+    <value key="csscompilation">++plone++collectionfilter/collectionfilter.min.css</value>
+    <value key="expression"></value>
+    <value key="depends"></value>
+    <value key="load_async">False</value>
+    <value key="load_defer">False</value>
   </records>
-
+  
 </registry>
