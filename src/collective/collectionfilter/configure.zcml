@@ -4,6 +4,7 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:i18n="http://namespaces.zope.org/i18n"
     xmlns:zcml="http://namespaces.zope.org/zcml"
+    xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="collective.collectionfilter">
 
   <i18n:registerTranslations directory="locales" />
@@ -12,10 +13,10 @@
 
   <include file="upgrades.zcml" />
 
-  <browser:resourceDirectory
-      name="collective.collectionfilter"
-      directory="resources"
-      />
+  <plone:static
+    directory="resources"
+    type="plone"
+    name="collectionfilter" />
 
   <adapter
       factory=".validator.TargetCollectionValidator"

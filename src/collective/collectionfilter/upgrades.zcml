@@ -90,5 +90,14 @@
       run_deps="false"
       />
 
+  <genericsetup:upgradeStep
+      source="11"
+      destination="12"
+      title="Remove deprecated registry records"
+      description="remove deprecated plone5 bundle registry records"
+      profile="collective.collectionfilter:default"
+      handler=".upgrades.upgrade_to_plone6"
+      />
+
 
 </configure>
