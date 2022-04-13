@@ -12,6 +12,16 @@ Changelog
 
 Breaking Change:
 
+- add Plone 6 ES6 compatible Bundle
+- add Plone 6 ES6 compatible JS and SCSS resources
+- add Plone 6 Javascript Bundle Infrastructure
+- update Portlet Template, Plone 6 ready, use the 'cards' Element
+- add Upgrade Step to remove old registry settings
+- increment Version in Metadata
+- add tox Test Instrastructure
+- update github workflow, remove Plone 5 from matrix
+  [1letter]
+
 - Remove Plone 5.0 and 5.1 support.
   [petschki]
 
