@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
+from .filteritems import get_filter_items
+from .filteritems import ICollectionish
+from .interfaces import IGroupByCriteria
+from .query import make_query
+from .utils import base_query
+from .utils import clean_query
+from .utils import safe_decode
+from .utils import safe_encode
+from .utils import safe_iterable
+from .vocabularies import TEXT_IDX
 from Acquisition import aq_inner
-from collective.collectionfilter.filteritems import get_filter_items
-from collective.collectionfilter.filteritems import ICollectionish
-from collective.collectionfilter.interfaces import IGroupByCriteria
-from collective.collectionfilter.query import make_query
-from collective.collectionfilter.utils import base_query
-from collective.collectionfilter.utils import safe_decode
-from collective.collectionfilter.utils import safe_encode
-from collective.collectionfilter.utils import safe_iterable
-from collective.collectionfilter.vocabularies import TEXT_IDX
 from plone import api
 from plone.api.portal import get_registry_record as getrec
 from plone.app.uuid.utils import uuidToCatalogBrain
@@ -185,7 +186,7 @@ class BaseSearchView(BaseView):
         urlquery = {}
         urlquery.update(self.top_request.form)
 
-        for it in (
+        ignore_params = [
             TEXT_IDX,
             "b_start",
             "b_size",
@@ -193,11 +194,8 @@ class BaseSearchView(BaseView):
             "sort_on",
             "limit",
             "portlethash",
-        ):
-            # Remove problematic url parameters
-            if it in urlquery:
-                del urlquery[it]
-
+        ]
+        urlquery = clean_query(urlquery, ignore_params)
         # add filter trigger if not already there
         if "collectionfilter" not in urlquery:
             urlquery["collectionfilter"] = "1"
