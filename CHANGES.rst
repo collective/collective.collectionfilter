@@ -28,7 +28,7 @@ Features:
 Bug Fixes:
 
 - Fix `b_start` in tiles, where the key is pre/postfixed.
-  Removes those from new filters too, in order to not be on apage that does not exist for the new filtered result.
+  Removes those from new filters too, in order to not be on a page that does not exist for the new filtered result.
   [jensens]
 
 - Not every metadata entry has an index with same name.
