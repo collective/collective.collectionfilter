@@ -32,7 +32,7 @@ There are three portlets/tiles available for filtering:
 
 
 Filter Results of Collections
-----------------------------
+-----------------------------
 
 Add as many filter/search portlets directly to a collection.
 
