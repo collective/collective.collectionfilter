@@ -1,7 +1,7 @@
 Changelog
 =========
 
-4.0 (unreleased)
+4.0 (2022-05-10)
 ----------------
 
 Breaking Change:
