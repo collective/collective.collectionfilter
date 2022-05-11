@@ -128,4 +128,12 @@ Scenario: Search filter
     # Then should be 2 collection results
     #   and should be 4 filter options
 
+Scenario: I can access search through ARIA
 
+  Given I've got a site with a collection
+    and my collection has a collection search
+    and I'm viewing the collection
+
+  Wait Until Element Is Visible  xpath=//input[@aria-labelledby='filterSearchable-text']
+  Click element  xpath=//input[@aria-labelledby='filterSearchable-text']
+  Element should be focused  xpath=//input[@aria-labelledby='filterSearchable-text']

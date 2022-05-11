@@ -19,6 +19,8 @@ Breaking Change:
   taxonomy titles in collective.taxonomy. This means that the display_modifier method in the groupby_modifier adapters
   needs to expect this parameter too!
   [MrTango]
+- Added aria-markup to the search input
+  [nngu6036 and JeffersonBledsoe]
 
 Features:
 

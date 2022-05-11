@@ -3,17 +3,16 @@
       tal:condition="view/available"
        i18n:domain="plone">
 
-  <header class="portletHeader" tal:condition="view/title" tal:content="view/title">Title</header>
+  <header class="portletHeader" tal:condition="view/title" tal:content="view/title" id="${string:${view/filterClassName}}">Title</header>
   <div class="searchContent">
-    <form method="get" name="searchForm" role="form" action="${view/action_url}">
+    <form method="get" name="searchForm" role="search" action="${view/action_url}">
         <tal:urlquery repeat="item python:view.urlquery">
           <input type="hidden" name="${python:item[0]}" value="${python:item[1]}"/>
         </tal:urlquery>
-        <input name="SearchableText" type="text"
-            placeholder="Search"
+        <input name="SearchableText" type="search"
+            aria-labelledby="${string:${view/filterClassName}}"
             data-url="${view/ajax_url}"
-            value="${view/value}"
-            i18n:attributes="placeholder text_search"/>
+            value="${view/value}"/>
         <button type="submit" i18n:translate="button_search">Search</button>
     </form>
   </div>

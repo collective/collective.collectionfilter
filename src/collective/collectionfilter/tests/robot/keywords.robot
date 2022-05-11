@@ -541,6 +541,8 @@ Add search tile
     Edit Current Tile
     run keyword if  $collection_name  set relateditem  formfield-collective-collectionfilter-tiles-search-target_collection  ${collection_name}
     # Run Keyword by label  Content Selector  Input Text  .contentlisting-tile
+    Wait until element is visible  css=input#collective-collectionfilter-tiles-search-header
+    Input text  css=input#collective-collectionfilter-tiles-search-header  Searchable Text
     Click element  css=.pattern-modal-buttons #buttons-save
 
 
