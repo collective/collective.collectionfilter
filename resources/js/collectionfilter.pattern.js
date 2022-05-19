@@ -1,6 +1,6 @@
 import Base from "@patternslib/patternslib/src/core/base";
 import Parser from "@patternslib/patternslib/src/core/parser";
-import Contentloader from "mockup/src/pat/contentloader/contentloader";
+import Contentloader from "@plone/mockup/src/pat/contentloader/contentloader";
 
 const parser = new Parser("collectionfilter");
 parser.addArgument("collectionUUID", "");

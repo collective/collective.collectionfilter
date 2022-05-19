@@ -14,7 +14,7 @@
   <include file="upgrades.zcml" />
 
   <plone:static
-    directory="resources"
+    directory="static"
     type="plone"
     name="collectionfilter" />
 

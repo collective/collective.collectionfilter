@@ -1,7 +1,7 @@
 {
     "name": "collective.collectionfilter",
     "version": "1.0.0",
-    "author": "1letter <1letter@gmx.de>",
+    "author": "collective <collective@plone.org>",
     "repository": {
         "type": "git",
         "url": "https://github.com/collective/collective.collectionfilter"
@@ -12,8 +12,8 @@
         "yarn": "^1.3.2"
     },
     "dependencies": {
-        "@patternslib/patternslib": "^7.4.0",
-        "mockup": "git+https://github.com/plone/mockup.git#master"
+        "@patternslib/patternslib": "^8.0.1",
+        "@plone/mockup": "^5.0.0-alpha.3"
     },
     "devDependencies": {
         "@babel/core": "^7.17.9",
