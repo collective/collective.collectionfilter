@@ -9,7 +9,7 @@ module.exports = async (env, argv) => {
         entry: {
             "collectionfilter.min": path.resolve(
                 __dirname,
-                "resources/index"
+                "resources/collectionfilter"
             ),
         },
     };
@@ -19,7 +19,6 @@ module.exports = async (env, argv) => {
         __dirname,
         "src/collective/collectionfilter/static/"
     );
-
     config.plugins.push(
         mf_config({
             filename: "collectionfilter-remote.min.js",
