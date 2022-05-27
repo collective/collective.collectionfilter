@@ -12,7 +12,7 @@
         "yarn": "^1.3.2"
     },
     "dependencies": {
-        "@patternslib/patternslib": "^8.0.1",
+        "@patternslib/patternslib": "^8.0.3",
         "@plone/mockup": "^5.0.0-alpha.3"
     },
     "devDependencies": {
@@ -53,8 +53,8 @@
         "watch:webpack": "NODE_ENV=development webpack --config webpack.config.js --watch",
         "watch:scss": "nodemon --watch resources/scss/ --ext scss --exec \"yarn build:css\"",
         "start": "NODE_ENV=development webpack serve --config webpack.config.js",
-        "css-compile": "sass --load-path=node_modules --style expanded --source-map --embed-sources --no-error-css resources/scss/collectionfilter.scss:src/collective/collectionfilter/resources/collectionfilter.css",
-        "css-minify": "cleancss --format breakWith=lf --source-map --source-map-inline-sources --output src/collective/collectionfilter/resources/collectionfilter.min.css src/collective/collectionfilter/resources/collectionfilter.css"
+        "css-compile": "sass --load-path=node_modules --style expanded --source-map --embed-sources --no-error-css resources/scss/collectionfilter.scss:src/collective/collectionfilter/static/collectionfilter.css",
+        "css-minify": "cleancss --format breakWith=lf --source-map --source-map-inline-sources --output src/collective/collectionfilter/static/collectionfilter.min.css src/collective/collectionfilter/static/collectionfilter.css"
     },
     "browserslist": {
         "production": [
