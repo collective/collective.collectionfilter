@@ -20,7 +20,7 @@
   
   <records prefix="plone.bundles/collectionfilter-bundle" interface='Products.CMFPlone.interfaces.IBundleRegistry'>
     <value key="enabled">True</value>
-    <value key="jscompilation">++plone++collectionfilter/collectionfilter.min.js</value>
+    <value key="jscompilation">++plone++collectionfilter/collectionfilter-remote.min.js</value>
     <value key="csscompilation">++plone++collectionfilter/collectionfilter.min.css</value>
     <value key="expression"></value>
     <value key="depends"></value>
