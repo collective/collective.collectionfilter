@@ -1,24 +1,23 @@
+import $ from "jquery";
 import Base from "@patternslib/patternslib/src/core/base";
-import Parser from "@patternslib/patternslib/src/core/parser";
 import Contentloader from "@plone/mockup/src/pat/contentloader/contentloader";
-
-const parser = new Parser("collectionfilter");
-parser.addArgument("collectionUUID", "");
-parser.addArgument("collectionURL", "");
-parser.addArgument("reloadURL", "");
-parser.addArgument("ajaxLoad", true);
-parser.addArgument("contentSelector", "#content-core");
 
 export default Base.extend({
     name: "collectionfilter",
     trigger: ".pat-collectionfilter",
+    parser: "mockup",
+    defaults: {
+        collectionUUID: null,
+        collectionURL: null,
+        reloadURL: null,
+        ajaxLoad: true,
+        contentSelector: "#content-core",
+    },
     _initmap_cycles: 2,
     _zoomed: false,
 
     init: function () {
         var self = this;
-
-        self.options = parser.parse(self.$el, self.options);
 
         self.$el.unbind("collectionfilter:reload");
 
