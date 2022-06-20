@@ -4,7 +4,8 @@ Changelog
 5.0a2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Updated classifiers
+  [petschki]
 
 
 5.0a1 (2022-06-20)
