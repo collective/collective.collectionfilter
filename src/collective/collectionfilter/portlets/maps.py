@@ -25,6 +25,7 @@ class Assignment(base.Assignment):
     narrow_down = False
     default_map_layer = default_map_layer
     map_layers = default_map_layers
+    geojson_properties_limit = 500
 
     def __init__(
         self,
@@ -35,6 +36,7 @@ class Assignment(base.Assignment):
         narrow_down=False,
         default_map_layer=default_map_layer,
         map_layers=default_map_layers,
+        geojson_properties_limit=500,
     ):
         self.header = header
         self.target_collection = target_collection
@@ -43,6 +45,7 @@ class Assignment(base.Assignment):
         self.narrow_down = narrow_down
         self.default_map_layers = default_map_layers
         self.map_layers = map_layers
+        self.geojson_properties_limit = geojson_properties_limit
 
     @property
     def title(self):
