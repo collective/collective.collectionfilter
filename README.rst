@@ -161,8 +161,9 @@ Your adapter is called by ``collective.collectionfilter.vocabularies.GroupByCrit
 Compatibility
 -------------
 
-Version 4.x is compatible with Plone 5.2+ and 6.x
-Version 3.x is compatible with Plone 5.0.x and 5.1.x
+- Version 5.x is compatible with Plone 6.x+
+- Version 4.x is compatible with Plone 5.2+
+- Version 3.x is compatible with Plone 5.0.x and 5.1.x
 
 If your theme doesn't work well with AJAX loading this can be overridden in the registery or via diazo.
 

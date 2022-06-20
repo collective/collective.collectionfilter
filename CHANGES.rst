@@ -1,13 +1,7 @@
 Changelog
 =========
 
-4.1 (unreleased)
-----------------
-
-- Nothing changed yet.
-
-
-4.0 (2022-05-10)
+5.0 (unreleased)
 ----------------
 
 Breaking Change:
@@ -21,6 +15,12 @@ Breaking Change:
 - add tox Test Instrastructure
 - update github workflow, remove Plone 5 from matrix
   [1letter]
+
+
+4.0 (2022-05-10)
+----------------
+
+Breaking Change:
 
 - Remove Plone 5.0 and 5.1 support.
   [petschki]
