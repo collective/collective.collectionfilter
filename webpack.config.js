@@ -32,7 +32,5 @@ module.exports = async (env, argv) => {
         config.devServer.static.directory = __dirname;
     }
 
-    console.log(JSON.stringify(config, null, 4));
-
     return config;
 };
