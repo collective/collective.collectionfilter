@@ -1,0 +1,1 @@
+{"version":3,"sources":["src/collective/collectionfilter/static/collectionfilter.css"],"names":[],"mappings":"AAAA,qBACE,WAAY,KACZ,aAAc","sourcesContent":[".collectionFilter ul {\n  list-style: none;\n  padding-left: 0;\n}\n\n/*# sourceMappingURL=collectionfilter.css.map */\n"]}

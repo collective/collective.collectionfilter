@@ -61,12 +61,12 @@ class BaseView(object):
 
     @property
     def title(self):
-        return getattr(self.settings, "header", getattr(self.collection, "Title", u""))
+        return getattr(self.settings, "header", getattr(self.collection, "Title", ""))
 
     @property
     def filterClassName(self):
         name = self.title and queryUtility(IIDNormalizer).normalize(self.title)
-        return u"filter" + name.capitalize() if name else ""
+        return "filter" + name.capitalize() if name else ""
 
     @property
     def reload_url(self):
@@ -112,7 +112,7 @@ class BaseView(object):
         )
         selector = collectionish.content_selector
         if collectionish is None or not selector:
-            return u"#content-core"
+            return "#content-core"
         else:
             return selector
 
@@ -208,7 +208,7 @@ class BaseSearchView(BaseView):
         request_params = safe_decode(self.top_request.form)
         urlquery = base_query(request_params, extra_ignores=["SearchableText"])
         query_param = urlencode(safe_encode(urlquery), doseq=True)
-        ajax_url = u"/".join(
+        ajax_url = "/".join(
             [
                 it
                 for it in [
@@ -256,7 +256,7 @@ class BaseSortOnView(BaseView):
         request_params = safe_decode(self.top_request.form)
         urlquery = base_query(request_params, extra_ignores=["sort_on", "sort_order"])
         query_param = urlencode(safe_encode(urlquery), doseq=True)
-        ajax_url = u"/".join(
+        ajax_url = "/".join(
             [
                 it
                 for it in [
@@ -281,7 +281,7 @@ if HAS_GEOLOCATION:
                 request_params, extra_ignores=["latitude", "longitude"]
             )
             query_param = urlencode(safe_encode(urlquery), doseq=True)
-            ajax_url = u"/".join(
+            ajax_url = "/".join(
                 [
                     it
                     for it in [

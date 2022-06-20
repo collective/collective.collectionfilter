@@ -1,31 +1,44 @@
-<aside class="portlet ${view/filterClassName} collectionFilter pat-collectionfilter"
+<tal:snippet
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+
+<aside class="card portlet ${view/filterClassName} collectionFilter pat-collectionfilter"
        tal:define="input_type view/input_type"
        data-pat-collectionfilter='${view/pat_options}'
        tal:condition="view/available"
        i18n:domain="collective.collectionfilter">
 
-  <header class="portletHeader" tal:condition="view/title" tal:content="view/title">Title</header>
-  <div class="portletContent filterContent" tal:define="results view/results">
+  <header class="card-header portletHeader" tal:condition="view/title" tal:content="view/title">Title</header>
+
+  <div class="card-body portletContent filterContent" tal:define="results view/results">
+
 
         <tal:if condition="python:input_type in ('checkbox', 'radio')">
         <ul>
           <tal:items repeat="item results">
           <li class="${item/css_class} ${input_type}">
+            
             <input
                 name="${view/filter_id}"
                 type="${input_type}"
+                class="form-check-input"
                 value="${item/value}"
                 data-url="${item/url}"
                 tal:attributes="checked python:'checked' if item['selected'] else None;
                                 id string:${view/filterClassName}-${item/value}">
-            <label tal:attributes="for string:${view/filterClassName}-${item/value}">
+            
+            <label
+              class="form-label"
+              tal:attributes="for string:${view/filterClassName}-${item/value}">
               <span class="indicator"></span>
               <span class="filterLabel">
                 <span tal:replace="python:item['title'].replace('/', u'/\u00AD')">Item</span>
                 <tal:show_count condition="view/settings/show_count">(<span tal:replace="item/count" />)</tal:show_count>
               </span>
-
             </label>
+
           </li>
           </tal:items>
         </ul>
@@ -67,4 +80,6 @@
         </tal:if>
 
   </div>
+
 </aside>
+</tal:snippet>

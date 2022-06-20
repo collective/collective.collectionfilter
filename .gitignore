@@ -39,5 +39,10 @@ node_modules/
 .vscode/
 
 .python-version
-requirements.txt
 annotate.txt
+venv/
+.tox/
+reports/
+.coverage*
+local.cfg
+src-mrd
