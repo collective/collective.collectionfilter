@@ -1,7 +1,7 @@
 Changelog
 =========
 
-5.0a2 (unreleased)
+5.0a2 (2022-06-20)
 ------------------
 
 - Updated classifiers
