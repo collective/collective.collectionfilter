@@ -1070,6 +1070,43 @@
     codejar "^3.5.0"
     prismjs "^1.27.0"
 
+"@patternslib/patternslib@8.1.0-alpha.1":
+  version "8.1.0-alpha.1"
+  resolved "https://registry.yarnpkg.com/@patternslib/patternslib/-/patternslib-8.1.0-alpha.1.tgz#d13ac7bc79e3390be0489cffed07eb2a720afe8d"
+  integrity sha512-WArZZsicmFlEoxS52BzFVJP1mNoSh+0mEIRZgEYhAnKD5jCHOzz0x0YnM/KCQWoBILLR7VsIu8HlcP1vo4/p7g==
+  dependencies:
+    "@fullcalendar/adaptive" "^5.11.0"
+    "@fullcalendar/core" "^5.11.0"
+    "@fullcalendar/daygrid" "^5.11.0"
+    "@fullcalendar/interaction" "^5.11.0"
+    "@fullcalendar/list" "^5.11.0"
+    "@fullcalendar/luxon2" "^5.11.0"
+    "@fullcalendar/timegrid" "^5.11.0"
+    "@juggle/resize-observer" "^3.3.1"
+    "@stomp/stompjs" "^6.1.2"
+    google-code-prettify "^1.0.5"
+    imagesloaded "^4.1.4"
+    intersection-observer "^0.12.0"
+    jquery "^3.6.0"
+    jquery-jcrop "^0.9.13"
+    luxon "^2.3.2"
+    masonry-layout "^4.2.2"
+    moment "^2.29.3"
+    moment-timezone "^0.5.34"
+    photoswipe "^4.1.3"
+    pikaday "^1.8.0"
+    promise-polyfill "^8.2.3"
+    screenfull "^6.0.1"
+    select2 "^3.5.1"
+    showdown "^2.1.0"
+    showdown-prettify "^1.3.0"
+    slick-carousel "^1.8.1"
+    slides "git+https://github.com/Patternslib/slides.git"
+    spectrum-colorpicker "^1.8.0"
+    tippy.js "^6.3.7"
+    url-polyfill "^1.1.9"
+    whatwg-fetch "^3.4.0"
+
 "@patternslib/patternslib@^7.4.0":
   version "7.6.0"
   resolved "https://registry.yarnpkg.com/@patternslib/patternslib/-/patternslib-7.6.0.tgz#71c043eb6b4e85acdb1ec9e7fae99775fcb21686"
@@ -1107,10 +1144,10 @@
     url-polyfill "^1.1.9"
     whatwg-fetch "^3.4.0"
 
-"@patternslib/patternslib@^8.0.2", "@patternslib/patternslib@^8.0.3":
-  version "8.0.3"
-  resolved "https://registry.yarnpkg.com/@patternslib/patternslib/-/patternslib-8.0.3.tgz#d21a630075243d9dd9cdd0fcecc0d2f5f17e4e7b"
-  integrity sha512-ollp15PAXIAkzrYR7bizVhK9pOV//M4xDHBq4CP8XYKRnTUcMANr0+cJgSTUiGxGdO9BX39/DEzPSPS5If62Og==
+"@patternslib/patternslib@^8.1.0":
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/@patternslib/patternslib/-/patternslib-8.1.0.tgz#165b07e8d53298ba98f248223d360d216b27b885"
+  integrity sha512-5j5l/JG2N6oGXhBq34jLRTpW+DjW0CijsBwDatIKloxI9o+V0XawQ2Rc9h3qFvXcryXXDxgcqVn0YXdS3l28uQ==
   dependencies:
     "@fullcalendar/adaptive" "^5.11.0"
     "@fullcalendar/core" "^5.11.0"
@@ -1144,19 +1181,20 @@
     url-polyfill "^1.1.9"
     whatwg-fetch "^3.4.0"
 
-"@plone/mockup@^5.0.0-alpha.3":
-  version "5.0.0-alpha.6"
-  resolved "https://registry.yarnpkg.com/@plone/mockup/-/mockup-5.0.0-alpha.6.tgz#161de9ec304bb63fef651b81192fc9430f298840"
-  integrity sha512-HHhJ4+cZs7ep9003Oh1UqdbfCw5m9/0o/0o2XWtWwAJJts+yLAl4/Cafoxycsez3C2nCI9ExgENPRMUIudMikQ==
+"@plone/mockup@^5.0.0-alpha.9":
+  version "5.0.0-alpha.9"
+  resolved "https://registry.yarnpkg.com/@plone/mockup/-/mockup-5.0.0-alpha.9.tgz#5abbb56b4635ae3780c217e09875e935cda94903"
+  integrity sha512-NymYnYfAjbAq28kANwhSp13lXFcFbbzNjeo1z/VoWhETKk9YachAI6cde/lLqmY1FqgQG5EKhfkfgdsYa1/NNA==
   dependencies:
     "@patternslib/pat-code-editor" "^2.1.2"
-    "@patternslib/patternslib" "^8.0.2"
+    "@patternslib/patternslib" "8.1.0-alpha.1"
     backbone "1.4.1"
+    backbone.paginator "2.0.8"
     bootstrap "^5.2.0-beta1"
     bootstrap-icons "^1.8.2"
     cs-jqtree-contextmenu "0.1.0"
-    datatables.net "^1.12.0"
-    datatables.net-bs5 "^1.12.0"
+    datatables.net "^1.12.1"
+    datatables.net-bs5 "^1.12.1"
     datatables.net-buttons "^2.2.3"
     datatables.net-buttons-bs5 "^2.2.3"
     datatables.net-colreorder "^1.5.6"
@@ -1180,7 +1218,7 @@
     sortablejs "^1.15.0"
     tinymce "^5.10.2"
     tinymce-i18n "^20.12.25"
-    underscore "^1.13.3"
+    underscore "^1.13.4"
 
 "@polka/url@^1.0.0-next.20":
   version "1.0.0-next.21"
@@ -1677,7 +1715,15 @@ babel-plugin-polyfill-regenerator@^0.3.0:
   dependencies:
     "@babel/helper-define-polyfill-provider" "^0.3.1"
 
-backbone@1.4.1:
+backbone.paginator@2.0.8:
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/backbone.paginator/-/backbone.paginator-2.0.8.tgz#3a7e34f0a8b97b096333587ed3048556b9eafdcb"
+  integrity sha512-8XS2CTbjnwMbJ/3Traa1te2RPecOGbZ9tc52T89pzo6NXlVEJDFnC++dp7CQLBUZpgk3g0veX8mUbEF4wbD2NQ==
+  dependencies:
+    backbone "1.1.2 || 1.2.3 || ^1.3.2"
+    underscore "^1.8.0"
+
+"backbone@1.1.2 || 1.2.3 || ^1.3.2", backbone@1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/backbone/-/backbone-1.4.1.tgz#099a78184bc07b034048a8332229c2ccca1e3e62"
   integrity sha512-ADy1ztN074YkWbHi8ojJVFe3vAanO/lrzMGZWUClIP7oDD/Pjy2vrASraUP+2EVCfIiTtCW4FChVow01XneivA==
@@ -2139,7 +2185,7 @@ datatables.net-bs5@>=1.11.3:
     datatables.net ">=1.11.3"
     jquery ">=1.7"
 
-datatables.net-bs5@^1.12.0:
+datatables.net-bs5@^1.12.1:
   version "1.12.1"
   resolved "https://registry.yarnpkg.com/datatables.net-bs5/-/datatables.net-bs5-1.12.1.tgz#b05d4bcaed77f6b77df0b50eaf1d5ec8e5d476bd"
   integrity sha512-CcQCImfmH4YZk7I0aC0kTiNPyfHJ2ueGgOh/kFB9KqsZD8bNJy2A88gC6hn9A7TbmmenOL+K3Q1ti7G8yqi8SQ==
@@ -2294,7 +2340,7 @@ datatables.net@>=1.11.3, datatables.net@^1.10.15:
   dependencies:
     jquery ">=1.7"
 
-datatables.net@^1.12.0:
+datatables.net@^1.12.1:
   version "1.12.1"
   resolved "https://registry.yarnpkg.com/datatables.net/-/datatables.net-1.12.1.tgz#3e625e49a3341f605b0efb519fae94e37b278f24"
   integrity sha512-e6XAMUoV41JdQPS/r9YRfRcmTPcCVvyZbWI+xog1Zg+kjVliMQbEkvWK5XFItmi64Cvwg+IqsZbTUJ1KSY3umA==
@@ -5208,10 +5254,10 @@ underscore@>=1.8.3:
   resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.13.2.tgz#276cea1e8b9722a8dbed0100a407dda572125881"
   integrity sha512-ekY1NhRzq0B08g4bGuX4wd2jZx5GnKz6mKSqFL4nqBlfyMGiG10gDFhDTMEfYmDL6Jy0FUIZp7wiRB+0BP7J2g==
 
-underscore@^1.13.3:
-  version "1.13.3"
-  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.13.3.tgz#54bc95f7648c5557897e5e968d0f76bc062c34ee"
-  integrity sha512-QvjkYpiD+dJJraRA8+dGAU4i7aBbb2s0S3jA45TFOvg2VgqvdCDd/3N6CqA8gluk1W91GLoXg5enMUx560QzuA==
+underscore@^1.13.4, underscore@^1.8.0:
+  version "1.13.4"
+  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.13.4.tgz#7886b46bbdf07f768e0052f1828e1dcab40c0dee"
+  integrity sha512-BQFnUDuAQ4Yf/cYY5LNrK9NCJFKriaRbD9uR1fTeXnBeoa97W0i41qkZfGO9pSo8I5KzjAcSY2XYtdf0oKd7KQ==
 
 unicode-canonical-property-names-ecmascript@^2.0.0:
   version "2.0.0"
