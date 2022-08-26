@@ -9,10 +9,7 @@ const mf_config = require("@patternslib/dev/webpack/webpack.mf");
 module.exports = () => {
     let config = {
         entry: {
-            "collectionfilter.min": path.resolve(
-                __dirname,
-                "resources/collectionfilter"
-            ),
+            "collectionfilter.min": path.resolve(__dirname, "resources/index"),
         },
     };
 
