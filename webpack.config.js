@@ -1,10 +1,12 @@
 process.traceDeprecation = true;
-const package_json = require("./package.json");
 const path = require("path");
-const patternslib_config = require("@patternslib/patternslib/webpack/webpack.config.js");
-const mf_config = require("@patternslib/patternslib/webpack/webpack.mf");
+const package_json = require("./package.json");
+const package_json_mockup = require("@plone/mockup/package.json");
+const package_json_patternslib = require("@patternslib/patternslib/package.json");
+const webpack_config = require("@patternslib/dev/webpack/webpack.config").config;
+const mf_config = require("@patternslib/dev/webpack/webpack.mf");
 
-module.exports = async (env, argv) => {
+module.exports = () => {
     let config = {
         entry: {
             "collectionfilter.min": path.resolve(
@@ -14,16 +16,24 @@ module.exports = async (env, argv) => {
         },
     };
 
-    config = patternslib_config(env, argv, config, ["mockup"]);
+    config = webpack_config({
+        config: config,
+        package_json: package_json,
+    });
     config.output.path = path.resolve(
         __dirname,
         "src/collective/collectionfilter/static/"
     );
     config.plugins.push(
         mf_config({
+            name: "collective-collectionfilter",
             filename: "collectionfilter-remote.min.js",
-            package_json: package_json,
             remote_entry: config.entry["collectionfilter.min"],
+            dependencies: {
+                ...package_json_patternslib.dependencies,
+                ...package_json_mockup.dependencies,
+                ...package_json.dependencies,
+            },
         })
     );
 
