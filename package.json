@@ -1,6 +1,6 @@
 {
     "name": "collective.collectionfilter",
-    "version": "1.0.0",
+    "version": "5.0.0-alpha.3",
     "author": "collective <collective@plone.org>",
     "repository": {
         "type": "git",
