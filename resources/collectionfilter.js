@@ -1,2 +1,2 @@
 // Webpack entry point for module federation.
-import "./bundle";
+import("./bundle");
