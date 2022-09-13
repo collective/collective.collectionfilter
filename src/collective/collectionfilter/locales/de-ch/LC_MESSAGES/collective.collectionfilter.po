@@ -233,7 +233,7 @@ msgstr "Bearbeiten"
 #. Default: "Enable Cache"
 #: collective/collectionfilter/interfaces.py:105
 msgid "label_cache_enabled"
-msgstr "Cache ein"
+msgstr "Cache aktivieren"
 
 #. Default: "Content Selector"
 #: collective/collectionfilter/interfaces.py:71
