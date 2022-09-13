@@ -13,9 +13,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 "Language-Code: de-ch\n"
-"Language-Name: Deutsch\n"
-"Preferred-Encodings: utf-8 latin1\n"
-"Domain: collective.collectionfilter\n"
 
 
 #: collective/collectionfilter/portlets/sorting.pt:27
@@ -236,7 +233,7 @@ msgstr "Bearbeiten"
 #. Default: "Enable Cache"
 #: collective/collectionfilter/interfaces.py:105
 msgid "label_cache_enabled"
-msgstr "Cache aktivieren"
+msgstr "Cache ein"
 
 #. Default: "Content Selector"
 #: collective/collectionfilter/interfaces.py:71
