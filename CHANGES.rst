@@ -4,7 +4,8 @@ Changelog
 5.0a3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix translations for swiss german
+  [agitator]
 
 
 5.0a2 (2022-06-20)
