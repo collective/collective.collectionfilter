@@ -3,19 +3,15 @@ collective.collectionfilter
 
 |CI| |Coverage|
 
-|Workflows|
-
 .. |CI| image:: https://github.com/collective/collective.collectionfilter/workflows/CI/badge.svg
    :target: https://github.com/collective/collective.collectionfilter/actions
 .. |Coverage| image:: https://coveralls.io/repos/github/collective/collective.collectionfilter/badge.svg
    :target: https://coveralls.io/github/collective/collective.collectionfilter
-.. |Workflows| image:: http://github-actions.40ants.com/collective/collective.collectionfilter/matrix.svg
-   :target: https://github.com/collective/collective.collectionfilter/actions
 
 
 Faceted navigation filter for collection or contentlisting tiles.
 
-This Plone 5 addon allows you to filter listing results for fields which are indexed in the catalog 
+This Plone 5 addon allows you to filter listing results for fields which are indexed in the catalog
 (Plones internal search tool).
 For example, you can add a subject filter, but also a filter for authors or portal types.
 
@@ -36,7 +32,7 @@ There are three portlets/tiles available for filtering:
 
 
 Filter Results of Collections
-----------------------------
+-----------------------------
 
 Add as many filter/search portlets directly to a collection.
 
@@ -63,7 +59,7 @@ Use the package extra to install the required dependencies::
 
 The three tiles can be added within the Mosaic editor multiple times. Just select them in the ``Insert`` menu
 and assign a collection to it. To show the results of the collection simply add a
-``Content Listing`` tile. 
+``Content Listing`` tile.
 
 It's possible to use multiple content listings and multiple filters on the same page by specifying additional unique classes in
 the listing tiles settings and then adding these classes to the ``Content Selector`` setting of the filter tile.
@@ -165,7 +161,9 @@ Your adapter is called by ``collective.collectionfilter.vocabularies.GroupByCrit
 Compatibility
 -------------
 
-This package is compatible with Plone 5 and above. Note that in 5.0 some functionality is reduced such as AJAX loading of search results.
+Version 4.x is compatible with Plone 5.2+ and 6.x
+Version 3.x is compatible with Plone 5.0.x and 5.1.x
+
 If your theme doesn't work well with AJAX loading this can be overridden in the registery or via diazo.
 
 Author

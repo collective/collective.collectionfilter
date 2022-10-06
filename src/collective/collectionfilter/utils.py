@@ -36,34 +36,32 @@ def target_collection_types(context):
 
 def safe_decode(val):
     """Safely create unicode values."""
-    ret = val
     if isinstance(val, dict):
-        ret = dict(
+        return dict(
             [(safe_decode(k), safe_decode(v)) for k, v in val.items() if v is not None]
         )  # noqa
-    elif isinstance(val, list):
-        ret = [safe_decode(it) for it in val]
-    elif isinstance(val, tuple):
-        ret = (safe_decode(it) for it in val)
-    elif val:
-        ret = safe_unicode(val)
-    return ret
+    if isinstance(val, list):
+        return [safe_decode(it) for it in val]
+    if isinstance(val, tuple):
+        return (safe_decode(it) for it in val)
+    if val:
+        return safe_unicode(val)
+    return val
 
 
 def safe_encode(val):
     """Safely encode a value to utf-8."""
-    ret = val
     if isinstance(val, dict):
-        ret = dict(
+        return dict(
             [(safe_encode(k), safe_encode(v)) for k, v in val.items() if v is not None]
         )  # noqa
-    elif isinstance(val, list):
-        ret = [safe_encode(it) for it in val]
-    elif isinstance(val, tuple):
-        ret = (safe_encode(it) for it in val)
-    elif isinstance(val, six.string_types):
-        ret = safe_unicode(val).encode("utf-8")
-    return ret
+    if isinstance(val, list):
+        return [safe_encode(it) for it in val]
+    if isinstance(val, tuple):
+        return (safe_encode(it) for it in val)
+    if isinstance(val, six.string_types):
+        return safe_unicode(val).encode("utf-8")
+    return val
 
 
 def safe_iterable(value):
@@ -71,19 +69,31 @@ def safe_iterable(value):
         return []
     if isinstance(value, six.string_types):
         # do not expand a string to a list of chars
-        return [
-            value,
-        ]
-    else:
-        try:
-            return list(value)
-        except TypeError:
-            # int and other stuff
-            return [
-                value,
-            ]
-    # could not convert
-    return []
+        return [value]
+    try:
+        return list(value)
+    except TypeError:
+        # int and other stuff
+        return [value]
+
+
+def clean_query(urlquery, ignores):
+    """remove all to-be-ignored request parameters."""
+    cleaned_query = urlquery.copy()
+    for it in ignores:
+        # Remove problematic url parameters
+        if it in cleaned_query:
+            # full match
+            del cleaned_query[it]
+        else:
+            # enhanced partial check
+            for urlkey in cleaned_query:
+                # also delete prefixed (like with tile id) or
+                # postfixed (like :int) keys
+                if it in urlkey:
+                    del cleaned_query[urlkey]
+                    break
+    return cleaned_query
 
 
 def base_query(request_params={}, extra_ignores=[]):
@@ -101,8 +111,7 @@ def base_query(request_params={}, extra_ignores=[]):
         "limit",
         "portlethash",
     ] + extra_ignores
-    # Now remove all to-be-ignored request parameters.
-    urlquery = {k: v for k, v in list(request_params.items()) if k not in ignore_params}
+    urlquery = clean_query(request_params, ignore_params)
     urlquery.update({"collectionfilter": "1"})  # marker
     return urlquery
 

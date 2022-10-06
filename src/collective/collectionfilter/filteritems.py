@@ -42,6 +42,7 @@ def _build_url(
 ):
     # Build filter url query
     _urlquery = urlquery.copy()
+
     # Allow deselection
     if filter_value in current_idx_value:
         _urlquery[idx] = [it for it in current_idx_value if it != filter_value]
@@ -105,6 +106,7 @@ def _results_cachekey(
     cache_enabled=True,
     request_params=None,
     content_selector="",
+    reverse=False,
 ):
     if not cache_enabled:
         raise DontCache
@@ -117,6 +119,7 @@ def _results_cachekey(
         view_name,
         request_params,
         content_selector,
+        reverse,
         " ".join(plone.api.user.get_roles()),
         plone.api.portal.get_current_language(),
         str(plone.api.portal.get_tool("portal_catalog").getCounter()),
@@ -135,6 +138,7 @@ def get_filter_items(
     cache_enabled=True,
     request_params=None,
     content_selector="",
+    reverse=False,
 ):
     request_params = request_params or {}
     custom_query = {}  # Additional query to filter the collection
@@ -189,7 +193,7 @@ def get_filter_items(
     # Allow value_blacklist to be callables for runtime-evaluation
     value_blacklist = (
         value_blacklist() if callable(value_blacklist) else value_blacklist
-    )  # noqa
+    )
     # fallback to title sorted values
     sort_key_function = groupby_criteria[group_by].get(
         "sort_key_function", lambda it: it["title"].lower()
@@ -213,6 +217,9 @@ def get_filter_items(
                 or filter_value in value_blacklist
             ):
                 continue
+            if type(filter_value) == int:
+                # if indexed value is an integer, convert to string
+                filter_value = str(filter_value)
             if filter_value in grouped_results:
                 # Add counter, if filter value is already present
                 grouped_results[filter_value]["count"] += 1
@@ -261,6 +268,9 @@ def get_filter_items(
 
     if callable(sort_key_function):
         grouped_results = sorted(grouped_results, key=sort_key_function)
+
+    if reverse:
+        grouped_results = reversed(grouped_results)
 
     ret += grouped_results
 

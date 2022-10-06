@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
+from .filteritems import get_filter_items
+from .filteritems import ICollectionish
+from .interfaces import IGroupByCriteria
+from .query import make_query
+from .utils import base_query
+from .utils import clean_query
+from .utils import safe_decode
+from .utils import safe_encode
+from .utils import safe_iterable
+from .vocabularies import TEXT_IDX
 from Acquisition import aq_inner
-from collective.collectionfilter import PLONE_VERSION
-from collective.collectionfilter.filteritems import get_filter_items
-from collective.collectionfilter.filteritems import ICollectionish
-from collective.collectionfilter.interfaces import IGroupByCriteria
-from collective.collectionfilter.query import make_query
-from collective.collectionfilter.utils import base_query
-from collective.collectionfilter.utils import safe_decode
-from collective.collectionfilter.utils import safe_encode
-from collective.collectionfilter.utils import safe_iterable
-from collective.collectionfilter.vocabularies import TEXT_IDX
 from plone import api
 from plone.api.portal import get_registry_record as getrec
 from plone.app.uuid.utils import uuidToCatalogBrain
@@ -118,10 +118,6 @@ class BaseView(object):
 
     @property
     def ajax_load(self):
-        if PLONE_VERSION < "5.1":
-            # Due to bug in AJAX load pattern makes it hard to make it work in 5.0.x
-            return False
-
         values = api.portal.get_registry_record("plone.patternoptions")
         if "collectionfilter" in values:
             filterOptions = json.loads(values["collectionfilter"])
@@ -135,13 +131,11 @@ class BaseFilterView(BaseView):
     def input_type(self):
         if self.settings.input_type == "links":
             return "link"
-        elif self.settings.filter_type == "single":
+        if self.settings.filter_type == "single":
             if self.settings.input_type == "checkboxes_radiobuttons":
                 return "radio"
-            else:
-                return "dropdown"
-        else:
-            return "checkbox"
+            return "dropdown"
+        return "checkbox"
 
     # results is called twice inside the template in view/available and view/results.  But its expensive so we cache it
     # but just the the lifetime of the view
@@ -157,6 +151,7 @@ class BaseFilterView(BaseView):
             cache_enabled=self.settings.cache_enabled,
             request_params=self.top_request.form or {},
             content_selector=self.settings.content_selector,
+            reverse=self.settings.reverse,
         )
         return results
 
@@ -191,7 +186,7 @@ class BaseSearchView(BaseView):
         urlquery = {}
         urlquery.update(self.top_request.form)
 
-        for it in (
+        ignore_params = [
             TEXT_IDX,
             "b_start",
             "b_size",
@@ -199,11 +194,8 @@ class BaseSearchView(BaseView):
             "sort_on",
             "limit",
             "portlethash",
-        ):
-            # Remove problematic url parameters
-            if it in urlquery:
-                del urlquery[it]
-
+        ]
+        urlquery = clean_query(urlquery, ignore_params)
         # add filter trigger if not already there
         if "collectionfilter" not in urlquery:
             urlquery["collectionfilter"] = "1"
