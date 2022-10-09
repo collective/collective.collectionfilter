@@ -187,10 +187,10 @@ def validateFilterTileModify(tile, event):
     if target is None or target.content_selector is None:
         api.portal.show_message(
             _(
-                u"You will need to add a Content Listing tile or target a collection to make Filters work"
+                "You will need to add a Content Listing tile or target a collection to make Filters work"
             ),
             request=tile.context.REQUEST,
-            type=u"warning",
+            type="warning",
         )
         return False
     return True

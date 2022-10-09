@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """Setup tests for this package."""
-from collective.collectionfilter.testing import (  # noqa
-    COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING,
-)
+from collective.collectionfilter.testing import COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING  # noqa
 from plone import api
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID

@@ -1,13 +1,7 @@
 # -*- coding: utf-8 -*-
-from collective.collectionfilter.testing import (  # noqa
-    COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED,
-)
-from collective.collectionfilter.testing import (
-    COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED,
-)
-from collective.collectionfilter.testing import (
-    COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_TILES,
-)
+from collective.collectionfilter.testing import COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED  # noqa
+from collective.collectionfilter.testing import COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED
+from collective.collectionfilter.testing import COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_TILES
 from plone import api
 from plone.app.testing import ROBOT_TEST_LEVEL
 from plone.testing import layered

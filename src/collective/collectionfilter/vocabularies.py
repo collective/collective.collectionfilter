@@ -4,9 +4,7 @@ from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.interfaces import IGroupByModifier
 from collective.collectionfilter.utils import safe_encode
 from plone.app.querystring.interfaces import IQuerystringRegistryReader
-from plone.app.vocabularies.types import (  # noqa: E501
-    ReallyUserFriendlyTypesVocabularyFactory,
-)
+from plone.app.vocabularies.types import ReallyUserFriendlyTypesVocabularyFactory  # noqa: E501
 from plone.registry.interfaces import IRegistry
 from zope.component import getAdapters
 from zope.component import getMultiAdapter

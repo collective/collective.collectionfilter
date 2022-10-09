@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 from collective.collectionfilter import _
 from collective.collectionfilter.baseviews import BaseSortOnView
-from collective.collectionfilter.interfaces import (  # noqa
-    ICollectionFilterResultListSort,
-)
+from collective.collectionfilter.interfaces import ICollectionFilterResultListSort  # noqa
 from collective.collectionfilter.portlets import BasePortletRenderer
 from plone.app.portlets.portlets import base
 from plone.portlets.interfaces import IPortletDataProvider

@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-from collective.collectionfilter.portlets.collectionfilter import (  # noqa
-    ICollectionFilterPortlet,
-)
+from collective.collectionfilter.portlets.collectionfilter import ICollectionFilterPortlet  # noqa
 from plone.portlets.interfaces import ILocalPortletAssignable
 from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets.interfaces import IPortletManager
