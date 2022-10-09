@@ -1,4 +1,4 @@
-name: Test the Mosaic code
+name: Test Collectionfilter
 
 on:
   push
