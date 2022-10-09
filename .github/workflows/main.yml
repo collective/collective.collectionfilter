@@ -1,9 +1,7 @@
-name: CI
+name: Test the Mosaic code
 
 on:
-  push:
-    branches-ignore:
-      - "releases/**"
+  push
 
 jobs:
   build:
@@ -11,104 +9,31 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        plone-version:
-          - "6.0"
-        python-version:
+        python:
           - "3.8"
           - "3.9"
-        # see testing.py for layer names
-        layer:
-          - "IntegrationTesting"
-          - "AcceptanceTestingPortlet_AjaxDisabled"
-          - "AcceptanceTestingPortlet_AjaxEnabled"
-          - "AcceptanceTesting_Tiles"
-        exclude:
-          # robot tests need rewrite for plone 6!
-          - plone-version: "6.0"
-            layer: "AcceptanceTestingPortlet_AjaxDisabled"
-          - plone-version: "6.0"
-            layer: "AcceptanceTestingPortlet_AjaxEnabled"
-          - plone-version: "6.0"
-            layer: "AcceptanceTesting_Tiles"
+          - "3.10"
+        plone:
+          - "6.0-dev"
+
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install dependencies
-        run: |
-          sudo apt-get update -y
-          # sudo apt-get install -y build-essentials
-          sudo apt-get install -y libxml2-dev libxslt-dev python-dev
-          # sudo apt-get install py-pip
-          pip install \
-            virtualenv wheel
-      - uses: nanasess/setup-chromedriver@master
-        # with:
-        #   # Optional: do not specify to match Chrome's version
-        #   chromedriver-version: '77.0.3865.40'
-      - name: Cache multiple paths
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/buildout-cache
-            ~/extends
-            ~/.cache/pip
-          key: ${{ runner.os }}-${{ matrix.python-version }}-${{ matrix.plone-version }}-${{ hashFiles('**/*.cfg') }}
-          restore-keys: |
-            ${{ runner.os }}-${{ matrix.python-version }}-${{ matrix.plone-version }}-
-            ${{ runner.os }}-${{ matrix.python-version }}-
-            ${{ runner.os }}-
-      - name: setup buildout cache
-        run: |
-          mkdir -p ~/buildout-cache/{eggs,downloads}
-          mkdir ~/.buildout
-          echo "[buildout]" > $HOME/.buildout/default.cfg
-          echo "download-cache = $HOME/buildout-cache/downloads" >> $HOME/.buildout/default.cfg
-          echo "eggs-directory = $HOME/buildout-cache/eggs" >> $HOME/.buildout/default.cfg
-      - name: bootstrap buildout py3
-        if: ${{ matrix.python-version != '2.7'}}
-        run: |
-          python -m venv .
-          bin/pip install -r requirements-${{ matrix.plone-version }}.x.txt
-      - name: buildout
-        run: |
-          bin/buildout -t 10 -Nc test-${{ matrix.plone-version }}.x.cfg
-          bin/pip install zest.pocompile
-          bin/pocompile src
-      - name: test
-        run: |
-          export DISPLAY=:99.0
-          chromedriver --url-base=/wd/hub &
-          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
-          sleep 2
-          bin/test --all --layer ${{ matrix.layer }}
-      - name: createcoverage
-        run: |
-          export DISPLAY=:99.0
-          chromedriver --url-base=/wd/hub &
-          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
-          sleep 2
-          bin/createcoverage -t '--all --layer ${{ matrix.layer }}'
-          bin/coverage json -i
-      - name: Coveralls
-        uses: AndreMiras/coveralls-python-action@develop
-        with:
-          parallel: true
-          flag-name: ${{ matrix.plone-version }}-${{ matrix.python-version }}-${{ matrix.layer }}
-      - name: Artifact Robot Test Report
-        if: failure()
-        uses: actions/upload-artifact@v1
-        with:
-          name: test_results-${{ matrix.python-version }}-${{ matrix.plone-version }}-${{ matrix.layer }}
-          path: ./parts/test
 
-  coveralls_finish:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Coveralls Finished
-        uses: AndreMiras/coveralls-python-action@develop
+      - name: Setup Plone ${{ matrix.plone }} with Python ${{ matrix.python }}
+        id: setup
+        uses: plone/setup-plone@v1.0.0
         with:
-          parallel-finished: true
+          python-version: ${{ matrix.python }}
+          plone-version: ${{ matrix.plone }}
+
+      - name: Install package
+        run: |
+          make install
+
+      - name: Run Lint
+        run: |
+          make lint
+
+      - name: Run tests
+        run: |
+          make test-ignore-warnings

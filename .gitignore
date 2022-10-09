@@ -46,3 +46,10 @@ reports/
 .coverage*
 local.cfg
 src-mrd
+
+.*.cfg
+*-mxdev.txt
+/.make-sentinels/
+sources/
+.installed.txt
+stamp-yarn

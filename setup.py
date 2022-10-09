@@ -53,16 +53,14 @@ setup(
     ],
     extras_require={
         "mosaic": [
-            "plone.app.mosaic >= 2.2.3",
-            "plone.app.standardtiles >= 2.4.0",
+            "plone.app.mosaic >= 3.0.0a6",
+            "plone.app.standardtiles >= 3.0.0a1",
         ],
         "geolocation": [
             # support for latitude/longitude catalog index
-            "collective.geolocationbehavior >= 1.6.0",
+            "collective.geolocationbehavior >= 1.7.2",
             # refactored map configuration
-            "plone.formwidget.geolocation >= 2.2.0",
-            # leaflet JS events for map filter
-            "plone.patternslib >= 1.1.0",
+            "plone.formwidget.geolocation >= 3.0.0a1",
         ],
         "test": [
             "plone.app.mosaic",
