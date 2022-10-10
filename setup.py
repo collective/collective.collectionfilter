@@ -60,7 +60,7 @@ setup(
             # support for latitude/longitude catalog index
             "collective.geolocationbehavior >= 1.7.2",
             # refactored map configuration
-            "plone.formwidget.geolocation >= 3.0.0a1",
+            "plone.formwidget.geolocation >= 3.0.0.dev0",
         ],
         "test": [
             "plone.app.mosaic",
