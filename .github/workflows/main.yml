@@ -4,18 +4,21 @@ on:
   push:
     branches-ignore:
       - "releases/**"
-
+  pull_request:
+  # Allow to run this workflow manually from the Actions tab
+  workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        plone-version:
-          - "6.0"
-        python-version:
-          - "3.8"
-          - "3.9"
+        config:
+          # [Plone Version, Python Version, "tox Enviroment Name"]
+          - ["6.0", "3.8", "Plone60-py38"]
+          - ["6.0", "3.9", "Plone60-py39"]
+          - ["6.0", "3.10", "Plone60-py310"]
+          - ["6.0", "3.11", "Plone60-py311"]
         # see testing.py for layer names
         layer:
           - "IntegrationTesting"
@@ -24,91 +27,31 @@ jobs:
           - "AcceptanceTesting_Tiles"
         exclude:
           # robot tests need rewrite for plone 6!
-          - plone-version: "6.0"
-            layer: "AcceptanceTestingPortlet_AjaxDisabled"
-          - plone-version: "6.0"
-            layer: "AcceptanceTestingPortlet_AjaxEnabled"
-          - plone-version: "6.0"
-            layer: "AcceptanceTesting_Tiles"
+          - layer: "AcceptanceTestingPortlet_AjaxDisabled"
+          - layer: "AcceptanceTestingPortlet_AjaxEnabled"
+          - layer: "AcceptanceTesting_Tiles"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install dependencies
-        run: |
-          sudo apt-get update -y
-          # sudo apt-get install -y build-essentials
-          sudo apt-get install -y libxml2-dev libxslt-dev python-dev
-          # sudo apt-get install py-pip
-          pip install \
-            virtualenv wheel
-      - uses: nanasess/setup-chromedriver@master
-        # with:
-        #   # Optional: do not specify to match Chrome's version
-        #   chromedriver-version: '77.0.3865.40'
-      - name: Cache multiple paths
+          python-version: ${{ matrix.config[1] }}
+      - name: Pip cache
         uses: actions/cache@v2
         with:
-          path: |
-            ~/buildout-cache
-            ~/extends
-            ~/.cache/pip
-          key: ${{ runner.os }}-${{ matrix.python-version }}-${{ matrix.plone-version }}-${{ hashFiles('**/*.cfg') }}
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-${{ matrix.config[1] }}-${{ matrix.config[0] }}-${{ hashFiles('**/tox.ini') }}
           restore-keys: |
-            ${{ runner.os }}-${{ matrix.python-version }}-${{ matrix.plone-version }}-
-            ${{ runner.os }}-${{ matrix.python-version }}-
+            ${{ runner.os }}-${{ matrix.config[1] }}-${{ matrix.config[0] }}-
+            ${{ runner.os }}-${{ matrix.config[1] }}-
             ${{ runner.os }}-
-      - name: setup buildout cache
+      - name: Install dependencies
         run: |
-          mkdir -p ~/buildout-cache/{eggs,downloads}
-          mkdir ~/.buildout
-          echo "[buildout]" > $HOME/.buildout/default.cfg
-          echo "download-cache = $HOME/buildout-cache/downloads" >> $HOME/.buildout/default.cfg
-          echo "eggs-directory = $HOME/buildout-cache/eggs" >> $HOME/.buildout/default.cfg
-      - name: bootstrap buildout py3
-        if: ${{ matrix.python-version != '2.7'}}
+          python -m pip install --upgrade pip
+          pip install tox
+      - name: lint
         run: |
-          python -m venv .
-          bin/pip install -r requirements-${{ matrix.plone-version }}.x.txt
-      - name: buildout
-        run: |
-          bin/buildout -t 10 -Nc test-${{ matrix.plone-version }}.x.cfg
-          bin/pip install zest.pocompile
-          bin/pocompile src
+          tox -e lint
+          tox -e black-check
       - name: test
-        run: |
-          export DISPLAY=:99.0
-          chromedriver --url-base=/wd/hub &
-          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
-          sleep 2
-          bin/test --all --layer ${{ matrix.layer }}
-      - name: createcoverage
-        run: |
-          export DISPLAY=:99.0
-          chromedriver --url-base=/wd/hub &
-          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
-          sleep 2
-          bin/createcoverage -t '--all --layer ${{ matrix.layer }}'
-          bin/coverage json -i
-      - name: Coveralls
-        uses: AndreMiras/coveralls-python-action@develop
-        with:
-          parallel: true
-          flag-name: ${{ matrix.plone-version }}-${{ matrix.python-version }}-${{ matrix.layer }}
-      - name: Artifact Robot Test Report
-        if: failure()
-        uses: actions/upload-artifact@v1
-        with:
-          name: test_results-${{ matrix.python-version }}-${{ matrix.plone-version }}-${{ matrix.layer }}
-          path: ./parts/test
-
-  coveralls_finish:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Coveralls Finished
-        uses: AndreMiras/coveralls-python-action@develop
-        with:
-          parallel-finished: true
+        run: tox -e ${{ matrix.config[2] }}

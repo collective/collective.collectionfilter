@@ -9,7 +9,8 @@ from plone.app.testing import FunctionalTesting
 from plone.app.testing import IntegrationTesting
 from plone.app.testing import PloneSandboxLayer
 from plone.app.textfield.value import RichTextValue
-from plone.testing import z2
+from plone.testing.zope import WSGI_SERVER_FIXTURE
+
 from Products.PluginIndexes.BooleanIndex.BooleanIndex import BooleanIndex
 
 import json
@@ -42,6 +43,9 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
         import collective.collectionfilter
 
         self.loadZCML(package=collective.collectionfilter)
+
+        import collective.collectionfilter.tests
+
         self.loadZCML(package=collective.collectionfilter.tests)
 
     def setUpPloneSite(self, portal):
@@ -123,7 +127,7 @@ COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING = FunctionalTesting(
     bases=(
         COLLECTIVE_COLLECTIONFILTER_FIXTURE,
         REMOTE_LIBRARY_BUNDLE_FIXTURE,
-        z2.ZSERVER_FIXTURE,
+        WSGI_SERVER_FIXTURE,
     ),
     name="CollectiveCollectionFilterLayer:AcceptanceTesting",
 )
@@ -140,7 +144,7 @@ COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED = FunctionalTesting(
     bases=(
         AJAX_ENABLED_FIXTURE,
         REMOTE_LIBRARY_BUNDLE_FIXTURE,
-        z2.ZSERVER_FIXTURE,
+        WSGI_SERVER_FIXTURE,
     ),
     name="CollectiveCollectionFilterLayer:AcceptanceTestingPortlet_AjaxEnabled",
 )
@@ -157,7 +161,7 @@ COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED = FunctionalTesting
     bases=(
         AJAX_DISABLED_FIXTURE,
         REMOTE_LIBRARY_BUNDLE_FIXTURE,
-        z2.ZSERVER_FIXTURE,
+        WSGI_SERVER_FIXTURE,
     ),
     name="CollectiveCollectionFilterLayer:AcceptanceTestingPortlet_AjaxDisabled",
 )
@@ -178,7 +182,7 @@ COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_TILES = FunctionalTesting(
     bases=(
         TILES_FIXTURE,
         REMOTE_LIBRARY_BUNDLE_FIXTURE,
-        z2.ZSERVER_FIXTURE,
+        WSGI_SERVER_FIXTURE,
     ),
     name="CollectiveCollectionFilterLayer:AcceptanceTesting_Tiles",
 )

@@ -72,6 +72,7 @@ setup(
             "plone.app.contenttypes",
             "robotframework-selenium2library",
             "robotframework-selenium2screenshots",
+            "Products.CMFPlacefulWorkflow",
         ],
     },
     entry_points="""

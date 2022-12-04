@@ -46,3 +46,5 @@ reports/
 .coverage*
 local.cfg
 src-mrd
+constraints-*-mxdev.txt
+requirements-*-mxdev.txt
