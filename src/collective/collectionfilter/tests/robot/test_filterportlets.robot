@@ -1,14 +1,10 @@
-
 *** Settings *****************************************************************
 
+Resource  plone/app/robotframework/keywords.robot
 Resource  keywords.robot
 
-# Library  Remote  ${PLONE_URL}/RobotRemote
-
-Test Setup  Default Setup
-Test Teardown  Default Teardown
-
-
+Test Setup  Run keyword  Default Setup
+Test Teardown  Run keyword  Default Teardown
 
 
 *** Test Cases ***************************************************************
@@ -127,5 +123,3 @@ Scenario: Search filter
     # When I search for ${EMPTY} and click search
     # Then should be 2 collection results
     #   and should be 4 filter options
-
-
