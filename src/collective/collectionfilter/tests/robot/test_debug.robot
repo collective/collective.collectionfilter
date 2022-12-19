@@ -16,7 +16,6 @@ Scenario: Add filter to collection
       and Add filter portlet  Subject  or  checkboxes_radiobuttons
       and Add filter portlet  portal_type  or  checkboxes_radiobuttons
       Go to  ${PLONE_URL}/mycollection
-      Pause
 
 
 *** Keywords *****************************************************************
