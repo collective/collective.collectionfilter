@@ -132,10 +132,12 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
                         "v": ["Document", "Event", "News Item"],
                     },
                     {
-                        "i":"path",
-                        "o":"plone.app.querystring.operation.string.absolutePath",
-                        "v":"{0}::-1".format(portal.folder1.UID(),)
-                    }
+                        "i": "path",
+                        "o": "plone.app.querystring.operation.string.absolutePath",
+                        "v": "{0}::-1".format(
+                            portal.folder1.UID(),
+                        ),
+                    },
                 ],
             )
 
