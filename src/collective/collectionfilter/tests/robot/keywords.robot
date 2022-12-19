@@ -1,30 +1,31 @@
 
 *** Settings *****************************************************************
 
+Resource  plone/app/robotframework/saucelabs.robot
 Resource  plone/app/robotframework/selenium.robot
-Resource  plone/app/robotframework/keywords.robot
 Resource  Selenium2Screenshots/keywords.robot
+
+Library  Remote  ${PLONE_URL}/RobotRemote
 Library  OperatingSystem
 
 
 *** Variables ***
 
-${BROWSER}  chrome
+${BROWSER}  Chrome
 
 *** Keywords *****************************************************************
 
 Default Setup
-# Not passed in as variable by robotsuite as variables collected before layer setup
+    Run Keyword  Plone test setup
     ${USE_TILES}=  Get Environment Variable   ROBOT_USE_TILES  default=${False}
     ${USE_TILES}=  Set Test Variable   ${USE_TILES}
-    open test browser
-    #Set Window Size  ${1400}  ${8000}
+    Set Selenium Speed  0.2 seconds
 
 Default Teardown
-    Run Keyword If Test Failed        Capture Page Screenshot
-    Run Keyword If Test Failed        Log Source
-#    Run Keyword If Test Failed        Log Variables
-    Close all browsers
+    Run Keyword If Test Failed  Capture Page Screenshot
+    Run Keyword If Test Failed  Log Source
+    Run Keyword If Test Failed  Log Variables
+    Run Keyword  Plone test teardown
 
 # --- Given ------------------------------------------------------------------
 
@@ -63,8 +64,11 @@ View Test Collection
 Run Keyword by label
     [Arguments]  ${label}   ${keyword}    @{args}
     # Possible to get 2 mosaic overlays with the same labels on page at once
-    ${xpath}=   set variable  //*[ @id=//label[.//*[normalize-space(text())='${label}'] or normalize-space(text()) ='${label}']/@for and not(ancestor::div[contains(@class, 'mosaic-overlay')])]
-    Wait until page contains element  xpath=${xpath}
+    ${xpath}=   set variable  //*[@id=//label[.//*[normalize-space(text())='${label}'] or normalize-space(text()) ='${label}']/@for and not(ancestor::div[contains(@class, 'mosaic-overlay')])]
+    Execute Javascript  document.evaluate("${xpath}",document.body,null,9,null).singleNodeValue.scrollIntoView();
+    wait until page contains element  xpath=${xpath}
+    Click Element  xpath=${xpath}
+
     run keyword  ${keyword}  xpath=${xpath}  @{args}
 
 Click Input "${label}"
@@ -162,8 +166,8 @@ Add search portlet
 
     Input text  css=input#form-widgets-header  Searchable Text
     #Select related filter collection
-    Click element  css=.plone-modal-footer input#form-buttons-add
-    Wait until page contains element  xpath=//div[@class='portletAssignments']//a[text()='Searchable Text']
+    Click element  css=.modal-footer button#form-buttons-add
+    Wait until page contains element  xpath=//div[@class='portletAssignment']//a[text()='Searchable Text']
 
 Add filter portlet
     [Arguments]   ${group_criteria}  ${filter_type}  ${input_type}  @{options}
@@ -179,8 +183,9 @@ Add filter portlet
     # Click Input "Show count"
     # Select from List by value  css=select#form-widgets-filter_type  ${filter_type}
     # Select from List by value  css=select#form-widgets-input_type  ${input_type}
-    Click element  css=.plone-modal-footer input#form-buttons-add
-    Wait until page contains element  xpath=//div[contains(@class, 'portletAssignments')]//a[text()='${group_criteria}']
+    Click element  css=.modal-footer button#form-buttons-add    
+    ${xpath}=  set variable  //div[contains(@class, 'portletAssignment')]//a[text()='${group_criteria}']
+    Wait until page contains element  xpath=${xpath}
 
 
 Set Filter Options
@@ -204,8 +209,8 @@ Add sorting portlet
 
     Set Sorting Options  ${sort_on}  ${input_type}
 
-    Click element  css=.plone-modal-footer input#form-buttons-add
-    Wait until page contains element  xpath=//div[contains(@class, 'portletAssignments')]//a[text()='Sort on']
+    Click element  css=.modal-footer button#form-buttons-add 
+    Wait until page contains element  xpath=//div[contains(@class, 'portletAssignment')]//a[text()='Sort on']
 
 
 Set sorting Options
@@ -258,7 +263,7 @@ Labels Should Equal
 Should be ${X} collection results
     # Wait until element is visible  css=#content-core
     # below should work for both collections and contentlisting tiles
-    Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//span[@class='summary']  limit=${X}
+    Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//div[@class='entries']/article  limit=${X}
 
 Should be ${X} pages
     ${X}=  evaluate  ${X} + 1  # need we have next or previous
@@ -352,10 +357,14 @@ movable removable mosaic-tile
 
 Set Batch Size
     [Arguments]   ${batch_size}
-
     run keyword unless  ${USE_TILES}  Go to  ${PLONE_URL}/testcollection/edit
     run keyword if  ${USE_TILES}  Edit Listing Tile
-    Run keyword by label  Item count  Input Text  ${batch_size}
+    # Input Text  form.widgets.IDublinCore.title  Hello World1
+    # Input Text  form.widgets.IDublinCore.description  Hello World2
+    # Execute Javascript  document.getElementById("form-widgets-ICollection-item_count").scrollIntoView();
+    # Input Text  form.widgets.ICollection.item_count  ${batch_size}
+    Run keyword by label  Item count  Input Text  ${batch_size}    
+    Execute Javascript  document.getElementById("form-buttons-save").scrollIntoView();
     Click Button  Save
     run keyword if  ${USE_TILES}  Click Button   Save
     # Go to  ${PLONE_URL}/testcollection
