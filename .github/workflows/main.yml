@@ -39,8 +39,8 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update -y
-          # sudo apt-get install -y build-essentials
-          sudo apt-get install -y libxml2-dev libxslt-dev python-dev
+          sudo apt-get install -y build-essentials
+          sudo apt-get install -y libxml2-dev libxslt-dev python3-dev
           # sudo apt-get install py-pip
           pip install \
             virtualenv wheel
@@ -97,12 +97,12 @@ jobs:
         with:
           parallel: true
           flag-name: ${{ matrix.plone-version }}-${{ matrix.python-version }}-${{ matrix.layer }}
-      - name: Artifact Robot Test Report
-        if: failure()
-        uses: actions/upload-artifact@v1
-        with:
-          name: test_results-${{ matrix.python-version }}-${{ matrix.plone-version }}-${{ matrix.layer }}
-          path: ./parts/test
+      # - name: Artifact Robot Test Report
+      #   if: failure()
+      #   uses: actions/upload-artifact@v1
+      #   with:
+      #     name: test_results-${{ matrix.python-version }}-${{ matrix.plone-version }}-${{ matrix.layer }}
+      #     path: ./parts/test
 
   coveralls_finish:
     needs: build
