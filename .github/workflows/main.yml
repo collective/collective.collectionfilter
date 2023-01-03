@@ -39,7 +39,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y build-essentials
+          # sudo apt-get install -y build-essentials
           sudo apt-get install -y libxml2-dev libxslt-dev python3-dev
           # sudo apt-get install py-pip
           pip install \
