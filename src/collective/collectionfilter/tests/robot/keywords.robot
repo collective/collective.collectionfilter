@@ -260,11 +260,11 @@ Labels Should Equal
 Should be ${X} collection results
     # Wait until element is visible  css=#content-core
     # below should work for both collections and contentlisting tiles
-    Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//div[@class='entries']/article  limit=${X}
+    Page Should Contain Element  xpath=//div[@class='entries']/article  limit=${X}
 
 Should be ${X} pages
     ${X}=  evaluate  ${X} + 1  # need we have next or previous
-    Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//nav[@class='pagination']//a  limit=${X}
+    Page Should Contain Element  xpath=//ul[@class='pagination']//a  limit=${X}
 
 Should be Info with text: ${text}
     wait until element contains  css=.filterInfoContent  ${text}
@@ -280,7 +280,7 @@ Should be no Info
 #     Wait until page does not contain element  css=.plone-modal-dialog
 
 Click Page "${page}"
-    Click element  xpath=//nav[@class='pagination']//a[${page}]
+    Click element  xpath=//ul[@class='pagination']//a[${page}]
 
 Ajax has completed
     Wait For Condition	return jQuery.active == 0  timeout=5 sec
