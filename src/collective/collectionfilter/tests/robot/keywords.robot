@@ -383,8 +383,7 @@ I search for "${search}" and click search
 
 I search for "${search}"
     Input text  css=.collectionSearch input[name='SearchableText']  ${search}
-    ${present}=  Run Keyword And Return Status   Element Should Be Visible  css=.collectionSearch button[type='submit']
-    run keyword unless    ${present}   Click Element  css=.collectionSearch button[type='submit']
+    Wait for then click element  css=.collectionSearch button[type='submit']
 
 I should have a portlet titled "${filter_title}" with ${number_of_results} filter options
     ${portlet_title_xpath}  Convert to string  header[@class='portletHeader' and descendant-or-self::*[contains(text(), '${filter_title}')]]
@@ -522,7 +521,7 @@ Add search tile
     Insert tile "Collection Search"
     Drag tile
     Edit Current Tile
-    run keyword unless  $collection_name  set relateditem  formfield-collective-collectionfilter-tiles-search-target_collection  ${collection_name}
+    run keyword if  $collection_name!=${None}  set relateditem  formfield-collective-collectionfilter-tiles-search-target_collection  ${collection_name}
     # Run Keyword by label  Content Selector  Input Text  .contentlisting-tile
     Click element  css=.pattern-modal-buttons #buttons-save
 
@@ -531,7 +530,7 @@ Add info tile
     [Arguments]   @{templates}  ${hide_when}=${None}  ${collection_name}=${None}
 
     Insert tile "Collection Filter Info"
-    run keyword unless  $collection_name  set relateditem  formfield-collective-collectionfilter-tiles-info-target_collection  ${collection_name}
+    run keyword if  $collection_name!=${None}  set relateditem  formfield-collective-collectionfilter-tiles-info-target_collection  ${collection_name}
     # Complete filter form
     Set Info Settings  collective-collectionfilter-tiles-info  @{templates}  hide_when=${hide_when}
     # Run Keyword by label  Content Selector  Input Text  .contentlisting-tile
@@ -543,7 +542,7 @@ Set Info Settings
     [Arguments]   ${prefix}  @{templates}  ${hide_when}
 
     select multi select2 with label  Template Type  @{templates}
-    run keyword unless  $hide_when is not ${None}  Run Keyword  select multi select2 with label  Hide when  ${hide_when}
+    run keyword if  $hide_when  Run Keyword  select multi select2 with label  Hide when  ${hide_when}
 
 
 
