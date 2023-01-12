@@ -65,9 +65,7 @@ Run Keyword by label
     [Arguments]  ${label}   ${keyword}    @{args}
     # Possible to get 2 mosaic overlays with the same labels on page at once
     ${xpath}=   set variable  //*[@id=//label[.//*[normalize-space(text())='${label}'] or normalize-space(text()) ='${label}']/@for and not(ancestor::div[contains(@class, 'mosaic-overlay')])]
-    Execute Javascript  document.evaluate("${xpath}",document.body,null,9,null).singleNodeValue.scrollIntoView();
-    wait until page contains element  xpath=${xpath}
-    Click Element  xpath=${xpath}
+    Wait for then click Element  xpath=${xpath}
 
     run keyword  ${keyword}  xpath=${xpath}  @{args}
 
@@ -260,7 +258,8 @@ Labels Should Equal
 Should be ${X} collection results
     # Wait until element is visible  css=#content-core
     # below should work for both collections and contentlisting tiles
-    Page Should Contain Element  xpath=//div[@class='entries']/article  limit=${X}
+    ${xpath}=  Set Variable if  ${USE_TILES}  //span[@class='summary']  //div[@class='entries']/article
+    Page Should Contain Element  ${xpath}  limit=${X}
 
 Should be ${X} pages
     ${X}=  evaluate  ${X} + 1  # need we have next or previous
@@ -575,9 +574,8 @@ Drag tile
     Wait until page contains element  css=.mosaic-helper-tile-new
     Wait until element is visible  css=.mosaic-helper-tile-new
     Update element style  css=.mosaic-IDublinCore-description-tile .mosaic-divider-bottom  display  block
-    Mouse over  xpath=(//*[contains(@class,'movable')])[last()-1]
+    Mouse over  css=.mosaic-IDublinCore-description-tile .mosaic-divider-bottom
     Click element  css=.mosaic-selected-divider
-    #Click element  xpath=(//*[contains(@class,'movable')])[last()-1]
 
 Filter by
     [Arguments]  ${filter}
