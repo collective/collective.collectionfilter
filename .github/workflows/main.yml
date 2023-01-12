@@ -4,6 +4,7 @@ on:
   push:
     branches-ignore:
       - "releases/**"
+      - "master"
   pull_request:
   # Allow to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -13,49 +14,37 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        config:
-          # [Plone Version, Python Version, "tox Enviroment Name"]
-          - ["6.0", "3.8", "Plone60-py38"]
-          - ["6.0", "3.9", "Plone60-py39"]
-          - ["6.0", "3.10", "Plone60-py310"]
-          - ["6.0", "3.11", "Plone60-py311"]
+        python:
+          - "3.8"
+          - "3.9"
+          - "3.10"
+          - "3.11"
+        plone:
+          - "6.0-latest"
         # see testing.py for layer names
-        layer:
+        test_layer:
           - "IntegrationTesting"
           - "AcceptanceTestingPortlet_AjaxDisabled"
           - "AcceptanceTestingPortlet_AjaxEnabled"
           - "AcceptanceTesting_Tiles"
-        exclude:
-          # robot tests need rewrite for plone 6!
-          - layer: "AcceptanceTestingPortlet_AjaxDisabled"
-          - layer: "AcceptanceTestingPortlet_AjaxEnabled"
-          - layer: "AcceptanceTesting_Tiles"
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Python
-        uses: actions/setup-python@v4
+
+      - name: Setup Plone ${{ matrix.plone }} with Python ${{ matrix.python }}
+        id: setup
+        uses: plone/setup-plone@v1.0.0
         with:
-          python-version: ${{ matrix.config[1] }}
-      - name: Pip cache
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-${{ matrix.config[1] }}-${{ matrix.config[0] }}-${{ hashFiles('**/tox.ini') }}
-          restore-keys: |
-            ${{ runner.os }}-${{ matrix.config[1] }}-${{ matrix.config[0] }}-
-            ${{ runner.os }}-${{ matrix.config[1] }}-
-            ${{ runner.os }}-
-      - name: Install dependencies
+          python-version: ${{ matrix.python }}
+          plone-version: ${{ matrix.plone }}
+
+      - name: Install package
         run: |
-          python -m pip install --upgrade pip
-          pip install tox
-      - name: lint
+          make VENV=off install
+
+      - name: Run Lint
         run: |
-          tox -e lint
-          tox -e black-check
-      # - name: test
-      #   run: tox -e ${{ matrix.config[2] }}
-      - name: Run headless test
-        uses: GabrielBB/xvfb-action@v1
-        with:
-          run: tox -e ${{ matrix.config[2] }}
+          make VENV=off lint
+
+      - name: Run tests
+        run: |
+          make VENV=off TEST_LAYER=${{ matrix.test_layer}} test-layer-ignore-warnings

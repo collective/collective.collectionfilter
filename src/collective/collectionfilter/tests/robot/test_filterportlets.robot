@@ -13,14 +13,14 @@ Scenario: Add filter to collection
     Given I've got a site with a collection
       and my collection has a collection filter  Subject  or  checkboxes_dropdowns
      When I'm viewing the collection
-     then Should be 3 collection results
-      and Should be filter checkboxes  All (3)  Dokumänt (2)  Evänt (1)  Süper (2)
+     then Should be 6 collection results
+      and Should be filter checkboxes  All (6)  Dokumänt (2)  Evänt (1)  Süper (2)
      When Click Input "Dokumänt (2)"
      then Should be 2 collection results
-      and Should be filter checkboxes  All (3)  Dokumänt (2)  Evänt (1)  Süper (2)
-     When Click Input "All (3)"
-     then Should be 3 collection results
-      and Should be filter checkboxes  All (3)  Dokumänt (2)  Evänt (1)  Süper (2)
+      and Should be filter checkboxes  All (6)  Dokumänt (2)  Evänt (1)  Süper (2)
+     When Click Input "All (6)"
+     then Should be 6 collection results
+      and Should be filter checkboxes  All (6)  Dokumänt (2)  Evänt (1)  Süper (2)
 
 Scenario: Test Batching
 
@@ -43,7 +43,7 @@ Scenario: Hide when no options
     Given I've got a site with a collection
       and my collection has a collection filter  Creator  or  checkboxes_dropdowns  Hide if empty
      When I'm viewing the collection
-     then Should be 3 collection results
+     then Should be 6 collection results
      then Should be 0 filter options
 
 

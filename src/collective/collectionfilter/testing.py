@@ -10,7 +10,6 @@ from plone.app.testing import IntegrationTesting
 from plone.app.testing import PloneSandboxLayer
 from plone.app.textfield.value import RichTextValue
 from plone.testing.zope import WSGI_SERVER_FIXTURE
-
 from Products.PluginIndexes.BooleanIndex.BooleanIndex import BooleanIndex
 
 import json
