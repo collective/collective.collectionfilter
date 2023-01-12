@@ -16,7 +16,6 @@ from Products.PluginIndexes.BooleanIndex.BooleanIndex import BooleanIndex
 import json
 import os
 import pytz
-import six
 
 
 def _set_ajax_enabled(should_enable_ajax):
@@ -76,10 +75,7 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
                     }
                 ],
             )
-            if six.PY2:
-                now = datetime.now()
-            else:
-                now = datetime.now(pytz.UTC)
+            now = datetime.now(pytz.UTC)
 
             portal.invokeFactory(
                 "Event",
