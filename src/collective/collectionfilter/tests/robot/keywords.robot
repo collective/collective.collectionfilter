@@ -394,7 +394,7 @@ I should have a portlet titled "${filter_title}" with ${number_of_results} filte
     Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//${portlet_title_xpath}/parent::*[contains(@class, 'collectionFilter')]//${filter_item_xpath}  limit=${number_of_results}
 
 I should have a filter with ${number_of_results} options
-    Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//aside[contains(@class,'collectionFilter') and count(.//div[contains(@class, 'filterContent')]//li[contains(@class, 'filterItem')])=${number_of_results} ]  limit=1
+    Page Should Contain Element  xpath=//aside[contains(@class,'collectionFilter') and count(.//div[contains(@class, 'filterContent')]//li[contains(@class, 'filterItem')])=${number_of_results} ]  limit=1
 
 I should see ${number} filter options on the page
     Page should contain element  xpath=//aside[contains(@class,'collectionFilter') ]//div[contains(@class, 'filterContent')]//li[contains(@class, 'filterItem')]  limit=${number}
