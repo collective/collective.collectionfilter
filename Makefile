@@ -38,13 +38,14 @@ IMAGE_NAME=${PROJECT_NAME}
 CONSTRAINTS_IN=constraints.txt
 CONSTRAINTS_MXDEV=constraints-mxdev.txt
 PIP_REQUIREMENTS_IN_FILE=requirements.txt
-ADDONBASE=./src
-ADDONFOLDER=${ADDONBASE}
+ADDONBASE=./
+ADDONFOLDER=${ADDONBASE}src
 INSTANCE_YAML=instance.yaml
 INSTANCE_FOLDER=instance
 
 PIP_PARAMS= --pre
 TEST_LAYER?=IntegrationTesting
+TEST?=
 
 ##############################################################################
 # targets and prerequisites
@@ -213,7 +214,7 @@ test-ignore-warnings: ${TEST_PREREQUISITES} ${TESTRUNNER_SENTINEL}  ## run tests
 .PHONY: test-layer-ignore-warnings
 test-layer-ignore-warnings: ${TEST_PREREQUISITES} ${TESTRUNNER_SENTINEL}  ## run tests with specific layer (hide warnins)
 	@echo "$(OK_COLOR)Run addon tests$(NO_COLOR)"
-	@PYTHONWARNINGS=ignore ${PYBIN}zope-testrunner --auto-color --auto-progress --test-path=${ADDONFOLDER} --all --layer=${TEST_LAYER}
+	@PYTHONWARNINGS=ignore ${PYBIN}zope-testrunner --auto-color --auto-progress --test-path=${ADDONFOLDER} --all --layer=${TEST_LAYER} -t "${TEST}"
 
 ##############################################################################
 # CODE FORMATTING
