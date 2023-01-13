@@ -55,3 +55,11 @@ jobs:
       - name: Run tests
         run: |
           VENV=off TEST_LAYER=${{ matrix.test_layer}} ROBOT_BROWSER=headlesschrome make test-layer-ignore-warnings
+
+      - name: Save Robotframework Log
+        uses: actions/upload-artifact@v3
+        with:
+          name: robottest-logfiles
+          path: |
+            test_*
+            robot_*
