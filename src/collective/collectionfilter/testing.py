@@ -228,7 +228,9 @@ class CollectiveCollectionFilterAjaxEnabledLayer(CollectiveCollectionFilterLayer
         super(CollectiveCollectionFilterAjaxEnabledLayer, self).setUpPloneSite(portal)
 
     def tearDownPloneSite(self, portal):
-        super(CollectiveCollectionFilterAjaxEnabledLayer, self).tearDownPloneSite(portal)
+        super(CollectiveCollectionFilterAjaxEnabledLayer, self).tearDownPloneSite(
+            portal
+        )
         del os.environ["ROBOT_AJAX_ENABLED"]
 
 
