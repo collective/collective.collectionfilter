@@ -7,7 +7,7 @@ on:
       - "master"
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
@@ -61,7 +61,7 @@ jobs:
         # safe artifacts only for failing tests
         if: ${{ failure() }}
         with:
-          name: robottest-logfiles
+          name: robottest-logfiles-${{ matrix.layer }}-${{ matrix.plone }}-${{ matrix.python }}
           path: |
             test_*
             robot_*
