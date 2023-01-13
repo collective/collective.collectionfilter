@@ -19,6 +19,8 @@ Default Setup
     Run Keyword  Plone test setup
     ${USE_TILES}=  Get Environment Variable   ROBOT_USE_TILES  default=${False}
     ${USE_TILES}=  Set Test Variable   ${USE_TILES}
+    ${AJAX_ENABLED}=  Get Environment Variable   ROBOT_AJAX_ENABLED  default=${False}
+    ${AJAX_ENABLED}=  Set Test Variable   ${AJAX_ENABLED}
     Set Selenium Speed  0.2 seconds
 
 Default Teardown
@@ -65,8 +67,6 @@ Run Keyword by label
     [Arguments]  ${label}   ${keyword}    @{args}
     # Possible to get 2 mosaic overlays with the same labels on page at once
     ${xpath}=   set variable  //*[@id=//label[.//*[normalize-space(text())='${label}'] or normalize-space(text()) ='${label}']/@for and not(ancestor::div[contains(@class, 'mosaic-overlay')])]
-    Wait for then click Element  xpath=${xpath}
-
     run keyword  ${keyword}  xpath=${xpath}  @{args}
 
 Click Input "${label}"
@@ -103,7 +103,7 @@ Select multi select2
     #select from list by label  xpath=(//select[@class='querystring-criteria-value-MultipleSelectionWidget'])[1]  Event
     #select from list by label  xpath=(//select[@class='querystring-criteria-value-MultipleSelectionWidget'])[1]  Page
     ${select2}=  get webelement  ${locator}
-    execute javascript  $(arguments[0]).select2("val",arguments[1])  ARGUMENTS  ${select2}  ${values}
+    execute javascript  $(arguments[0]).select2("val",arguments[1],true)  ARGUMENTS  ${select2}  ${values}
     FOR  ${value}  IN  @{values}
     # Hack to only find those in the tile popup up not the mosaic popup
     #\    wait until element is visible  //*[contains(@class,'plone-modal ')]//li[@class='select2-search-choice']//*[contains(text(), '${value}')]
@@ -163,6 +163,7 @@ Add search portlet
     #Select related filter collection
     Click element  css=.modal-footer button#form-buttons-add
     Wait until page contains element  xpath=//div[@class='portletAssignment']//a[text()='Searchable Text']
+
 
 Add filter portlet
     [Arguments]   ${group_criteria}  ${filter_type}  ${input_type}  @{options}
@@ -317,8 +318,7 @@ My collection has a collection info
 I'm viewing the collection
     run keyword if  ${USE_TILES}  Go to  ${PLONE_URL}/testdoc
     run keyword if  ${USE_TILES}==False  Go to  ${PLONE_URL}/testcollection
-    # Should be 3 collection results
-
+    # should be 6 items in result
 
 My collection has a collection search portlet
     Go to  ${PLONE_URL}/testcollection
@@ -370,19 +370,10 @@ Edit Listing Tile
     Edit Current Tile
 
 # --- Core Functionality ------------------------------------------------------
-I search for "${search}" with ajax
-    Wait until element is not visible  css=.collectionSearch button[type='submit']  timeout=5 sec
-    Input text  css=.collectionSearch input[name='SearchableText']  ${search}
-    Wait until keyword succeeds  5s  1s  Ajax has completed
-
-I search for "${search}" and click search
-    Wait until element is visible  css=.collectionSearch button[type='submit']
-    Input text  css=.collectionSearch input[name='SearchableText']  ${search}
-    Click Element  css=.collectionSearch button[type='submit']
-
 I search for "${search}"
     Input text  css=.collectionSearch input[name='SearchableText']  ${search}
-    Wait for then click element  css=.collectionSearch button[type='submit']
+    sleep  1s
+    Run keyword if  ${AJAX_ENABLED}==False and ${USE_TILES}==False  Wait for then click element  css=.collectionSearch button[type='submit']
 
 I should have a portlet titled "${filter_title}" with ${number_of_results} filter options
     ${portlet_title_xpath}  Convert to string  header[@class='portletHeader' and descendant-or-self::*[contains(text(), '${filter_title}')]]
@@ -522,6 +513,7 @@ Add search tile
     Edit Current Tile
     run keyword if  $collection_name!=${None}  set relateditem  formfield-collective-collectionfilter-tiles-search-target_collection  ${collection_name}
     # Run Keyword by label  Content Selector  Input Text  .contentlisting-tile
+
     Click element  css=.pattern-modal-buttons #buttons-save
 
 
@@ -536,6 +528,7 @@ Add info tile
 
     Click element  css=.pattern-modal-buttons #buttons-save
     Drag tile
+
 
 Set Info Settings
     [Arguments]   ${prefix}  @{templates}  ${hide_when}
@@ -560,10 +553,17 @@ Add contentlisting tile
     Drag tile
     Edit Current Tile
 
-    # use query from context
-    Run Keyword by label  Use query parameters from content  click element
+    # set path criteria depth to unlimited
+    #Select from list by value  css=select.querystring-criteria-depth  -1
+
+    # Since we aren't using the collection we need to recreate the same settings clickin on select2
+    Wait until element is visible  link=Select criteria
+    Select single select2  xpath=(//div[@id='formfield-plone-app-standardtiles-contentlisting-query']//div[@class='querystring-criteria-index'])[2]/div  Type
+    Select multi select2  xpath=(//div[@id='formfield-plone-app-standardtiles-contentlisting-query']//div[@class='querystring-criteria-value'])[2]/div  Event  Document
+
     Run Keyword by label  Item count   Input Text  ${batch}
 
+    Capture Page Screenshot
     Click element  css=.pattern-modal-buttons #buttons-save
 
 Edit Current Tile
