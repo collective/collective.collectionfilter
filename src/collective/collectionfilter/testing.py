@@ -224,7 +224,12 @@ COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING = FunctionalTesting(
 class CollectiveCollectionFilterAjaxEnabledLayer(CollectiveCollectionFilterLayer):
     def setUpPloneSite(self, portal):
         _set_ajax_enabled(True)
+        os.environ["ROBOT_AJAX_ENABLED"] = "True"
         super(CollectiveCollectionFilterAjaxEnabledLayer, self).setUpPloneSite(portal)
+
+    def tearDownPloneSite(self, portal):
+        super(CollectiveCollectionFilterAjaxEnabledLayer, self).tearDownPloneSite(portal)
+        del os.environ["ROBOT_AJAX_ENABLED"]
 
 
 AJAX_ENABLED_FIXTURE = CollectiveCollectionFilterAjaxEnabledLayer()
