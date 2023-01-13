@@ -254,13 +254,18 @@ Labels Should Equal
            ${name}=    Get Text    ${locator}
            Append To List  ${result}  ${name}
     END
+
+    # USE_TILES differs from order
+    sort list  ${expect}
+    sort list  ${result}
+
     Should Be Equal  ${expect}  ${result}
 
 Should be ${X} collection results
     # Wait until element is visible  css=#content-core
     # below should work for both collections and contentlisting tiles
     ${xpath}=  Set Variable if  ${USE_TILES}  //span[@class='summary']  //div[@class='entries']/article
-    Page Should Contain Element  ${xpath}  limit=${X}
+    Wait until keyword succeeds  2s  1s  Page Should Contain Element  ${xpath}  limit=${X}
 
 Should be ${X} pages
     ${X}=  evaluate  ${X} + 1  # need we have next or previous
@@ -372,7 +377,6 @@ Edit Listing Tile
 # --- Core Functionality ------------------------------------------------------
 I search for "${search}"
     Input text  css=.collectionSearch input[name='SearchableText']  ${search}
-    sleep  1s
     Run keyword if  ${AJAX_ENABLED}==False and ${USE_TILES}==False  Wait for then click element  css=.collectionSearch button[type='submit']
 
 I should have a portlet titled "${filter_title}" with ${number_of_results} filter options
