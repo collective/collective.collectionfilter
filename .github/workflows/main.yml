@@ -61,7 +61,7 @@ jobs:
         # safe artifacts only for failing tests
         if: ${{ failure() }}
         with:
-          name: robottest-logfiles-${{ matrix.layer }}-${{ matrix.plone }}-${{ matrix.python }}
+          name: robottest-logfiles-${{ matrix.test_layer }}-${{ matrix.plone }}-${{ matrix.python }}
           path: |
             test_*
             robot_*
