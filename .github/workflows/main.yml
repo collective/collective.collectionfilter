@@ -58,6 +58,8 @@ jobs:
 
       - name: Save Robotframework Log
         uses: actions/upload-artifact@v3
+        # safe artifacts only for failing tests
+        if: ${{ failure() }}
         with:
           name: robottest-logfiles
           path: |
