@@ -103,8 +103,6 @@ Scenario: Search filter
       and Should be filter checkboxes  All (1)  Dokumänt (1)  Süper (1)
 
     When I search for "& - * $"
-    # Checking for no error rather than results as Plone 5.2 will display no
-    #   results for a 'bad' query, while Plone 5.1/ 5.0 will display all of the results
     Then page should not contain  error
 
     # Searching for query keywords (https://github.com/collective/collective.collectionfilter/issues/85)
@@ -117,9 +115,3 @@ Scenario: Search filter
     When I search for "not Document"
     Then should be 0 collection results
       and I should see 0 filter options on the page
-
-    # the following doesn't work ... I think no 'keyup' event is fired
-    # Given I'm viewing the collection
-    # When I search for ${EMPTY} and click search
-    # Then should be 2 collection results
-    #   and should be 4 filter options
