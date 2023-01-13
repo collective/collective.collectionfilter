@@ -45,12 +45,12 @@ class TestFilteritems(unittest.TestCase):
         self.collection_uid = self.collection.UID()
 
     def test_filteritems(self):
-        self.assertEqual(len(self.collection.results()), 3)
+        self.assertEqual(len(self.collection.results()), 6)
 
         result = get_filter_items(self.collection_uid, "Subject", cache_enabled=False)
 
-        self.assertEqual(len(result), 4)
-        self.assertEqual(get_data_by_val(result, "all")["count"], 3)
+        self.assertEqual(len(result), 7)
+        self.assertEqual(get_data_by_val(result, "all")["count"], 6)
         self.assertEqual(get_data_by_val(result, "all")["selected"], True)
         self.assertEqual(get_data_by_val(result, "Süper")["count"], 2)
         self.assertEqual(get_data_by_val(result, "Evänt")["count"], 1)
@@ -63,7 +63,7 @@ class TestFilteritems(unittest.TestCase):
             cache_enabled=False,
         )
 
-        self.assertEqual(len(result), 4)
+        self.assertEqual(len(result), 7)
         self.assertEqual(get_data_by_val(result, "Süper")["selected"], True)
 
         result = get_filter_items(
@@ -73,7 +73,7 @@ class TestFilteritems(unittest.TestCase):
             cache_enabled=False,
         )
 
-        self.assertEqual(len(result), 4)
+        self.assertEqual(len(result), 7)
         self.assertEqual(get_data_by_val(result, "Dokumänt")["selected"], True)
 
         # test narrowed down results
@@ -96,22 +96,22 @@ class TestFilteritems(unittest.TestCase):
         )
         self.assertEqual(
             get_data_by_val(narrowed_down_result, "all")["count"],
-            3,
+            6,
             msg="Test that there are 3 results if unselected",
         )
 
     def test_portal_type_filter(self):
-        self.assertEqual(len(self.collection.results()), 3)
+        self.assertEqual(len(self.collection.results()), 6)
 
         result = get_filter_items(
             self.collection_uid, "portal_type", cache_enabled=False
         )
 
         self.assertEqual(len(result), 3)
-        self.assertEqual(get_data_by_val(result, "all")["count"], 3)
+        self.assertEqual(get_data_by_val(result, "all")["count"], 6)
         self.assertEqual(get_data_by_val(result, "all")["selected"], True)
         self.assertEqual(get_data_by_val(result, "Event")["count"], 1)
-        self.assertEqual(get_data_by_val(result, "Document")["count"], 2)
+        self.assertEqual(get_data_by_val(result, "Document")["count"], 5)
 
         result = get_filter_items(
             self.collection_uid,
@@ -136,7 +136,7 @@ class TestFilteritems(unittest.TestCase):
         self.assertEqual(len(result), 2)
         self.assertEqual(
             get_data_by_val(result, "all")["count"],
-            3,
+            6,
             msg="Test that the number of results if unselected is 3",
         )
 
@@ -177,12 +177,12 @@ class TestFilteritems(unittest.TestCase):
         self.assertEqual(len(result), 3)
 
     def test_and_filter_type(self):
-        self.assertEqual(len(self.collection.results()), 3)
+        self.assertEqual(len(self.collection.results()), 6)
 
         result = get_filter_items(self.collection_uid, "Subject", cache_enabled=False)
 
-        self.assertEqual(len(result), 4)
-        self.assertEqual(get_data_by_val(result, "all")["count"], 3)
+        self.assertEqual(len(result), 7)
+        self.assertEqual(get_data_by_val(result, "all")["count"], 6)
         self.assertEqual(get_data_by_val(result, "all")["selected"], True)
         self.assertEqual(get_data_by_val(result, "Süper")["count"], 2)
         self.assertEqual(get_data_by_val(result, "Evänt")["count"], 1)
@@ -204,8 +204,8 @@ class TestFilteritems(unittest.TestCase):
             cache_enabled=False,
         )
 
-        self.assertEqual(len(result), 4)
-        self.assertEqual(get_data_by_val(result, "all")["count"], 3)
+        self.assertEqual(len(result), 7)
+        self.assertEqual(get_data_by_val(result, "all")["count"], 6)
 
         # TODO: I'm not sure these counts are correct. It should represent how many results you will get if you click
         # so should be smaller than this but I guess you need to turn on narrow down for that?
@@ -239,8 +239,8 @@ class TestFilteritems(unittest.TestCase):
             cache_enabled=False,
         )
 
-        self.assertEqual(len(result), 4)
-        self.assertEqual(get_data_by_val(result, "all")["count"], 3)
+        self.assertEqual(len(result), 7)
+        self.assertEqual(get_data_by_val(result, "all")["count"], 6)
         self.assertEqual(get_data_by_val(result, "Süper")["count"], 2)
 
         self.assertEqual(get_data_by_val(result, "Evänt")["count"], 1)
@@ -264,17 +264,17 @@ class TestFilteritems(unittest.TestCase):
 
     def test_boolean_filter(self):
         """Validate boolean fields are shown with all values."""
-        self.assertEqual(len(self.collection.results()), 3)
+        self.assertEqual(len(self.collection.results()), 6)
 
         result = get_filter_items(
             self.collection_uid, "exclude_from_nav", cache_enabled=False
         )
 
         self.assertEqual(len(result), 3)
-        self.assertEqual(get_data_by_val(result, "all")["count"], 3)
+        self.assertEqual(get_data_by_val(result, "all")["count"], 6)
         self.assertEqual(get_data_by_val(result, "all")["selected"], True)
-        self.assertEqual(get_data_by_val(result, True)["count"], 1)
-        self.assertEqual(get_data_by_val(result, False)["count"], 2)
+        self.assertEqual(get_data_by_val(result, True)["count"], 2)
+        self.assertEqual(get_data_by_val(result, False)["count"], 4)
 
         # test narrowed down results
         narrowed_down_result = get_filter_items(
@@ -296,7 +296,7 @@ class TestFilteritems(unittest.TestCase):
         )
         self.assertEqual(
             get_data_by_val(narrowed_down_result, "all")["count"],
-            3,
+            6,
             msg="Test that there are 3 results if unselected",
         )
 
@@ -320,6 +320,6 @@ class TestFilteritems(unittest.TestCase):
         )
         self.assertEqual(
             get_data_by_val(narrowed_down_result, "all")["count"],
-            3,
+            6,
             msg="Test that there are 3 results if unselected",
         )

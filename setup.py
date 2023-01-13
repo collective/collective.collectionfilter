@@ -31,6 +31,7 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
     keywords="plone collection filter faceted tagcloud tags",
@@ -47,14 +48,14 @@ setup(
     zip_safe=False,
     install_requires=[
         "setuptools",
-        "plone.api >= 1.5.1",
-        "Products.CMFPlone >= 5.2",
+        "plone.api >= 2.0.0",
+        "Products.CMFPlone >= 6.0",
         "plone.app.contenttypes",
     ],
     extras_require={
         "mosaic": [
-            "plone.app.mosaic >= 2.2.3",
-            "plone.app.standardtiles >= 2.4.0",
+            "plone.app.mosaic >= 3.0.0",
+            "plone.app.standardtiles >= 3.0.0",
         ],
         "geolocation": [
             # support for latitude/longitude catalog index
@@ -72,6 +73,7 @@ setup(
             "plone.app.contenttypes",
             "robotframework-selenium2library",
             "robotframework-selenium2screenshots",
+            "Products.CMFPlacefulWorkflow",
         ],
     },
     entry_points="""

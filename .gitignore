@@ -37,12 +37,26 @@ pyvenv.cfg
 node_modules/
 .env
 .vscode/
-
 .python-version
 annotate.txt
-venv/
 .tox/
-reports/
 .coverage*
 local.cfg
 src-mrd
+
+# robot test
+robot_*
+geckodriver*
+test_*/
+log.html
+output.xml
+report.html
+
+# mxdev
+/instance/
+/.make-sentinels/
+/*-mxdev.txt
+/reports/
+/sources/
+/venv/
+.installed.txt

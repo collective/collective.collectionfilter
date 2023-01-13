@@ -17,119 +17,137 @@ export default Base.extend({
     _zoomed: false,
 
     init: function () {
-        var self = this;
+        this.$el.unbind("collectionfilter:reload");
 
-        self.$el.unbind("collectionfilter:reload");
-
-        self.$el.on("collectionfilter:reload", function (e, data) {
-            if (
-                (data.noReloadSearch && self.$el.hasClass("collectionSearch")) ||
-                (data.noReloadMap && self.$el.hasClass("collectionMaps"))
-            ) {
-                // don't reload search while typing or map while move/zooming
-                return;
-            }
-            if (data.collectionUUID === self.options.collectionUUID) {
-                self.reload(data.targetFilterURL);
-            }
-        });
+        this.$el.on(
+            "collectionfilter:reload",
+            function (e, data) {
+                if (
+                    (data.noReloadSearch && this.$el.hasClass("collectionSearch")) ||
+                    (data.noReloadMap && this.$el.hasClass("collectionMaps"))
+                ) {
+                    // don't reload search while typing or map while move/zooming
+                    return;
+                }
+                if (data.collectionUUID === this.options.collectionUUID) {
+                    this.reload(data.targetFilterURL);
+                }
+            }.bind(this)
+        );
 
         // Collection Search
-        if (self.$el.hasClass("collectionSearch") && self.options.ajaxLoad) {
+        if (this.$el.hasClass("collectionSearch") && this.options.ajaxLoad) {
             // initialize collection search
 
-            $('button[type="submit"]', self.$el).hide();
-            $("form", self.$el).on("submit", function (e) {
+            $('button[type="submit"]', this.$el).hide();
+            $("form", this.$el).on("submit", function (e) {
                 e.preventDefault();
             });
             var delayTimer;
-            $('input[name="SearchableText"]', self.$el).on("keyup", function (e) {
-                clearTimeout(delayTimer);
-                // minimum 3 characters before searching
-                if ($(e.target).val().length > 0 && $(e.target).val().length < 3) return;
-                delayTimer = setTimeout(function () {
-                    var collectionURL = $(e.target).data("url");
-                    var val = encodeURIComponent($(e.target).val());
-                    if (val) {
-                        collectionURL += "&" + $(e.target).attr("name") + "=" + val;
-                    }
-                    $(self.trigger).trigger("collectionfilter:reload", {
-                        collectionUUID: self.options.collectionUUID,
-                        targetFilterURL: collectionURL,
-                        noReloadSearch: true,
-                    });
-                    self.reloadCollection(collectionURL);
-                }, 500);
-            });
+            $('input[name="SearchableText"]', this.$el).on(
+                "keyup",
+                function (e) {
+                    clearTimeout(delayTimer);
+                    // minimum 3 characters before searching
+                    if ($(e.target).val().length > 0 && $(e.target).val().length < 3)
+                        return;
+                    delayTimer = setTimeout(
+                        function () {
+                            var collectionURL = $(e.target).data("url");
+                            var val = encodeURIComponent($(e.target).val());
+                            if (val) {
+                                collectionURL +=
+                                    "&" + $(e.target).attr("name") + "=" + val;
+                            }
+                            $(this.trigger).trigger("collectionfilter:reload", {
+                                collectionUUID: this.options.collectionUUID,
+                                targetFilterURL: collectionURL,
+                                noReloadSearch: true,
+                            });
+                            this.reloadCollection(collectionURL);
+                        }.bind(this),
+                        500
+                    );
+                }.bind(this)
+            );
             return; // no more action neccesarry.
         }
 
         // OPTION 1 - filter rendered as links
-        $(".filterContent a", self.$el).on("click", function (e) {
-            e.stopPropagation();
-            e.preventDefault();
-            // TODO: nextline: strange, it's not the anchor element itself,
-            // but a span. jQuery's closest also catches the root element
-            // itself, so this shouldn't be a problem.
-            var collectionURL = $(e.target).closest("a").attr("href");
+        $(".filterContent a", this.$el).on(
+            "click",
+            function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                // TODO: nextline: strange, it's not the anchor element itself,
+                // but a span. jQuery's closest also catches the root element
+                // itself, so this shouldn't be a problem.
+                var collectionURL = $(e.target).closest("a").attr("href");
 
-            $(self.trigger).trigger("collectionfilter:reload", {
-                collectionUUID: self.options.collectionUUID,
-                targetFilterURL: collectionURL,
-            });
+                $(this.trigger).trigger("collectionfilter:reload", {
+                    collectionUUID: this.options.collectionUUID,
+                    targetFilterURL: collectionURL,
+                });
 
-            self.reloadCollection(collectionURL);
-        });
+                this.reloadCollection(collectionURL);
+            }.bind(this)
+        );
 
         // OPTION 2 - filter rendered as checkboxes
-        $(".filterContent input", self.$el).on("change", function (e) {
-            var collectionURL = $(e.target).data("url");
+        $(".filterContent input", this.$el).on(
+            "change",
+            function (e) {
+                var collectionURL = $(e.target).data("url");
 
-            self.$el.trigger("collectionfilter:reload", {
-                collectionUUID: self.options.collectionUUID,
-                targetFilterURL: collectionURL,
-            });
+                $(this.trigger).trigger("collectionfilter:reload", {
+                    collectionUUID: this.options.collectionUUID,
+                    targetFilterURL: collectionURL,
+                });
 
-            self.reloadCollection(collectionURL);
-        });
+                this.reloadCollection(collectionURL);
+            }.bind(this)
+        );
 
         // OPTION 3 - filter rendered as dropdowns
-        $(".filterContent select", self.$el).on("change", function (e) {
-            // See: https://stackoverflow.com/a/12750327/1337474
-            var option = $("option:selected", e.target);
-            var collectionURL = $(option).data("url");
+        $(".filterContent select", this.$el).on(
+            "change",
+            function (e) {
+                // See: https://stackoverflow.com/a/12750327/1337474
+                var option = $("option:selected", e.target);
+                var collectionURL = $(option).data("url");
 
-            $(self.trigger).trigger("collectionfilter:reload", {
-                collectionUUID: self.options.collectionUUID,
-                targetFilterURL: collectionURL,
-            });
+                $(this.trigger).trigger("collectionfilter:reload", {
+                    collectionUUID: this.options.collectionUUID,
+                    targetFilterURL: collectionURL,
+                });
 
-            self.reloadCollection(collectionURL);
-        });
+                this.reloadCollection(collectionURL);
+            }.bind(this)
+        );
 
         // OPTION4 - maps filter
-        if (self.$el.hasClass("collectionMaps")) {
-            $(".pat-leaflet", self.$el).on(
+        if (this.$el.hasClass("collectionMaps")) {
+            $(".pat-leaflet", this.$el).on(
                 "leaflet.moveend leaflet.zoomend",
                 function (e, le) {
                     var narrow_down = $(e.target).data("narrow-down-result");
                     // do nothing if not narrowing down result
                     if (narrow_down.toLowerCase() === "false") return;
 
-                    if (self._initmap_cycles > 0) {
+                    if (this._initmap_cycles > 0) {
                         // Do not trigger filter when initializing the map.
                         // One zoomend and one moveend events are thrown.
-                        self._initmap_cycles -= 1;
+                        this._initmap_cycles -= 1;
                         return;
                     }
 
                     var levent = le["original_event"];
                     // prevent double loading when zooming (because it's always a move too)
-                    if (levent.type === "moveend" && self._zoomed) {
-                        self._zoomed = false;
+                    if (levent.type === "moveend" && this._zoomed) {
+                        this._zoomed = false;
                         return;
                     }
-                    if (levent.type === "zoomend") self._zoomed = true;
+                    if (levent.type === "zoomend") this._zoomed = true;
                     var collectionURL = $(e.target).data("url"),
                         bounds = levent.target.getBounds();
                     // generate bounds query
@@ -146,54 +164,49 @@ export default Base.extend({
                         bounds._southWest.lng +
                         "&longitude.range:record=minmax";
 
-                    $(self.trigger).trigger("collectionfilter:reload", {
-                        collectionUUID: self.options.collectionUUID,
+                    $(this.trigger).trigger("collectionfilter:reload", {
+                        collectionUUID: this.options.collectionUUID,
                         targetFilterURL: collectionURL,
                         noReloadMap: true,
                     });
 
-                    self.reloadCollection(collectionURL);
-                }
+                    this.reloadCollection(collectionURL);
+                }.bind(this)
             );
         }
     },
 
     reload: function (filterURL) {
-        var self = this;
-        if (!self.options.ajaxLoad) {
+        if (!this.options.ajaxLoad) {
             window.location.href = filterURL;
             return;
         }
-        var reloadURL = self.options.reloadURL;
+        var reloadURL = this.options.reloadURL;
         var urlParts = reloadURL.split("?");
         var query1 = urlParts[1] || [];
         var query2 = filterURL.split("?")[1] || [];
         var query = [].concat(query1, query2).join("&");
         reloadURL = [].concat(urlParts[0], query).join("?");
 
-        new Contentloader(self.$el, {
+        var cl = new Contentloader(this.$el, {
             url: reloadURL,
-            target: self.$el,
+            target: this.$el,
             content: "aside",
             trigger: "immediate",
         });
     },
 
     reloadCollection: function (collectionURL) {
-        var self = this;
-
-        if (!self.options.ajaxLoad) return;
-
-        new Contentloader(
-            $(self.options.contentSelector).parent(), // let base element for setting classes and triggering events be the parent, which isn't replaced.
+        if (!this.options.ajaxLoad) return;
+        var cl = new Contentloader(
+            $(this.options.contentSelector).parent(), // let base element for setting classes and triggering events be the parent, which isn't replaced.
             {
                 url: collectionURL + "&ajax_load=1",
-                target: self.options.contentSelector,
-                content: self.options.contentSelector,
+                target: this.options.contentSelector,
+                content: this.options.contentSelector,
                 trigger: "immediate",
             }
         );
-
         // TODO: remove this, once ``contentloader`` handles history
         // updates itself and adds ajax_load.
         //
