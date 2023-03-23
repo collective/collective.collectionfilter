@@ -370,6 +370,7 @@ if HAS_GEOLOCATION:
             }
             return json.dumps(config)
 
+
 class BaseResetFilterView(BaseFilterView):
 
     @property

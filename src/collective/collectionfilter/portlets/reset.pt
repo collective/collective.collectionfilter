@@ -1,4 +1,4 @@
-<aside class="portlet ${view/filterClassName} collectionFilter pat-collectionfilter"
+<aside class="portlet ${view/filterClassName} "
        tal:define="input_type view/input_type"
        data-pat-collectionfilter='${view/pat_options}'
        tal:condition="view/available"

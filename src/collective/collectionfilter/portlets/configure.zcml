@@ -54,7 +54,7 @@
       edit_permission="plone.app.portlets.ManagePortlets"
       />
 
-    <plone:portlet
+  <plone:portlet
       name="collective.collectionfilter.portlets.CollectionResetFilter"
       interface=".reset.ICollectionResetFilterPortlet"
       assignment=".reset.Assignment"

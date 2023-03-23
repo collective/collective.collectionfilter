@@ -280,6 +280,7 @@ if HAS_GEOLOCATION:
             ),
         )  # noqa: E501
 
+
 class ICollectionResetFilterSchema(ICollectionFilterBaseSchema):
     """Schema for the reset filter."""
 

@@ -8,6 +8,7 @@ from zope.interface import implementer
 class IResetFilterTile(Schema, ICollectionResetFilterSchema):
     pass
 
+
 @implementer(IResetFilterTile)
 class ResetFilterTile(BaseFilterTile, BaseResetFilterView):
     """Reset Filter Tile"""
