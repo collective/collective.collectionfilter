@@ -15,4 +15,9 @@
       title="Collection Filter Result Sorting"
       description="This portlet allows sorting of the filtered result listing."
       />
+  <portlet
+      addview="collective.collectionfilter.portlets.CollectionResetFilter"
+      title="Collection Filter Reset"
+      description="This portlet allows reseting all Filters"
+      />
 </portlets>

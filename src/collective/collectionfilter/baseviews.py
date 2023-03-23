@@ -369,3 +369,24 @@ if HAS_GEOLOCATION:
                 ],
             }
             return json.dumps(config)
+
+class BaseResetFilterView(BaseFilterView):
+
+    @property
+    def reset_url(self):
+        return self.collection.getURL()
+
+    @property
+    def reset_class(self):
+        if not self.settings.css_class:
+            return "btn btn-default"
+        return self.settings.css_class
+
+    @property
+    def reset_button(self):
+        return {
+            "url": self.reset_url,
+            "label": self.reset_label,
+            "icon": self.reset_icon,
+            "class": self.reset_class,
+        }

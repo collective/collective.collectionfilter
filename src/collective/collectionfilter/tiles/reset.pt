@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xml:lang="en"
+    lang="en"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="collective.collectionfilter">
+<body>
+    <div class="${python:view.reset_class}">
+        <a tal:attributes="href view/reset_url"
+            i18n:translate="reset">Reset All
+        </a>
+    </div>
+
+</body>
+</html>

@@ -279,3 +279,12 @@ if HAS_GEOLOCATION:
                 vocabulary="plone.formwidget.geolocation.vocabularies.map_layers"
             ),
         )  # noqa: E501
+
+class ICollectionResetFilterSchema(ICollectionFilterBaseSchema):
+    """Schema for the reset filter."""
+
+    css_class = schema.TextLine(
+        title=_("label_css_class", u"CSS Class"),
+        description=_("help_css_class", u"CSS class for the reset filter button."),
+        required=False,
+    )

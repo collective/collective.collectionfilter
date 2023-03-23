@@ -50,4 +50,18 @@
     <value key="weight">10</value>
   </records>
 
+    <records prefix="plone.app.mosaic.app_tiles.collective_collectionfilter_tiles_reset"
+           interface="plone.app.mosaic.interfaces.ITile">
+    <value key="name">collective.collectionfilter.tiles.resetfilter</value>
+    <value key="label">Collection Reset Filter</value>
+    <value key="category">advanced</value>
+    <value key="tile_type">app</value>
+    <value key="default_value"></value>
+    <value key="read_only">false</value>
+    <value key="settings">true</value>
+    <value key="favorite">false</value>
+    <value key="rich_text">false</value>
+    <value key="weight">10</value>
+  </records>
+
 </registry>

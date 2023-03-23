@@ -4,7 +4,7 @@ Changelog
 4.1 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Add a Reset Button to Reset all Filters. [toalba]
 
 
 4.0 (2022-05-10)

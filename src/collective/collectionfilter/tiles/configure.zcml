@@ -75,6 +75,18 @@
         schema=".maps.IMapsTile"
         template="maps.pt"
         />
+    
+    <plone:tile
+        name="collective.collectionfilter.tiles.resetfilter"
+        title="Collection Reset Filter Tile"
+        description="Show the collection Reset Filter tile."
+        add_permission="cmf.ModifyPortalContent"
+        class=".reset.ResetFilterTile"
+        for="*"
+        schema=".reset.IResetFilterTile"
+        permission="zope2.View"
+        template="reset.pt"
+        />
 
     <genericsetup:registerProfile
         zcml:condition="not-installed collective.geolocationbehavior"
