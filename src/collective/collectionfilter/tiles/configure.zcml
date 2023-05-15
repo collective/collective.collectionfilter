@@ -3,112 +3,117 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:plone="http://namespaces.plone.org/plone"
     xmlns:zcml="http://namespaces.zope.org/zcml"
-    i18n_domain="plone">
+    i18n_domain="plone"
+    >
 
-    <include package="plone.tiles" />
-    <include package="plone.tiles" file="meta.zcml"/>
+  <include package="plone.tiles" />
+  <include
+      package="plone.tiles"
+      file="meta.zcml"
+      />
 
 
-  <adapter factory=".CollectionishLayout"
-           provides="collective.collectionfilter.interfaces.ICollectionish"
-           for="plone.app.blocks.layoutbehavior.ILayoutBehaviorAdaptable" 
-           />
+  <adapter
+      factory=".CollectionishLayout"
+      provides="collective.collectionfilter.interfaces.ICollectionish"
+      for="plone.app.blocks.layoutbehavior.ILayoutBehaviorAdaptable"
+      />
 
 
   <subscriber
-    for="collective.collectionfilter.tiles.BaseFilterTile
-         zope.lifecycleevent.IObjectModifiedEvent"
-    handler=".validateFilterTileModify"
-    />      
+      for="collective.collectionfilter.tiles.BaseFilterTile
+           zope.lifecycleevent.IObjectModifiedEvent"
+      handler=".validateFilterTileModify"
+      />
 
   <subscriber
-    for="plone.app.blocks.layoutbehavior.ILayoutBehaviorAdaptable
-         zope.lifecycleevent.IObjectModifiedEvent"
-    handler=".validateFilterMosaicModify"
-    />      
+      for="plone.app.blocks.layoutbehavior.ILayoutBehaviorAdaptable
+           zope.lifecycleevent.IObjectModifiedEvent"
+      handler=".validateFilterMosaicModify"
+      />
 
-    <plone:tile
-        name="collective.collectionfilter.tiles.filter"
-        title="Collection Filter Tile"
-        description="Show the collection filter tile."
-        add_permission="cmf.ModifyPortalContent"
-        class=".filter.FilterTile"
-        for="*"
-        permission="zope2.View"
-        schema=".filter.IFilterTile"
-        template="filter.pt"
-        />
+  <plone:tile
+      name="collective.collectionfilter.tiles.filter"
+      title="Collection Filter Tile"
+      description="Show the collection filter tile."
+      for="*"
+      schema=".filter.IFilterTile"
+      class=".filter.FilterTile"
+      template="filter.pt"
+      permission="zope2.View"
+      add_permission="cmf.ModifyPortalContent"
+      />
 
-    <plone:tile
-        name="collective.collectionfilter.tiles.search"
-        title="Collection Search Tile"
-        description="Show the collection search tile."
-        add_permission="cmf.ModifyPortalContent"
-        class=".search.SearchTile"
-        for="*"
-        permission="zope2.View"
-        schema=".search.ISearchTile"
-        template="search.pt"
-        />
+  <plone:tile
+      name="collective.collectionfilter.tiles.search"
+      title="Collection Search Tile"
+      description="Show the collection search tile."
+      for="*"
+      schema=".search.ISearchTile"
+      class=".search.SearchTile"
+      template="search.pt"
+      permission="zope2.View"
+      add_permission="cmf.ModifyPortalContent"
+      />
 
-    <plone:tile
-        name="collective.collectionfilter.tiles.sortOn"
-        title="Collection Result Listing Sort Tile"
-        description="Show the result listing sort tile."
-        add_permission="cmf.ModifyPortalContent"
-        class=".sorting.SortOnTile"
-        for="*"
-        permission="zope2.View"
-        schema=".sorting.ISortOnTile"
-        template="sorting.pt"
-        />
+  <plone:tile
+      name="collective.collectionfilter.tiles.sortOn"
+      title="Collection Result Listing Sort Tile"
+      description="Show the result listing sort tile."
+      for="*"
+      schema=".sorting.ISortOnTile"
+      class=".sorting.SortOnTile"
+      template="sorting.pt"
+      permission="zope2.View"
+      add_permission="cmf.ModifyPortalContent"
+      />
 
-    <plone:tile
-        zcml:condition="installed collective.geolocationbehavior"
-        name="collective.collectionfilter.tiles.maps"
-        title="Collection Maps Tile"
-        description="Show the collection maps tile."
-        add_permission="cmf.ModifyPortalContent"
-        class=".maps.MapsTile"
-        for="*"
-        permission="zope2.View"
-        schema=".maps.IMapsTile"
-        template="maps.pt"
-        />
+  <plone:tile
+      name="collective.collectionfilter.tiles.maps"
+      title="Collection Maps Tile"
+      description="Show the collection maps tile."
+      for="*"
+      schema=".maps.IMapsTile"
+      class=".maps.MapsTile"
+      template="maps.pt"
+      permission="zope2.View"
+      add_permission="cmf.ModifyPortalContent"
+      zcml:condition="installed collective.geolocationbehavior"
+      />
 
-    <genericsetup:registerProfile
-        zcml:condition="not-installed collective.geolocationbehavior"
-        name="default"
-        title="collective.collectionfilter tiles"
-        directory="profiles/default"
-        description='Extension profile for Plone.'
-        provides="Products.GenericSetup.interfaces.EXTENSION"
-        />
+  <genericsetup:registerProfile
+      name="default"
+      title="collective.collectionfilter tiles"
+      description="Extension profile for Plone."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      directory="profiles/default"
+      zcml:condition="not-installed collective.geolocationbehavior"
+      />
 
-    <genericsetup:registerProfile
-        zcml:condition="installed collective.geolocationbehavior"
-        name="default"
-        title="collective.collectionfilter tiles"
-        directory="profiles/default-geolocation"
-        description='Extension profile for Plone.'
-        provides="Products.GenericSetup.interfaces.EXTENSION"
-        />
+  <genericsetup:registerProfile
+      name="default"
+      title="collective.collectionfilter tiles"
+      description="Extension profile for Plone."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      directory="profiles/default-geolocation"
+      zcml:condition="installed collective.geolocationbehavior"
+      />
 
-    <genericsetup:registerProfile
-        name="uninstall"
-        title="collective.collectionfilter tiles uninstall"
-        directory="profiles/uninstall"
-        description='Extension profile for Plone.'
-        provides="Products.GenericSetup.interfaces.EXTENSION"
-        />
+  <genericsetup:registerProfile
+      name="uninstall"
+      title="collective.collectionfilter tiles uninstall"
+      description="Extension profile for Plone."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      directory="profiles/uninstall"
+      />
 
-    <genericsetup:upgradeDepends
-        title="Install new sorting tile"
-        source="1"
-        destination="2"
-        profile="collective.collectionfilter.tiles:default"
-        import_profile="collective.collectionfilter.tiles:default"
-        import_steps="plone.app.registry"
-        />
+  <genericsetup:upgradeDepends
+      title="Install new sorting tile"
+      profile="collective.collectionfilter.tiles:default"
+      source="1"
+      destination="2"
+      import_profile="collective.collectionfilter.tiles:default"
+      import_steps="plone.app.registry"
+      />
 
 </configure>

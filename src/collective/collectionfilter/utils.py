@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone import api
 from Products.CMFCore.interfaces import IFolderish
 from Products.CMFPlone.utils import safe_unicode
@@ -8,14 +7,13 @@ try:
     from plone.app.blocks.layoutbehavior import ILayoutAware
 except ImportError:
     ILayoutAware = None
-import six
 
 
 def target_collection_base_path(context):
     for potential_context in context.aq_chain:
         if IFolderish.providedBy(potential_context):
             # Actually makes no sense to pick the collection path as it means you have to go up
-            # to pick teh collection. Instead the collection should be the default
+            # to pick the collection. Instead the collection should be the default
             #    or
             # ISyndicatableCollection.providedBy(potential_context
             #                                   )
@@ -37,9 +35,9 @@ def target_collection_types(context):
 def safe_decode(val):
     """Safely create unicode values."""
     if isinstance(val, dict):
-        return dict(
-            [(safe_decode(k), safe_decode(v)) for k, v in val.items() if v is not None]
-        )  # noqa
+        return {
+            safe_decode(k): safe_decode(v) for k, v in val.items() if v is not None
+        }  # noqa
     if isinstance(val, list):
         return [safe_decode(it) for it in val]
     if isinstance(val, tuple):
@@ -52,14 +50,14 @@ def safe_decode(val):
 def safe_encode(val):
     """Safely encode a value to utf-8."""
     if isinstance(val, dict):
-        return dict(
-            [(safe_encode(k), safe_encode(v)) for k, v in val.items() if v is not None]
-        )  # noqa
+        return {
+            safe_encode(k): safe_encode(v) for k, v in val.items() if v is not None
+        }  # noqa
     if isinstance(val, list):
         return [safe_encode(it) for it in val]
     if isinstance(val, tuple):
         return (safe_encode(it) for it in val)
-    if isinstance(val, six.string_types):
+    if isinstance(val, str):
         return safe_unicode(val).encode("utf-8")
     return val
 
@@ -67,7 +65,7 @@ def safe_encode(val):
 def safe_iterable(value):
     if value is None:
         return []
-    if isinstance(value, six.string_types):
+    if isinstance(value, str):
         # do not expand a string to a list of chars
         return [value]
     try:

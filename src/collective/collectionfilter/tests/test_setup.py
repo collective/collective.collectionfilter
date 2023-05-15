@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Setup tests for this package."""
 from collective.collectionfilter.testing import (  # noqa
     COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING,
@@ -18,7 +17,7 @@ try:
 except Exception:
     # Quick shim for 5.1 api change
 
-    class get_installer(object):
+    class get_installer:
         def __init__(self, portal, request):
             self.installer = getToolByName(portal, "portal_quickinstaller")
 
@@ -54,7 +53,6 @@ class TestSetup(unittest.TestCase):
 
 
 class TestUninstall(unittest.TestCase):
-
     layer = COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING
 
     def setUp(self):

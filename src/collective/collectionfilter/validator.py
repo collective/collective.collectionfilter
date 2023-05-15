@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_chain
 from Acquisition import aq_inner
 from collective.collectionfilter import _
@@ -26,7 +25,7 @@ from zope.schema.interfaces import IField
 @adapter(Interface, ICollectionFilterBrowserLayer, Interface, IField, Interface)
 class TargetCollectionValidator(validator.SimpleFieldValidator):
     def validate(self, value):
-        super(TargetCollectionValidator, self).validate(value)
+        super().validate(value)
         portlet = False
         if value:
             obj = aq_inner(uuidToCatalogBrain(value)).getObject()

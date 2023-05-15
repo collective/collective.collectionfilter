@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from collective.collectionfilter.baseviews import BaseSortOnView
 from collective.collectionfilter.interfaces import (  # noqa
     ICollectionFilterResultListSort,

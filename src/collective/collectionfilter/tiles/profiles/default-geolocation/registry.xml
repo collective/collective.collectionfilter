@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <registry>
   <record name="plone.app.tiles">
     <value purge="false">
@@ -9,13 +9,14 @@
     </value>
   </record>
 
-  <records prefix="plone.app.mosaic.app_tiles.collective_collectionfilter_tiles_filter"
-           interface="plone.app.mosaic.interfaces.ITile">
+  <records interface="plone.app.mosaic.interfaces.ITile"
+           prefix="plone.app.mosaic.app_tiles.collective_collectionfilter_tiles_filter"
+  >
     <value key="name">collective.collectionfilter.tiles.filter</value>
     <value key="label">Collection Filter</value>
     <value key="category">advanced</value>
     <value key="tile_type">app</value>
-    <value key="default_value"></value>
+    <value key="default_value" />
     <value key="read_only">false</value>
     <value key="settings">true</value>
     <value key="favorite">false</value>
@@ -23,13 +24,14 @@
     <value key="weight">10</value>
   </records>
 
-  <records prefix="plone.app.mosaic.app_tiles.collective_collectionfilter_tiles_search"
-           interface="plone.app.mosaic.interfaces.ITile">
+  <records interface="plone.app.mosaic.interfaces.ITile"
+           prefix="plone.app.mosaic.app_tiles.collective_collectionfilter_tiles_search"
+  >
     <value key="name">collective.collectionfilter.tiles.search</value>
     <value key="label">Collection Search</value>
     <value key="category">advanced</value>
     <value key="tile_type">app</value>
-    <value key="default_value"></value>
+    <value key="default_value" />
     <value key="read_only">false</value>
     <value key="settings">true</value>
     <value key="favorite">false</value>
@@ -37,13 +39,14 @@
     <value key="weight">10</value>
   </records>
 
-  <records prefix="plone.app.mosaic.app_tiles.collective_collectionfilter_tiles_sort_on"
-           interface="plone.app.mosaic.interfaces.ITile">
+  <records interface="plone.app.mosaic.interfaces.ITile"
+           prefix="plone.app.mosaic.app_tiles.collective_collectionfilter_tiles_sort_on"
+  >
     <value key="name">collective.collectionfilter.tiles.sortOn</value>
     <value key="label">Collection Result Listing Sort</value>
     <value key="category">advanced</value>
     <value key="tile_type">app</value>
-    <value key="default_value"></value>
+    <value key="default_value" />
     <value key="read_only">false</value>
     <value key="settings">true</value>
     <value key="favorite">false</value>
@@ -51,13 +54,14 @@
     <value key="weight">10</value>
   </records>
 
-  <records prefix="plone.app.mosaic.app_tiles.collective_collectionfilter_tiles_maps"
-           interface="plone.app.mosaic.interfaces.ITile">
+  <records interface="plone.app.mosaic.interfaces.ITile"
+           prefix="plone.app.mosaic.app_tiles.collective_collectionfilter_tiles_maps"
+  >
     <value key="name">collective.collectionfilter.tiles.maps</value>
     <value key="label">Collection Maps</value>
     <value key="category">advanced</value>
     <value key="tile_type">app</value>
-    <value key="default_value"></value>
+    <value key="default_value" />
     <value key="read_only">false</value>
     <value key="settings">true</value>
     <value key="favorite">false</value>

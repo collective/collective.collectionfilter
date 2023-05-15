@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from collective.collectionfilter import _
 from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.interfaces import IGroupByModifier
@@ -123,7 +122,7 @@ def sort_key_title(it):
 
 @implementer(IGroupByCriteria)
 class GroupByCriteria:
-    """Global utility for retrieving and manipulating groupby criterias.
+    """Global utility for retrieving and manipulating groupby criteria.
 
     1) Populate ``groupby`` catalog metadata.
     2) Do not use blacklisted metadata columns.
@@ -136,7 +135,6 @@ class GroupByCriteria:
 
     @property
     def groupby(self):
-
         if self._groupby is not None:
             # The groupby criteria are used at each IBeforeTraverseEvent - so
             # on each request. This has to be fast, so exit early.

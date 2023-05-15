@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from collective.collectionfilter import _
 from collective.collectionfilter.baseviews import BaseSortOnView
 from collective.collectionfilter.interfaces import (  # noqa
@@ -19,7 +18,6 @@ class ICollectionFilterSortOnPortlet(
 
 @implementer(ICollectionFilterSortOnPortlet)
 class Assignment(base.Assignment):
-
     header = ""
     target_collection = None
     view_name = None
@@ -61,7 +59,6 @@ class Renderer(BasePortletRenderer, BaseSortOnView):
 
 
 class AddForm(base.AddForm):
-
     schema = ICollectionFilterSortOnPortlet
     label = _("Add Collection Result Listing Sort Portlet")
     description = _("This portlet shows sorting options for the result listing.")
@@ -71,7 +68,6 @@ class AddForm(base.AddForm):
 
 
 class EditForm(base.EditForm):
-
     schema = ICollectionFilterSortOnPortlet
     label = _("Edit Collection Result Listing Sort Portlet")
     description = _("This portlet shows sorting options for the result listing.")

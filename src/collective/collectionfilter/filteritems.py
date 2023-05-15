@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from collective.collectionfilter import _
 from collective.collectionfilter.interfaces import ICollectionish
 from collective.collectionfilter.interfaces import IGroupByCriteria
@@ -19,7 +18,7 @@ from plone.app.uuid.utils import uuidToObject
 from plone.i18n.normalizer import idnormalizer
 from plone.memoize import ram
 from plone.memoize.volatile import DontCache
-from six.moves.urllib.parse import urlencode
+from urllib.parse import urlencode
 from zope.component import getUtility
 from zope.globalrequest import getRequest
 from zope.i18n import translate
@@ -33,7 +32,7 @@ try:
     from plone.app.event.browser.event_listing import EventListing
 except ImportError:
 
-    class EventListing(object):
+    class EventListing:
         pass
 
 
@@ -79,7 +78,7 @@ def _build_option(filter_value, url, current_idx_value, groupby_options):
 
     # Set selected state
     selected = filter_value in current_idx_value
-    css_class = "filterItem {0}{1} {2}".format(
+    css_class = "filterItem {}{} {}".format(
         "filter-" + idnormalizer.normalize(filter_value),
         " selected" if selected else "",
         css_modifier(filter_value) if css_modifier else "",
@@ -201,7 +200,6 @@ def get_filter_items(
 
     grouped_results = {}
     for brain in catalog_results:
-
         # Get filter value
         val = getattr(brain, metadata_attr, None)
         val = val() if callable(val) else val
@@ -254,7 +252,7 @@ def get_filter_items(
                 context=getRequest(),
                 target_language=plone.api.portal.get_current_language(),
             ),
-            "url": "{0}/?{1}".format(
+            "url": "{}/?{}".format(
                 collection_url, urlencode(safe_encode(urlquery_all), doseq=True)
             ),
             "value": "all",
@@ -278,7 +276,7 @@ def get_filter_items(
 
 
 @implementer(ICollectionish)
-class CollectionishCollection(object):
+class CollectionishCollection:
     def __init__(self, context):
         self.context = context
         self.collection = ICollection(self.context)
@@ -316,7 +314,6 @@ class CollectionishCollection(object):
         return "#content-core"  # TODO: could look it up based on view?
 
     def results(self, custom_query, request_params):
-
         # Support for the Event Listing view from plone.app.event
         collection_layout = self.context.getLayout()
         default_view = self.context.restrictedTraverse(collection_layout)

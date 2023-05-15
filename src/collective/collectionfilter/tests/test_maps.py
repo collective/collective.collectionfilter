@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Setup tests for this package."""
 from collective.collectionfilter.testing import (  # noqa
     COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING,
@@ -8,7 +7,6 @@ import unittest
 
 
 class TestMaps(unittest.TestCase):
-
     layer = COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING
 
     def setUp(self):

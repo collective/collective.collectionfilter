@@ -1,18 +1,15 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <portlets>
-  <portlet
-      addview="collective.collectionfilter.portlets.CollectionFilter"
-      title="Collection Filter"
-      description="Portlet that groups collections items by criteria."
-      />
-  <portlet
-      addview="collective.collectionfilter.portlets.CollectionSearch"
-      title="Collection Search"
-      description="This portlet allows fulltext search in collection results."
-      />
-  <portlet
-      addview="collective.collectionfilter.portlets.CollectionSortOn"
-      title="Collection Filter Result Sorting"
-      description="This portlet allows sorting of the filtered result listing."
-      />
+  <portlet addview="collective.collectionfilter.portlets.CollectionFilter"
+           description="Portlet that groups collections items by criteria."
+           title="Collection Filter"
+  />
+  <portlet addview="collective.collectionfilter.portlets.CollectionSearch"
+           description="This portlet allows fulltext search in collection results."
+           title="Collection Search"
+  />
+  <portlet addview="collective.collectionfilter.portlets.CollectionSortOn"
+           description="This portlet allows sorting of the filtered result listing."
+           title="Collection Filter Result Sorting"
+  />
 </portlets>

@@ -1,0 +1,8 @@
+# Generated from:
+# https://github.com/plone/meta/tree/master/config/default
+[meta]
+template = "default"
+commit-id = "8af8caab"
+
+[codespell]
+skip = "*.min.js,*.min.js.map,yarn.lock,*.po"

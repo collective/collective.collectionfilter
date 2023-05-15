@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from setuptools import find_packages
 from setuptools import setup
 
@@ -17,7 +16,7 @@ setup(
     name="collective.collectionfilter",
     version=version,
     description="Plone addon for filtering collection results.",
-    long_description="{0}\n\n{1}".format(
+    long_description="{}\n\n{}".format(
         read("README.rst"),
         read("CHANGES.rst"),
     ),
@@ -42,6 +41,7 @@ setup(
     namespace_packages=[
         "collective",
     ],
+    python_requires=">=3.8",
     packages=find_packages("src"),
     package_dir={"": "src"},
     include_package_data=True,

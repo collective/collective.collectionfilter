@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from collective.collectionfilter import _
 from collective.collectionfilter.baseviews import BaseMapsView
 from collective.collectionfilter.interfaces import ICollectionMapsSchema
@@ -17,7 +16,6 @@ class ICollectionMapsPortlet(ICollectionMapsSchema, IPortletDataProvider):
 
 @implementer(ICollectionMapsPortlet)
 class Assignment(base.Assignment):
-
     header = ""
     target_collection = None
     view_name = None
@@ -57,7 +55,6 @@ class Renderer(BasePortletRenderer, BaseMapsView):
 
 
 class AddForm(base.AddForm):
-
     schema = ICollectionMapsPortlet
     label = _("Add Collection Maps Portlet")
     description = _("This portlet allows map filtering in collection results.")
@@ -67,7 +64,6 @@ class AddForm(base.AddForm):
 
 
 class EditForm(base.EditForm):
-
     schema = ICollectionMapsPortlet
     label = _("Edit Collection Maps Portlet")
     description = _("This portlet allows map filtering in collection results.")

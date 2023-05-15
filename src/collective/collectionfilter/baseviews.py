@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from .filteritems import get_filter_items
 from .filteritems import ICollectionish
 from .interfaces import IGroupByCriteria
@@ -19,7 +18,7 @@ from plone.memoize import instance
 from plone.uuid.interfaces import IUUID
 from Products.CMFPlone.utils import get_top_request
 from Products.CMFPlone.utils import safe_unicode
-from six.moves.urllib.parse import urlencode
+from urllib.parse import urlencode
 from zope.component import getUtility
 from zope.component import queryUtility
 from zope.i18n import translate
@@ -37,7 +36,7 @@ except ImportError:
     HAS_GEOLOCATION = False
 
 
-class BaseView(object):
+class BaseView:
     """Abstract base filter view class."""
 
     _collection = None
@@ -92,7 +91,6 @@ class BaseView(object):
 
     @property
     def pat_options(self):
-
         return json.dumps(
             {
                 "collectionUUID": self.collection_uuid,

@@ -151,7 +151,7 @@ msgstr ""
 msgid "help_default_map_layer"
 msgstr ""
 
-#. Default: "Select if single or multiple criterias can be selected and if all (and) or any (or) of the selected criterias must be met.Some index types like ``FieldIndex`` (e.g. Type index) only support the any (or) criteria when set to multiple criterias and ignore, if all (and) is set."
+#. Default: "Select if single or multiple criteria can be selected and if all (and) or any (or) of the selected criteria must be met.Some index types like ``FieldIndex`` (e.g. Type index) only support the any (or) criteria when set to multiple criteria and ignore, if all (and) is set."
 #: collective/collectionfilter/interfaces.py:117
 msgid "help_filter_type"
 msgstr ""
@@ -171,7 +171,7 @@ msgstr ""
 msgid "help_hide_if_empty"
 msgstr ""
 
-#. Default: "Select how the UI of the collection filter should be rendered. Wether as links, as checkboxes and radiobuttons or checkboxes and dropdowns."
+#. Default: "Select how the UI of the collection filter should be rendered. Whether as links, as checkboxes and radiobuttons or checkboxes and dropdowns."
 #: collective/collectionfilter/interfaces.py:128
 msgid "help_input_type"
 msgstr ""

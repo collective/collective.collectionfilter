@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from collective.collectionfilter import _
 from collective.collectionfilter.baseviews import BaseSearchView
 from collective.collectionfilter.interfaces import ICollectionSearchSchema
@@ -15,7 +14,6 @@ class ICollectionSearchPortlet(ICollectionSearchSchema, IPortletDataProvider):
 
 @implementer(ICollectionSearchPortlet)
 class Assignment(base.Assignment):
-
     header = ""
     target_collection = None
     view_name = None
@@ -46,7 +44,6 @@ class Renderer(BasePortletRenderer, BaseSearchView):
 
 
 class AddForm(base.AddForm):
-
     schema = ICollectionSearchPortlet
     label = _("Add Collection Search Portlet")
     description = _("This portlet allows fulltext search in collection results.")
@@ -56,7 +53,6 @@ class AddForm(base.AddForm):
 
 
 class EditForm(base.EditForm):
-
     schema = ICollectionSearchPortlet
     label = _("Edit Collection Search Portlet")
     description = _("This portlet allows fulltext search in collection results.")
