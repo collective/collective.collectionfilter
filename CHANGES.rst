@@ -4,7 +4,9 @@ Changelog
 4.1 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- filteritems: rename _op keys to _operator when creating ZCatalog queries
+  to suppress catalog error "option 'op' is not valid"
+  [fredvd]
 
 
 4.0 (2022-05-10)

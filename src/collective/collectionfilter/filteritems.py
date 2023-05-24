@@ -28,7 +28,6 @@ from zope.interface import implementer
 import plone.api
 import six
 
-
 try:
     from plone.app.event.browser.event_listing import EventListing
 except ImportError:
@@ -182,6 +181,14 @@ def get_filter_items(
         count_query = {}
         count_urlquery = base_query(request_params, [idx, idx + "_op"])
         count_query.update(count_urlquery)
+        # https://github.com/collective/collective.collectionfilter/issues/112
+        # Patch issue with collectionfilter using _ to add an operator to a filter
+        # key, but our filter fields already have an _ in the normal name.
+        for param in (request_params, count_query):
+            for key in param.copy().keys():
+                if key.endswith('_op'):
+                    param[key + 'erator'] = param[key]
+                    del param[key]
         catalog_results_fullcount = collection.results(count_query, request_params)
     if not catalog_results:
         return None
