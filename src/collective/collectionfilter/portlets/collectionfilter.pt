@@ -84,6 +84,7 @@
               <a href="${item/url}"
                  rel="nofollow"
                  title="Count: ${item/count}"
+                 i18n:attributes="title"
               >
                 <span>
                   <span tal:replace="item/title">Item</span>

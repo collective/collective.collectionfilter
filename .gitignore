@@ -1,56 +1,34 @@
-*.egg
+# Generated from:
+# https://github.com/plone/meta/tree/master/config/default
+# See the inline comments on how to expand/tweak this configuration file
+# python related
 *.egg-info
-*.graffle
-*.kate-swp
-*.mo
-*.py?
 *.pyc
-*~
-._*
-.idea
-*.swp
-.DS_Store
-.coverage
-.installed.cfg
-.mr.developer.cfg
-.Python
-bin/
-buildout-cache/
-build/
-collective/easyform/tests/*.tar.gz
-develop-eggs/
-dist
-docs/Makefile
-docs/doctrees
-docs/html
-docs/make.bat
-extras/
-htmlcov/
-include/
-/lib*
-local/
-parts/
-pip-selfcheck.json
-share/
-var/
-pyvenv.cfg
-node_modules/
-.env
-.vscode/
-.python-version
-annotate.txt
-.tox/
-.coverage*
-local.cfg
-src-mrd
+*.pyo
 
-# robot test
-robot_*
-geckodriver*
-test_*/
-log.html
-output.xml
-report.html
+# tools related
+build/
+.coverage
+coverage.xml
+dist/
+docs/_build
+__pycache__/
+.tox
+.vscode/
+
+# venv / buildout related
+bin/
+develop-eggs/
+eggs/
+.eggs/
+etc/
+.installed.cfg
+lib/
+lib64
+.mr.developer.cfg
+parts/
+pyvenv.cfg
+var/
 
 # mxdev
 /instance/
@@ -60,3 +38,12 @@ report.html
 /sources/
 /venv/
 .installed.txt
+
+
+##
+# Add extra configuration options in .meta.toml:
+#  [pre_commit]
+#  extra_lines = """
+#  _your own configuration lines_
+#  """
+##
