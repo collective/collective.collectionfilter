@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.api import env
 from plone.app.portlets.portlets.base import Renderer
 from Products.CMFPlone.utils import get_top_request
@@ -19,7 +18,7 @@ class BasePortletRenderer(Renderer):
 
     @property
     def reload_url(self):
-        reload_url = "{0}/@@render-portlet?portlethash={1}".format(
+        reload_url = "{}/@@render-portlet?portlethash={}".format(
             self.context.absolute_url(),
             safe_unicode(self.filter_id),
         )

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from collective.collectionfilter import _
 from collective.collectionfilter import utils
 from plone.api.portal import get_registry_record as getrec
@@ -33,7 +32,6 @@ class ICollectionish(Interface):
 
 
 class ICollectionFilterBaseSchema(Interface):
-
     header = schema.TextLine(
         title=_("label_header", default="Filter title"),
         description=_("help_header", "Title of the rendered filter."),
@@ -114,8 +112,8 @@ class ICollectionFilterSchema(ICollectionFilterBaseSchema):
         title=_("label_filter_type", "Filter Type"),
         description=_(
             "help_filter_type",
-            "Select if single or multiple criterias can be selected and if all (and) or any (or) of the selected criterias must be met."  # noqa
-            "Some index types like ``FieldIndex`` (e.g. Type index) only support the any (or) criteria when set to multiple criterias and ignore, if all (and) is set.",  # noqa
+            "Select if single or multiple criteria can be selected and if all (and) or any (or) of the selected criteria must be met."  # noqa
+            "Some index types like ``FieldIndex`` (e.g. Type index) only support the any (or) criteria when set to multiple criteria and ignore, if all (and) is set.",  # noqa
         ),
         required=True,
         vocabulary="collective.collectionfilter.FilterType",
@@ -126,7 +124,7 @@ class ICollectionFilterSchema(ICollectionFilterBaseSchema):
         description=_(
             "help_input_type",
             "Select how the UI of the collection filter should be rendered. "
-            "Wether as links, as checkboxes and radiobuttons or checkboxes and dropdowns.",  # noqa
+            "Whether as links, as checkboxes and radiobuttons or checkboxes and dropdowns.",  # noqa
         ),
         required=True,
         vocabulary="collective.collectionfilter.InputType",
@@ -201,7 +199,7 @@ class ICollectionFilterResultListSort(ICollectionFilterBaseSchema):
         description=_(
             "help_input_type",
             "Select how the UI of the collection filter should be rendered. "
-            "Wether as links, as checkboxes and radiobuttons or checkboxes and dropdowns.",  # noqa
+            "Whether as links, as checkboxes and radiobuttons or checkboxes and dropdowns.",  # noqa
         ),
         required=True,
         vocabulary="collective.collectionfilter.InputType",

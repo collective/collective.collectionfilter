@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from datetime import datetime
 from datetime import timedelta
 from plone import api
@@ -25,7 +24,6 @@ def _set_ajax_enabled(should_enable_ajax):
 
 
 class CollectiveCollectionFilterLayer(PloneSandboxLayer):
-
     defaultBases = (PLONE_APP_CONTENTTYPES_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
@@ -129,7 +127,7 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
                     {
                         "i": "path",
                         "o": "plone.app.querystring.operation.string.absolutePath",
-                        "v": "{0}::-1".format(
+                        "v": "{}::-1".format(
                             portal.folder1.UID(),
                         ),
                     },
@@ -225,12 +223,10 @@ class CollectiveCollectionFilterAjaxEnabledLayer(CollectiveCollectionFilterLayer
     def setUpPloneSite(self, portal):
         _set_ajax_enabled(True)
         os.environ["ROBOT_AJAX_ENABLED"] = "True"
-        super(CollectiveCollectionFilterAjaxEnabledLayer, self).setUpPloneSite(portal)
+        super().setUpPloneSite(portal)
 
     def tearDownPloneSite(self, portal):
-        super(CollectiveCollectionFilterAjaxEnabledLayer, self).tearDownPloneSite(
-            portal
-        )
+        super().tearDownPloneSite(portal)
         del os.environ["ROBOT_AJAX_ENABLED"]
 
 
@@ -248,7 +244,7 @@ COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED = FunctionalTesting(
 class CollectiveCollectionFilterAjaxDisabledLayer(CollectiveCollectionFilterLayer):
     def setUpPloneSite(self, portal):
         _set_ajax_enabled(False)
-        super(CollectiveCollectionFilterAjaxDisabledLayer, self).setUpPloneSite(portal)
+        super().setUpPloneSite(portal)
 
 
 AJAX_DISABLED_FIXTURE = CollectiveCollectionFilterAjaxDisabledLayer()
@@ -265,10 +261,10 @@ COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED = FunctionalTesting
 class CollectiveCollectionFilterTilesLayer(CollectiveCollectionFilterLayer):
     def setUpPloneSite(self, portal):
         os.environ["ROBOT_USE_TILES"] = "True"
-        super(CollectiveCollectionFilterTilesLayer, self).setUpPloneSite(portal)
+        super().setUpPloneSite(portal)
 
     def tearDownPloneSite(self, portal):
-        super(CollectiveCollectionFilterTilesLayer, self).tearDownPloneSite(portal)
+        super().tearDownPloneSite(portal)
         del os.environ["ROBOT_USE_TILES"]
 
 

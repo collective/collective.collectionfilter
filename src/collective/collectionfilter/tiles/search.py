@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from collective.collectionfilter.baseviews import BaseSearchView
 from collective.collectionfilter.interfaces import ICollectionSearchSchema
 from collective.collectionfilter.tiles import BaseFilterTile

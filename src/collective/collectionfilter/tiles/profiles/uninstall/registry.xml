@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <registry>
   <record name="plone.app.tiles">
     <value purge="false">
@@ -9,24 +9,24 @@
     </value>
   </record>
 
-  <records
-      remove="True"
-      prefix="plone.app.mosaic.app_tiles.collective_collectionfilter_tiles_filter"
-      interface="plone.app.mosaic.interfaces.ITile"/>
+  <records interface="plone.app.mosaic.interfaces.ITile"
+           prefix="plone.app.mosaic.app_tiles.collective_collectionfilter_tiles_filter"
+           remove="True"
+  />
 
-  <records
-      remove="True"
-      prefix="plone.app.mosaic.app_tiles.collective_collectionfilter_tiles_search"
-      interface="plone.app.mosaic.interfaces.ITile"/>
+  <records interface="plone.app.mosaic.interfaces.ITile"
+           prefix="plone.app.mosaic.app_tiles.collective_collectionfilter_tiles_search"
+           remove="True"
+  />
 
-  <records
-      remove="True"
-      prefix="plone.app.mosaic.app_tiles.collective_collectionfilter_tiles_sort_on"
-      interface="plone.app.mosaic.interfaces.ITile"/>
+  <records interface="plone.app.mosaic.interfaces.ITile"
+           prefix="plone.app.mosaic.app_tiles.collective_collectionfilter_tiles_sort_on"
+           remove="True"
+  />
 
-  <records
-      remove="True"
-      prefix="plone.app.mosaic.app_tiles.collective_collectionfilter_tiles_maps"
-      interface="plone.app.mosaic.interfaces.ITile"/>
+  <records interface="plone.app.mosaic.interfaces.ITile"
+           prefix="plone.app.mosaic.app_tiles.collective_collectionfilter_tiles_maps"
+           remove="True"
+  />
 
 </registry>

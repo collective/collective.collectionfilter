@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from collective.collectionfilter import _
 from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.interfaces import IGroupByModifier
@@ -20,7 +19,6 @@ from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 
 import plone.api
-import six
 
 
 # Use this EMPTY_MARKER for your custom indexer to index empty criterions.
@@ -123,7 +121,7 @@ def sort_key_title(it):
 
 @implementer(IGroupByCriteria)
 class GroupByCriteria:
-    """Global utility for retrieving and manipulating groupby criterias.
+    """Global utility for retrieving and manipulating groupby criteria.
 
     1) Populate ``groupby`` catalog metadata.
     2) Do not use blacklisted metadata columns.
@@ -136,7 +134,6 @@ class GroupByCriteria:
 
     @property
     def groupby(self):
-
         if self._groupby is not None:
             # The groupby criteria are used at each IBeforeTraverseEvent - so
             # on each request. This has to be fast, so exit early.
@@ -154,9 +151,6 @@ class GroupByCriteria:
             idx = cat._catalog.indexes.get(it)
             index_modifier = None
             display_modifier = translate_value  # Allow to translate in this package domain per default.  # noqa
-            if six.PY2 and getattr(idx, "meta_type", None) == "KeywordIndex":
-                # in Py2 KeywordIndex accepts only utf-8 encoded values.
-                index_modifier = safe_encode
 
             if getattr(idx, "meta_type", None) == "BooleanIndex":
                 index_modifier = make_bool

@@ -3,20 +3,28 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:i18n="http://namespaces.zope.org/i18n"
-    xmlns:zcml="http://namespaces.zope.org/zcml"
     xmlns:plone="http://namespaces.plone.org/plone"
-    i18n_domain="collective.collectionfilter">
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="collective.collectionfilter"
+    >
 
   <i18n:registerTranslations directory="locales" />
-  <include zcml:condition="installed plone.app.portlets" package=".portlets" />
-  <include zcml:condition="installed plone.tiles" package=".tiles" />
+  <include
+      package=".portlets"
+      zcml:condition="installed plone.app.portlets"
+      />
+  <include
+      package=".tiles"
+      zcml:condition="installed plone.tiles"
+      />
 
   <include file="upgrades.zcml" />
 
   <plone:static
-    directory="static"
-    type="plone"
-    name="collectionfilter" />
+      directory="static"
+      name="collectionfilter"
+      type="plone"
+      />
 
   <adapter
       factory=".validator.TargetCollectionValidator"
@@ -24,34 +32,36 @@
       />
 
   <utility
-      provides=".interfaces.IGroupByCriteria"
       factory=".vocabularies.GroupByCriteria"
+      provides=".interfaces.IGroupByCriteria"
       />
 
   <utility
-      component=".vocabularies.GroupByCriteriaVocabulary"
       name="collective.collectionfilter.GroupByCriteria"
+      component=".vocabularies.GroupByCriteriaVocabulary"
       />
   <utility
-      component=".vocabularies.ListScalingVocabulary"
       name="collective.collectionfilter.ListScaling"
+      component=".vocabularies.ListScalingVocabulary"
       />
   <utility
-      component=".vocabularies.FilterTypeVocabulary"
       name="collective.collectionfilter.FilterType"
+      component=".vocabularies.FilterTypeVocabulary"
       />
   <utility
-      component=".vocabularies.InputTypeVocabulary"
       name="collective.collectionfilter.InputType"
+      component=".vocabularies.InputTypeVocabulary"
       />
   <utility
-      component=".vocabularies.SortOnIndexesVocabulary"
       name="collective.collectionfilter.SortOnIndexes"
+      component=".vocabularies.SortOnIndexesVocabulary"
       />
 
-  <adapter factory=".filteritems.CollectionishCollection"
-           provides="collective.collectionfilter.interfaces.ICollectionish"
-           for="plone.app.contenttypes.interfaces.ICollection" />
+  <adapter
+      factory=".filteritems.CollectionishCollection"
+      provides="collective.collectionfilter.interfaces.ICollectionish"
+      for="plone.app.contenttypes.interfaces.ICollection"
+      />
 
   <subscriber
       for="Products.CMFPlone.interfaces.IPloneSiteRoot
@@ -62,16 +72,16 @@
   <genericsetup:registerProfile
       name="default"
       title="collective.collectionfilter base"
-      directory="profiles/default"
-      description='Extension profile for Plone.'
+      description="Extension profile for Plone."
       provides="Products.GenericSetup.interfaces.EXTENSION"
+      directory="profiles/default"
       />
   <genericsetup:registerProfile
       name="uninstall"
       title="collective.collectionfilter base uninstall"
-      directory="profiles/uninstall"
-      description='Extension profile for Plone.'
+      description="Extension profile for Plone."
       provides="Products.GenericSetup.interfaces.EXTENSION"
+      directory="profiles/uninstall"
       />
   <utility
       factory=".setuphandlers.HiddenProfiles"

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from collective.collectionfilter import _
 from collective.collectionfilter.baseviews import BaseFilterView
 from collective.collectionfilter.interfaces import ICollectionFilterSchema
@@ -16,7 +15,6 @@ class ICollectionFilterPortlet(ICollectionFilterSchema, IPortletDataProvider):
 
 @implementer(ICollectionFilterPortlet)
 class Assignment(base.Assignment):
-
     header = ""
     target_collection = None
     group_by = ""
@@ -79,7 +77,6 @@ class Renderer(BasePortletRenderer, BaseFilterView):
 
 
 class AddForm(base.AddForm):
-
     schema = ICollectionFilterPortlet
     label = _("Add Collection Filter Portlet")
     description = _(
@@ -92,7 +89,6 @@ class AddForm(base.AddForm):
 
 
 class EditForm(base.EditForm):
-
     schema = ICollectionFilterPortlet
     label = _("Edit Collection Filter Portlet")
     description = _(

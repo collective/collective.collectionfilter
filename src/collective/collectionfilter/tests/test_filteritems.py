@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Setup tests for this package."""
 import unittest
 
@@ -30,12 +29,11 @@ def qs(result, index):
     result = parse_qs(query)
     del result["collectionfilter"]
     # Quick hack to get single values back from being lists
-    result.update(dict([(k, v[0]) for k, v in result.items() if len(v) == 1]))
+    result.update({k: v[0] for k, v in result.items() if len(v) == 1})
     return safe_decode(result)
 
 
 class TestFilteritems(unittest.TestCase):
-
     layer = COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING
 
     def setUp(self):

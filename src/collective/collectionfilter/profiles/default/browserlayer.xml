@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <layers>
-  <layer
-      name="collective.collectionfilter"
-      interface="collective.collectionfilter.interfaces.ICollectionFilterBrowserLayer"
-      />
+  <layer interface="collective.collectionfilter.interfaces.ICollectionFilterBrowserLayer"
+         name="collective.collectionfilter"
+  />
 </layers>

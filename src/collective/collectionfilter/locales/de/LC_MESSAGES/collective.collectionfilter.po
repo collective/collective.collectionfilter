@@ -156,7 +156,7 @@ msgstr "Ein CSS Selektor der die Ergebnisliste markiert. Quellnode (Kollektion) 
 msgid "help_default_map_layer"
 msgstr "wählen Sie die Standardkarte für die Ansicht."
 
-#. Default: "Select if single or multiple criterias can be selected and if all (and) or any (or) of the selected criterias must be met.Some index types like ``FieldIndex`` (e.g. Type index) only support the any (or) criteria when set to multiple criterias and ignore, if all (and) is set."
+#. Default: "Select if single or multiple criteria can be selected and if all (and) or any (or) of the selected criteria must be met.Some index types like ``FieldIndex`` (e.g. Type index) only support the any (or) criteria when set to multiple criteria and ignore, if all (and) is set."
 #: collective/collectionfilter/interfaces.py:117
 msgid "help_filter_type"
 msgstr "Wählen Sie aus, ob einzelne oder mehrere Kriterien ausgewählt werden können und ob alle (und) oder eines (oder) der ausgewählten Kriterien erfüllt sein müssen. Einige Index-Typen wie ``FieldIndex`` (z.B. Type-Index) unterstützen das any (oder) Kriterium nur, wenn es auf mehrere Kriterien gesetzt ist und ignorieren es, wenn all (und) gesetzt ist."
@@ -176,7 +176,7 @@ msgstr "Titel des Portlets"
 msgid "help_hide_if_empty"
 msgstr "Nicht anzeigen, wenn 1 oder weniger Optionen vorhanden sind."
 
-#. Default: "Select how the UI of the collection filter should be rendered. Wether as links, as checkboxes and radiobuttons or checkboxes and dropdowns."
+#. Default: "Select how the UI of the collection filter should be rendered. Whether as links, as checkboxes and radiobuttons or checkboxes and dropdowns."
 #: collective/collectionfilter/interfaces.py:128
 msgid "help_input_type"
 msgstr "Wählen Sie aus, wie die Benutzeroberfläche des Kollektionsfilters dargestellt werden soll. Als Links, Kontrollkästchen und Radiobuttons oder Kontrollkästchen und Dropdowns."

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.utils import safe_decode
 from collective.collectionfilter.vocabularies import EMPTY_MARKER

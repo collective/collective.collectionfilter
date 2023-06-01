@@ -37,7 +37,7 @@ Filter Results of Collections
 Add as many filter/search portlets directly to a collection.
 
 When you select values from the filter the results are loaded asynchronously onto the page (no page refresh).
-Unless you turn off ajax loading in the registery or are using Plone 5.0. If you are using special theme or view template
+Unless you turn off ajax loading in the registry or are using Plone 5.0. If you are using special theme or view template
 you can customize ``Content Selector`` and/or ```View Template``` to ensure ajax loading works correctly.
 Make sure the selector exists on the source collection template and on the target page which shows the filtered results.
 
@@ -165,7 +165,7 @@ Compatibility
 - Version 4.x is compatible with Plone 5.2+
 - Version 3.x is compatible with Plone 5.0.x and 5.1.x
 
-If your theme doesn't work well with AJAX loading this can be overridden in the registery or via diazo.
+If your theme doesn't work well with AJAX loading this can be overridden in the registry or via diazo.
 
 Author
 ------

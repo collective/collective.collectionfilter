@@ -1,31 +1,37 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <registry>
 
   <record name="collective.collectionfilter.target_collection_types">
-      <field type="plone.registry.field.Tuple">
-          <title>Target Collection Types</title>
-          <description>A list of portal types which can be selected as filterable target collections</description>
-          <value_type type="plone.registry.field.TextLine" />
-      </field>
-      <value>
-          <element>Collection</element>
-      </value>
+    <field type="plone.registry.field.Tuple">
+      <title>Target Collection Types</title>
+      <description>A list of portal types which can be selected as filterable target collections</description>
+      <value_type type="plone.registry.field.TextLine" />
+    </field>
+    <value>
+      <element>Collection</element>
+    </value>
   </record>
 
-  <records prefix="plone.resources/collectionfilter"
-           interface='Products.CMFPlone.interfaces.IResourceRegistry' remove="True" />
+  <records interface="Products.CMFPlone.interfaces.IResourceRegistry"
+           prefix="plone.resources/collectionfilter"
+           remove="True"
+  />
 
-  <records prefix="plone.resources/collectionfilter-bundle"
-           interface='Products.CMFPlone.interfaces.IResourceRegistry' remove="True" />
-  
-  <records prefix="plone.bundles/collectionfilter-bundle" interface='Products.CMFPlone.interfaces.IBundleRegistry'>
+  <records interface="Products.CMFPlone.interfaces.IResourceRegistry"
+           prefix="plone.resources/collectionfilter-bundle"
+           remove="True"
+  />
+
+  <records interface="Products.CMFPlone.interfaces.IBundleRegistry"
+           prefix="plone.bundles/collectionfilter-bundle"
+  >
     <value key="enabled">True</value>
     <value key="jscompilation">++plone++collectionfilter/collectionfilter-remote.min.js</value>
     <value key="csscompilation">++plone++collectionfilter/collectionfilter.min.css</value>
-    <value key="expression"></value>
-    <value key="depends"></value>
+    <value key="expression" />
+    <value key="depends" />
     <value key="load_async">False</value>
     <value key="load_defer">False</value>
   </records>
-  
+
 </registry>

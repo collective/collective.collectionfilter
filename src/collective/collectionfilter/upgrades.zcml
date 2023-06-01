@@ -4,20 +4,21 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:i18n="http://namespaces.zope.org/i18n"
     xmlns:zcml="http://namespaces.zope.org/zcml"
-    i18n_domain="collective.collectionfilter">
+    i18n_domain="collective.collectionfilter"
+    >
 
   <genericsetup:upgradeStep
-      source="1"
-      destination="2"
       title="Portlet upgrade for new filter_type attribute"
       description=""
       profile="collective.collectionfilter:default"
+      source="1"
+      destination="2"
       handler=".upgrades.upgrade_portlet_input_type"
       />
   <genericsetup:upgradeSteps
+      profile="collective.collectionfilter:default"
       source="2"
       destination="3"
-      profile="collective.collectionfilter:default"
       >
     <genericsetup:upgradeDepends
         title="Register bundle differently to avoid Select2 initialization error"
@@ -29,40 +30,40 @@
   </genericsetup:upgradeSteps>
 
   <genericsetup:upgradeStep
-      source="*"
-      destination="7"
       title="Reapply profile to fix bundle registration"
       description=""
       profile="collective.collectionfilter:default"
+      source="*"
+      destination="7"
       handler=".upgrades.reapply_profile"
       />
 
   <genericsetup:upgradeDepends
       title="New Target Collection registry value, Update Resources"
       description=""
+      profile="collective.collectionfilter:default"
       source="7"
       destination="8"
-      profile="collective.collectionfilter:default"
       import_profile="collective.collectionfilter:default"
       import_steps="plone.app.registry"
       run_deps="false"
       />
 
   <genericsetup:upgradeStep
-      source="*"
-      destination="8"
       title="Reapply profile to fix bundle registration"
       description=""
       profile="collective.collectionfilter:default"
+      source="*"
+      destination="8"
       handler=".upgrades.reapply_profile"
       />
 
   <genericsetup:upgradeDepends
       title="Update Resources"
       description=""
+      profile="collective.collectionfilter:default"
       source="8"
       destination="9"
-      profile="collective.collectionfilter:default"
       import_profile="collective.collectionfilter:default"
       import_steps="plone.app.registry"
       run_deps="false"
@@ -71,9 +72,9 @@
   <genericsetup:upgradeDepends
       title="Update Resources"
       description=""
+      profile="collective.collectionfilter:default"
       source="9"
       destination="10"
-      profile="collective.collectionfilter:default"
       import_profile="collective.collectionfilter:default"
       import_steps="plone.app.registry"
       run_deps="false"
@@ -82,20 +83,20 @@
   <genericsetup:upgradeDepends
       title="Update Resources"
       description=""
+      profile="collective.collectionfilter:default"
       source="10"
       destination="11"
-      profile="collective.collectionfilter:default"
       import_profile="collective.collectionfilter:default"
       import_steps="plone.app.registry"
       run_deps="false"
       />
 
   <genericsetup:upgradeStep
-      source="11"
-      destination="12"
       title="Remove deprecated registry records"
       description="remove deprecated plone5 bundle registry records"
       profile="collective.collectionfilter:default"
+      source="11"
+      destination="12"
       handler=".upgrades.upgrade_to_plone6"
       />
 

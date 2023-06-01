@@ -1,0 +1,15 @@
+# Generated from:
+# https://github.com/plone/meta/tree/master/config/default
+# See the inline comments on how to expand/tweak this configuration file
+[meta]
+template = "default"
+commit-id = "b1e450bb"
+
+[pyproject]
+codespell_skip = "*.min.js,*.min.js.map,yarn.lock,*.po"
+
+[gitignore]
+extra_lines = """
+forest.*
+dependencies.svg
+"""

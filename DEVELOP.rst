@@ -4,7 +4,7 @@ collective.collectionfilter
 Less Compilation
 ----------------
 
-To udpate/generate css from less, use the following snippet
+To update/generate css from less, use the following snippet
 
 
   ::

@@ -1,20 +1,24 @@
-<?xml version="1.0"?>
-<object
-    i18n:domain="plone"
-    meta_type="Dexterity FTI"
-    name="Collection"
-    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+<?xml version="1.0" encoding="utf-8"?>
+<object xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+        meta_type="Dexterity FTI"
+        name="Collection"
+        i18n:domain="plone"
+>
 
   <!-- Enabled Layout beheviour TODO: should be done as part of plugin -->
-  <property name="behaviors" purge="false">
-    <element value="plone.layoutaware"/>
+  <property name="behaviors"
+            purge="false"
+  >
+    <element value="plone.layoutaware" />
   </property>
 
-  <property name="view_methods" purge="false">
-    <element value="layout_view"/>
+  <property name="view_methods"
+            purge="false"
+  >
+    <element value="layout_view" />
   </property>
 
-<!-- 
+  <!-- 
 #  =  -->
 
 </object>

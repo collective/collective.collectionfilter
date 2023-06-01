@@ -314,7 +314,7 @@ New:
 Bug fixes:
 
 - When reloading the collection in JavaScript, use the content selector's parent as base to trigger events on.
-  The content selector itself is replaced and events cannot be catched.
+  The content selector itself is replaced and events cannot be caught.
 
 - Register the bundle compile files as ``collectionfilter-bundle-compiled.js`` and ``collectionfilter-bundle-compiled.css``, so that using ``plone-compile-resources`` results in the same files.
   See: https://github.com/plone/Products.CMFPlone/issues/2437

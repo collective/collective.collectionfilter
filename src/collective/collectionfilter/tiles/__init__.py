@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from collective.collectionfilter import _
 from collective.collectionfilter.filteritems import CollectionishCollection
 from collective.collectionfilter.interfaces import ICollectionish
@@ -21,7 +20,7 @@ COLLECTIONISH_TARGETS = [
 ]
 
 
-class DictDataWrapper(object):
+class DictDataWrapper:
     def __init__(self, data):
         self.data = data
 
@@ -73,7 +72,7 @@ def findall_tiles(context, spec):
     possible_urls = re.findall(r"(@@[\w\.]+/\w+)", layout)
     urls = []
     for name in spec:
-        urls += [url for url in possible_urls if url.startswith("@@{}".format(name))]
+        urls += [url for url in possible_urls if url.startswith(f"@@{name}")]
     # TODO: maybe better to get tile data? using ITileDataManager(id)?
     our_tile = request.response.headers.get("x-tile-url")
     tiles = [context.unrestrictedTraverse(str(url)) for url in urls]
@@ -144,7 +143,7 @@ class CollectionishLayout(CollectionishCollection):
         if self.collection is None:
             return
         if self.tile is None:
-            return super(CollectionishLayout, self).content_selector
+            return super().content_selector
         classes = ["contentlisting-tile"]
         if getattr(self.tile, "tile_class", ""):
             classes += self.tile.tile_class.split()
@@ -153,9 +152,7 @@ class CollectionishLayout(CollectionishCollection):
     def results(self, custom_query, request_params):
         """Search results"""
         if self.tile is None:
-            return super(CollectionishLayout, self).results(
-                custom_query, request_params
-            )
+            return super().results(custom_query, request_params)
 
         builder = getMultiAdapter(
             (self.context, self.context.REQUEST), name="querybuilderresults"
@@ -180,7 +177,7 @@ class CollectionishLayout(CollectionishCollection):
 
 
 def validateFilterTileModify(tile, event):
-    # TODO: is ok in the acquisiton path?
+    # TODO: is ok in the acquisition path?
     target = tile.collection
     if target is not None:
         target = queryAdapter(target.getObject(), ICollectionish)

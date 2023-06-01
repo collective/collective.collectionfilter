@@ -1,20 +1,16 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <portlets>
-  <portlet
-      remove="True"
-      addview="collective.collectionfilter.portlets.CollectionFilter"
-      />
-  <portlet
-      remove="True"
-      addview="collective.collectionfilter.portlets.CollectionSearch"
-      />
-  <portlet
-      remove="True"
-      addview="collective.collectionfilter.portlets.CollectionSortOn"
-      />
-  <portlet
-      remove="True"
-      addview="collective.collectionfilter.portlets.CollectionMaps"
-      />
+  <portlet addview="collective.collectionfilter.portlets.CollectionFilter"
+           remove="True"
+  />
+  <portlet addview="collective.collectionfilter.portlets.CollectionSearch"
+           remove="True"
+  />
+  <portlet addview="collective.collectionfilter.portlets.CollectionSortOn"
+           remove="True"
+  />
+  <portlet addview="collective.collectionfilter.portlets.CollectionMaps"
+           remove="True"
+  />
 
 </portlets>
