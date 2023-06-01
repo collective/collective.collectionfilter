@@ -49,3 +49,4 @@ var/
 ##
 forest.*
 dependencies.svg
+node_modules/
