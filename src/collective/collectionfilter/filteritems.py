@@ -25,7 +25,6 @@ from zope.i18n import translate
 from zope.interface import implementer
 
 import plone.api
-import six
 
 
 try:
@@ -155,9 +154,6 @@ def get_filter_items(
 
     # Recursively transform all to unicode
     request_params = safe_decode(request_params)
-    # Things break if sort_order is not a str
-    if six.PY2 and "sort_order" in request_params:
-        request_params["sort_order"] = str(request_params["sort_order"])
 
     # Get index in question and the current filter value of this index, if set.
     groupby_criteria = getUtility(IGroupByCriteria).groupby

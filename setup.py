@@ -50,7 +50,6 @@ setup(
         "setuptools",
         "plone.api >= 2.0.0",
         "Products.CMFPlone >= 6.0",
-        "plone.app.contenttypes",
     ],
     extras_require={
         "mosaic": [
@@ -59,11 +58,9 @@ setup(
         ],
         "geolocation": [
             # support for latitude/longitude catalog index
-            "collective.geolocationbehavior >= 1.6.0",
+            "collective.geolocationbehavior >= 1.7.2",
             # refactored map configuration
-            "plone.formwidget.geolocation >= 2.2.0",
-            # leaflet JS events for map filter
-            "plone.patternslib >= 1.1.0",
+            "plone.formwidget.geolocation >= 3.0.0",
         ],
         "test": [
             "plone.app.mosaic",
@@ -71,6 +68,8 @@ setup(
             "plone.app.testing[robot]",
             "plone.app.robotframework",
             "plone.app.contenttypes",
+            "plone.app.portlets",
+            "plone.tiles",
             "robotframework-selenium2library",
             "robotframework-selenium2screenshots",
             "Products.CMFPlacefulWorkflow",

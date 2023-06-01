@@ -47,3 +47,5 @@ var/
 #  _your own configuration lines_
 #  """
 ##
+forest.*
+dependencies.svg
