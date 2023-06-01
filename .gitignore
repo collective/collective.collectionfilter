@@ -15,6 +15,7 @@ docs/_build
 __pycache__/
 .tox
 .vscode/
+node_modules/
 
 # venv / buildout related
 bin/
@@ -39,14 +40,13 @@ var/
 /venv/
 .installed.txt
 
+forest.*
+dependencies.svg
 
 ##
 # Add extra configuration options in .meta.toml:
-#  [pre_commit]
+#  [gitignore]
 #  extra_lines = """
 #  _your own configuration lines_
 #  """
 ##
-forest.*
-dependencies.svg
-node_modules/
