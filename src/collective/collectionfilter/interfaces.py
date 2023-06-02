@@ -276,4 +276,15 @@ if HAS_GEOLOCATION:
             value_type=schema.Choice(
                 vocabulary="plone.formwidget.geolocation.vocabularies.map_layers"
             ),
-        )  # noqa: E501
+        )
+
+        geojson_properties_limit = schema.Int(
+            title=_("geojson_properties_limit", default="Limit for GeoJSON properties"),
+            description=_(
+                "help_geojson_properties_limit",
+                default="If the search result is larger than this limit, no additional "
+                "GeoJSON properties (like popup information) are shown.",
+            ),
+            required=False,
+            default=500,
+        )

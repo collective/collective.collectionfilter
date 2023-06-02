@@ -1,10 +1,6 @@
-from plone.api import env
 from plone.app.portlets.portlets.base import Renderer
-from Products.CMFPlone.utils import get_top_request
-from Products.CMFPlone.utils import safe_unicode
-
-
-PLONE_VERSION = env.plone_version()
+from plone.base.utils import get_top_request
+from plone.base.utils import safe_text
 
 
 class BasePortletRenderer(Renderer):
@@ -20,7 +16,7 @@ class BasePortletRenderer(Renderer):
     def reload_url(self):
         reload_url = "{}/@@render-portlet?portlethash={}".format(
             self.context.absolute_url(),
-            safe_unicode(self.filter_id),
+            safe_text(self.filter_id),
         )
         return reload_url
 

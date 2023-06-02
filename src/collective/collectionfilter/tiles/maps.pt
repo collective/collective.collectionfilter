@@ -12,33 +12,16 @@
            data-pat-collectionfilter="${view/pat_options}"
            tal:condition="view/available"
     >
-
-      <a class="pat-plone-modal edit-link"
-         href="${edit_url}"
-         title="edit filter"
-         tal:define="
-           edit_url view/edit_url;
-         "
-         tal:condition="edit_url"
-         i18n:attributes="title title-edit-filter"
-      ><span class="fa fa-pencil"></span><label i18n:translate="label-edit-filter">edit</label></a>
-
       <tal:if condition="view/collection|nothing">
-        <tal:def define="
-                   geojson view/data_geojson;
-                 ">
-          <header tal:condition="view/title"
-                  tal:content="view/title"
-          >Title</header>
-          <div class="pat-leaflet"
-               data-narrow-down-result="${view/settings/narrow_down}"
-               data-pat-leaflet="${view/map_configuration}"
-               data-url="${view/ajax_url}"
-               tal:attributes="
-                 data-geojson python:geojson or None;
-               "
-          ></div>
-        </tal:def>
+        <header tal:condition="view/title"
+                tal:content="view/title"
+        >Title</header>
+        <div class="pat-leaflet"
+             data-geojson="${view/geojson_ajax_url}"
+             data-narrow-down-result="${view/settings/narrow_down}"
+             data-pat-leaflet="${view/map_configuration}"
+             data-url="${view/ajax_url}"
+        ></div>
       </tal:if>
     </aside>
 
