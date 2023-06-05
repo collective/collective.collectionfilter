@@ -17,7 +17,6 @@
                 tal:content="view/title"
         >Title</header>
         <div class="pat-leaflet"
-             data-geojson="${view/geojson_ajax_url}"
              data-narrow-down-result="${view/settings/narrow_down}"
              data-pat-leaflet="${view/map_configuration}"
              data-url="${view/ajax_url}"

@@ -54,7 +54,7 @@
           </tal:if>
 
           <tal:if condition="python:view.input_type == 'dropdown'">
-            <select name="${view/filter_id}">
+            <select name="${view/filter_id}" class="form-select">
               <tal:items repeat="item results">
                 <option class="${item/css_class}"
                         selected="${python:'selected' if item['selected'] else None}"
