@@ -4,6 +4,10 @@ Changelog
 5.0a3 (unreleased)
 ------------------
 
+- implement `geojson_ajaxurl` property for `pat-leaflet` to load geojson
+  information asynchronously.
+  [petschki]
+
 - Fix translations for swiss german
   [agitator]
 
