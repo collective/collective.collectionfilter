@@ -12,17 +12,6 @@
            data-pat-collectionfilter="${view/pat_options}"
            tal:condition="view/available"
     >
-
-      <a class="pat-plone-modal edit-link"
-         href="${edit_url}"
-         title="edit filter"
-         tal:define="
-           edit_url view/edit_url;
-         "
-         tal:condition="edit_url"
-         i18n:attributes="title title-edit-filter"
-      ><span class="fa fa-pencil"></span><label i18n:translate="label-edit-filter">edit</label></a>
-
       <header tal:condition="view/title"
               tal:content="view/title"
       >Title</header>
@@ -35,7 +24,8 @@
 
         <tal:if condition="python:input_type == 'checkboxes_dropdowns'">
           <select name="sort_on">
-            <option value=""
+            <option class="form-select"
+                    value=""
                     data-url="${view/ajax_url}"
                     i18n:translate=""
             >Select</option>

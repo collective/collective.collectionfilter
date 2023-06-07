@@ -25,7 +25,9 @@
     >
 
       <tal:if condition="python:input_type == 'checkboxes_dropdowns'">
-        <select name="sort_on">
+        <select class="form-select"
+                name="sort_on"
+        >
           <option value=""
                   data-url="${view/ajax_url}"
                   i18n:translate=""

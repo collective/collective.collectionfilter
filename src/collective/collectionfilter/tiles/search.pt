@@ -12,17 +12,6 @@
            data-pat-collectionfilter="${view/pat_options}"
            tal:condition="view/available"
     >
-
-      <a class="pat-plone-modal edit-link"
-         href="${edit_url}"
-         title="edit filter"
-         tal:define="
-           edit_url view/edit_url;
-         "
-         tal:condition="edit_url"
-         i18n:attributes="title title-edit-filter"
-      ><span class="fa fa-pencil"></span><label i18n:translate="label-edit-filter">edit</label></a>
-
       <tal:if condition="view/collection|nothing">
         <header tal:condition="view/title"
                 tal:content="view/title"
@@ -39,7 +28,8 @@
                      value="${python:item[1]}"
               />
             </tal:urlquery>
-            <input name="SearchableText"
+            <input class="form-control"
+                   name="SearchableText"
                    placeholder="Search"
                    type="text"
                    value="${view/value}"

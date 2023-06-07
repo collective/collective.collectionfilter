@@ -92,7 +92,7 @@
 
   <genericsetup:registerProfile
       name="default"
-      title="collective.collectionfilter tiles"
+      title="collective.collectionfilter tiles with geolocation support"
       description="Extension profile for Plone."
       provides="Products.GenericSetup.interfaces.EXTENSION"
       directory="profiles/default-geolocation"
