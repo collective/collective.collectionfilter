@@ -1,8 +1,8 @@
 Changelog
 =========
 
-5.0a3 (unreleased)
-------------------
+5.0 (2023-06-07)
+----------------
 
 - implement `geojson_ajaxurl` property for `pat-leaflet` to load geojson
   information asynchronously.
