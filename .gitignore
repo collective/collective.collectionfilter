@@ -6,6 +6,8 @@
 *.pyc
 *.pyo
 
+**/*.mo
+
 # tools related
 build/
 .coverage
