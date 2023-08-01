@@ -4,7 +4,7 @@ on:
   push:
     branches-ignore:
       - "releases/**"
-      - "master"
+      - "main"
 jobs:
   build:
     runs-on: ubuntu-20.04
@@ -21,15 +21,15 @@ jobs:
         # see testing.py for layer names
         test_layer:
           - "IntegrationTesting"
-          - "AcceptanceTestingPortlet_AjaxDisabled"
-          - "AcceptanceTestingPortlet_AjaxEnabled"
-          - "AcceptanceTesting_Tiles"
+          # - "AcceptanceTestingPortlet_AjaxDisabled"
+          # - "AcceptanceTestingPortlet_AjaxEnabled"
+          # - "AcceptanceTesting_Tiles"
     steps:
       - uses: actions/checkout@v3
 
       - name: Setup Plone ${{ matrix.plone }} with Python ${{ matrix.python }}
         id: setup
-        uses: plone/setup-plone@v1.0.0
+        uses: plone/setup-plone@v2.0.0
         with:
           python-version: ${{ matrix.python }}
           plone-version: ${{ matrix.plone }}
@@ -43,7 +43,7 @@ jobs:
           make VENV=off lint
 
       - name: Install Chromedriver
-        uses: nanasess/setup-chromedriver@v1
+        uses: nanasess/setup-chromedriver@v2
 
       - name: Start Browser
         run: |

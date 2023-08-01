@@ -9,7 +9,6 @@ from plone.app.testing import IntegrationTesting
 from plone.app.testing import PloneSandboxLayer
 from plone.app.textfield.value import RichTextValue
 from plone.testing.zope import WSGI_SERVER_FIXTURE
-from Products.PluginIndexes.BooleanIndex.BooleanIndex import BooleanIndex
 
 import json
 import os
@@ -51,13 +50,6 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
         applyProfile(portal, "collective.geolocationbehavior:default")
         applyProfile(portal, "collective.collectionfilter:default")
         applyProfile(portal, "collective.collectionfilter.tests:testing")
-
-        catalog = api.portal.get_tool(name="portal_catalog")
-        if "exclude_from_nav" not in catalog.indexes():
-            catalog.addIndex(
-                "exclude_from_nav",
-                BooleanIndex("exclude_from_nav"),
-            )
 
         with api.env.adopt_roles(["Manager"]):
             portal.invokeFactory(

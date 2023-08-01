@@ -3,13 +3,34 @@
 # See the inline comments on how to expand/tweak this configuration file
 [meta]
 template = "default"
-commit-id = "b1e450bb"
+commit-id = "6dec79f2"
 
 [pyproject]
 codespell_skip = "*.min.js,*.min.js.map,yarn.lock,*.po"
+dependencies_ignores = """
+[
+    'collective.geolocationbehavior', 'plone.formwidget.geolocation',
+    'plone.app.blocks', 'plone.tiles', 'plone.app.tiles', 'plone.app.portlets',
+]
+"""
 
 [gitignore]
 extra_lines = """
 forest.*
+test_*
+robot_*
 dependencies.svg
 """
+
+[tox]
+test_extras = """
+    geolocation
+    mosaic
+"""
+
+[github]
+jobs = [
+    "qa",
+    "dependencies",
+    "release_ready",
+    ]

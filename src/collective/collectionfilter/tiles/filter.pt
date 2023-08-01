@@ -78,8 +78,7 @@
                 <li class="${item/css_class}">
                   <a href="${item/url}"
                      rel="nofollow"
-                     title="Count: ${item/count}"
-                     i18n:attributes="title"
+                     title="${item/count}"
                   >
                     <span tal:content="item/title">Item</span>
                     <tal:show_count condition="view/settings/show_count">(<span tal:replace="item/count"></span>)</tal:show_count>

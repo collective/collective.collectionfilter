@@ -3,7 +3,6 @@
 
 Resource  plone/app/robotframework/saucelabs.robot
 Resource  plone/app/robotframework/selenium.robot
-Resource  Selenium2Screenshots/keywords.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 Library  OperatingSystem
@@ -350,11 +349,6 @@ My collection has a collection info portlet
     Go to  ${PLONE_URL}/testcollection
     Manage portlets
     Add info portlet  ${header}   @{templates}  hide_when=${hide_when}
-
-Open collection settings
-
-movable removable mosaic-tile
-
 
 Set Batch Size
     [Arguments]   ${batch_size}

@@ -85,8 +85,7 @@
             <li class="${item/css_class}">
               <a href="${item/url}"
                  rel="nofollow"
-                 title="Count: ${item/count}"
-                 i18n:attributes="title"
+                 title="${item/count}"
               >
                 <span>
                   <span tal:replace="item/title">Item</span>

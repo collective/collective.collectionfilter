@@ -6,7 +6,8 @@
 *.pyc
 *.pyo
 
-**/*.mo
+# translation related
+*.mo
 
 # tools related
 build/
@@ -26,6 +27,7 @@ eggs/
 .eggs/
 etc/
 .installed.cfg
+include/
 lib/
 lib64
 .mr.developer.cfg
@@ -43,6 +45,8 @@ var/
 .installed.txt
 
 forest.*
+test_*
+robot_*
 dependencies.svg
 
 ##
