@@ -4,7 +4,7 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       lang="en"
       xml:lang="en"
-      i18n:domain="plone"
+      i18n:domain="collective.collectionfilter"
 >
   <body>
 

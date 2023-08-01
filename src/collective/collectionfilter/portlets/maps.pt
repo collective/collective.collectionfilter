@@ -7,7 +7,7 @@
   <aside class="card portlet ${view/filterClassName} collectionMaps pat-collectionfilter"
          data-pat-collectionfilter="${view/pat_options}"
          tal:condition="view/available"
-         i18n:domain="plone"
+         i18n:domain="collective.collectionfilter"
   >
 
     <header class="card-header portletHeader"
