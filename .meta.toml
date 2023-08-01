@@ -27,3 +27,10 @@ test_extras = """
     geolocation
     mosaic
 """
+
+[github]
+jobs = [
+    "qa",
+    "dependencies",
+    "release_ready",
+    ]
