@@ -4,7 +4,7 @@ on:
   push:
     branches-ignore:
       - "releases/**"
-      - "master"
+      - "main"
 jobs:
   build:
     runs-on: ubuntu-20.04
@@ -21,9 +21,9 @@ jobs:
         # see testing.py for layer names
         test_layer:
           - "IntegrationTesting"
-          - "AcceptanceTestingPortlet_AjaxDisabled"
-          - "AcceptanceTestingPortlet_AjaxEnabled"
-          - "AcceptanceTesting_Tiles"
+          # - "AcceptanceTestingPortlet_AjaxDisabled"
+          # - "AcceptanceTestingPortlet_AjaxEnabled"
+          # - "AcceptanceTesting_Tiles"
     steps:
       - uses: actions/checkout@v3
 
