@@ -37,11 +37,35 @@ directory = "tests"
 name = "Tests"
 showcontent = true
 
+##
+# Add extra configuration options in .meta.toml:
+#  [pyproject]
+#  towncrier_extra_lines = """
+#  extra_configuration
+#  """
+##
+
 [tool.isort]
 profile = "plone"
 
+##
+# Add extra configuration options in .meta.toml:
+#  [pyproject]
+#  isort_extra_lines = """
+#  extra_configuration
+#  """
+##
+
 [tool.black]
 target-version = ["py38"]
+
+##
+# Add extra configuration options in .meta.toml:
+#  [pyproject]
+#  black_extra_lines = """
+#  extra_configuration
+#  """
+##
 
 [tool.codespell]
 ignore-words-list = "discreet,"
@@ -92,6 +116,11 @@ Zope = [
   'Products.CMFCore', 'Products.CMFDynamicViewFTI',
 ]
 python-dateutil = ['dateutil']
+ignore-packages = [
+    'collective.geolocationbehavior', 'plone.formwidget.geolocation',
+    'plone.app.blocks', 'plone.tiles', 'plone.app.tiles', 'plone.app.portlets',
+]
+
 
 ##
 # Add extra configuration options in .meta.toml:
@@ -101,7 +130,6 @@ python-dateutil = ['dateutil']
 #    "gitpython = ['git']",
 #    "pygithub = ['github']",
 #  ]
-#  """
 ##
 
 [tool.check-manifest]

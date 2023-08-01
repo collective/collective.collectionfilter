@@ -49,12 +49,27 @@ setup(
     install_requires=[
         "setuptools",
         "plone.api >= 2.0.0",
+        "plone.app.contenttypes",
+        "plone.app.event",
+        "plone.app.querystring",
+        "plone.app.uuid",
+        "plone.app.vocabularies",
+        "plone.app.z3cform",
+        "plone.autoform",
+        "plone.base",
+        "plone.dexterity",
+        "plone.i18n",
+        "plone.memoize",
+        "plone.portlets",
+        "plone.supermodel",
+        "plone.uuid",
+        "z3c.form",
+        "Products.CMFCore",
         "Products.CMFPlone >= 6.0",
     ],
     extras_require={
         "mosaic": [
             "plone.app.mosaic >= 3.0.0",
-            "plone.app.standardtiles >= 3.0.0",
         ],
         "geolocation": [
             # support for latitude/longitude catalog index
@@ -64,15 +79,16 @@ setup(
         ],
         "test": [
             "plone.app.mosaic",
+            "plone.browserlayer",
+            "plone.testing",
+            "robotsuite",
             "collective.geolocationbehavior",
             "plone.app.testing[robot]",
             "plone.app.robotframework",
             "plone.app.contenttypes",
             "plone.app.portlets",
+            "plone.app.textfield",
             "plone.tiles",
-            "robotframework-selenium2library",
-            "robotframework-selenium2screenshots",
-            "Products.CMFPlacefulWorkflow",
         ],
     },
     entry_points="""
