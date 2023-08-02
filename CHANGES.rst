@@ -1,3 +1,20 @@
+5.1 (2023-08-02)
+----------------
+
+Bug fixes:
+
+
+- Fix filter tiles when more than one contentlisting is on the same page.
+  [petschki] (#150)
+
+
+Internal:
+
+
+- Update configuration files.
+  [plone devs] (8af8caab)
+
+
 Changelog
 =========
 
