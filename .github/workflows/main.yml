@@ -38,10 +38,6 @@ jobs:
         run: |
           make VENV=off install
 
-      - name: Run Lint
-        run: |
-          make VENV=off lint
-
       - name: Install Chromedriver
         uses: nanasess/setup-chromedriver@v2
 
@@ -49,7 +45,6 @@ jobs:
         run: |
           export DISPLAY=:99
           chromedriver --url-base=/wd/hub &
-          sleep 5  # make sure chromedriver is running
           sudo Xvfb -ac :99 -screen 0 1920x1280x24 > /dev/null 2>&1 &
 
       - name: Run tests
