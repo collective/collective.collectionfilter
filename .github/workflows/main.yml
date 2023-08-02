@@ -21,9 +21,9 @@ jobs:
         # see testing.py for layer names
         test_layer:
           - "IntegrationTesting"
-          # - "AcceptanceTestingPortlet_AjaxDisabled"
-          # - "AcceptanceTestingPortlet_AjaxEnabled"
-          # - "AcceptanceTesting_Tiles"
+          - "AcceptanceTestingPortlet_AjaxDisabled"
+          - "AcceptanceTestingPortlet_AjaxEnabled"
+          - "AcceptanceTesting_Tiles"
     steps:
       - uses: actions/checkout@v3
 
@@ -40,8 +40,12 @@ jobs:
 
       - name: Install Chromedriver
         uses: nanasess/setup-chromedriver@v2
-
+        with:
+          # see https://github.com/nanasess/setup-chromedriver/issues/199
+          chromedriver-version: '115.0.5790.102'
+        if: matrix.test_layer != 'IntegrationTesting'
       - name: Start Browser
+        if: matrix.test_layer != 'IntegrationTesting'
         run: |
           export DISPLAY=:99
           chromedriver --url-base=/wd/hub &

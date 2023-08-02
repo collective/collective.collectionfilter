@@ -3,10 +3,11 @@
 
 Resource  plone/app/robotframework/saucelabs.robot
 Resource  plone/app/robotframework/selenium.robot
+Resource  plone/app/mosaic/tests/robot/keywords.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 Library  OperatingSystem
-
+Library  Collections  # needed for "Append To List"
 
 *** Variables ***
 
@@ -45,7 +46,7 @@ a logged-in manager
 I enter valid credentials
   Input Text  __ac_name  admin
   Input Text  __ac_password  secret
-  Click Button  Log in
+  Wait For Then Click Element  Log in
 
 
 # --- THEN -------------------------------------------------------------------
@@ -84,44 +85,25 @@ Select InAndOut
 
 Select single select2
     [Arguments]  ${locator}  ${value}
-    ${select2}=  get webelement  ${locator}
-    execute javascript  $(arguments[0]).select2("open")  ARGUMENTS  ${select2}
-    wait until element is visible  css=.select2-result-label
-    Click Element  xpath=//div[contains(@class,'select2-result-label') and text() = '${value}']
-
-    #Click link  link=Select criteria
-    #pause
-    #select from list by label  xpath=(//div[@class='querystring-criteria-index'])[5]//select  Type
-    #Click Element  xpath=(//div[@class='querystring-criteria-index'])[5]//*[@class='select2-arrow']//a
-    # $($x("(//div[@class='querystring-criteria-index'])[5]/div")).select2("val", "portal_type").trigger("change")
+    Wait for then click element  ${locator}
+    Wait for then click Element  xpath=//div[contains(@class,'select2-result-label') and text() = '${value}']
 
 
 Select multi select2
     [Arguments]  ${locator}  @{values}
-    # select2-choices select2-search-field select2-input
-    #select from list by label  xpath=(//select[@class='querystring-criteria-value-MultipleSelectionWidget'])[1]  Event
-    #select from list by label  xpath=(//select[@class='querystring-criteria-value-MultipleSelectionWidget'])[1]  Page
-    ${select2}=  get webelement  ${locator}
-    execute javascript  $(arguments[0]).select2("val",arguments[1],true)  ARGUMENTS  ${select2}  ${values}
     FOR  ${value}  IN  @{values}
-    # Hack to only find those in the tile popup up not the mosaic popup
-    #\    wait until element is visible  //*[contains(@class,'plone-modal ')]//li[@class='select2-search-choice']//*[contains(text(), '${value}')]
-        Wait until keyword succeeds  5s  1s  call method  ${select2}  find_elements  by=xpath  value=.//li[@class='select2-search-choice']//*[contains(text(), '${value}')]
+        # open select2 dropdown
+        Wait for then click element  ${locator}
+        # click element
+        Wait for then click element  xpath=//div[contains(@class,'select2-result-label') and text() = '${value}']
     END
-
-    # Click Element  xpath=(//div[@class='querystring-criteria-value'])[3]//input
-    # wait until element is visible  css=.select2-result-label
-    # Click Element  xpath=//div[contains(@class,'select2-result-label') and text() = 'Event']
-    # Click Element  xpath=(//div[@class='querystring-criteria-value'])[3]//input
-    # wait until element is visible  css=.select2-result-label
-    # Click Element  xpath=//div[contains(@class,'select2-result-label') and text() = 'Page']
 
 select multi select2 with label
     [Arguments]  ${label}  @{values}
     # select2 don't have proper labels because the @for doesn't match an id of anything
     ${xpath}=   set variable  //label[normalize-space(text()) ='${label}']/following-sibling::div[contains(@class,'select2-container')]
     Wait until page contains element  xpath=${xpath}
-    run keyword   select multi select2  xpath=${xpath}  @{values}
+    Select multi select2  xpath=${xpath}  @{values}
 
 
 Click Button with text
@@ -156,7 +138,7 @@ Set Options
 Add search portlet
     Wait until page contains element  css=select.add-portlet
     Select From List by label  css=select.add-portlet  Collection Search
-    Wait until element is visible  css=input#form-widgets-header
+    Wait for element  css=input#form-widgets-header
 
     Input text  css=input#form-widgets-header  Searchable Text
     #Select related filter collection
@@ -169,7 +151,7 @@ Add filter portlet
 
     Wait until page contains element  css=select.add-portlet
     Select From List by label  css=select.add-portlet  Collection Filter
-    Wait until element is visible  css=input#form-widgets-header
+    Wait for element  css=input#form-widgets-header
 
     Input text  css=input#form-widgets-header  ${group_criteria}
     #Select related filter collection
@@ -198,7 +180,7 @@ Add sorting portlet
 
     Wait until page contains element  css=select.add-portlet
     Select From List by label  css=select.add-portlet  Collection Filter Result Sorting
-    Wait until element is visible  css=input#form-widgets-header
+    Wait for element  css=input#form-widgets-header
 
     Input text  css=input#form-widgets-header  Sort on
 
@@ -220,7 +202,7 @@ Add Info portlet
 
     Wait until page contains element  css=select.add-portlet
     Select From List by label  css=select.add-portlet  Collection Filter Search Info
-    Wait until element is visible  css=input#form-widgets-header
+    Wait for element  css=input#form-widgets-header
 
     Input text  css=input#form-widgets-header  ${header}
     Set Info Settings  form-widgets  @{templates}  hide_when=${hide_when}
@@ -230,15 +212,18 @@ Add Info portlet
 
 
 Should be ${X} filter options
-    Wait until keyword succeeds  2s  1s  Page Should Contain Element  xpath=//div[contains(@class, 'filterContent')]//*[contains(@class, 'filterItem')]  limit=${X}
+    Sleep  0.5
+    Page Should Contain Element  xpath=//div[contains(@class, 'filterContent')]//*[contains(@class, 'filterItem')]  limit=${X}
 
 Should be filter options
     [Arguments]  @{values}
-    Wait until keyword succeeds  2s  1s  List Labels Should Equal  xpath=//div[contains(@class, 'filterContent')]//select  @{values}
+    Sleep  0.5
+    List Labels Should Equal  xpath=//div[contains(@class, 'filterContent')]//select  @{values}
 
 Should be filter checkboxes
     [Arguments]  @{values}
-    Wait until keyword succeeds  2s  1s  Labels Should Equal  xpath=//div[contains(@class, 'filterContent')]//span[@class='filterLabel']  @{values}
+    Sleep  0.5
+    Labels Should Equal  xpath=//div[contains(@class, 'filterContent')]//span[@class='filterLabel']  @{values}
 
 List Labels Should Equal
    [Arguments]  ${selector}  @{expect}
@@ -261,7 +246,7 @@ Labels Should Equal
     Should Be Equal  ${expect}  ${result}
 
 Should be ${X} collection results
-    # Wait until element is visible  css=#content-core
+    # Wait for element  css=#content-core
     # below should work for both collections and contentlisting tiles
     ${xpath}=  Set Variable if  ${USE_TILES}  //span[@class='summary']  //div[@class='entries']/article
     Wait until keyword succeeds  2s  1s  Page Should Contain Element  ${xpath}  limit=${X}
@@ -310,7 +295,7 @@ My collection has a collection filter
     run keyword if  ${USE_TILES}==False  My collection has a collection filter portlet  ${group_by}  ${op}  ${style}  @{options}
 
 My collection has a collection sorting
-    [Arguments]  ${sort_on}=sortable_title
+    [Arguments]  ${sort_on}=Sortable Title
     run keyword if  ${USE_TILES}  My collection has a collection sorting tile  ${sort_on}
     run keyword if  ${USE_TILES}==False  My collection has a collection sorting portlet  ${sort_on}
 
@@ -337,7 +322,7 @@ My collection has a collection filter portlet
     Add filter portlet  ${group_by}  ${op}  ${style}  @{options}
 
 My collection has a collection sorting portlet
-    [Arguments]  ${sort_on}=sortable_title
+    [Arguments]  ${sort_on}=Sortable Title
 
     Go to  ${PLONE_URL}/testcollection
     Manage portlets
@@ -355,17 +340,17 @@ Set Batch Size
     run keyword if  ${USE_TILES}==False  Go to  ${PLONE_URL}/testcollection/edit
     run keyword if  ${USE_TILES}  Edit Listing Tile
     Run keyword by label  Item count  Input Text  ${batch_size}
-    Run keyword if  ${USE_TILES}  Click Element  css=.pattern-modal-buttons #buttons-save
-    Click button  Save
+    Run keyword if  ${USE_TILES}  Wait For Then Click Element  css=.pattern-modal-buttons #buttons-save
+    Wait For Then Click Element  css=#form-buttons-save
 
 Edit Listing Tile
     Go to  ${PLONE_URL}/testdoc/edit
     #Wait until page contains element  css=.mosaic-btn-delete
     #Wait until page contains element   css=#mosaic-panel
-    Wait Until Element Is Visible  css=.mosaic-toolbar
+    Wait for element  css=.mosaic-toolbar
     #Unselect Frame
     #mouse over  css=.mosaic-plone.app.standardtiles.contentlisting-tile
-    click element  css=.contentlisting-tile
+    Wait For Then Click Element  css=.contentlisting-tile
     Edit Current Tile
 
 # --- Core Functionality ------------------------------------------------------
@@ -378,7 +363,7 @@ I should have a portlet titled "${filter_title}" with ${number_of_results} filte
     ${filter_item_xpath}  Convert to string  div[contains(@class, 'filterContent')]//li[contains(@class, 'filterItem')]
 
     Page Should Contain Element  xpath=//${portlet_title_xpath}
-    Wait until keyword succeeds  5s  1s  Page Should Contain Element  xpath=//${portlet_title_xpath}/parent::*[contains(@class, 'collectionFilter')]//${filter_item_xpath}  limit=${number_of_results}
+    Wait until keyword succeeds  2s  1s  Page Should Contain Element  xpath=//${portlet_title_xpath}/parent::*[contains(@class, 'collectionFilter')]//${filter_item_xpath}  limit=${number_of_results}
 
 I should have a filter with ${number_of_results} options
     Page Should Contain Element  xpath=//aside[contains(@class,'collectionFilter') and count(.//div[contains(@class, 'filterContent')]//li[contains(@class, 'filterItem')])=${number_of_results} ]  limit=1
@@ -394,7 +379,7 @@ I should not have a portlet titled "${filter_title}"
 
 
 I should not see any results
-    Wait until keyword succeeds  5s  1s  Element should be visible  xpath=//*[@id="content-core"]/*[text()="No results were found."]
+    Wait until keyword succeeds  2s  1s  Element should be visible  xpath=//*[@id="content-core"]/*[text()="No results were found."]
 
 I should have a portlet titled "${filter_title}" with text ${text}
     ${portlet_title_xpath}  Convert to string  header[@class='portletHeader' and contains(text(), '${filter_title}')]
@@ -404,7 +389,7 @@ I should have a portlet titled "${filter_title}" with text ${text}
     Wait Until Element Contains  xpath=//${portlet_title_xpath}/parent::*[contains(@class, 'collectionFilterInfo')]//${filter_item_xpath}  ${text}
 
 I sort by "${sort_on}"
-    Wait until element is visible   xpath=//span[contains(normalize-space(text()), '${sort_on}')]
+    Wait for element   xpath=//span[contains(normalize-space(text()), '${sort_on}')]
     ${glyph}=  Get Element Attribute  xpath=//span[contains(normalize-space(text()), '${sort_on}')]//span  class
     Click Link  link=${sort on}
     Wait until element is not visible   xpath=//span[contains(normalize-space(text()), '${sort_on}')]//span[@class='${glyph}']
@@ -425,38 +410,36 @@ Results Are Sorted
 
 # --- Tiles -------------------------------------------------------------------
 
+Open advanced mosaic editor
+    Go to  ${PLONE_URL}/testdoc/edit
+    Wait for element  css=#content.mosaic-panel
+    Execute javascript  $("#content.mosaic-panel").addClass("mosaic-advanced")
+    Wait for element  css=.mosaic-advanced
+    # d-index fix until fixed in mosaic
+    Update element style  css=.mosaic-IDublinCore-description-tile  zIndex  unset
 
 My collection has a collection filter tile
     [Arguments]  ${group_by}=Subject  ${op}=or  ${style}=checkboxes_dropdowns  @{options}
-
-    Go to  ${PLONE_URL}/testdoc/edit
+    Open advanced mosaic editor
     Add filter tile  ${group_by}  ${op}  ${style}  @{options}
-    Save mosaic page
 
 My collection has a collection search tile
-
-    Go to  ${PLONE_URL}/testdoc/edit
+    Open advanced mosaic editor
     Add search tile
-    Save mosaic page
 
 My collection has a collection info tile
     [Arguments]  ${header}  @{templates}  ${hide_when}=${None}
-
-    Go to  ${PLONE_URL}/testdoc/edit
+    Open advanced mosaic editor
     Add info tile  @{templates}  hide_when=${hide_when}
-    Save mosaic page
 
 My collection has a collection sorting tile
-    [Arguments]  ${sort_on}
-    Go to  ${PLONE_URL}/testdoc/edit
+    [Arguments]  ${sort_on}=Sortable Title
+    Open advanced mosaic editor
     Insert Tile "Collection Result Listing Sort"
     Set Sorting Options  ${sort_on}  links
     # Run Keyword by label  Content Selector  Input Text  .contentlisting-tile
     Click element  css=.pattern-modal-buttons #buttons-save
     Drag tile
-#    Click button   Edit
-    Save mosaic page
-
 
 Enable mosaic layout for page
     [Arguments]  ${page}=${PLONE_URL}/testdoc  ${batch}=20
@@ -468,7 +451,8 @@ Enable mosaic layout for page
     Go to  ${page}/edit
 
     # Create default layout if its a Page
-    Wait for then click element  xpath=//a[@data-value='default/basic.html']
+    Wait for element  xpath=//a[@data-value='default/basic.html']
+    Execute javascript  $("[data-value='default/basic.html']").trigger("click");
 
     # Enable layout editing
     Wait for then click element  css=.mosaic-button-layout
@@ -483,7 +467,7 @@ Enable mosaic layout for page
 Edit mosaic page
     [Arguments]  ${page}=${PLONE_URL}/testdoc
     Go to  ${page}/edit
-    Wait Until Element Is Visible  css=.mosaic-toolbar
+    Wait for element  css=.mosaic-toolbar
 
 Save mosaic page
     Wait for then Click Element  css=.mosaic-button-save
@@ -555,41 +539,37 @@ Add contentlisting tile
     #Select from list by value  css=select.querystring-criteria-depth  -1
 
     # Since we aren't using the collection we need to recreate the same settings clickin on select2
-    Wait until element is visible  link=Select criteria
+    Wait for element  link=Select criteria
     Select single select2  xpath=(//div[@id='formfield-plone-app-standardtiles-contentlisting-query']//div[@class='querystring-criteria-index'])[2]/div  Type
-    Select multi select2  xpath=(//div[@id='formfield-plone-app-standardtiles-contentlisting-query']//div[@class='querystring-criteria-value'])[2]/div  Event  Document
+    Select multi select2  xpath=(//div[@id='formfield-plone-app-standardtiles-contentlisting-query']//div[@class='querystring-criteria-value'])[2]/div  Event  Page
 
     Run Keyword by label  Item count   Input Text  ${batch}
 
     Capture Page Screenshot
-    Click element  css=.pattern-modal-buttons #buttons-save
+    Wait for then click element  css=.pattern-modal-buttons #buttons-save
 
 Edit Current Tile
-    Click Button  css=.mosaic-selected-tile .mosaic-btn-settings
+    Wait For Then Click Element  css=.mosaic-selected-tile .mosaic-btn-settings
 
 
 Drag tile
-    Wait until page contains element  css=.mosaic-helper-tile-new
-    Wait until element is visible  css=.mosaic-helper-tile-new
+    Wait for element  css=.mosaic-helper-tile-new
     Update element style  css=.mosaic-IDublinCore-description-tile .mosaic-divider-bottom  display  block
+    Wait for element  css=.mosaic-IDublinCore-description-tile .mosaic-divider-bottom
     Mouse over  css=.mosaic-IDublinCore-description-tile .mosaic-divider-bottom
-    Click element  css=.mosaic-selected-divider
+    Wait for then click element  css=.mosaic-IDublinCore-description-tile .mosaic-divider-bottom
 
 Filter by
     [Arguments]  ${filter}
-    Wait until element is visible  css=.filterContent
+    Wait for element  css=.filterContent
     Select from List by value  xpath=//div[@class = 'filterContent']//select  ${filter}
 
 # TODO: doesn't work yet
 Set relateditem
     [Arguments]  ${id}  ${path}
-    Wait until element is visible  xpath=//div[@id='${id}']
-    Click element  xpath=//div[@id='${id}']//ul[@class='select2-choices']
-    Wait until element is visible  xpath=//div[@id='select2-drop']//a[.//text() = '${path}']
-    Click element  xpath=//div[@id='select2-drop']//a[.//text() = '${path}']
+    Wait for then click element  xpath=//div[@id='${id}']//ul[@class='select2-choices']
+    Wait for then click element  xpath=//div[@id='select2-drop']//a[.//text() = '${path}']
 
 Insert Tile "${name}"
-    Wait Until Element Is Visible  css=.mosaic-toolbar
-    Click element  css=.select2-container.mosaic-menu-insert a
-    Wait until element is visible  xpath=//li[contains(@class, "select2-result-selectable") and div/text() = "${name}"]
-    Click element  xpath=//li[contains(@class, "select2-result-selectable") and div/text() = "${name}"]
+    Wait for then click element  css=.mosaic-toolbar .select2-container.mosaic-menu-insert a
+    Wait for then click element  xpath=//li[contains(@class, "select2-result-selectable") and div/text() = "${name}"]

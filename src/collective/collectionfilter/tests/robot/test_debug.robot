@@ -10,7 +10,8 @@ Test Teardown  Run keyword  Default Teardown
 *** Test Cases ***************************************************************
 
 Scenario: Add filter to collection
-    Given View a Test Collection
+    Given a logged in manager
+      and View a Test Collection
       and Manage portlets
       and Add filter portlet  exclude_from_nav  single  checkboxes_radiobuttons
       and Add filter portlet  Subject  or  checkboxes_radiobuttons
@@ -21,5 +22,4 @@ Scenario: Add filter to collection
 *** Keywords *****************************************************************
 
 View a Test Collection
-    Log in as site owner
     Go to  ${PLONE_URL}/mycollection

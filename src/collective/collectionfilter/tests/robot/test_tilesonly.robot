@@ -11,14 +11,12 @@ Test Teardown  Run keyword  Default Teardown
 
 Scenario: Add filter before content listing
     Given I've got a site without a listing
-     When my collection has a collection filter
-     then Page should contain  need to add a Content Listing
-     When my collection has a collection search
-     then Page should contain  need to add a Content Listing
-     When my collection has a collection sorting
-     then Page should contain  need to add a Content Listing
-     When edit mosaic page
-      and save mosaic page
+     When Open advanced mosaic editor
+      and Add filter tile  Subject  or  checkboxes_dropdowns
+      and Add search tile
+      and Save mosaic page
+     When My collection has a collection sorting tile
+      and Save mosaic page
      then Page should contain  need to add a Content Listing
      When edit mosaic page
       and Add contentlisting tile
