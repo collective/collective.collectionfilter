@@ -130,6 +130,11 @@ class CollectionishLayout(CollectionishCollection):
             # correct query
             self.collection = self.tile
             return self
+        if self.collection is not None:
+            # this context is a Collection ILayoutAware enabled but there were
+            # no COLLECTIONISH_TARGETS tiles found. Likely because "layout_view"
+            # is not enabled here.
+            return self
 
     @property
     def sort_reversed(self):
