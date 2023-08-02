@@ -23,7 +23,7 @@ jobs:
           - "IntegrationTesting"
           # - "AcceptanceTestingPortlet_AjaxDisabled"
           # - "AcceptanceTestingPortlet_AjaxEnabled"
-          # - "AcceptanceTesting_Tiles"
+          - "AcceptanceTesting_Tiles"
     steps:
       - uses: actions/checkout@v3
 
