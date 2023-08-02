@@ -186,6 +186,8 @@ def validateFilterTileModify(tile, event):
     target = tile.collection
     if target is not None:
         target = queryAdapter(target.getObject(), ICollectionish)
+    if target is not None:
+        target = target.selectContent("")
     if target is None or target.content_selector is None:
         api.portal.show_message(
             _(
