@@ -3,6 +3,7 @@
 
 Resource  plone/app/robotframework/saucelabs.robot
 Resource  plone/app/robotframework/selenium.robot
+Resource  plone/app/mosaic/tests/robot/keywords.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 Library  OperatingSystem
