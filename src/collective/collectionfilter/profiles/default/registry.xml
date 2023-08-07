@@ -12,6 +12,17 @@
     </value>
   </record>
 
+  <record name="collective.collectionfilter.int_types">
+    <field type="plone.registry.field.Tuple">
+      <title>Target Collection Types</title>
+      <description>A list of fields that are int</description>
+      <value_type type="plone.registry.field.TextLine" />
+    </field>
+    <value>
+      <element>intfield</element>
+    </value>
+  </record>
+
   <records interface="Products.CMFPlone.interfaces.IResourceRegistry"
            prefix="plone.resources/collectionfilter"
            remove="True"
