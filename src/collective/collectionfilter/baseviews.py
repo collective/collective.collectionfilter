@@ -108,6 +108,9 @@ class BaseView:
         collectionish = (
             ICollectionish(self.collection.getObject()) if self.collection else None
         )
+        if collectionish is not None:
+            # select default content
+            collectionish.selectContent()
         selector = collectionish.content_selector
         if collectionish is None or not selector:
             return "#content-core"

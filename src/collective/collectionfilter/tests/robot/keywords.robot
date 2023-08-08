@@ -248,7 +248,7 @@ Should be ${X} collection results
     # below should work for both collections and contentlisting tiles
     ${xpath}=  Set Variable if  ${USE_TILES}  //span[@class='summary']  //div[@class='entries']/article
     Run keyword if  ${X}>0  Wait For Elements  xpath=${xpath}
-    Sleep  0.2
+    Sleep  0.5
     ${count} =  Get Element Count  xpath=${xpath}
     Should Be Equal as Numbers  ${count}  ${X}
 
