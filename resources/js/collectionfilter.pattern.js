@@ -74,7 +74,8 @@ export default Base.extend({
         }
 
         // OPTION 1 - filter rendered as links
-        $(".filterContent a", this.$el).on(
+        // Do not handle click event for links with class ".collectionfilter-disabled"
+        $(".filterContent a:not(.collectionfilter-disabled)", this.$el).on(
             "click",
             function (e) {
                 e.stopPropagation();
