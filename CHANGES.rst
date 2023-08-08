@@ -1,3 +1,22 @@
+5.1.1 (2023-08-08)
+------------------
+
+New features:
+
+
+- Implement CSS class for disabling `collectionfilter:reload` event when
+  links in enhanced custom filter templates  are designed for other actions
+  (eg. dropdowns or collapsibles).
+  [petschki] (#201)
+
+
+Bug fixes:
+
+
+- Fix selecting default `content_selector` for mosaic pages with contentlisting tile.
+  [petschki] (#202)
+
+
 5.1 (2023-08-02)
 ----------------
 
