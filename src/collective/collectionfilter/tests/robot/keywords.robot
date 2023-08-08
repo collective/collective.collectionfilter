@@ -21,7 +21,6 @@ Default Setup
     ${USE_TILES}=  Set Test Variable   ${USE_TILES}
     ${AJAX_ENABLED}=  Get Environment Variable   ROBOT_AJAX_ENABLED  default=${False}
     ${AJAX_ENABLED}=  Set Test Variable   ${AJAX_ENABLED}
-    Set Selenium Speed  0.2 seconds
 
 Default Teardown
     run keyword if Test Failed  Capture Page Screenshot
@@ -70,8 +69,7 @@ Run Keyword by label
     run keyword  ${keyword}  xpath=${xpath}  @{args}
 
 Click Input "${label}"
-    Wait until page contains element  xpath=//input[@id=//label[.//*[normalize-space(text())='${label}'] or normalize-space(text()) ='${label}']/@for]
-    Click Element  xpath=//input[@id=//label[.//*[normalize-space(text())='${label}'] or normalize-space(text()) ='${label}']/@for]
+    Wait for then click element  xpath=//input[@id=//label[.//*[normalize-space(text())='${label}'] or normalize-space(text()) ='${label}']/@for]
 
 Select InAndOut
     [Arguments]  ${label}  @{values}
@@ -249,7 +247,10 @@ Should be ${X} collection results
     # Wait for element  css=#content-core
     # below should work for both collections and contentlisting tiles
     ${xpath}=  Set Variable if  ${USE_TILES}  //span[@class='summary']  //div[@class='entries']/article
-    Wait until keyword succeeds  2s  1s  Page Should Contain Element  ${xpath}  limit=${X}
+    Run keyword if  ${X}>0  Wait For Elements  xpath=${xpath}
+    Sleep  0.2
+    ${count} =  Get Element Count  xpath=${xpath}
+    Should Be Equal as Numbers  ${count}  ${X}
 
 Should be ${X} pages
     ${X}=  evaluate  ${X} + 1  # need we have next or previous
@@ -357,6 +358,7 @@ Edit Listing Tile
 I search for "${search}"
     Input text  css=.collectionSearch input[name='SearchableText']  ${search}
     Run keyword if  ${AJAX_ENABLED}==False and ${USE_TILES}==False  Wait for then click element  css=.collectionSearch button[type='submit']
+    Run keyword if  ${AJAX_ENABLED}==True  Sleep  0.5
 
 I should have a portlet titled "${filter_title}" with ${number_of_results} filter options
     ${portlet_title_xpath}  Convert to string  header[@class='portletHeader' and descendant-or-self::*[contains(text(), '${filter_title}')]]
