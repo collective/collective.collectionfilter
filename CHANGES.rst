@@ -18,6 +18,9 @@ Bug fixes:
 - Fix selecting default `content_selector` for mosaic pages with contentlisting tile.
   [petschki] (#202)
 
+- Fix German label from 'Portlet Titel' to 'Filtertitel'.
+  [jensens]
+
 
 5.1 (2023-08-02)
 ----------------
