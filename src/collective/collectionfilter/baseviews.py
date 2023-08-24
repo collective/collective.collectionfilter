@@ -401,7 +401,3 @@ class BaseResetFilterView(BaseFilterView):
     @property
     def reset_class(self):
         return self.settings.css_class or ""
-
-    @property
-    def reset_class(self):
-        return self.settings.css_class or ""
