@@ -13,7 +13,7 @@
            title="Collection Filter Result Sorting"
   />
   <portlet addview="collective.collectionfilter.portlets.CollectionResetFilter"
-           description="This portlet allows reseting all Filters"
+           description="This portlet allows resetting all filters"
            title="Collection Filter Reset"
   />
 </portlets>
