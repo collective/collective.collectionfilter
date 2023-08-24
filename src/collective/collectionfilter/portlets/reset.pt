@@ -12,13 +12,12 @@
           tal:content="view/title"
   >Title</header>
   <div class="portletContent filterContent">
-    <div class="btn btn-sm ${python:view.reset_class}">
-      <a tal:attributes="
-           href view/reset_url;
-         "
-         i18n:translate="reset"
-      >Reset All
-      </a>
-    </div>
+        <a class="btn btn-sm btn-secondary ${python:view.reset_class}"
+           rel="nofollow"
+           role="button"
+           tal:attributes="href view/reset_url"
+           i18n:translate="reset_all">
+        Reset all
+        </a>
   </div>
 </aside>
