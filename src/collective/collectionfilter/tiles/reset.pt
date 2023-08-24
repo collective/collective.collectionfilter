@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      lang="en"
+      xml:lang="en"
+      i18n:domain="collective.collectionfilter"
+>
+  <body>
+    <aside class="collectionReset ${view/filterClassName} pat-collectionfilter"
+           data-pat-collectionfilter="${view/pat_options}"
+    >
+      <div class="filterContent">
+        <a class="btn btn-sm ${python:view.reset_class}"
+           rel="nofollow"
+           role="button"
+           tal:attributes="
+             href view/reset_url;
+           "
+        >${python:view.title}
+        </a>
+      </div>
+    </aside>
+
+  </body>
+</html>

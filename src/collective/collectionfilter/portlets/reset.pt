@@ -1,0 +1,24 @@
+<aside class="portlet ${view/filterClassName} collectionFilter pat-collectionfilter"
+       data-pat-collectionfilter="${view/pat_options}"
+       tal:define="
+         input_type view/input_type;
+       "
+       tal:condition="view/available"
+       i18n:domain="collective.collectionfilter"
+>
+
+  <header class="portletHeader"
+          tal:condition="view/title"
+          tal:content="view/title"
+  >Title</header>
+  <div class="portletContent filterContent">
+    <div class="btn btn-sm ${python:view.reset_class}">
+      <a tal:attributes="
+           href view/reset_url;
+         "
+         i18n:translate="reset"
+      >Reset All
+      </a>
+    </div>
+  </div>
+</aside>

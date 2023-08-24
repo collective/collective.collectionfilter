@@ -3,6 +3,8 @@
 
 New features:
 
+- Add a Reset Button to Reset all Filters.
+  [toalba, jensens]
 
 - Implement CSS class for disabling `collectionfilter:reload` event when
   links in enhanced custom filter templates  are designed for other actions
