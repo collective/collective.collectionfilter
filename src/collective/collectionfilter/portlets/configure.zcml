@@ -57,7 +57,16 @@
       edit_permission="plone.app.portlets.ManagePortlets"
       zcml:condition="installed collective.geolocationbehavior"
       />
-
+  <plone:portlet
+      name="collective.collectionfilter.portlets.CollectionResetFilter"
+      interface=".reset.ICollectionResetFilterPortlet"
+      assignment=".reset.Assignment"
+      renderer=".reset.Renderer"
+      addview=".reset.AddForm"
+      editview=".reset.EditForm"
+      view_permission="zope2.View"
+      edit_permission="plone.app.portlets.ManagePortlets"
+      />
   <genericsetup:registerProfile
       name="default"
       title="collective.collectionfilter portlets"

@@ -283,7 +283,7 @@ msgstr "Katalogindex für Filterung"
 #. Default: "Filter title"
 #: collective/collectionfilter/interfaces.py
 msgid "label_header"
-msgstr "Portlet Titel"
+msgstr "Filtertitel"
 
 #. Default: "Hide if empty"
 #: collective/collectionfilter/interfaces.py

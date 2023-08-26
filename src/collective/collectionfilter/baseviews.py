@@ -391,3 +391,13 @@ if HAS_GEOLOCATION:
             custom_query = base_query(request_params)
             custom_query = make_query(custom_query)
             return ICollectionish(collection).results(custom_query, request_params)
+
+
+class BaseResetFilterView(BaseFilterView):
+    @property
+    def reset_url(self):
+        return f"{self.collection.getURL()}?collectionfilter=1"
+
+    @property
+    def reset_class(self):
+        return self.settings.css_class or ""

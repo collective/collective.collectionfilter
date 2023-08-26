@@ -80,7 +80,17 @@
       add_permission="cmf.ModifyPortalContent"
       zcml:condition="installed collective.geolocationbehavior"
       />
-
+  <plone:tile
+      name="collective.collectionfilter.tiles.resetfilter"
+      title="Collection Reset Filter Tile"
+      description="Show the collection Reset Filter tile."
+      for="*"
+      schema=".reset.IResetFilterTile"
+      class=".reset.ResetFilterTile"
+      template="reset.pt"
+      permission="zope2.View"
+      add_permission="cmf.ModifyPortalContent"
+      />
   <genericsetup:registerProfile
       name="default"
       title="collective.collectionfilter tiles"
