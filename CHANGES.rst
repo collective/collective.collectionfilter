@@ -1,3 +1,20 @@
+5.2.0 (2023-09-27)
+------------------
+
+New features:
+
+
+- Add a Reset Button to Reset all Filters.
+  [toalba, jensens] (reset-button)
+
+
+Bug fixes:
+
+
+- Fix German label from 'Portlet Titel' to 'Filtertitel'.
+  [jensens] (detranslation)
+
+
 5.1.1 (2023-08-08)
 ------------------
 
