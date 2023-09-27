@@ -1,10 +1,12 @@
 collective.collectionfilter
 ===========================
 
+|CI| |Meta|
+
 .. |CI| image:: https://github.com/collective/collective.collectionfilter/actions/workflows/main.yml/badge.svg
    :target: https://github.com/collective/collective.collectionfilter/actions/workflows/main.yml
 
-.. |QA| image:: https://github.com/collective/collective.collectionfilter/actions/workflows/meta.yml/badge.svg
+.. |Meta| image:: https://github.com/collective/collective.collectionfilter/actions/workflows/meta.yml/badge.svg
    :target: https://github.com/collective/collective.collectionfilter/actions/workflows/meta.yml
 
 
