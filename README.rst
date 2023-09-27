@@ -1,12 +1,11 @@
 collective.collectionfilter
 ===========================
 
-|CI| |Coverage|
+.. |CI| image:: https://github.com/collective/collective.collectionfilter/actions/workflows/main.yml/badge.svg
+   :target: https://github.com/collective/collective.collectionfilter/actions/workflows/main.yml
 
-.. |CI| image:: https://github.com/collective/collective.collectionfilter/workflows/CI/badge.svg
-   :target: https://github.com/collective/collective.collectionfilter/actions
-.. |Coverage| image:: https://coveralls.io/repos/github/collective/collective.collectionfilter/badge.svg
-   :target: https://coveralls.io/github/collective/collective.collectionfilter
+.. |QA| image:: https://github.com/collective/collective.collectionfilter/actions/workflows/meta.yml/badge.svg
+   :target: https://github.com/collective/collective.collectionfilter/actions/workflows/meta.yml
 
 
 Faceted navigation filter for collection or contentlisting tiles.
@@ -29,6 +28,8 @@ There are three portlets/tiles available for filtering:
     is activated on a contenttype. See installation notes below)
 ``Collection Result Listing Sort``
     a list of indexes where the user can sort the filtered result listing
+``Collection Filter Reset``
+    a link to reset all filters
 
 
 Filter Results of Collections
