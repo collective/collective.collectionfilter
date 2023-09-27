@@ -4,7 +4,6 @@ on:
   push:
     branches-ignore:
       - "releases/**"
-      - "main"
 jobs:
   build:
     runs-on: ubuntu-20.04
