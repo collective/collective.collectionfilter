@@ -10,7 +10,7 @@ from zope.interface import implementer
 
 
 class ICollectionResetFilterPortlet(ICollectionResetFilterSchema, IPortletDataProvider):
-    """Portlet interface based on ICollectionFilterSchema"""
+    """Portlet interface based on ICollectionFilterResetSchema"""
 
 
 @implementer(ICollectionResetFilterPortlet)
@@ -70,7 +70,7 @@ class Assignment(base.Assignment):
         if self.header:
             return self.header
         else:
-            return _("Collection Filter")
+            return _("Collection Filter Reset")
 
 
 class Renderer(BasePortletRenderer, BaseResetFilterView):
@@ -79,7 +79,7 @@ class Renderer(BasePortletRenderer, BaseResetFilterView):
 
 class AddForm(base.AddForm):
     schema = ICollectionResetFilterPortlet
-    label = _("Add Collection Filter Portlet")
+    label = _("Add Collection Filter Reset Portlet")
     description = _(
         "This portlet shows grouped criteria of collection results and "
         "allows filtering of collection results."
@@ -91,7 +91,7 @@ class AddForm(base.AddForm):
 
 class EditForm(base.EditForm):
     schema = ICollectionResetFilterPortlet
-    label = _("Edit Collection Filter Portlet")
+    label = _("Edit Collection Filter Reset Portlet")
     description = _(
         "This portlet shows grouped criteria of collection results and "
         "allows filtering of collection results."
