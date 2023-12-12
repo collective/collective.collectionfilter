@@ -52,6 +52,10 @@ setup(
         "plone.app.contenttypes",
     ],
     extras_require={
+        "mosaic": [
+            "plone.app.mosaic >= 2.2.3",
+            "plone.app.standardtiles >= 2.4.0",
+        ],
         "geolocation": [
             # support for latitude/longitude catalog index
             "collective.geolocationbehavior >= 1.6.0",

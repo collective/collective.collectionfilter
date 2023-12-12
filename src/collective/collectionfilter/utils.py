@@ -3,6 +3,11 @@ from plone import api
 from Products.CMFCore.interfaces import IFolderish
 from Products.CMFPlone.utils import safe_unicode
 
+
+try:
+    from plone.app.blocks.layoutbehavior import ILayoutAware
+except ImportError:
+    ILayoutAware = None
 import six
 
 
@@ -20,13 +25,12 @@ def target_collection_base_path(context):
 
 
 def target_collection_types(context):
+    if ILayoutAware:
+        default = ["Collection", "Page", "Folder"]
+    else:
+        default = ["Collection"]
     return api.portal.get_registry_record(
-        "collective.collectionfilter.target_collection_types",
-        default=[
-            "Collection",
-            "Page",
-            "Folder"
-        ],
+        "collective.collectionfilter.target_collection_types", default=default
     )
 
 

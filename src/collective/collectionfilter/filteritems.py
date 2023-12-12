@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from collective.collectionfilter import _
+from collective.collectionfilter.interfaces import ICollectionish
 from collective.collectionfilter.interfaces import IGroupByCriteria
 from collective.collectionfilter.query import make_query
 from collective.collectionfilter.utils import base_query
@@ -10,9 +11,9 @@ from collective.collectionfilter.vocabularies import DEFAULT_FILTER_TYPE
 from collective.collectionfilter.vocabularies import EMPTY_MARKER
 from Missing import Missing
 from plone.app.contenttypes.behaviors.collection import ICollection
+
 try:
     from plone.app.blocks.layoutbehavior import ILayoutAware
-    from plone.app.blocks.layoutbehavior import ILayoutBehaviorAdaptable
 except ImportError:
     ILayoutAware = None
 from plone.app.event.base import _prepare_range
@@ -24,17 +25,13 @@ from plone.i18n.normalizer import idnormalizer
 from plone.memoize import ram
 from plone.memoize.volatile import DontCache
 from six.moves.urllib.parse import urlencode
-from zope.component import adapter
 from zope.component import getUtility
-from zope.component import getMultiAdapter
-from zope.interface import Interface
-from zope.interface import implementer
 from zope.globalrequest import getRequest
 from zope.i18n import translate
+from zope.interface import implementer
 
 import plone.api
 import six
-import re
 
 
 try:
@@ -43,6 +40,63 @@ except ImportError:
 
     class EventListing(object):
         pass
+
+
+def _build_url(
+    collection_url, urlquery, filter_value, current_idx_value, idx, filter_type
+):
+    # Build filter url query
+    _urlquery = urlquery.copy()
+    # Allow deselection
+    if filter_value in current_idx_value:
+        _urlquery[idx] = [it for it in current_idx_value if it != filter_value]
+    elif filter_type != "single":
+        # additive filter behavior
+        _urlquery[idx] = current_idx_value + [filter_value]
+        _urlquery[idx + "_op"] = filter_type  # additive operator
+    else:
+        _urlquery[idx] = filter_value
+
+    query_param = urlencode(safe_encode(_urlquery), doseq=True)
+    return "/".join(
+        [
+            it
+            for it in [collection_url, "?" + query_param if query_param else None]
+            if it
+        ]
+    )
+
+
+def _build_option(filter_value, url, current_idx_value, groupby_options):
+    idx = groupby_options["index"]
+    # Optional modifier to set title from filter value
+    display_modifier = groupby_options.get("display_modifier", None)
+    # CSS modifier to set class on filter item
+    css_modifier = groupby_options.get("css_modifier", None)
+
+    # Set title from filter value with modifications,
+    # e.g. uuid to title
+    title = filter_value
+    if filter_value is not EMPTY_MARKER and callable(display_modifier):
+        title = display_modifier(filter_value, idx)
+        title = safe_decode(title)
+
+    # Set selected state
+    selected = filter_value in current_idx_value
+    css_class = "filterItem {0}{1} {2}".format(
+        "filter-" + idnormalizer.normalize(filter_value),
+        " selected" if selected else "",
+        css_modifier(filter_value) if css_modifier else "",
+    )
+
+    return {
+        "title": title,
+        "url": url,
+        "value": filter_value,
+        "css_class": css_class,
+        "count": 1,
+        "selected": selected,
+    }
 
 
 def _results_cachekey(
@@ -55,6 +109,7 @@ def _results_cachekey(
     view_name="",
     cache_enabled=True,
     request_params=None,
+    content_selector="",
 ):
     if not cache_enabled:
         raise DontCache
@@ -66,6 +121,7 @@ def _results_cachekey(
         show_count,
         view_name,
         request_params,
+        content_selector,
         " ".join(plone.api.user.get_roles()),
         plone.api.portal.get_current_language(),
         str(plone.api.portal.get_tool("portal_catalog").getCounter()),
@@ -83,6 +139,7 @@ def get_filter_items(
     view_name="",
     cache_enabled=True,
     request_params=None,
+    content_selector="",
 ):
     request_params = request_params or {}
     custom_query = {}  # Additional query to filter the collection
@@ -91,7 +148,12 @@ def get_filter_items(
     if not collection or not group_by:
         return None
     collection_url = collection.absolute_url()
-    collection = ICollectionish(collection)
+    option_url = "/".join([it for it in [collection_url, view_name] if it])
+    collection = ICollectionish(collection).selectContent(content_selector)
+    if (
+        collection is None or not collection.content_selector
+    ):  # e.g. when no listing tile
+        return None
 
     # Recursively transform all to unicode
     request_params = safe_decode(request_params)
@@ -104,11 +166,9 @@ def get_filter_items(
     idx = groupby_criteria[group_by]["index"]
     current_idx_value = safe_iterable(request_params.get(idx))
 
-    extra_ignores = []
-    if not narrow_down:
-        # Additive filtering is about adding other filter values of the same
-        # index.
-        extra_ignores = [idx, idx + "_op"]
+    # Additive filtering is about adding other filter values of the same index.
+    extra_ignores = [] if narrow_down else [idx, idx + "_op"]
+
     urlquery = base_query(request_params, extra_ignores)
 
     # Get all collection results with additional filter defined by urlquery
@@ -129,12 +189,8 @@ def get_filter_items(
 
     # Attribute name for getting filter value from brain
     metadata_attr = groupby_criteria[group_by]["metadata"]
-    # Optional modifier to set title from filter value
-    display_modifier = groupby_criteria[group_by].get("display_modifier", None)
-    # CSS modifier to set class on filter item
-    css_modifier = groupby_criteria[group_by].get("css_modifier", None)
     # Value blacklist
-    value_blacklist = groupby_criteria[group_by].get("value_blacklist", None)
+    value_blacklist = groupby_criteria[group_by].get("value_blacklist", None) or []
     # Allow value_blacklist to be callables for runtime-evaluation
     value_blacklist = (
         value_blacklist() if callable(value_blacklist) else value_blacklist
@@ -149,81 +205,53 @@ def get_filter_items(
 
         # Get filter value
         val = getattr(brain, metadata_attr, None)
-        if callable(val):
-            val = val()
+        val = val() if callable(val) else val
         # decode it to unicode
         val = safe_decode(val)
         # Make sure it's iterable, as it's the case for e.g. the subject index.
         val = safe_iterable(val)
 
         for filter_value in val:
-            if filter_value is None or isinstance(filter_value, Missing):
-                continue
-            if value_blacklist and filter_value in value_blacklist:
-                # Do not include blacklisted
+            if (
+                filter_value is None
+                or isinstance(filter_value, Missing)
+                or filter_value in value_blacklist
+            ):
                 continue
             if filter_value in grouped_results:
                 # Add counter, if filter value is already present
                 grouped_results[filter_value]["count"] += 1
                 continue
 
-            # Set title from filter value with modifications,
-            # e.g. uuid to title
-            title = filter_value
-            if filter_value is not EMPTY_MARKER and callable(display_modifier):
-                title = safe_decode(display_modifier(filter_value, idx))
-
-            # Build filter url query
-            _urlquery = urlquery.copy()
-            # Allow deselection
-            if filter_value in current_idx_value:
-                _urlquery[idx] = [it for it in current_idx_value if it != filter_value]
-            elif filter_type != "single":
-                # additive filter behavior
-                _urlquery[idx] = current_idx_value + [filter_value]
-                _urlquery[idx + "_op"] = filter_type  # additive operator
-            else:
-                _urlquery[idx] = filter_value
-
-            query_param = urlencode(safe_encode(_urlquery), doseq=True)
-            url = "/".join(
-                [
-                    it
-                    for it in [
-                        collection_url,
-                        view_name,
-                        "?" + query_param if query_param else None,
-                    ]
-                    if it
-                ]
+            url = _build_url(
+                collection_url=option_url,
+                urlquery=urlquery,
+                filter_value=filter_value,
+                current_idx_value=current_idx_value,
+                idx=idx,
+                filter_type=filter_type,
             )
-
-            # Set selected state
-            selected = filter_value in current_idx_value
-            css_class = "filterItem {0}{1} {2}".format(
-                "filter-" + idnormalizer.normalize(filter_value),
-                " selected" if selected else "",
-                css_modifier(filter_value) if css_modifier else "",
+            grouped_results[filter_value] = _build_option(
+                filter_value=filter_value,
+                url=url,
+                current_idx_value=current_idx_value,
+                groupby_options=groupby_criteria[group_by],
             )
-
-            grouped_results[filter_value] = {
-                "title": title,
-                "url": url,
-                "value": filter_value,
-                "css_class": css_class,
-                "count": 1,
-                "selected": selected,
-            }
 
     # Entry to clear all filters
     urlquery_all = {
         k: v for k, v in list(urlquery.items()) if k not in (idx, idx + "_op")
     }
     if narrow_down and show_count:
+        # TODO: catalog_results_fullcount is possibly undefined
         catalog_results = catalog_results_fullcount
     ret = [
         {
-            "title": translate(_("subject_all", default=u"All"), context=getRequest()),
+            "title": translate(
+                _("subject_all", default=u"All"),
+                context=getRequest(),
+                target_language=plone.api.portal.get_current_language(),
+            ),
             "url": u"{0}/?{1}".format(
                 collection_url, urlencode(safe_encode(urlquery_all), doseq=True)
             ),
@@ -244,16 +272,15 @@ def get_filter_items(
     return ret
 
 
-class ICollectionish(Interface):
-    "Adapts object similar to ICollection if has contentlisting tile, or if collection"
-
-
 @implementer(ICollectionish)
 class CollectionishCollection(object):
-
     def __init__(self, context):
         self.context = context
         self.collection = ICollection(self.context)
+
+    def selectContent(self, selector=""):
+        """Collections can only have a single content"""
+        return self
 
     @property
     def query(self):
@@ -279,6 +306,10 @@ class CollectionishCollection(object):
     def item_count(self):
         return self.collection.item_count
 
+    @property
+    def content_selector(self):
+        return u"#content-core"  # TODO: could look it up based on view?
+
     def results(self, custom_query, request_params):
 
         # Support for the Event Listing view from plone.app.event
@@ -294,74 +325,6 @@ class CollectionishCollection(object):
             # TODO: expand events. better yet, let collection.results
             #        do that
 
-        return self.collection.results(batch=False, brains=True, custom_query=custom_query)
-
-
-if ILayoutAware is not None:
-    @implementer(ICollectionish)
-    @adapter(ILayoutBehaviorAdaptable)
-    class CollectionishLayout(CollectionishCollection):
-        """Provide interface for either objects with contentlisting tiles or collections or both"""
-
-        tile = None
-
-        def __init__(self, context):
-            self.context = context
-
-            la = ILayoutAware(self.context)
-            if la.content:
-                urls = re.findall('(@@plone.app.standardtiles.contentlisting/[^"]+)', la.content)
-                if urls:
-                    # TODO: maybe better to get tile data? using ITileDataManager(id)?
-                    url = context.REQUEST.response.headers.get('x-tile-url')
-                    tile = self.context.unrestrictedTraverse(urls[0])
-                    tile.update()
-                    if context.REQUEST.response.headers.get('x-tile-url'):
-                        if url:
-                            context.REQUEST.response.headers['x-tile-url'] = url
-                        else:
-                            del context.REQUEST.response.headers['x-tile-url']
-
-                    # print(context.REQUEST.response.headers)
-                    self.tile = tile
-            if self.tile is None:
-                # Could still be a ILayoutAware collection
-                try:
-                    self.collection = ICollection(self.context)
-                except TypeError:
-                    raise TypeError("No contentlisting tile or Collection found")
-            else:
-                self.collection = self.tile  # to get properties
-
-        @property
-        def sort_reversed(self):
-            if self.tile is not None:
-                return self.sort_order == "reverse"
-            else:
-                return self.collection.sort_reversed
-
-        def results(self, custom_query, request_params):
-            """Search results"""
-            if self.tile is None:
-                return super(CollectionishLayout, self).results(custom_query, request_params)
-
-            builder = getMultiAdapter(
-                (self.context, self.context.REQUEST), name="querybuilderresults"
-            )
-
-            # Include query parameters from request if not set to ignore
-            contentFilter = {}
-            if not getattr(self.tile, "ignore_request_params", False):
-                contentFilter = dict(self.context.REQUEST.get("contentFilter", {}))
-
-            # TODO: handle events extra params
-
-            return builder(
-                query=self.query,
-                sort_on=self.sort_on or "getObjPositionInParent",
-                sort_order=self.sort_order,
-                limit=self.limit,
-                batch=False,
-                brains=True,
-                custom_query=custom_query if custom_query is not None else contentFilter,
-            )
+        return self.collection.results(
+            batch=False, brains=True, custom_query=custom_query
+        )

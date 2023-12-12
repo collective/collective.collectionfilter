@@ -10,6 +10,7 @@ from zope import schema
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
+
 try:
     from plone.formwidget.geolocation.vocabularies import default_map_layer
     from plone.formwidget.geolocation.vocabularies import default_map_layers
@@ -33,6 +34,10 @@ def pattern_options():
     return options
 
 
+class ICollectionish(Interface):
+    "Adapts object similar to ICollection if has contentlisting tile, or is a collection"
+
+
 class ICollectionFilterBaseSchema(Interface):
 
     header = schema.TextLine(
@@ -45,8 +50,9 @@ class ICollectionFilterBaseSchema(Interface):
         title=_(u"label_target_collection", default=u"Alternative Target Collection"),
         description=_(
             u"help_target_collection",
-            default=u"We use the current context as collection. As an alternative you can select a different collection"
-            u" as source for the filter items and where the filter is applied.",
+            default=u"We use the current context as collection. As an alternative you can select a different "
+            u"collection as source for the filter items "
+            u"and where the filter is applied.",
         ),
         required=False,
         vocabulary="plone.app.vocabularies.Catalog",
@@ -71,12 +77,10 @@ class ICollectionFilterBaseSchema(Interface):
         title=_("label_content_selector", default=u"Content Selector"),
         description=_(
             "help_content_selector",
-            default=u"Selector which is used to choose a DOM node from the"
-            u" source into the target. For source and target the same"
-            u" selectors are used.",
+            default=u"If your tile or collection has a special class or id for ajax replacement use it here."
+            u" Selector will need to work for unthemed view and current page.",
         ),
-        required=True,
-        default=u"#content-core",
+        required=False,
     )
 
 
@@ -186,7 +190,7 @@ class ICollectionFilterResultListSort(ICollectionFilterBaseSchema):
         required=True,
     )
     # NB needed as InAndOut breaks tiles in 5.0
-    widget('sort_on', SelectFieldWidget, pattern_options=dict(orderable=True))
+    widget("sort_on", SelectFieldWidget, pattern_options=dict(orderable=True))
 
     input_type = schema.Choice(
         title=_("label_input_type", u"Input Type"),
@@ -201,37 +205,34 @@ class ICollectionFilterResultListSort(ICollectionFilterBaseSchema):
 
 
 class ICollectionFilterInfo(ICollectionFilterBaseSchema):
-    """Schema for the result title/info
-    """
+    """Schema for the result title/info"""
+
     template_type = schema.Tuple(
-        title=_('label_template_type', u'Template Type'),
+        title=_("label_template_type", u"Template Type"),
         description=_(
-            'help_template_type',
-            u'What information to display about the search and results'
+            "help_template_type",
+            u"What information to display about the search and results",
         ),
         value_type=schema.Choice(
-            title=u'Parts',
+            title=u"Parts",
             vocabulary="collective.collectionfilter.TemplateParts",
         ),
         required=True,
     )
     # NB needed as InAndOut breaks tiles in 5.0
-    widget('template_type', SelectFieldWidget, pattern_options=dict(orderable=True))
+    widget("template_type", SelectFieldWidget, pattern_options=dict(orderable=True))
 
     hide_when = schema.Tuple(
-        title=_('label_hide_when', u'Hide when'),
-        description=_(
-            'help_hide_when',
-            u'Hide if all of these conditions are true'
-        ),
+        title=_("label_hide_when", u"Hide when"),
+        description=_("help_hide_when", u"Hide if all of these conditions are true"),
         value_type=schema.Choice(
-            title=u'Condition',
+            title=u"Condition",
             vocabulary="collective.collectionfilter.InfoConditions",
         ),
         required=False,
     )
     # NB needed as InAndOut breaks tiles in 5.0
-    widget('hide_when', SelectFieldWidget, pattern_options=dict(orderable=True))
+    widget("hide_when", SelectFieldWidget, pattern_options=dict(orderable=True))
 
     as_links = schema.Bool(
         title=_(u"label_display_as_links", default=u"Display as Links"),
@@ -243,9 +244,29 @@ class ICollectionFilterInfo(ICollectionFilterBaseSchema):
         required=False,
     )
 
+    context_aware = schema.Bool(
+        title=_(u"label_info_context_aware_mode", default=u"Context aware mode"),
+        description=_(
+            u"label_info_context_aware_mode",
+            default=u"Filter options can be displayed as links which reset the search to just this value.",
+        ),
+        default=True,
+        required=False,
+    )
+
+    context_aware_fields = schema.List(
+        title=_(u"label_info_context_aware_group_by", u"Fields to display"),
+        description=u"The title numbers which this page is a part of",
+        required=False,
+        value_type=schema.Choice(
+            required=False,
+            vocabulary="collective.collectionfilter.GroupByCriteria",
+        )
+    )
+
 
 class ICollectionFilterInfoTile(ICollectionFilterInfo):
-    """ Extra settings for tile """
+    """Extra settings for tile"""
 
     display_as_title = schema.Bool(
         title=_(u"label_display_as_title", default=u"Display as Title"),

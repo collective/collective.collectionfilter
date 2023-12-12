@@ -1,8 +1,34 @@
-<aside class="portlet ${view/filterClassName} collectionInfo pat-collectionfilter" data-pat-collectionfilter='${view/pat_options}'
-       tal:condition="view/available"
-       i18n:domain="collective.collectionfilter">
-  <header class="portletHeader" tal:condition="view/title" tal:content="view/title">Title</header>
+<aside class="portlet ${view/filterClassName} collectionInfo pat-collectionfilter"
+  data-pat-collectionfilter='${view/pat_options}'
+  tal:condition="view/available"
+  i18n:domain="collective.collectionfilter"
+  tal:define="is_content_context view/is_content_context;">
+
+  <header class="portletHeader"
+    tal:condition="view/title"
+    tal:content="view/title">Title</header>
+
   <div class="portletContent filterInfoContent">
-    <div aria-live="polite" tal:content="structure view/info_contents"></div>
+    <dl tal:condition="is_content_context">
+      <tal:repeat repeat="field view/get_fields_to_display">
+        <dt class="filterInfoContent__term">${python:view.get_field_title(field)}</dt>
+        <tal:repeat repeat="field_value python:view.get_field_values(field)">
+          <!-- <dd>${field_value/title} -->
+          <dd class="filterInfoContent__definition">
+            <a rel="nofollow"
+              class="filterItem"
+              href="${field_value/url}">
+                  ${field_value/title}
+            </a>
+          </dd>
+        </tal:repeat>
+
+      </tal:repeat>
+    </dl>
+
+
+    <div tal:condition="not:is_content_context"
+      aria-live="polite"
+      tal:content="structure view/info_contents"></div>
   </div>
 </aside>

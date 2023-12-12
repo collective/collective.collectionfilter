@@ -10,8 +10,7 @@ from zope.interface import implementer
 
 
 class ICollectionFilterInfoPortlet(ICollectionFilterInfo, IPortletDataProvider):  # noqa
-    """Portlet interface based on ICollectionFilterSchema
-    """
+    """Portlet interface based on ICollectionFilterSchema"""
 
 
 @implementer(ICollectionFilterInfoPortlet)
@@ -20,20 +19,23 @@ class Assignment(base.Assignment):
     header = u""
     target_collection = None
     view_name = None
-    content_selector = '#content-core'
+    content_selector = "#content-core"
     template_type = []
     hide_when = []
     as_links = True
+    context_aware = False
 
     def __init__(
         self,
         header=u"",
         target_collection=None,
         view_name=None,
-        content_selector='#content-core',
+        content_selector="#content-core",
         template_type=[],
         hide_when=[],
         as_links=True,
+        context_aware=False,
+        context_aware_fields=[]
     ):
         self.header = header
         self.target_collection = target_collection
@@ -42,11 +44,12 @@ class Assignment(base.Assignment):
         self.template_type = template_type
         self.hide_when = hide_when
         self.as_links = as_links
+        self.context_aware = context_aware
+        self.context_aware_fields = context_aware_fields
 
     @property
     def portlet_id(self):
-        """Return the portlet assignment's unique object id.
-        """
+        """Return the portlet assignment's unique object id."""
         return id(self)
 
     @property
@@ -54,20 +57,18 @@ class Assignment(base.Assignment):
         if self.header:
             return self.header
         else:
-            return _(u'Collection Filter Search Info')
+            return _(u"Collection Filter Search Info")
 
 
 class Renderer(BasePortletRenderer, BaseInfoView):
-    render = ViewPageTemplateFile('info.pt')
+    render = ViewPageTemplateFile("info.pt")
 
 
 class AddForm(base.AddForm):
 
     schema = ICollectionFilterInfoPortlet
     label = _(u"Add Collection Filter Info Portlet")
-    description = _(
-        u"This portlet shows information about the filter selected"
-    )
+    description = _(u"This portlet shows information about the filter selected")
 
     def create(self, data):
         return Assignment(**data)
@@ -77,6 +78,4 @@ class EditForm(base.EditForm):
 
     schema = ICollectionFilterInfoPortlet
     label = _(u"Edit Collection Filter Info Portlet")
-    description = _(
-        u"This portlet shows information about the filter selected"
-    )
+    description = _(u"This portlet shows information about the filter selected")
