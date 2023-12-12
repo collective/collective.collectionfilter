@@ -27,7 +27,6 @@ from zope.i18n import translate
 from zope.schema.interfaces import IVocabularyFactory
 from Products.CMFCore.Expression import Expression, getExprContext
 from plone import api
-from plone.memoize import ram
 import json
 
 
@@ -274,7 +273,8 @@ def _exp_cachekey(method, self, target_collection, request):
 class BaseInfoView(BaseView):
 
     # TODO: should just cache on request?
-    @ram.cache(_exp_cachekey)
+    # @instance.memoize
+    # @ram.cache(_exp_cachekey)
     def get_expression_context(self, collection, request_params):
         count_query = {}
         query = base_query(request_params)
