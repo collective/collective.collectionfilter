@@ -21,7 +21,7 @@ from plone.app.uuid.utils import uuidToCatalogBrain
 from plone.app.uuid.utils import uuidToObject
 from plone.dexterity.utils import iterSchemata
 from plone.i18n.normalizer.interfaces import IIDNormalizer
-from plone.memoize import instance
+from plone.memoize import instance, ram
 from plone.uuid.interfaces import IUUID
 from Products.CMFPlone.utils import get_top_request
 from Products.CMFPlone.utils import safe_unicode
