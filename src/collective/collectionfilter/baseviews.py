@@ -22,7 +22,7 @@ from plone.app.uuid.utils import uuidToCatalogBrain
 from plone.app.uuid.utils import uuidToObject
 from plone.dexterity.utils import iterSchemata
 from plone.i18n.normalizer.interfaces import IIDNormalizer
-from plone.memoize import instance
+from plone.memoize import instance, ram
 from plone.uuid.interfaces import IUUID
 from Products.CMFPlone.utils import get_top_request
 from Products.CMFPlone.utils import safe_unicode
@@ -34,7 +34,6 @@ from zope.schema import getFieldsInOrder
 from zope.schema.interfaces import IVocabularyFactory
 from Products.CMFCore.Expression import Expression, getExprContext
 from plone import api
-from plone.memoize import ram
 import json
 
 
@@ -373,7 +372,8 @@ def _field_title_cache_key(method, self, field_id):
 class BaseInfoView(BaseView):
 
     # TODO: should just cache on request?
-    @ram.cache(_exp_cachekey)
+    # @instance.memoize
+    # @ram.cache(_exp_cachekey)
     def get_expression_context(self, collection, request_params):
         count_query = {}
         query = base_query(request_params)

@@ -35,6 +35,8 @@ There are three portlets/tiles available for filtering:
     a list of indexes where the user can sort the filtered result listing
 ``Section Filter``
     a list of site sections (folders) you can filter on
+``Filter Info``
+    Displays customisable information about the current search or current context
 
 
 Filter Results of Collections
@@ -93,6 +95,15 @@ Simply do this somewhere in your buildout::
         collective.collectionfilter[geolocation]
     ...
 
+Filter Info support
+-------------------
+
+Info display (tile or portlet) can be used to 
+- display the current search or filters.
+- as a title replacement when using mosaic with information about the current search
+- an alternative form of navigation with links to reset the search to a single option
+- a form of navigation on content using values of the currently viewed object to search
+  for other similar content
 
 Overloading GroupByCriteria
 ---------------------------
