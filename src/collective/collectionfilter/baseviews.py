@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import weakref
 from Acquisition import aq_inner
 from collective.collectionfilter import PLONE_VERSION
 from collective.collectionfilter.filteritems import (
@@ -45,11 +46,15 @@ except ImportError:
     HAS_GEOLOCATION = False
 
 
+def empty_ref(self):
+    return None
+
+
 class BaseView(object):
     """Abstract base filter view class."""
 
     _collection = None
-    _top_request = None
+    _top_request = empty_ref  # prevent loops
 
     @property
     def settings(self):
@@ -82,9 +87,9 @@ class BaseView(object):
 
     @property
     def top_request(self):
-        if not self._top_request:
-            self._top_request = get_top_request(self.request)
-        return self._top_request
+        if self._top_request() is None:
+            self._top_request = weakref.ref(get_top_request(self.request))
+        return self._top_request()
 
     @property
     def collection_uuid(self):
