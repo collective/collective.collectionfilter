@@ -81,4 +81,12 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
 
+
+    <browser:page
+          for="*"
+          name="memview"
+          permission="zope2.Public"
+          class=".baseviews.memview"
+          />      
+
 </configure>

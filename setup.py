@@ -50,6 +50,7 @@ setup(
         "plone.api >= 1.5.1",
         "Products.CMFPlone >= 5.0",
         "plone.app.contenttypes",
+        "objgraph",
     ],
     extras_require={
         "mosaic": [

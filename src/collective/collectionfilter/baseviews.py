@@ -35,6 +35,10 @@ from zope.schema.interfaces import IVocabularyFactory
 from Products.CMFCore.Expression import Expression, getExprContext
 from plone import api
 import json
+import tempfile
+import random
+import objgraph
+from Products.Five.browser import BrowserView
 
 
 try:
@@ -48,6 +52,29 @@ except ImportError:
 
 def empty_ref(self):
     return None
+
+
+class memview(BrowserView):
+    def __init__(self, context, request):
+        self.request = request
+
+    def __call__(self):
+        import gc
+        for i in range(5):
+            gc.collect()
+        target = self.request.get('target', "HTTPRequest")
+        _, filename = tempfile.mkstemp(prefix='memview-', suffix='.png', text=False)
+        try:
+            if self.request.get("backrefs", False):
+                objgraph.show_backrefs(random.choice(objgraph.by_type(target)),  max_depth=5, filename=filename)
+            else:
+                chain = objgraph.find_backref_chain(random.choice(objgraph.by_type(target)), objgraph.is_proper_module)
+                objgraph.show_chain(chain, filename=filename)
+        except IndexError:
+            return "no {} in memory".format(target)
+        self.request.response.setHeader("Content-type", "image/png")
+        with open(filename, "rb") as f:
+            return f.read()
 
 
 class BaseView(object):
