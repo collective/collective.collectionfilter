@@ -51,7 +51,7 @@ setup(
         "Products.CMFPlone >= 5.0",
         "plone.app.contenttypes",
         "objgraph <= 3.5.0",
-        "graphviz",
+        "graphviz == 0.16",
     ],
     extras_require={
         "mosaic": [
