@@ -39,9 +39,9 @@ jobs:
 
       - name: Install Chromedriver
         uses: nanasess/setup-chromedriver@v2
-        with:
-          # see https://github.com/nanasess/setup-chromedriver/issues/199
-          chromedriver-version: '117.0.5938.92'
+        # with:
+        #   # see https://github.com/nanasess/setup-chromedriver/issues/199
+        #   chromedriver-version: '117.0.5938.92'
         if: matrix.test_layer != 'IntegrationTesting'
       - name: Start Browser
         if: matrix.test_layer != 'IntegrationTesting'
