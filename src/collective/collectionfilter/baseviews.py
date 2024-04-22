@@ -15,7 +15,7 @@ from plone.app.uuid.utils import uuidToCatalogBrain
 from plone.base.utils import get_top_request
 from plone.base.utils import safe_text
 from plone.i18n.normalizer.interfaces import IIDNormalizer
-from plone.memoize import instance
+from plone.memoize import view
 from plone.uuid.interfaces import IUUID
 from Products.Five import BrowserView
 from urllib.parse import urlencode
@@ -140,7 +140,7 @@ class BaseFilterView(BaseView):
 
     # results is called twice inside the template in view/available and view/results.  But its expensive so we cache it
     # but just the the lifetime of the view
-    @instance.memoize
+    @view.memoize_contextless
     def results(self):
         results = get_filter_items(
             target_collection=self.collection_uuid,
