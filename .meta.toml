@@ -1,12 +1,13 @@
 # Generated from:
-# https://github.com/plone/meta/tree/master/config/default
+# https://github.com/plone/meta/tree/main/config/default
 # See the inline comments on how to expand/tweak this configuration file
 [meta]
 template = "default"
-commit-id = "6dec79f2"
+commit-id = "7a017355"
 
 [pyproject]
-codespell_skip = "*.min.js,*.min.js.map,yarn.lock,*.po"
+codespell_ignores = "Dokument"
+codespell_skip = "*.min.js,*.min.js.map,yarn.lock,*.po,*.robot"
 dependencies_ignores = """
 [
     'collective.geolocationbehavior', 'plone.formwidget.geolocation',
