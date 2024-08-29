@@ -1,4 +1,5 @@
 """Setup tests for this package."""
+
 from collective.collectionfilter.filteritems import get_filter_items
 from collective.collectionfilter.query import make_query
 from collective.collectionfilter.testing import (  # noqa
