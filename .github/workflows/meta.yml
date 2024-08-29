@@ -26,8 +26,6 @@ on:
 jobs:
   qa:
     uses: plone/meta/.github/workflows/qa.yml@main
-  dependencies:
-    uses: plone/meta/.github/workflows/dependencies.yml@main
   release_ready:
     uses: plone/meta/.github/workflows/release_ready.yml@main
 
