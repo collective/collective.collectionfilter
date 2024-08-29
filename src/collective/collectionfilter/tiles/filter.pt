@@ -30,24 +30,24 @@
             <ul>
               <tal:items repeat="item results">
                 <li class="${item/css_class}">
-                  <input checked="${python:'checked' if item['selected'] else None}"
-                         name="${view/filter_id}"
-                         type="${input_type}"
-                         value="${item/value}"
-                         data-url="${item/url}"
-                         tal:attributes="
-                           id string:${view/filterClassName}-${item/value};
-                         "
-                  />
-                  <label tal:attributes="
-                           for string:${view/filterClassName}-${item/value};
-                         ">
-                    <span class="filterLabel">
-                      <span tal:replace="python:item['title'].replace('/', u'/\u00AD')">Item</span>
-                      <tal:show_count condition="view/settings/show_count">(<span tal:replace="item/count"></span>)</tal:show_count>
-                    </span>
-
-                  </label>
+                  <div class="form-check">
+                    <input class="form-check-input"
+                           id="${view/filterClassName}-${item/value}"
+                           checked="${python:'checked' if item['selected'] else None}"
+                           name="${view/filter_id}"
+                           type="${input_type}"
+                           value="${item/value}"
+                           data-url="${item/url}"
+                    />
+                    <label class="form-check-label"
+                           for="${view/filterClassName}-${item/value}"
+                    >
+                      <span class="filterLabel">
+                        <span tal:replace="python:item['title'].replace('/', u'/\u00AD')">Item</span>
+                        <tal:show_count condition="view/settings/show_count">(<span tal:replace="item/count"></span>)</tal:show_count>
+                      </span>
+                    </label>
+                  </div>
                 </li>
               </tal:items>
             </ul>
