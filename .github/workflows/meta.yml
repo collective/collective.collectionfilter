@@ -1,5 +1,5 @@
 # Generated from:
-# https://github.com/plone/meta/tree/master/config/default
+# https://github.com/plone/meta/tree/main/config/default
 # See the inline comments on how to expand/tweak this configuration file
 name: Meta
 on:
@@ -26,8 +26,6 @@ on:
 jobs:
   qa:
     uses: plone/meta/.github/workflows/qa.yml@main
-  dependencies:
-    uses: plone/meta/.github/workflows/dependencies.yml@main
   release_ready:
     uses: plone/meta/.github/workflows/release_ready.yml@main
 
@@ -49,6 +47,13 @@ jobs:
 # when running tests/coverage jobs, add in .meta.toml:
 # [github]
 # os_dependencies = "git libxml2 libxslt"
+##
+
+##
+# To test against a specific matrix of python versions
+# when running tests jobs, add in .meta.toml:
+# [github]
+# py_versions = "['3.12', '3.11']"
 ##
 
 

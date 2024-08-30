@@ -63,9 +63,7 @@ def findall_tiles(context, spec):
     layout = (
         la.customContentLayout
         if la.customContentLayout is not None
-        else la.contentLayout
-        if la.contentLayout is not None
-        else la.content
+        else la.contentLayout if la.contentLayout is not None else la.content
     )
     if layout is None:
         return []

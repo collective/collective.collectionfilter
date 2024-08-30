@@ -1,4 +1,5 @@
 """Setup tests for this package."""
+
 from collective.collectionfilter.testing import (  # noqa
     COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING,
 )
