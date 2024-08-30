@@ -1,3 +1,16 @@
+5.2.1 (2024-08-30)
+------------------
+
+Bug fixes:
+
+
+- Fix Bootstrap CSS classes for checkboxes/radios in filter portlet/tile.
+
+  upgrade dependencies.
+
+  [petschki] (#211)
+
+
 5.2.1 (unreleased)
 ------------------
 
