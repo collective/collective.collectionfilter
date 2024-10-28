@@ -11,12 +11,6 @@ Bug fixes:
   [petschki] (#211)
 
 
-5.2.1 (unreleased)
-------------------
-
-- Nothing changed yet.
-
-
 5.2.0 (2023-09-27)
 ------------------
 
