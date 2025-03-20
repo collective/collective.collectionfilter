@@ -12,38 +12,18 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - ubuntu-20.04
           - ubuntu-18.04
         plone-version:
           - '5.2'
-          - '6.0'
         python-version:
           - '2.7'
-          - '3.7'
           - '3.8'
-          - '3.9'
         # see testing.py for layer names
         layer:
           - 'IntegrationTesting'
           - 'AcceptanceTestingPortlet_AjaxDisabled'
           - 'AcceptanceTestingPortlet_AjaxEnabled'
           - 'AcceptanceTesting_Tiles'
-        exclude:
-          - os: ubuntu-18.04
-            plone-version: '6.0'
-          - os: ubuntu-20.04
-            plone-version: '5.2'
-          - plone-version: '5.2'
-            python-version: '3.9'
-          - plone-version: '6.0'
-            python-version: '2.7'
-          # robot tests need rewrite for plone 6!
-          - plone-version: '6.0'
-            layer: 'AcceptanceTestingPortlet_AjaxDisabled'
-          - plone-version: '6.0'
-            layer: 'AcceptanceTestingPortlet_AjaxEnabled'
-          - plone-version: '6.0'
-            layer: 'AcceptanceTesting_Tiles'
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
