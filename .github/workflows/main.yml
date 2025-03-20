@@ -7,10 +7,13 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
+        os:
+          - ubuntu-latest
+          - ubuntu-18.04
         plone-version:
           - '5.2'
           - '6.0'
@@ -26,6 +29,10 @@ jobs:
           - 'AcceptanceTestingPortlet_AjaxEnabled'
           - 'AcceptanceTesting_Tiles'
         exclude:
+          - os: ubuntu-18.04
+            plone-version: '6.0'
+          - os: ubuntu-latest
+            plone-version: '5.2'
           - plone-version: '5.2'
             python-version: '3.9'
           - plone-version: '6.0'
