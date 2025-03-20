@@ -3,13 +3,14 @@
 from collective.collectionfilter.testing import (  # noqa
     COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING,
 )
+from collective.collectionfilter.tiles.filter import FilterTile
 from plone import api
 from plone.app.testing import login
+from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_NAME
 
 import unittest
-from plone.app.testing import setRoles, TEST_USER_ID
-from plone.app.testing import TEST_USER_NAME
-from collective.collectionfilter.tiles.filter import FilterTile
 
 
 class TestFilteritems(unittest.TestCase):
@@ -30,6 +31,8 @@ class TestFilteritems(unittest.TestCase):
     def test_editor_role_can_render_filtertile(self):
         setRoles(self.portal, TEST_USER_ID, ["Editor"])
         tile = FilterTile(self.page, self.request)
-        tile.__name__ = 'collective.collectionfilter.tiles.filter.FilterTile'
+        tile.__name__ = "collective.collectionfilter.tiles.filter.FilterTile"
         tile.context = self.page
-        self.assertTrue(tile.edit_url.startswith('http://nohost/plone/page/@@edit-tile/'))
+        self.assertTrue(
+            tile.edit_url.startswith("http://nohost/plone/page/@@edit-tile/")
+        )
