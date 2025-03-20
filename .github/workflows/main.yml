@@ -31,7 +31,7 @@ jobs:
         exclude:
           - os: ubuntu-18.04
             plone-version: '6.0'
-          - os: ubuntu-latest
+          - os: ubuntu-20.04
             plone-version: '5.2'
           - plone-version: '5.2'
             python-version: '3.9'
