@@ -12,7 +12,7 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - ubuntu-latest
+          - ubuntu-20.04
           - ubuntu-18.04
         plone-version:
           - '5.2'
