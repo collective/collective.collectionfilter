@@ -47,7 +47,6 @@ local.cfg
 .installed.txt
 
 forest.*
-test_*
 robot_*
 dependencies.svg
 
