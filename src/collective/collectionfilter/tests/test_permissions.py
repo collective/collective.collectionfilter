@@ -1,6 +1,6 @@
 """Setup tests for this package."""
 
-from collective.collectionfilter.testing import (  # noqa
+from collective.collectionfilter.testing import (
     COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING,
 )
 from collective.collectionfilter.tiles.filter import FilterTile
