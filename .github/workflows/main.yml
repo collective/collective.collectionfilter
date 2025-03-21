@@ -7,16 +7,13 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
-        os:
-          - ubuntu-18.04
         plone-version:
           - '5.2'
         python-version:
-          - '2.7'
           - '3.8'
         # see testing.py for layer names
         layer:
