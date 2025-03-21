@@ -39,7 +39,7 @@ class BaseFilterTile(PersistentTile):
 
     @property
     def edit_url(self):
-        if not api.user.has_permission("cmf.ModifyPortalContent", obj=self.context):
+        if not api.user.has_permission("Modify portal content", obj=self.context):
             return None
         return self.url.replace("@@", "@@edit-tile/")
 

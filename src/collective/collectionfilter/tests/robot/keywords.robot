@@ -81,7 +81,7 @@ Select InAndOut
     END
 
 
-Select single select2  
+Select single select2
     [Arguments]  ${locator}  ${value}
     ${select2}=  get webelement  ${locator}
     execute javascript  $(arguments[0]).select2("open")  ARGUMENTS  ${select2}
@@ -102,8 +102,8 @@ Select multi select2
     #select from list by label  xpath=(//select[@class='querystring-criteria-value-MultipleSelectionWidget'])[1]  Page
     ${select2}=  get webelement  ${locator}
     execute javascript  $(arguments[0]).select2("val",arguments[1])  ARGUMENTS  ${select2}  ${values}
-    FOR  ${value}  IN  @{values} 
-    # Hack to only find those in the tile popup up not the mosaic popup 
+    FOR  ${value}  IN  @{values}
+    # Hack to only find those in the tile popup up not the mosaic popup
     #\    wait until element is visible  //*[contains(@class,'plone-modal ')]//li[@class='select2-search-choice']//*[contains(text(), '${value}')]
         Wait until keyword succeeds  5s  1s  call method  ${select2}  find_elements  by=xpath  value=.//li[@class='select2-search-choice']//*[contains(text(), '${value}')]
     END
@@ -140,14 +140,14 @@ Manage Portlets
     # Sometimes the click opens the backup page instead of the popup menu
     ${present}=  Run Keyword And Return Status    Element Should Be Visible   partial link=Right
     Run Keyword If    ${present}    Click element  partial link=Right
-    
+
 
 Select related filter collection
     Click element  css=div.pattern-relateditems-container input.select2-input
     Wait until page contains element  partial link=Test Collection
     Click element  partial link=Test Collection
 
-Set Options 
+Set Options
     [Arguments]  @{options}
     FOR    ${option}    IN    @{options}
         Click Input "${option}"
@@ -267,7 +267,7 @@ Should be ${X} pages
 Should be Info with text: ${text}
     wait until element contains  css=.filterInfoContent  ${text}
 
-# TODO: there is a bug where the aside.collectionInfo is still visible on screen. 
+# TODO: there is a bug where the aside.collectionInfo is still visible on screen.
 Should be no Info
     wait until element is not visible  css=.filterInfoContent
 
@@ -295,7 +295,7 @@ I've got a site without a listing
     I've got a site with a collection  0
 
 My collection has a collection search
-    run keyword if  ${USE_TILES}  My collection has a collection search tile 
+    run keyword if  ${USE_TILES}  My collection has a collection search tile
     run keyword unless  ${USE_TILES}  My collection has a collection search portlet
 
 My collection has a collection filter
@@ -310,8 +310,8 @@ My collection has a collection sorting
 
 My collection has a collection info
     [Arguments]  ${header}="Current Filter"  @{templates}  ${hide_when}=${None}
-    run keyword if  ${USE_TILES}  My collection has a collection info tile  ${header}   @{templates}  hide_when=${hide_when} 
-    run keyword unless  ${USE_TILES}  My collection has a collection info portlet  ${header}   @{templates}  hide_when=${hide_when} 
+    run keyword if  ${USE_TILES}  My collection has a collection info tile  ${header}   @{templates}  hide_when=${hide_when}
+    run keyword unless  ${USE_TILES}  My collection has a collection info portlet  ${header}   @{templates}  hide_when=${hide_when}
 
 I'm viewing the collection
     run keyword if  ${USE_TILES}  Go to  ${PLONE_URL}/testdoc
@@ -343,11 +343,11 @@ My collection has a collection info portlet
 
     Go to  ${PLONE_URL}/testcollection
     Manage portlets
-    Add info portlet  ${header}   @{templates}  hide_when=${hide_when}  
+    Add info portlet  ${header}   @{templates}  hide_when=${hide_when}
 
 Open collection settings
-    
-movable removable mosaic-tile 
+
+movable removable mosaic-tile
 
 
 Set Batch Size
@@ -443,7 +443,7 @@ My collection has a collection filter tile
     [Arguments]  ${group_by}=Subject  ${op}=or  ${style}=checkboxes_dropdowns  @{options}
 
     Go to  ${PLONE_URL}/testdoc/edit
-    Add filter tile  ${group_by}  ${op}  ${style}  @{options} 
+    Add filter tile  ${group_by}  ${op}  ${style}  @{options}
     Save mosaic page
 
 My collection has a collection search tile
@@ -459,7 +459,7 @@ My collection has a collection info tile
     Add info tile  @{templates}  hide_when=${hide_when}
     Save mosaic page
 
-My collection has a collection sorting tile 
+My collection has a collection sorting tile
     [Arguments]  ${sort_on}
     Go to  ${PLONE_URL}/testdoc/edit
     Insert Tile "Collection Result Listing Sort"
@@ -556,7 +556,7 @@ Add info tile
     Click element  css=.pattern-modal-buttons #buttons-save
     Drag tile
 
-Set Info Settings 
+Set Info Settings
     [Arguments]   ${prefix}  @{templates}  ${hide_when}
 
     select multi select2 with label  Template Type  @{templates}
@@ -593,7 +593,7 @@ Add contentlisting tile
 
 Edit Current Tile
     Click Button  css=.mosaic-selected-tile .mosaic-btn-settings
-    
+
 
 Drag tile
     Wait until page contains element  css=.mosaic-helper-tile-new
@@ -609,7 +609,7 @@ Filter by
     Select from List by value  xpath=//div[@class = 'filterContent']//select  ${filter}
 
 # TODO: doesn't work yet
-Set relateditem 
+Set relateditem
     [Arguments]  ${id}  ${path}
     Wait until element is visible  xpath=//div[@id='${id}']
     Click element  xpath=//div[@id='${id}']//ul[@class='select2-choices']

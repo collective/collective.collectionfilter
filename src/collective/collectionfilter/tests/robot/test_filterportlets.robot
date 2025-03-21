@@ -127,5 +127,3 @@ Scenario: Search filter
     # When I search for ${EMPTY} and click search
     # Then should be 2 collection results
     #   and should be 4 filter options
-
-
