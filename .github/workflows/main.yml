@@ -111,5 +111,3 @@ jobs:
       uses: AndreMiras/coveralls-python-action@develop
       with:
         parallel-finished: true
-
-
