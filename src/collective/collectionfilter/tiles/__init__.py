@@ -9,6 +9,7 @@ from plone.tiles.tile import PersistentTile
 from zope.component import adapter
 from zope.component import getMultiAdapter
 from zope.component import queryAdapter
+from zope.globalrequest import getRequest
 from zope.interface import implementer
 
 import re
@@ -58,7 +59,7 @@ class BaseFilterTile(PersistentTile):
 def findall_tiles(context, spec):
     if not isinstance(spec, list):
         spec = [spec]
-    request = context.REQUEST
+    request = getRequest()
     la = ILayoutAware(context)
     layout = (
         la.customContentLayout
