@@ -1,3 +1,14 @@
+5.2.2 (2025-03-21)
+------------------
+
+Bug fixes:
+
+
+- Fix permission for Tile.edit_url.
+  [ksuess] (#224)
+- Fix REQUEST during IObjectMoved event. @petschki (#227)
+
+
 5.2.1 (2024-08-30)
 ------------------
 
