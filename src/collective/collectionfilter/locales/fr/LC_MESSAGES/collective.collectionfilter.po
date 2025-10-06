@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2023-08-01 12:18+0000\n"
+"POT-Creation-Date: 2025-10-06 10:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,333 +14,365 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: collective.collectionfilter\n"
 
-#: collective/collectionfilter/portlets/sorting.pt
-#: collective/collectionfilter/tiles/sorting.pt
+#: collective/collectionfilter/portlets/sorting.pt:44
+#: collective/collectionfilter/tiles/sorting.pt:42
 msgid "(ascending)"
 msgstr ""
 
-#: collective/collectionfilter/portlets/sorting.pt
-#: collective/collectionfilter/tiles/sorting.pt
+#: collective/collectionfilter/portlets/sorting.pt:55
+#: collective/collectionfilter/tiles/sorting.pt:53
 msgid "(descending)"
 msgstr ""
 
-#: collective/collectionfilter/portlets/collectionfilter.py
+#: collective/collectionfilter/portlets/collectionfilter.py:81
 msgid "Add Collection Filter Portlet"
 msgstr ""
 
-#: collective/collectionfilter/portlets/maps.py
+#: collective/collectionfilter/portlets/reset.py:82
+msgid "Add Collection Filter Reset Portlet"
+msgstr ""
+
+#: collective/collectionfilter/portlets/maps.py:62
 msgid "Add Collection Maps Portlet"
 msgstr ""
 
-#: collective/collectionfilter/portlets/sorting.py
+#: collective/collectionfilter/portlets/sorting.py:63
 msgid "Add Collection Result Listing Sort Portlet"
 msgstr ""
 
-#: collective/collectionfilter/portlets/collectionsearch.py
+#: collective/collectionfilter/portlets/collectionsearch.py:48
 msgid "Add Collection Search Portlet"
 msgstr ""
 
-#: collective/collectionfilter/portlets/collectionfilter.py
+#: collective/collectionfilter/portlets/collectionfilter.py:72
 msgid "Collection Filter"
 msgstr ""
 
-#: collective/collectionfilter/portlets/maps.py
+#: collective/collectionfilter/portlets/reset.py:73
+msgid "Collection Filter Reset"
+msgstr ""
+
+#: collective/collectionfilter/portlets/maps.py:53
 msgid "Collection Maps"
 msgstr ""
 
-#: collective/collectionfilter/portlets/sorting.py
+#: collective/collectionfilter/portlets/sorting.py:54
 msgid "Collection Result Sorting"
 msgstr ""
 
-#: collective/collectionfilter/portlets/collectionsearch.py
+#: collective/collectionfilter/portlets/collectionsearch.py:39
 msgid "Collection Search"
 msgstr ""
 
-#: collective/collectionfilter/validator.py
+#: collective/collectionfilter/validator.py:43
 msgid "Context is not a collection or has a contentlisting tile, please set a target."
 msgstr ""
 
-#: collective/collectionfilter/portlets/collectionfilter.py
+#: collective/collectionfilter/portlets/collectionfilter.py:93
 msgid "Edit Collection Filter Portlet"
 msgstr ""
 
-#: collective/collectionfilter/portlets/maps.py
+#: collective/collectionfilter/portlets/reset.py:94
+msgid "Edit Collection Filter Reset Portlet"
+msgstr ""
+
+#: collective/collectionfilter/portlets/maps.py:71
 msgid "Edit Collection Maps Portlet"
 msgstr ""
 
-#: collective/collectionfilter/portlets/sorting.py
+#: collective/collectionfilter/portlets/sorting.py:72
 msgid "Edit Collection Result Listing Sort Portlet"
 msgstr ""
 
-#: collective/collectionfilter/portlets/collectionsearch.py
+#: collective/collectionfilter/portlets/collectionsearch.py:57
 msgid "Edit Collection Search Portlet"
 msgstr ""
 
-#: collective/collectionfilter/configure.zcml
-#: collective/collectionfilter/portlets/configure.zcml
+#: collective/collectionfilter/configure.zcml:86
+#: collective/collectionfilter/portlets/configure.zcml:77
 msgid "Extension profile for Plone."
 msgstr ""
 
-#: collective/collectionfilter/vocabularies.py
+#: collective/collectionfilter/vocabularies.py:99
 msgid "No"
 msgstr ""
 
-#: collective/collectionfilter/portlets/sorting.pt
-#: collective/collectionfilter/tiles/sorting.pt
+#: collective/collectionfilter/portlets/sorting.pt:31
+#: collective/collectionfilter/tiles/sorting.pt:29
 msgid "Select"
 msgstr ""
 
-#: collective/collectionfilter/portlets/collectionsearch.py
+#: collective/collectionfilter/portlets/collectionsearch.py:49
 msgid "This portlet allows fulltext search in collection results."
 msgstr ""
 
-#: collective/collectionfilter/portlets/maps.py
+#: collective/collectionfilter/portlets/maps.py:63
 msgid "This portlet allows map filtering in collection results."
 msgstr ""
 
-#: collective/collectionfilter/portlets/collectionfilter.py
+#: collective/collectionfilter/portlets/collectionfilter.py:82
+#: collective/collectionfilter/portlets/reset.py:83
 msgid "This portlet shows grouped criteria of collection results and allows filtering of collection results."
 msgstr ""
 
-#: collective/collectionfilter/portlets/sorting.py
+#: collective/collectionfilter/portlets/sorting.py:64
 msgid "This portlet shows sorting options for the result listing."
 msgstr ""
 
-#: collective/collectionfilter/vocabularies.py
+#: collective/collectionfilter/vocabularies.py:98
 msgid "Yes"
 msgstr ""
 
-#: collective/collectionfilter/tiles/__init__.py
+#: collective/collectionfilter/tiles/__init__.py:192
 msgid "You will need to add a Content Listing tile or target a collection to make Filters work"
 msgstr ""
 
 #. Default: "Search"
-#: collective/collectionfilter/portlets/collectionsearch.pt
-#: collective/collectionfilter/tiles/search.pt
+#: collective/collectionfilter/portlets/collectionsearch.pt:38
+#: collective/collectionfilter/tiles/search.pt:39
 msgid "button_search"
 msgstr ""
 
-#: collective/collectionfilter/configure.zcml
+#: collective/collectionfilter/configure.zcml:86
 msgid "collective.collectionfilter base"
 msgstr ""
 
-#: collective/collectionfilter/configure.zcml
+#: collective/collectionfilter/configure.zcml:93
 msgid "collective.collectionfilter base uninstall"
 msgstr ""
 
-#: collective/collectionfilter/portlets/configure.zcml
+#: collective/collectionfilter/portlets/configure.zcml:77
 msgid "collective.collectionfilter portlets"
 msgstr ""
 
-#: collective/collectionfilter/portlets/configure.zcml
+#: collective/collectionfilter/portlets/configure.zcml:94
 msgid "collective.collectionfilter portlets uninstall"
 msgstr ""
 
 #. Default: "Default map layer"
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:261
 msgid "default_map_layer"
 msgstr ""
 
-#: collective/collectionfilter/vocabularies.py
+#: collective/collectionfilter/vocabularies.py:202
 msgid "filtertype_and"
 msgstr ""
 
-#: collective/collectionfilter/vocabularies.py
+#: collective/collectionfilter/vocabularies.py:203
 msgid "filtertype_or"
 msgstr ""
 
-#: collective/collectionfilter/vocabularies.py
+#: collective/collectionfilter/vocabularies.py:201
 msgid "filtertype_single"
 msgstr ""
 
 #. Default: "Limit for GeoJSON properties"
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:282
 msgid "geojson_properties_limit"
 msgstr ""
 
 #. Default: "Enable caching of filter items. The cache is cleared as soon as the database has any changes."
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:102
 msgid "help_cache_enabled"
 msgstr ""
 
 #. Default: "If your tile or collection has a special class or id for ajax replacement use it here. Selector will need to work for unthemed view and current page."
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:70
 msgid "help_content_selector"
 msgstr ""
 
+#. Default: "CSS class for the reset filter button."
+#: collective/collectionfilter/interfaces.py:298
+msgid "help_css_class"
+msgstr ""
+
 #. Default: "Set the default map layer"
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:262
 msgid "help_default_map_layer"
 msgstr ""
 
 #. Default: "Select if single or multiple criteria can be selected and if all (and) or any (or) of the selected criteria must be met.Some index types like ``FieldIndex`` (e.g. Type index) only support the any (or) criteria when set to multiple criteria and ignore, if all (and) is set."
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:113
 msgid "help_filter_type"
 msgstr ""
 
 #. Default: "If the search result is larger than this limit, no additional GeoJSON properties (like popup information) are shown."
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:283
 msgid "help_geojson_properties_limit"
 msgstr ""
 
 #. Default: "Select the criteria to group the collection results by."
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:84
 msgid "help_groupby"
 msgstr ""
 
 #. Default: "Title of the rendered filter."
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:37
 msgid "help_header"
 msgstr ""
 
 #. Default: "Don't display if there is 1 or no options without selecting a filter yet."
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:157
 msgid "help_hide_if_empty"
 msgstr ""
 
 #. Default: "Select how the UI of the collection filter should be rendered. Whether as links, as checkboxes and radiobuttons or checkboxes and dropdowns."
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:124
 msgid "help_input_type"
 msgstr ""
 
 #. Default: "Set the available map layers"
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:272
 msgid "help_map_layers"
 msgstr ""
 
 #. Default: "Narrow down the filter options when a filter of this group is applied. Only options, which are available in the result set will then be displayed. Other filter groups can still narrow down this one, though."
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:145
 msgid "help_narrow_down"
 msgstr ""
 
 #. Default: "Narrow down the result after zooming/moving the map."
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:252
 msgid "help_narrow_down_results"
 msgstr ""
 
 #. Default: "Reverse the sorting of th list of filter options."
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:135
 msgid "help_reverse"
 msgstr ""
 
 #. Default: "Show the result count for each filter group."
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:93
 msgid "help_show_count"
 msgstr ""
 
 #. Default: "Select the indexes which can be sorted on."
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:187
 msgid "help_sort_on"
 msgstr ""
 
 #. Default: "We use the current context as collection. As an alternative you can select a different collection as source for the filter items and where the filter is applied."
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:43
 msgid "help_target_collection"
 msgstr ""
 
 #. Default: "Optional view name, if the result listing should be rendered with a special view. Can be used to direct the request to a tile."
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:58
 msgid "help_view_name"
 msgstr ""
 
-#: collective/collectionfilter/vocabularies.py
+#: collective/collectionfilter/vocabularies.py:217
 msgid "inputtype_checkboxes_dropdowns"
 msgstr ""
 
-#: collective/collectionfilter/vocabularies.py
+#: collective/collectionfilter/vocabularies.py:213
 msgid "inputtype_checkboxes_radiobuttons"
 msgstr ""
 
-#: collective/collectionfilter/vocabularies.py
+#: collective/collectionfilter/vocabularies.py:211
 msgid "inputtype_links"
 msgstr ""
 
+#: collective/collectionfilter/vocabularies.py:219
+msgid "inputtype_select2"
+msgstr ""
+
 #. Default: "Enable Cache"
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:101
 msgid "label_cache_enabled"
 msgstr ""
 
 #. Default: "Content Selector"
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:69
 msgid "label_content_selector"
 msgstr ""
 
+#. Default: "CSS Class"
+#: collective/collectionfilter/interfaces.py:297
+msgid "label_css_class"
+msgstr ""
+
 #. Default: "Filter Type"
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:112
 msgid "label_filter_type"
 msgstr ""
 
 #. Default: "Group by"
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:83
 msgid "label_groupby"
 msgstr ""
 
 #. Default: "Filter title"
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:36
 msgid "label_header"
 msgstr ""
 
 #. Default: "Hide if empty"
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:156
 msgid "label_hide_if_empty"
 msgstr ""
 
 #. Default: "Input Type"
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:123
 msgid "label_input_type"
 msgstr ""
 
 #. Default: "Map Layers"
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:271
 msgid "label_map_layers"
 msgstr ""
 
 #. Default: "Narrow down filter options"
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:144
 msgid "label_narrow_down"
 msgstr ""
 
 #. Default: "Narrow down result"
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:251
 msgid "label_narrow_down_results"
 msgstr ""
 
 #. Default: "Reverse sort filter"
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:134
 msgid "label_reverse"
 msgstr ""
 
 #. Default: "Show count"
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:92
 msgid "label_show_count"
 msgstr ""
 
 #. Default: "Enabled sort indexes"
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:186
 msgid "label_sort_on"
 msgstr ""
 
 #. Default: "Alternative Target Collection"
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:42
 msgid "label_target_collection"
 msgstr ""
 
 #. Default: "Result listing view name"
-#: collective/collectionfilter/interfaces.py
+#: collective/collectionfilter/interfaces.py:57
 msgid "label_view_name"
 msgstr ""
 
+#. Default: "Reset all"
+#: collective/collectionfilter/portlets/reset.pt:15
+msgid "reset_all"
+msgstr ""
+
 #. Default: "All"
-#: collective/collectionfilter/filteritems.py
+#: collective/collectionfilter/filteritems.py:247
 msgid "subject_all"
 msgstr "Tous"
 
 #. Default: "Search"
-#: collective/collectionfilter/portlets/collectionsearch.pt
-#: collective/collectionfilter/tiles/search.pt
+#: collective/collectionfilter/portlets/collectionsearch.pt:30
+#: collective/collectionfilter/tiles/search.pt:31
 msgid "text_search"
 msgstr ""
 
-#: collective/collectionfilter/vocabularies.py
+#: collective/collectionfilter/vocabularies.py:237
 msgid "title"
 msgstr ""
