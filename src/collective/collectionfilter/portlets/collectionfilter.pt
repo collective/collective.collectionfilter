@@ -56,7 +56,7 @@
         <select class="form-select"
                 name="${view/filter_id}"
                 tal:attributes="
-                  class python:'form-select pat-select2' if view.input_type=='select2_single' else 'form-select';
+                  class python:'pat-select2' if view.input_type=='select2_single' else 'form-select';
                 "
         >
           <tal:items repeat="item results">
