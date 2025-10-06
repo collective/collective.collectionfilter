@@ -91,6 +91,24 @@
         </ul>
       </tal:if>
 
+      <tal:if condition="python:view.input_type == 'select2'">
+        <input class="pat-select2"
+               type="text"
+               value="${selected_values}"
+               data-pat-select2="
+                  separator:,;
+                  tags:${tags};"
+               data-results="${results}"
+               tal:define="
+                 select2_options python:view.select2_options;
+                 tags python:select2_options.get('tags');
+                 results python:select2_options.get('results');
+                 selected_values python:select2_options.get('selected_values');
+               "
+        />
+
+      </tal:if>
+
     </div>
 
   </aside>

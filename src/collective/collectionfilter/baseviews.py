@@ -132,11 +132,33 @@ class BaseFilterView(BaseView):
     def input_type(self):
         if self.settings.input_type == "links":
             return "link"
+
+        if self.settings.input_type == "select2":
+            return "select2"
+
         if self.settings.filter_type == "single":
             if self.settings.input_type == "checkboxes_radiobuttons":
                 return "radio"
             return "dropdown"
         return "checkbox"
+
+    @property
+    def select2_options(self):
+        results = self.results()
+        options = []
+        selected_values = []
+        for item in results:
+            options.append(item["title"])
+            if item.get("selected"):
+                selected_values.append(item["title"])
+
+        select2_options = {
+            "results": json.dumps(results),
+            "tags": ",".join(options),
+            "selected_values": ",".join(selected_values),
+        }
+
+        return select2_options
 
     # results is called twice inside the template in view/available and view/results.  But its expensive so we cache it
     # but just the the lifetime of the view
