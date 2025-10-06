@@ -134,7 +134,10 @@ class BaseFilterView(BaseView):
             return "link"
 
         if self.settings.input_type == "select2":
-            return "select2"
+            if self.settings.filter_type == "single":
+                return "select2_single"
+            else:
+                return "select2"
 
         if self.settings.filter_type == "single":
             if self.settings.input_type == "checkboxes_radiobuttons":
@@ -147,6 +150,15 @@ class BaseFilterView(BaseView):
         results = self.results()
         options = []
         selected_values = []
+        select2_options = {
+            "results": [],
+            "tags": [],
+            "selected_values": [],
+        }
+
+        if not results:
+            return select2_options
+
         for item in results:
             options.append(item["title"])
             if item.get("selected"):

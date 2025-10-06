@@ -51,9 +51,12 @@
             </ul>
           </tal:if>
 
-          <tal:if condition="python:view.input_type == 'dropdown'">
+          <tal:if condition="python:view.input_type in ('dropdown','select2_single')">
             <select class="form-select"
                     name="${view/filter_id}"
+                    tal:attributes="
+                      class python:'form-select pat-select2' if view.input_type=='select2_single' else 'form-select';
+                    "
             >
               <tal:items repeat="item results">
                 <option class="${item/css_class}"
@@ -86,6 +89,25 @@
             </ul>
           </tal:if>
 
+          <tal:if condition="python:view.input_type == 'select2'">
+
+            <input class="pat-select2"
+                   type="text"
+                   value="${selected_values}"
+                   data-pat-select2="
+                      orderable:true;
+                      separator:,;
+                      tags:${tags};"
+                   data-results="${results}"
+                   tal:define="
+                     select2_options python:view.select2_options;
+                     tags python:select2_options.get('tags');
+                     results python:select2_options.get('results');
+                     selected_values python:select2_options.get('selected_values');
+                   "
+            />
+
+          </tal:if>
         </div>
       </tal:if>
     </aside>
