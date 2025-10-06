@@ -7,7 +7,7 @@ commit-id = "7a017355"
 
 [pyproject]
 codespell_ignores = "Dokument"
-codespell_skip = "*.min.js,*.min.js.map,yarn.lock,*.po,*.robot"
+codespell_skip = "*.min.js,*.min.js.map,yarn.lock,*.po,*.robot,*.json"
 dependencies_ignores = """
 [
     'collective.geolocationbehavior', 'plone.formwidget.geolocation',
