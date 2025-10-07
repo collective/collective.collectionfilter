@@ -94,11 +94,35 @@ export default Base.extend({
             }.bind(this)
         );
 
-        // OPTION 2 - filter rendered as checkboxes
+        // OPTION 2 - filter rendered as checkboxes or as pat-select2
         $(".filterContent input", this.$el).on(
             "change",
             function (e) {
-                var collectionURL = $(e.target).data("url");
+
+                var collectionURL = null;
+
+                if(e.currentTarget.classList.contains('pat-select2') == true){
+
+                    // the pat-select2 field
+                    const select2 = e.currentTarget
+                    const options = JSON.parse(select2.dataset.results)
+                    let current_option = null
+                    if(e.added){
+                        // option is added
+                        current_option = e.added
+                    } else{
+                        // option is removed
+                        current_option = e.removed
+                    }
+
+                    const item = options.find((item) => item.title == current_option.text)
+
+                    collectionURL = item.url
+
+                } else{
+                    //other checkboxes
+                    collectionURL = $(e.target).data("url");
+                }
 
                 $(this.trigger).trigger("collectionfilter:reload", {
                     collectionUUID: this.options.collectionUUID,
@@ -106,6 +130,7 @@ export default Base.extend({
                 });
 
                 this.reloadCollection(collectionURL);
+
             }.bind(this)
         );
 
@@ -175,6 +200,7 @@ export default Base.extend({
                 }.bind(this)
             );
         }
+
     },
 
     reload: function (filterURL) {
