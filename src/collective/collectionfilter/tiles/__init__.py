@@ -95,14 +95,11 @@ class CollectionishLayout(CollectionishCollection):
     def __init__(self, context):
         """Adapt either collections or contentlisting tile. The name is sorted content selector"""
         self.context = context
+        self.collection = ICollection(self.context, None)
 
-        # self.context might not be adaptable
-        # make sure you select the right content with
-        # selectContent(selector) after initialization
-        try:
-            self.collection = ICollection(self.context)
-        except TypeError:
-            self.collection = None
+        if self.collection is None:
+            # context might not be adaptable -> try to find a collectionish tile
+            self.selectContent()
 
     def selectContent(self, selector=None):
         """Pick tile that selector will match, otherwise pick first one.

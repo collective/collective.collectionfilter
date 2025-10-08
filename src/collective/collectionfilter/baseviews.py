@@ -106,16 +106,17 @@ class BaseView:
             return self.settings.content_selector
 
         collectionish = (
-            ICollectionish(self.collection.getObject()) if self.collection else None
+            ICollectionish(self.collection.getObject(), None) if self.collection else None
         )
+
         if collectionish is not None:
             # select default content
             collectionish.selectContent()
-        selector = collectionish.content_selector
-        if collectionish is None or not selector:
-            return "#content-core"
-        else:
-            return selector
+            selector = collectionish.content_selector
+            if selector:
+                return selector
+
+        return "#content-core"
 
     @property
     def ajax_load(self):
@@ -413,9 +414,9 @@ if HAS_GEOLOCATION:
         def locations(self):
             custom_query = {}  # Additional query to filter the collection
 
-            collection = self.context
+            collection = ICollectionish(self.context, None)
             if not collection:
-                return None
+                return []
 
             # Recursively transform all to unicode
             request_params = safe_decode(get_top_request(self.request).form or {})
@@ -425,7 +426,7 @@ if HAS_GEOLOCATION:
             custom_query = base_query(request_params)
             custom_query = make_query(custom_query)
 
-            return ICollectionish(collection).results(custom_query, request_params)
+            return collection.results(custom_query, request_params)
 
 
 class BaseResetFilterView(BaseFilterView):
