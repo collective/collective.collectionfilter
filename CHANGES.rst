@@ -1,3 +1,25 @@
+5.3.0 (2025-10-08)
+------------------
+
+New features:
+
+
+- add a pat-select2 portlet as filter option @1letter (#228)
+
+
+Bug fixes:
+
+
+- add missing translations for de and de-ch @1letter (#223)
+- Fix selecting Collectionish item in MapsTile/Portlet geojson view. @petschki
+
+
+Internal:
+
+
+- Update JS dependencies. @petschki
+
+
 5.2.2 (2025-03-21)
 ------------------
 

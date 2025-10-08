@@ -1,1 +1,0 @@
-add a pat-select2 portlet as filter option @1letter
