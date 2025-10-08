@@ -8,8 +8,8 @@
     },
     "license": "GPL-2.0-only",
     "dependencies": {
-        "@patternslib/patternslib": "9.9.16",
-        "@plone/mockup": "5.1.13"
+        "@patternslib/patternslib": "^9.10.2",
+        "@plone/mockup": "^5.1.17"
     },
     "devDependencies": {
         "@patternslib/dev": "^3.6.1",
