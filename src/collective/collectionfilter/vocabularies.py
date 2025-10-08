@@ -20,11 +20,17 @@ from zope.schema.vocabulary import SimpleVocabulary
 
 import plone.api
 
+from zope.interface.interfaces import ComponentLookupError
+
 
 # Use this EMPTY_MARKER for your custom indexer to index empty criterions.
 EMPTY_MARKER = "__EMPTY__"
 TEXT_IDX = "SearchableText"
+
+# integer ids are stored in the registry
+# But not before version upgrade
 INTEGER_IDXS = []
+
 GEOLOC_IDX = [
     "latitude",
     "longitude",
@@ -139,6 +145,16 @@ class GroupByCriteria:
             # on each request. This has to be fast, so exit early.
             return self._groupby
         self._groupby = {}
+
+        # Use 'try' since it broke before update
+        # Maybe move this code to GroupByCriteria
+        try:
+            INTEGER_IDXS = plone.api.portal.get_registry_record(
+                "collective.collectionfilter.int_types", default=[]
+            )
+        except ComponentLookupError:
+            INTEGER_IDXS = []
+
 
         cat = plone.api.portal.get_tool("portal_catalog")
         # get catalog metadata schema, but filter out items which cannot be

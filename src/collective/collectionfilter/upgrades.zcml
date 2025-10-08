@@ -100,5 +100,13 @@
       handler=".upgrades.upgrade_to_plone6"
       />
 
+  <genericsetup:upgradeStep
+     title="collective.collectionfilter: Upgrade v12 to v13"
+     description="upgrade to version 13"
+     source="12"
+     destination="13"
+     profile="collective.collectionfilter:upgrade-13"
+     handler=".upgrades.upgrade_registry_13"
+     />
 
 </configure>
