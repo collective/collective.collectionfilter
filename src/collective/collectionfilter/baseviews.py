@@ -172,8 +172,8 @@ class BaseFilterView(BaseView):
 
         return select2_options
 
-    # results is called twice inside the template in view/available and view/results.  But its expensive so we cache it
-    # but just the the lifetime of the view
+    # results is called twice inside the template in view/available and view/results.
+    # But its expensive so we cache it for the view lifetime
     @instance.memoize
     def results(self):
         results = get_filter_items(
@@ -424,6 +424,7 @@ if HAS_GEOLOCATION:
             # defined by urlquery
             custom_query = base_query(request_params)
             custom_query = make_query(custom_query)
+
             return ICollectionish(collection).results(custom_query, request_params)
 
 

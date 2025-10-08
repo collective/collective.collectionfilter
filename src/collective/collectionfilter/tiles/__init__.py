@@ -108,7 +108,6 @@ class CollectionishLayout(CollectionishCollection):
         """Pick tile that selector will match, otherwise pick first one.
         Return None if no listing tile or collection is suitable, else return this adapter.
         """
-
         if selector is None:
             selector = ""
         self.tile = None
