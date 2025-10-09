@@ -1,14 +1,12 @@
 """Setup tests for this package."""
 
-from collective.collectionfilter.testing import (  # noqa
-    COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING,
-)
+from collective.collectionfilter.testing import INTEGRATION_TESTING
 
 import unittest
 
 
 class TestMaps(unittest.TestCase):
-    layer = COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING
+    layer = INTEGRATION_TESTING
 
     def setUp(self):
         """Custom shared utility setup for tests."""
