@@ -33,9 +33,3 @@ test_extras = """
     mosaic
 """
 test_matrix = {"6.2" = ["*"]}
-
-[github]
-jobs = [
-    "qa",
-    "release_ready",
-    ]
