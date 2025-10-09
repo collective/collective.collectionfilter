@@ -1,8 +1,6 @@
 """Setup tests for this package."""
 
-from collective.collectionfilter.testing import (  # noqa
-    COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING,
-)
+from collective.collectionfilter.testing import INTEGRATION_TESTING
 from collective.collectionfilter.tiles.filter import FilterTile
 from plone import api
 from plone.app.testing import login
@@ -14,7 +12,7 @@ import unittest
 
 
 class TestFilteritems(unittest.TestCase):
-    layer = COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING
+    layer = INTEGRATION_TESTING
 
     def setUp(self):
         """Custom shared utility setup for tests."""
