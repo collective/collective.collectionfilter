@@ -77,6 +77,10 @@ forest.*
 test_*
 robot_*
 dependencies.svg
+playwright-log.txt
+log.html
+output.xml
+report.html
 """
 
 [tox]
