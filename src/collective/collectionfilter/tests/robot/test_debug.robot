@@ -1,25 +1,46 @@
-*** Settings *****************************************************************
+# Start a single robot test
+#
+# Install rfbrowser
+#
+# rfbrowser init
+#
+# Start the server
+#
+# WSGI_SERVER_HOST=localhost WSGI_SERVER_PORT=50003 robot-server collective.collectionfilter.testing.ACCEPTANCE_TESTING
+#
+# Start the test
+#
+# WSGI_SERVER_HOST=localhost WSGI_SERVER_PORT=50003 robot src/collective/collectionfilter/tests/robot/test_debug.robot
+#
 
-Resource  plone/app/robotframework/keywords.robot
-Resource  keywords.robot
+*** Settings ***
 
-Test Setup  Run keyword  Default Setup
-Test Teardown  Run keyword  Default Teardown
+Resource    plone/app/robotframework/browser.robot
+Resource    keywords.robot
+
+Library    Remote    ${PLONE_URL}/RobotRemote
+
+Test Setup    Run Keywords    Plone test setup
+Test Teardown    Run keywords     Plone test teardown
+
+# disable headless mode for browser
+# set the variable BROWSER to chrome or firefox
+*** Variables ***
+${BROWSER}    chrome
 
 
-*** Test Cases ***************************************************************
+*** Test Cases ***
 
 Scenario: Add filter to collection
-    Given a logged in manager
-      and View a Test Collection
-      and Manage portlets
-      and Add filter portlet  exclude_from_nav  single  checkboxes_radiobuttons
-      and Add filter portlet  Subject  or  checkboxes_radiobuttons
-      and Add filter portlet  portal_type  or  checkboxes_radiobuttons
-      Go to  ${PLONE_URL}/mycollection
+    Given a logged-in test user
+      and a test collection view
+      and a manage portlets view
+     When I add filter portlet    exclude_from_nav    single    checkboxes_radiobuttons
+      and I add filter portlet    Subject    or    checkboxes_radiobuttons
+      and I add filter portlet    portal_type    or    checkboxes_radiobuttons
+     Then Go to  ${PLONE_URL}/mycollection
 
+*** Keywords ***
 
-*** Keywords *****************************************************************
-
-View a Test Collection
+a test collection view
     Go to  ${PLONE_URL}/mycollection
