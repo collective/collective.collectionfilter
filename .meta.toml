@@ -12,6 +12,7 @@ dependencies_ignores = """
 [
     'collective.geolocationbehavior', 'plone.formwidget.geolocation',
     'plone.app.blocks', 'plone.tiles', 'plone.app.tiles', 'plone.app.portlets',
+    'Products.Five', 'Products.CMFPlacefulWorkflow'
 ]
 """
 
