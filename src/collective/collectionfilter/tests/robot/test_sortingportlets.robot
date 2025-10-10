@@ -22,8 +22,8 @@ Test Teardown    Run keywords     Default Teardown
 
 # disable headless mode for browser
 # set the variable BROWSER to chrome or firefox
-*** Variables ***
-${BROWSER}    chrome
+#*** Variables ***
+#${BROWSER}    chrome
 
 *** Test Cases ***
 
