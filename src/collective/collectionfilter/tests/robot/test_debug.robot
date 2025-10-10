@@ -17,13 +17,13 @@
 
 Resource    keywords.robot
 
-Test Setup    Run Keywords    Plone test setup
-Test Teardown    Run keywords     Plone test teardown
+Test Setup    Run Keywords    Default Setup
+Test Teardown    Run keywords     Default Teardown
 
 # disable headless mode for browser
 # set the variable BROWSER to chrome or firefox
-*** Variables ***
-${BROWSER}    chrome
+#*** Variables ***
+#${BROWSER}    chrome
 
 
 *** Test Cases ***
