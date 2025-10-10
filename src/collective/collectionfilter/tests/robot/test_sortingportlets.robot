@@ -15,13 +15,10 @@
 
 *** Settings ***
 
-Resource    plone/app/robotframework/browser.robot
 Resource    keywords.robot
 
-Library    Remote    ${PLONE_URL}/RobotRemote
-
-Test Setup    Run Keywords    Plone test setup
-Test Teardown    Run keywords     Plone test teardown
+Test Setup    Run Keywords    Default Setup
+Test Teardown    Run keywords     Default Teardown
 
 # disable headless mode for browser
 # set the variable BROWSER to chrome or firefox
@@ -31,13 +28,12 @@ ${BROWSER}    chrome
 *** Test Cases ***
 
 Scenario: Sorting with result sorting portlet
-    Go to  ${PLONE_URL}/mycollection
-#     Given I've got a site with a collection
-#       and my collection has a collection sorting
-#       and I'm viewing the collection
-#       and I sort by "Sortable Title"
-#       and Page should not contain   Error
-#       and Results are Sorted
+    Given I've got a site with a collection
+      and my collection has a collection sorting
+      and I'm viewing the collection
+     When I sort by "Sortable Title"
+     Then Page should not contain   Error
+      and Results are Sorted
 
 # Scenario: Combine sort and OR filter
 #     Given I've got a site with a collection
