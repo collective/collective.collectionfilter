@@ -15,10 +15,7 @@
 
 *** Settings ***
 
-Resource    plone/app/robotframework/browser.robot
 Resource    keywords.robot
-
-Library    Remote    ${PLONE_URL}/RobotRemote
 
 Test Setup    Run Keywords    Plone test setup
 Test Teardown    Run keywords     Plone test teardown
@@ -32,7 +29,7 @@ ${BROWSER}    chrome
 *** Test Cases ***
 
 Scenario: Add filter to collection
-    Given a logged-in test user
+    Given a logged in test-user
       and a test collection view
       and a manage portlets view
      When I add filter portlet    exclude_from_nav    single    checkboxes_radiobuttons
