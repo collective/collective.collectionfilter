@@ -51,7 +51,7 @@ jobs:
           VENV=off TEST_LAYER=${{ matrix.test_layer}} ROBOT_BROWSER=headlesschrome make test-layer-ignore-warnings
 
       - name: Save Robotframework Log
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         # safe artifacts only for failing tests
         if: ${{ failure() }}
         with:
