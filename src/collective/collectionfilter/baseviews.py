@@ -106,7 +106,9 @@ class BaseView:
             return self.settings.content_selector
 
         collectionish = (
-            ICollectionish(self.collection.getObject(), None) if self.collection else None
+            ICollectionish(self.collection.getObject(), None)
+            if self.collection
+            else None
         )
 
         if collectionish is not None:
