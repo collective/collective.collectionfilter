@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2025-10-06 10:40+0000\n"
+"POT-Creation-Date: 2025-11-17 20:09+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -91,9 +91,16 @@ msgstr "Kollektionssortierung bearbeiten"
 msgid "Edit Collection Search Portlet"
 msgstr "Portlet zur Suche in Kollektionen bearbeiten"
 
-#: collective/collectionfilter/configure.zcml:86
+#: collective/collectionfilter/portlets/configure.zcml:86
+msgid "Install 'Portlets (with maps)' profile for collective.collectionfilter addon."
+msgstr ""
+
 #: collective/collectionfilter/portlets/configure.zcml:77
-msgid "Extension profile for Plone."
+msgid "Install 'Portlets' profile for collective.collectionfilter addon."
+msgstr ""
+
+#: collective/collectionfilter/configure.zcml:86
+msgid "Install 'base' profile for collective.collectionfilter addon."
 msgstr ""
 
 #: collective/collectionfilter/vocabularies.py:99
@@ -122,11 +129,19 @@ msgstr "Dieses Portlet zeigt gruppierte Kollektionsergebnisse und erlaubt eine w
 msgid "This portlet shows sorting options for the result listing."
 msgstr "Dieses Portlet zeigt Sortieroptionen für die Ergebnisliste an."
 
+#: collective/collectionfilter/portlets/configure.zcml:94
+msgid "Uninstall 'Portlets' profile for collective.collectionfilter addon."
+msgstr ""
+
+#: collective/collectionfilter/configure.zcml:93
+msgid "Uninstall 'base' profile for collective.collectionfilter addon."
+msgstr ""
+
 #: collective/collectionfilter/vocabularies.py:98
 msgid "Yes"
 msgstr "Ja"
 
-#: collective/collectionfilter/tiles/__init__.py:192
+#: collective/collectionfilter/tiles/__init__.py:188
 msgid "You will need to add a Content Listing tile or target a collection to make Filters work"
 msgstr "Die Mosaic Seite benötigt ein \"Contentlisting Tile\" damit das Filterergebnis dargestellt werden kann."
 
@@ -136,20 +151,24 @@ msgstr "Die Mosaic Seite benötigt ein \"Contentlisting Tile\" damit das Filtere
 msgid "button_search"
 msgstr "suchen"
 
-#: collective/collectionfilter/configure.zcml:86
-msgid "collective.collectionfilter base"
-msgstr ""
-
-#: collective/collectionfilter/configure.zcml:93
-msgid "collective.collectionfilter base uninstall"
+#: collective/collectionfilter/portlets/configure.zcml:86
+msgid "collective.collectionfilter: 'Portlets (with maps)' install profile"
 msgstr ""
 
 #: collective/collectionfilter/portlets/configure.zcml:77
-msgid "collective.collectionfilter portlets"
+msgid "collective.collectionfilter: 'Portlets' install profile"
 msgstr ""
 
 #: collective/collectionfilter/portlets/configure.zcml:94
-msgid "collective.collectionfilter portlets uninstall"
+msgid "collective.collectionfilter: 'Portlets' uninstall profile"
+msgstr ""
+
+#: collective/collectionfilter/configure.zcml:86
+msgid "collective.collectionfilter: 'base' install profile"
+msgstr ""
+
+#: collective/collectionfilter/configure.zcml:93
+msgid "collective.collectionfilter: 'base' uninstall profile"
 msgstr ""
 
 #. Default: "Default map layer"

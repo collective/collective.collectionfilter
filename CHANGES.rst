@@ -1,3 +1,12 @@
+5.3.1 (unreleased)
+------------------
+
+New features:
+
+
+- add more improvements about i18n support @macagua (#241)
+
+
 5.3.0 (2025-10-08)
 ------------------
 

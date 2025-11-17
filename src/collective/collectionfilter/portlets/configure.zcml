@@ -69,8 +69,8 @@
       />
   <genericsetup:registerProfile
       name="default"
-      title="collective.collectionfilter portlets"
-      description="Extension profile for Plone."
+      title="collective.collectionfilter: 'Portlets' install profile"
+      description="Install 'Portlets' profile for collective.collectionfilter addon."
       provides="Products.GenericSetup.interfaces.EXTENSION"
       directory="profiles/default"
       zcml:condition="not-installed collective.geolocationbehavior"
@@ -78,8 +78,8 @@
 
   <genericsetup:registerProfile
       name="default"
-      title="collective.collectionfilter portlets"
-      description="Extension profile for Plone."
+      title="collective.collectionfilter: 'Portlets (with maps)' install profile"
+      description="Install 'Portlets (with maps)' profile for collective.collectionfilter addon."
       provides="Products.GenericSetup.interfaces.EXTENSION"
       directory="profiles/portlets_with_maps"
       zcml:condition="installed collective.geolocationbehavior"
@@ -87,8 +87,8 @@
 
   <genericsetup:registerProfile
       name="uninstall"
-      title="collective.collectionfilter portlets uninstall"
-      description="Extension profile for Plone."
+      title="collective.collectionfilter: 'Portlets' uninstall profile"
+      description="Uninstall 'Portlets' profile for collective.collectionfilter addon."
       provides="Products.GenericSetup.interfaces.EXTENSION"
       directory="profiles/uninstall"
       />
