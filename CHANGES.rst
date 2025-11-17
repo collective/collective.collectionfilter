@@ -4,6 +4,7 @@
 New features:
 
 
+- update the spanish translations missing @macagua (#242)
 - add more improvements about i18n support @macagua (#241)
 
 
