@@ -23,7 +23,7 @@ jobs:
           - "AcceptanceTestingPortlet_AjaxEnabled"
           - "AcceptanceTesting_Tiles"
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Setup Plone ${{ matrix.plone }} with Python ${{ matrix.python }}
         id: setup
