@@ -12,20 +12,20 @@ collective.collectionfilter
 
 Faceted navigation filter for collection or contentlisting tiles.
 
-This Plone 5 addon allows you to filter listing results for fields which are indexed in the catalog
-(Plones internal search tool).
+This Plone addon for 5.x/6.x versions, allows you to filter listing results for fields which are indexed in the catalog
+(Plone internal search tool).
 For example, you can add a subject filter, but also a filter for authors or portal types.
 
 The filter types can be extended (see: ``collective.collectionfilter.vocabularies``).
 
-There are three portlets/tiles available for filtering:
+There are five portlets/tiles available for filtering:
 
 ``Collection Filter``
     a list with values (select, radio, checkbox, link) you can filter on
 ``Collection Search``
     a SearchableText input field to do a fulltextsearch on the collection results
 ``Collection Maps``
-    a LeafletJS map which shows and filters ``IGeolocatable`` items on it
+    a `LeafletJS`_ map which shows and filters ``IGeolocatable`` items on it
     (this feature is available if ``collective.geolocationbehavior`` is installed and the behavior
     is activated on a contenttype. See installation notes below)
 ``Collection Result Listing Sort``
@@ -52,7 +52,9 @@ option will redirect you to the collection.
 Mosaic Integration
 ------------------
 
-Use the package extra to install the required dependencies::
+Use the package extra to install the required dependencies:
+
+::
 
     [buildout]
     ...
@@ -71,17 +73,18 @@ If you want to use filter tiles with a collection then add a content listing til
 It is also possible to use the ``Embed content`` tile if there is a unique selector on your collection view.
 
 
-
 Geolocation filter support
 --------------------------
 
-If ``collective.geolocationbehavior`` is installed, this package provides a LeafletJS Maps tile/portlet
+If ``collective.geolocationbehavior`` is installed, this package provides a `LeafletJS`_ Maps tile/portlet
 which shows each item of a collection result if the ``IGeolocatable`` information is available.
 In addition you can activate the ``Narrow down results`` checkbox to narrow down the collection result and
 other available filter tiles/portlets if the user moves or zooms the map.
 
 We provide a package extra to install all required dependencies with their according versions.
-Simply do this somewhere in your buildout::
+Simply do this somewhere in your buildout:
+
+::
 
     [buildout]
     ...
@@ -118,7 +121,9 @@ Within this adapter, you can modify the already populated ``_groupby`` attribute
 
 This is how.
 
-Write an adapter::
+Write an adapter:
+
+::
 
     # -*- coding: utf-8 -*-
     from collective.collectionfilter.interfaces import IGroupByCriteria
@@ -147,11 +152,13 @@ Write an adapter::
         groupby._groupby['Subject']['sort_key_function'] = subjectsort
         groupby._groupby['my_new_index'] = {
             'index': 'my_new_index',
-            'metadata': 'my_new_index_metadata_colum',
+            'metadata': 'my_new_index_metadata_column',
             'display_modifier': lambda it, idx: u'this is awesome: {0}'.format(it)
         }
 
-Register the adapter::
+Register the adapter:
+
+::
 
     <configure xmlns="http://namespaces.zope.org/zope">
       <adapter factory=".collectionfilter.groupby_modifier" name="modifier_1" />
@@ -168,7 +175,7 @@ Compatibility
 - Version 4.x is compatible with Plone 5.2+
 - Version 3.x is compatible with Plone 5.0.x and 5.1.x
 
-If your theme doesn't work well with AJAX loading this can be overridden in the registry or via diazo.
+If your theme doesn't work well with `AJAX` loading this can be overridden in the registry or via `diazo`_.
 
 Author
 ------
@@ -176,4 +183,9 @@ Author
 - Johannes Raggam
 - Peter Holzer
 
-This package is based on ``collective.portlet.collectionfilter`` and ``collective.portlet.collectionbysubject``.
+This package is based on `collective.portlet.collectionfilter`_ and `collective.portlet.collectionbysubject`_.
+
+.. _LeafletJS: https://leafletjs.com/
+.. _diazo: https://docs.diazo.org/en/latest/index.html
+.. _collective.portlet.collectionfilter: https://pypi.org/project/collective.portlet.collectionfilter/
+.. _collective.portlet.collectionbysubject: https://pypi.org/project/collective.portlet.collectionbysubject/

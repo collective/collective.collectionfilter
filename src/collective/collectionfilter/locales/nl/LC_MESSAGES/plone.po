@@ -1,0 +1,64 @@
+# --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2025-11-17 20:09+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: nl\n"
+"Language-Name: Nederlands\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: plone\n"
+
+#: collective/collectionfilter/portlets/profiles/default/portlets.xml
+#: collective/collectionfilter/portlets/profiles/portlets_with_maps/portlets.xml
+msgid "Collection Filter"
+msgstr "Verzamelingfilter"
+
+#: collective/collectionfilter/portlets/profiles/default/portlets.xml
+msgid "Collection Filter Reset"
+msgstr ""
+
+#: collective/collectionfilter/portlets/profiles/default/portlets.xml
+#: collective/collectionfilter/portlets/profiles/portlets_with_maps/portlets.xml
+msgid "Collection Filter Result Sorting"
+msgstr ""
+
+#: collective/collectionfilter/portlets/profiles/portlets_with_maps/portlets.xml
+msgid "Collection Maps"
+msgstr ""
+
+#: collective/collectionfilter/portlets/profiles/default/portlets.xml
+#: collective/collectionfilter/portlets/profiles/portlets_with_maps/portlets.xml
+msgid "Collection Search"
+msgstr "Verzameling zoeken"
+
+#: collective/collectionfilter/portlets/profiles/default/portlets.xml
+#: collective/collectionfilter/portlets/profiles/portlets_with_maps/portlets.xml
+msgid "Portlet that groups collections items by criteria."
+msgstr ""
+
+#: collective/collectionfilter/portlets/profiles/default/portlets.xml
+#: collective/collectionfilter/portlets/profiles/portlets_with_maps/portlets.xml
+msgid "This portlet allows fulltext search in collection results."
+msgstr "Dit portlet toont een volledige tekst zoekveld voor in verzamelingen."
+
+#: collective/collectionfilter/portlets/profiles/portlets_with_maps/portlets.xml
+msgid "This portlet allows map filtering in collection results."
+msgstr ""
+
+#: collective/collectionfilter/portlets/profiles/default/portlets.xml
+msgid "This portlet allows resetting all filters"
+msgstr ""
+
+#: collective/collectionfilter/portlets/profiles/default/portlets.xml
+#: collective/collectionfilter/portlets/profiles/portlets_with_maps/portlets.xml
+msgid "This portlet allows sorting of the filtered result listing."
+msgstr ""

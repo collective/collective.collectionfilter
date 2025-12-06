@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<portlets>
+<portlets
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="plone">
   <portlet addview="collective.collectionfilter.portlets.CollectionFilter"
            description="Portlet that groups collections items by criteria."
            title="Collection Filter"
+           i18n:attributes="title; description"
   />
   <portlet addview="collective.collectionfilter.portlets.CollectionSearch"
            description="This portlet allows fulltext search in collection results."
            title="Collection Search"
+           i18n:attributes="title; description"
   />
   <portlet addview="collective.collectionfilter.portlets.CollectionSortOn"
            description="This portlet allows sorting of the filtered result listing."
            title="Collection Filter Result Sorting"
+           i18n:attributes="title; description"
   />
   <portlet addview="collective.collectionfilter.portlets.CollectionResetFilter"
            description="This portlet allows resetting all filters"
            title="Collection Filter Reset"
+           i18n:attributes="title; description"
   />
 </portlets>

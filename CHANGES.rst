@@ -1,3 +1,13 @@
+5.3.1 (unreleased)
+------------------
+
+New features:
+
+
+- update the spanish translations missing @macagua (#242)
+- add more improvements about i18n support @macagua (#241)
+
+
 5.3.0 (2025-10-08)
 ------------------
 
