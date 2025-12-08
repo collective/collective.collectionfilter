@@ -39,12 +39,12 @@ a manage portlets view
 # When
 
 I add filter portlet
-    [Arguments]   ${group_criteria}  ${filter_type}  ${input_type}  @{options}
+    [Arguments]    ${group_criteria}    ${filter_type}    ${input_type}    @{options}
 
     Wait For Condition    Element States    //select[contains(@class,"add-portlet")]    contains    visible
     Select Options By    //select[contains(@class,"add-portlet")]    label    Collection Filter
     Wait For Condition    Classes    //body    contains    modal-open
-    Type Text  //input[@id="form-widgets-header"]    ${group_criteria}
+    Type Text    //input[@id="form-widgets-header"]    ${group_criteria}
     Set Filter Options    ${group_criteria}    ${filter_type}    ${input_type}    @{options}
     Click    //div[contains(@class,"modal-footer")]//button[@id="form-buttons-add"]
     Wait For Condition    Element States    //div[contains(@class, 'portletAssignment')]//a[text()='${group_criteria}']    contains    visible
@@ -52,7 +52,7 @@ I add filter portlet
 # General
 
 Set Filter Options
-    [Arguments]   ${group_by}  ${filter_type}  ${input_type}  @{options}
+    [Arguments]    ${group_by}    ${filter_type}    ${input_type}    @{options}
     Select Options By    //select[@id="form-widgets-group_by"]    value    ${group_by}
     Select Options By    //select[@id="form-widgets-filter_type"]    value    ${filter_type}
     Select Options By    //select[@id="form-widgets-input_type"]    value    ${input_type}
@@ -103,7 +103,7 @@ Set sorting Options
 # Setup
 
 I've got a site with a collection
-    [arguments]  ${batch}=20
+    [arguments]    ${batch}=20
     a logged in test-user
     Run Keyword If    ${USE_TILES} == True    Enable mosaic layout for page    ${PLONE_URL}/testdoc    batch=${batch}
     Run Keyword If    ${USE_TILES} == False   Go to    ${PLONE_URL}/testcollection
@@ -142,6 +142,12 @@ Set Batch Size
     Run Keyword if    ${USE_TILES} == True    Click  css=.pattern-modal-buttons #buttons-save
     Click    css=#form-buttons-save
 
+My collection has a collection filter
+    [Arguments]    ${group_by}=Subject    ${op}=or    ${style}=checkboxes_dropdowns    @{options}
+    run keyword if    ${USE_TILES}    My collection has a collection filter tile    ${group_by}    ${op}    ${style}    @{options}
+    run keyword if    ${USE_TILES}==False    My collection has a collection filter portlet    ${group_by}    ${op}    ${style}    @{options}
+
+
 My collection has a collection sorting
     [Arguments]  ${sort_on}=Sortable Title
     Run Keyword If    ${USE_TILES} == True    My collection has a collection sorting tile    ${sort_on}
@@ -164,6 +170,13 @@ My collection has a collection sorting portlet
     Go to  ${PLONE_URL}/testcollection
     a manage portlets view
     Add sorting portlet    ${sort_on}    links
+
+My collection has a collection filter portlet
+    [Arguments]    ${group_by}=Subject    ${op}=or    ${style}=checkboxes_dropdowns    @{options}
+
+    Go to    ${PLONE_URL}/testcollection
+    a manage portlets view
+    I add filter portlet    ${group_by}    ${op}    ${style}    @{options}
 
 
 Add sorting portlet
@@ -268,3 +281,37 @@ Results Are Sorted
     sort list    ${sorted}
     log many    ${sorted}  ${names}
     Run Keyword If    ${sorted}!=${names}    Fail    Results are not sorted ${sorted}!=${names}
+
+# CF Stuff
+Should be ${X} collection results
+    ${xpath}=  Set Variable if    ${USE_TILES}    //span[@class='summary']    //div[@class='entries']/article
+    Run keyword if  ${X}>0    Wait For Condition    Element Count    xpath=${xpath}    >=    ${X}
+    # we need a short pause for rendering the collection result
+    Sleep  0.5
+    ${count} =  Get Element Count    xpath=${xpath}
+    Should Be Equal as Numbers    ${count}    ${X}
+
+
+Should be filter checkboxes
+    [Arguments]    @{values}
+    Labels Should Equal  xpath=//div[contains(@class, 'filterContent')]//span[@class='filterLabel']    @{values}
+
+Labels Should Equal
+    [Arguments]    ${selector}    @{expect}
+    @{locators}=  Get Elements    ${selector}
+    ${result}=  Create List
+    FOR    ${locator}    IN    @{locators}
+           ${name}=    Get Text    ${locator}
+           Append To List    ${result}    ${name}
+    END
+
+    # USE_TILES differs from order
+    sort list    ${expect}
+    sort list    ${result}
+
+    Should Be Equal    ${expect}    ${result}
+
+# Misc
+
+Click Input "${label}"
+    Click    xpath=//input[@id=//label[.//*[normalize-space(text())='${label}'] or normalize-space(text()) ='${label}']/@for]
