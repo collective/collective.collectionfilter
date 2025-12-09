@@ -1,11 +1,11 @@
 from datetime import datetime
 from datetime import timedelta
 from plone import api
-from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FIXTURE
 from plone.app.robotframework.testing import REMOTE_LIBRARY_BUNDLE_FIXTURE
 from plone.app.testing import applyProfile
 from plone.app.testing import FunctionalTesting
 from plone.app.testing import IntegrationTesting
+from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import PloneSandboxLayer
 from plone.app.textfield.value import RichTextValue
 from plone.testing.zope import WSGI_SERVER_FIXTURE
@@ -23,28 +23,29 @@ def _set_ajax_enabled(should_enable_ajax):
 
 
 class CollectiveCollectionFilterLayer(PloneSandboxLayer):
-    defaultBases = (PLONE_APP_CONTENTTYPES_FIXTURE,)
+
+    defaultBases = (PLONE_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
         # Load any other ZCML that is required for your tests.
         # The z3c.autoinclude feature is disabled in the Plone fixture base
         # layer.
+
+        import collective.collectionfilter
+        import collective.collectionfilter.tests
+        import collective.geolocationbehavior
         import plone.app.mosaic
 
         self.loadZCML(package=plone.app.mosaic)
-        import collective.geolocationbehavior
-
         self.loadZCML(package=collective.geolocationbehavior)
-        import collective.collectionfilter
-
         self.loadZCML(package=collective.collectionfilter)
-
-        import collective.collectionfilter.tests
-
         self.loadZCML(package=collective.collectionfilter.tests)
 
     def setUpPloneSite(self, portal):
         from plone.formwidget.geolocation.geolocation import Geolocation
+
+        # set workflow for tests
+        portal.portal_workflow.setDefaultChain("simple_publication_workflow")
 
         applyProfile(portal, "plone.app.mosaic:default")
         applyProfile(portal, "collective.geolocationbehavior:default")
@@ -193,17 +194,17 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
             )
 
 
-COLLECTIVE_COLLECTIONFILTER_FIXTURE = CollectiveCollectionFilterLayer()
+FIXTURE = CollectiveCollectionFilterLayer()
 
 
-COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING = IntegrationTesting(
-    bases=(COLLECTIVE_COLLECTIONFILTER_FIXTURE,),
+INTEGRATION_TESTING = IntegrationTesting(
+    bases=(FIXTURE,),
     name="CollectiveCollectionFilterLayer:IntegrationTesting",
 )
 
-COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING = FunctionalTesting(
+ACCEPTANCE_TESTING = FunctionalTesting(
     bases=(
-        COLLECTIVE_COLLECTIONFILTER_FIXTURE,
+        FIXTURE,
         REMOTE_LIBRARY_BUNDLE_FIXTURE,
         WSGI_SERVER_FIXTURE,
     ),
@@ -222,10 +223,11 @@ class CollectiveCollectionFilterAjaxEnabledLayer(CollectiveCollectionFilterLayer
         del os.environ["ROBOT_AJAX_ENABLED"]
 
 
-AJAX_ENABLED_FIXTURE = CollectiveCollectionFilterAjaxEnabledLayer()
-COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED = FunctionalTesting(
+FIXTURE_AJAX_ENABLED = CollectiveCollectionFilterAjaxEnabledLayer()
+
+ACCEPTANCE_TESTING_AJAX_ENABLED = FunctionalTesting(
     bases=(
-        AJAX_ENABLED_FIXTURE,
+        FIXTURE_AJAX_ENABLED,
         REMOTE_LIBRARY_BUNDLE_FIXTURE,
         WSGI_SERVER_FIXTURE,
     ),
@@ -234,15 +236,16 @@ COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED = FunctionalTesting(
 
 
 class CollectiveCollectionFilterAjaxDisabledLayer(CollectiveCollectionFilterLayer):
+
     def setUpPloneSite(self, portal):
         _set_ajax_enabled(False)
         super().setUpPloneSite(portal)
 
 
-AJAX_DISABLED_FIXTURE = CollectiveCollectionFilterAjaxDisabledLayer()
-COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED = FunctionalTesting(
+FIXTURE_AJAX_DISABLED = CollectiveCollectionFilterAjaxDisabledLayer()
+ACCEPTANCE_TESTING_AJAX_DISABLED = FunctionalTesting(
     bases=(
-        AJAX_DISABLED_FIXTURE,
+        FIXTURE_AJAX_DISABLED,
         REMOTE_LIBRARY_BUNDLE_FIXTURE,
         WSGI_SERVER_FIXTURE,
     ),
@@ -260,10 +263,10 @@ class CollectiveCollectionFilterTilesLayer(CollectiveCollectionFilterLayer):
         del os.environ["ROBOT_USE_TILES"]
 
 
-TILES_FIXTURE = CollectiveCollectionFilterTilesLayer()
-COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_TILES = FunctionalTesting(
+FIXTURE_TILES = CollectiveCollectionFilterTilesLayer()
+ACCEPTANCE_TESTING_TILES = FunctionalTesting(
     bases=(
-        TILES_FIXTURE,
+        FIXTURE_TILES,
         REMOTE_LIBRARY_BUNDLE_FIXTURE,
         WSGI_SERVER_FIXTURE,
     ),

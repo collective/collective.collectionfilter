@@ -3,7 +3,7 @@
 # See the inline comments on how to expand/tweak this configuration file
 [meta]
 template = "default"
-commit-id = "2.1.0"
+commit-id = "2.3.0"
 
 [pyproject]
 codespell_ignores = "Dokument"
@@ -12,6 +12,7 @@ dependencies_ignores = """
 [
     'collective.geolocationbehavior', 'plone.formwidget.geolocation',
     'plone.app.blocks', 'plone.tiles', 'plone.app.tiles', 'plone.app.portlets',
+    'Products.Five', 'Products.CMFPlacefulWorkflow'
 ]
 """
 
@@ -21,6 +22,10 @@ forest.*
 test_*
 robot_*
 dependencies.svg
+playwright-log.txt
+log.html
+output.xml
+report.html
 """
 
 [tox]
@@ -28,9 +33,3 @@ test_extras = """
     geolocation
     mosaic
 """
-
-[github]
-jobs = [
-    "qa",
-    "release_ready",
-    ]
