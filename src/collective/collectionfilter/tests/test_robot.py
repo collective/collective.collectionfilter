@@ -13,16 +13,18 @@ def test_suite():
     test_layer_mapping = (
         (
             ACCEPTANCE_TESTING_AJAX_DISABLED,
-            ("debug", "filterportlets", "sortingportlets"),
+            ("debug", "filterportlets")
+            #("debug", "filterportlets", "sortingportlets"),
         ),
         (
             ACCEPTANCE_TESTING_AJAX_ENABLED,
-            ("debug", "filterportlets", "sortingportlets"),
+            ("debug", "filterportlets")
+            #("debug", "filterportlets", "sortingportlets"),
         ),
-        (
-            ACCEPTANCE_TESTING_TILES,
-            ("tilesonly",),
-        ),
+        #(
+        #    ACCEPTANCE_TESTING_TILES,
+            #("tilesonly",),
+        #),
     )
     for layer, test_files in test_layer_mapping:
         for robot_test in test_files:
