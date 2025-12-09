@@ -25,8 +25,8 @@ Test Teardown    Run keywords     Default Teardown
 
 # disable headless mode for browser
 # set the variable BROWSER to chrome or firefox
-# *** Variables ***
-# ${BROWSER}    chrome
+#*** Variables ***
+#${BROWSER}    chrome
 
 *** Test Cases ***
 
@@ -90,16 +90,15 @@ Scenario: don't hide hidden filter if just narrowed down
     and Select Filter Option "Event (1)"
    Then Should be filter options  All (6)  Event (1)
 
-
-# Scenario: Displaying multiple collection filters on a single page
-#     Given I've got a site with a collection
-#       and my collection has a collection filter
-#       and my collection has a collection filter  group_by=portal_type
-#      When I'm viewing the collection
-#      Then I should have a filter with 7 options
-#       and I should have a filter with 3 options
-#       and I should see 10 filter options on the page
-#       and Should be filter checkboxes  All (6)  blue (1)  Dokumänt (2)  Evänt (1)  green (1)  red (1)  Süper (2)  All (6)  Event (1)  Page (5)
+Scenario: Displaying multiple collection filters on a single page
+  Given I've got a site with a collection
+    and my collection has a collection filter
+    and my collection has a collection filter    group_by=portal_type
+   When I'm viewing the collection
+   Then I should have a filter with 7 options
+    and I should have a filter with 3 options
+    and I should see 10 filter options on the page
+    and Should be filter checkboxes    All (6)    blue (1)    Dokumänt (2)    Evänt (1)    green (1)    red (1)    Süper (2)    All (6)    Event (1)    Page (5)
 
 # Scenario: Combine search and AND filter
 #     Given I've got a site with a collection
