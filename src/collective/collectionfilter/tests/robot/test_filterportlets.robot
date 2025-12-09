@@ -59,8 +59,8 @@ Scenario: Test Batching
      then Should be 1 collection results
      then Should be 1 pages
 
-#     ${loc}=  get location
-#     should contain  ${loc}  collectionfilter=1
+     ${loc}=  Get Url
+     should contain    ${loc}    collectionfilter=1
 
 # Scenario: Hide when no options
 
