@@ -1,6 +1,7 @@
 from collective.collectionfilter.testing import ACCEPTANCE_TESTING_AJAX_DISABLED
 from collective.collectionfilter.testing import ACCEPTANCE_TESTING_AJAX_ENABLED
-from collective.collectionfilter.testing import ACCEPTANCE_TESTING_TILES
+
+# from collective.collectionfilter.testing import ACCEPTANCE_TESTING_TILES
 from plone.app.testing import ROBOT_TEST_LEVEL
 from plone.testing import layered
 
@@ -13,18 +14,18 @@ def test_suite():
     test_layer_mapping = (
         (
             ACCEPTANCE_TESTING_AJAX_DISABLED,
-            ("debug", "filterportlets")
-            #("debug", "filterportlets", "sortingportlets"),
+            ("debug", "filterportlets"),
+            # ("debug", "filterportlets", "sortingportlets"),
         ),
         (
             ACCEPTANCE_TESTING_AJAX_ENABLED,
-            ("debug", "filterportlets")
-            #("debug", "filterportlets", "sortingportlets"),
+            ("debug", "filterportlets"),
+            # ("debug", "filterportlets", "sortingportlets"),
         ),
-        #(
+        # (
         #    ACCEPTANCE_TESTING_TILES,
-            #("tilesonly",),
-        #),
+        # ("tilesonly",),
+        # ),
     )
     for layer, test_files in test_layer_mapping:
         for robot_test in test_files:
