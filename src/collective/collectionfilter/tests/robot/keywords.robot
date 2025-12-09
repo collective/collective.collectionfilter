@@ -178,6 +178,15 @@ My collection has a collection filter portlet
     a manage portlets view
     I add filter portlet    ${group_by}    ${op}    ${style}    @{options}
 
+My collection has a collection search
+    run keyword if  ${USE_TILES}    My collection has a collection search tile
+    run keyword if  ${USE_TILES}==False    My collection has a collection search portlet
+
+My collection has a collection search portlet
+    Go to  ${PLONE_URL}/testcollection
+    a manage portlets view
+    Add search portlet
+
 
 Add sorting portlet
     [Arguments]   ${sort_on}  ${input_type}
@@ -187,6 +196,15 @@ Add sorting portlet
     Set Sorting Options    ${sort_on}    ${input_type}
     Click    css=.modal-footer button#form-buttons-add
     Get Element Count    //div[contains(@class, 'portletAssignment')]//a[text()='Sort on']    greater than    0
+
+
+Add search portlet
+    Get Element Count    //select[contains(@class,"add-portlet")]    greater than    0
+    Select Options By   //select[contains(@class,"add-portlet")]    label    Collection Search
+    Type Text    //input[@id="form-widgets-header"]    Searchable Text
+    #Select related filter collection
+    Click    //div[contains(@class,"modal-footer")]//button[@id="form-buttons-add"]
+    Get Element Count    //div[@class='portletAssignment']//a[text()='Searchable Text']
 
 
 I'm viewing the collection
@@ -249,10 +267,9 @@ Open advanced mosaic editor
     # d-index fix until fixed in mosaic
     Set Style    css=.mosaic-IDublinCore-description-tile    zIndex    unset
 
-
-Pause
-   Import library    Dialogs
-   Pause execution
+My collection has a collection search tile
+    Open advanced mosaic editor
+    Add search tile
 
 Set Style
     [Arguments]    ${selector}    ${style}    ${value}
@@ -266,7 +283,6 @@ I sort by "${sort_on}"
     ${glyph}=  Get Attribute    //span[contains(normalize-space(text()), '${sort_on}')]//span    class
     Click    //a/span[contains(text(), "${sort on}")]
     Wait For Condition    Element States    //span[contains(normalize-space(text()), '${sort_on}')]//span[@class='${glyph}']    contains    hidden
-
 
 Results Are Sorted
     ${xpath}=    Set Variable if  ${USE_TILES} == True    //span[@class='summary']    //div[@class='entries']//a[contains(@class, 'url')]
@@ -288,6 +304,10 @@ I should have a filter with ${number_of_results} options
 I should see ${number} filter options on the page
     Get Element Count    xpath=//aside[contains(@class,'collectionFilter') ]//div[contains(@class, 'filterContent')]//li[contains(@class, 'filterItem')]    ==    ${number}
 
+I search for "${search}"
+    Type Text    //aside[contains(@class,"collectionSearch")]//input[@name="SearchableText"]    ${search}
+    Run keyword if  ${AJAX_ENABLED}==False and ${USE_TILES}==False    Click    //aside[contains(@class,"collectionSearch")]//button[@type="submit"]
+    Run keyword if  ${AJAX_ENABLED}==True  Sleep  0.5
 
 # CF Stuff
 Should be ${X} collection results
@@ -344,3 +364,7 @@ Click Input "${label}"
 
 Select Filter Option "${text}"
     Select Options By   xpath=//div[contains(@class, 'filterContent')]//select    label    ${text}
+
+Pause
+   Import library    Dialogs
+   Pause execution
