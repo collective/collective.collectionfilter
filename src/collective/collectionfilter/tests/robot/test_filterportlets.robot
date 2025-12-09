@@ -72,15 +72,14 @@ Scenario: Hide when no options
    then Should be 6 collection results
    then Should be 0 filter options
 
+Scenario: show hidden filter if just narrowed down
 
-# Scenario: show hidden filter if just narrowed down
-
-#     Given I've got a site with a collection
-#       and my collection has a collection filter  portal_type  single  checkboxes_dropdowns  Narrow down filter options
-#      When I'm viewing the collection
-#       and Should be filter options  All (6)  Event (1)  Page (5)
-#       and Select Filter Option "Event (1)"
-#      Then Should be filter options  All (6)  Event (1)
+  Given I've got a site with a collection
+    and my collection has a collection filter    portal_type    single    checkboxes_dropdowns    Narrow down filter options
+   When I'm viewing the collection
+    and Should be filter options    All (6)    Event (1)    Page (5)
+    and Select Filter Option "Event (1)"
+   Then Should be filter options  All (6)  Event (1)
 
 # Scenario: don't hide hidden filter if just narrowed down
 #     Given I've got a site with a collection
