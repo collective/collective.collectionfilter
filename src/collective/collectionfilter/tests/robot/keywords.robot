@@ -292,9 +292,17 @@ Should be ${X} collection results
     Should Be Equal as Numbers    ${count}    ${X}
 
 
+Should be ${X} pages
+    ${X}=  evaluate    ${X} + 1  # need we have next or previous
+    Get Element Count    xpath=//ul[@class='pagination']//a    ==    ${X}
+
+
 Should be filter checkboxes
     [Arguments]    @{values}
     Labels Should Equal  xpath=//div[contains(@class, 'filterContent')]//span[@class='filterLabel']    @{values}
+
+Click Page "${page}"
+    Click    xpath=(//ul[@class='pagination']//a)[${page}]
 
 Labels Should Equal
     [Arguments]    ${selector}    @{expect}
