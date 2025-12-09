@@ -100,21 +100,21 @@ Scenario: Displaying multiple collection filters on a single page
     and I should see 10 filter options on the page
     and Should be filter checkboxes    All (6)    blue (1)    Dokumänt (2)    Evänt (1)    green (1)    red (1)    Süper (2)    All (6)    Event (1)    Page (5)
 
-# Scenario: Combine search and AND filter
-#     Given I've got a site with a collection
-#       and my collection has a collection search
-#       and my collection has a collection filter  Subject  and  checkboxes_dropdowns
-#      When I'm viewing the collection
-#       and Should be filter checkboxes  All (6)  blue (1)  Dokumänt (2)  Evänt (1)  green (1)  red (1)  Süper (2)
-#      Then Click Input "Süper (2)"
-#       and Should be 2 collection results
-#       and Should be filter checkboxes  All (6)  blue (1)  Dokumänt (2)  Evänt (1)  green (1)  red (1)  Süper (2)
-#      Then Click Input "Evänt (1)"
-#       and Should be 1 collection results
-#       and Should be filter checkboxes  All (6)  blue (1)  Dokumänt (2)  Evänt (1)  green (1)  red (1)  Süper (2)
-#      Then I search for "Event"
-#       and Should be 1 collection results
-#       and Should be filter checkboxes  All (1)  Evänt (1)  Süper (1)
+Scenario: Combine search and AND filter
+  Given I've got a site with a collection
+    and my collection has a collection search
+    and my collection has a collection filter    Subject    and    checkboxes_dropdowns
+   When I'm viewing the collection
+    and Should be filter checkboxes    All (6)    blue (1)    Dokumänt (2)    Evänt (1)    green (1)    red (1)    Süper (2)
+   Then Click Input "Süper (2)"
+    and Should be 2 collection results
+    and Should be filter checkboxes    All (6)    blue (1)    Dokumänt (2)    Evänt (1)    green (1)    red (1)    Süper (2)
+   Then Click Input "Evänt (1)"
+    and Should be 1 collection results
+    and Should be filter checkboxes    All (6)    blue (1)    Dokumänt (2)    Evänt (1)    green (1)    red (1)    Süper (2)
+   Then I search for "Event"
+    and Should be 1 collection results
+    and Should be filter checkboxes    All (1)    Evänt (1)    Süper (1)
 
 
 # Scenario: Search filter
