@@ -61,10 +61,10 @@ Set Filter Options
 
 
 Set Options
-    [Arguments]  @{options}
+    [Arguments]    @{options}
 
     FOR    ${option}    IN    @{options}
-        Click    //label[contains(text(),${option})]
+        Click    //label/span[contains(text(),"${option}")]
     END
 
 
@@ -300,6 +300,9 @@ Should be ${X} pages
 Should be filter checkboxes
     [Arguments]    @{values}
     Labels Should Equal  xpath=//div[contains(@class, 'filterContent')]//span[@class='filterLabel']    @{values}
+
+Should be ${X} filter options
+    Get Element Count    xpath=//div[contains(@class, 'filterContent')]//*[contains(@class, 'filterItem')]    ==    ${X}
 
 Click Page "${page}"
     Click    xpath=(//ul[@class='pagination']//a)[${page}]

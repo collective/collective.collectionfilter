@@ -31,6 +31,7 @@ Test Teardown    Run keywords     Default Teardown
 *** Test Cases ***
 
 Scenario: Add filter to collection
+
   Given I've got a site with a collection
     and My collection has a collection filter    Subject    or    checkboxes_dropdowns
    When I'm viewing the collection
@@ -46,29 +47,30 @@ Scenario: Add filter to collection
     and Should be filter checkboxes    All (6)    blue (1)    Dokumänt (2)    Evänt (1)    green (1)    red (1)    Süper (2)
 
 Scenario: Test Batching
-    Given I've got a site with a collection    batch=1
-      and my collection has a collection filter    Subject    or    checkboxes_dropdowns
-     When I'm viewing the collection
-     then Should be 1 collection results
+
+  Given I've got a site with a collection    batch=1
+    and my collection has a collection filter    Subject    or    checkboxes_dropdowns
+   When I'm viewing the collection
+   then Should be 1 collection results
      
-     When Click Input "Süper (2)"
-     then Should be 1 collection results
-      and Should be 1 pages
+   When Click Input "Süper (2)"
+   then Should be 1 collection results
+    and Should be 1 pages
      
-     When Click Page "1"
-     then Should be 1 collection results
-     then Should be 1 pages
+   When Click Page "1"
+   then Should be 1 collection results
+   then Should be 1 pages
 
-     ${loc}=  Get Url
-     should contain    ${loc}    collectionfilter=1
+   ${loc}=  Get Url
+   should contain    ${loc}    collectionfilter=1
 
-# Scenario: Hide when no options
+Scenario: Hide when no options
 
-#     Given I've got a site with a collection
-#       and my collection has a collection filter  Creator  or  checkboxes_dropdowns  Hide if empty
-#      When I'm viewing the collection
-#      then Should be 6 collection results
-#      then Should be 0 filter options
+  Given I've got a site with a collection
+    and my collection has a collection filter    Creator    or    checkboxes_dropdowns    Hide if empty
+   When I'm viewing the collection
+   then Should be 6 collection results
+   then Should be 0 filter options
 
 
 # Scenario: show hidden filter if just narrowed down
