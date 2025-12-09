@@ -282,6 +282,13 @@ Results Are Sorted
     log many    ${sorted}  ${names}
     Run Keyword If    ${sorted}!=${names}    Fail    Results are not sorted ${sorted}!=${names}
 
+I should have a filter with ${number_of_results} options
+    Get Element Count    xpath=//aside[contains(@class,'collectionFilter') and count(.//div[contains(@class, 'filterContent')]//li[contains(@class, 'filterItem')])=${number_of_results}]    ==    1
+
+I should see ${number} filter options on the page
+    Get Element Count    xpath=//aside[contains(@class,'collectionFilter') ]//div[contains(@class, 'filterContent')]//li[contains(@class, 'filterItem')]    ==    ${number}
+
+
 # CF Stuff
 Should be ${X} collection results
     ${xpath}=  Set Variable if    ${USE_TILES}    //span[@class='summary']    //div[@class='entries']/article
