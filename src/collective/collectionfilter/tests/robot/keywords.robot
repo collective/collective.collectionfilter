@@ -304,6 +304,10 @@ Should be filter checkboxes
 Should be ${X} filter options
     Get Element Count    xpath=//div[contains(@class, 'filterContent')]//*[contains(@class, 'filterItem')]    ==    ${X}
 
+Should be filter options
+    [Arguments]    @{values}
+    List Labels Should Equal    xpath=//div[contains(@class, 'filterContent')]//select    @{values}
+
 Click Page "${page}"
     Click    xpath=(//ul[@class='pagination']//a)[${page}]
 
@@ -322,7 +326,14 @@ Labels Should Equal
 
     Should Be Equal    ${expect}    ${result}
 
+List Labels Should Equal
+   [Arguments]    ${selector}    @{expect}
+   Get Select Options    ${selector}    validate    [v["label"] for v in value] == @{expect}
+
 # Misc
 
 Click Input "${label}"
     Click    xpath=//input[@id=//label[.//*[normalize-space(text())='${label}'] or normalize-space(text()) ='${label}']/@for]
+
+Select Filter Option "${text}"
+    Select Options By   xpath=//div[contains(@class, 'filterContent')]//select    label    ${text}
