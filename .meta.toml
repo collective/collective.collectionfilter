@@ -12,6 +12,9 @@ dependencies_ignores = """
 [
     'collective.geolocationbehavior', 'plone.formwidget.geolocation',
     'plone.app.blocks', 'plone.tiles', 'plone.app.tiles', 'plone.app.portlets',
+    'pytz', 'Acquisition', 'Products.Five', 'zope.component', 'zope.globalrequest',
+    'zope.i18n', 'zope.i18nmessageid', 'zope.interface', 'zope.publisher',
+    'zope.schema', 'zope.traversing', 'zope.lifecycleevent',
 ]
 """
 
