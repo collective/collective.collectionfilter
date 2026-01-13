@@ -1,3 +1,12 @@
+6.0.0a1 (2026-01-13)
+--------------------
+
+Breaking changes:
+
+
+- Switch to PEP 420 native namespace packaging.  @petschki
+
+
 5.3.1 (2026-01-13)
 ------------------
 
