@@ -1,8 +1,6 @@
 """Setup tests for this package."""
 
-from collective.collectionfilter.testing import (  # noqa
-    COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING,
-)
+from collective.collectionfilter.testing import INTEGRATION_TESTING
 from plone import api
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
@@ -32,7 +30,7 @@ except Exception:
 class TestSetup(unittest.TestCase):
     """Test that collective.collectionfilter is properly installed."""
 
-    layer = COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING
+    layer = INTEGRATION_TESTING
 
     def setUp(self):
         """Custom shared utility setup for tests."""
@@ -54,7 +52,7 @@ class TestSetup(unittest.TestCase):
 
 
 class TestUninstall(unittest.TestCase):
-    layer = COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING
+    layer = INTEGRATION_TESTING
 
     def setUp(self):
         self.portal = self.layer["portal"]

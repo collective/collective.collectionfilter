@@ -12,6 +12,9 @@ dependencies_ignores = """
 [
     'collective.geolocationbehavior', 'plone.formwidget.geolocation',
     'plone.app.blocks', 'plone.tiles', 'plone.app.tiles', 'plone.app.portlets',
+    'pytz', 'Acquisition', 'Products.Five', 'zope.component', 'zope.globalrequest',
+    'zope.i18n', 'zope.i18nmessageid', 'zope.interface', 'zope.publisher',
+    'zope.schema', 'zope.traversing', 'zope.lifecycleevent',
 ]
 """
 
@@ -21,6 +24,10 @@ forest.*
 test_*
 robot_*
 dependencies.svg
+playwright-log.txt
+log.html
+output.xml
+report.html
 """
 
 [tox]
@@ -29,9 +36,3 @@ test_extras = """
     mosaic
 """
 test_matrix = {"6.2" = ["*"]}
-
-[github]
-jobs = [
-    "qa",
-    "release_ready",
-    ]

@@ -2,9 +2,7 @@
 
 from collective.collectionfilter.filteritems import get_filter_items
 from collective.collectionfilter.query import make_query
-from collective.collectionfilter.testing import (  # noqa
-    COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING,
-)
+from collective.collectionfilter.testing import INTEGRATION_TESTING
 from collective.collectionfilter.utils import safe_decode
 from plone.app.contenttypes.interfaces import ICollection
 from urllib.parse import parse_qs
@@ -30,7 +28,7 @@ def qs(result, index):
 
 
 class TestFilteritems(unittest.TestCase):
-    layer = COLLECTIVE_COLLECTIONFILTER_INTEGRATION_TESTING
+    layer = INTEGRATION_TESTING
 
     def setUp(self):
         """Custom shared utility setup for tests."""

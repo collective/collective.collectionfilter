@@ -82,7 +82,6 @@ setup(
             "plone.app.contenttypes",
             "plone.app.portlets",
             "plone.app.textfield",
-            "plone.app.discussion",
             "plone.tiles",
         ],
     },
