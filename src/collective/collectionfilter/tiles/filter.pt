@@ -64,10 +64,8 @@
                         value="${item/value}"
                         data-url="${item/url}"
                 >
-                  <span class="filterLabel">
-                    <span tal:replace="python:item['title'].replace('/', u'/\u00AD')">Item</span>
-                    <tal:show_count condition="view/settings/show_count">(<span tal:replace="item/count"></span>)</tal:show_count>
-                  </span>
+                  <span tal:replace="python:item['title'].replace('/', u'/\u00AD')">Item</span>
+                  <tal:show_count condition="view/settings/show_count">(<span tal:replace="item/count"></span>)</tal:show_count>
                 </option>
               </tal:items>
             </select>
