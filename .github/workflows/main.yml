@@ -11,11 +11,10 @@ jobs:
       fail-fast: false
       matrix:
         python:
-          - "3.9"
           - "3.10"
-          - "3.11"
+          - "3.13"
         plone:
-          - "6.0-latest"
+          - "6.1-latest"
         # see testing.py for layer names
         test_layer:
           - "IntegrationTesting"
@@ -23,7 +22,7 @@ jobs:
           - "AcceptanceTestingPortlet_AjaxEnabled"
           - "AcceptanceTesting_Tiles"
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Setup Plone ${{ matrix.plone }} with Python ${{ matrix.python }}
         id: setup
@@ -37,7 +36,7 @@ jobs:
           make VENV=off install
 
       - name: Install Chromedriver
-        uses: nanasess/setup-chromedriver@v2
+        uses: nanasess/setup-chromedriver@v2.3.0
         if: matrix.test_layer != 'IntegrationTesting'
       - name: Start Browser
         if: matrix.test_layer != 'IntegrationTesting'
@@ -51,7 +50,7 @@ jobs:
           VENV=off TEST_LAYER=${{ matrix.test_layer}} ROBOT_BROWSER=headlesschrome make test-layer-ignore-warnings
 
       - name: Save Robotframework Log
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         # safe artifacts only for failing tests
         if: ${{ failure() }}
         with:
