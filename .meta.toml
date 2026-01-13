@@ -28,6 +28,7 @@ test_extras = """
     geolocation
     mosaic
 """
+test_matrix = {"6.1" = ["*"]}
 
 [github]
 jobs = [
