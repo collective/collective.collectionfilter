@@ -1,6 +1,6 @@
 from plone import api
+from plone.base.utils import safe_text
 from Products.CMFCore.interfaces import IFolderish
-from Products.CMFPlone.utils import safe_unicode
 
 
 try:
@@ -43,7 +43,7 @@ def safe_decode(val):
     if isinstance(val, tuple):
         return (safe_decode(it) for it in val)
     if val:
-        return safe_unicode(val)
+        return safe_text(val)
     return val
 
 
@@ -58,7 +58,7 @@ def safe_encode(val):
     if isinstance(val, tuple):
         return (safe_encode(it) for it in val)
     if isinstance(val, str):
-        return safe_unicode(val).encode("utf-8")
+        return safe_text(val).encode("utf-8")
     return val
 
 
