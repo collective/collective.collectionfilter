@@ -1,10 +1,10 @@
 collective.collectionfilter
 ===========================
 
-|CI| |Meta|
+|Tests| |Meta|
 
-.. |CI| image:: https://github.com/collective/collective.collectionfilter/actions/workflows/main.yml/badge.svg
-   :target: https://github.com/collective/collective.collectionfilter/actions/workflows/main.yml
+.. |Tests| image:: https://github.com/collective/collective.collectionfilter/actions/workflows/test-matrix.yml/badge.svg
+   :target: https://github.com/collective/collective.collectionfilter/actions/workflows/test-matrix.yml
 
 .. |Meta| image:: https://github.com/collective/collective.collectionfilter/actions/workflows/meta.yml/badge.svg
    :target: https://github.com/collective/collective.collectionfilter/actions/workflows/meta.yml
@@ -171,7 +171,8 @@ Your adapter is called by ``collective.collectionfilter.vocabularies.GroupByCrit
 Compatibility
 -------------
 
-- Version 5.x is compatible with Plone 6.x+
+- Version 6.x is compatible with Plone 6.2+/Python 3.10+
+- Version 5.x is compatible with Plone 6.0/1
 - Version 4.x is compatible with Plone 5.2+
 - Version 3.x is compatible with Plone 5.0.x and 5.1.x
 
