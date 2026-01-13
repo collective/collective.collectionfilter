@@ -1,10 +1,9 @@
-from setuptools import find_packages
 from setuptools import setup
 
 import os
 
 
-version = "5.3.2.dev0"
+version = "6.0.0.dev0"
 
 
 def read(*rnames):
@@ -23,14 +22,14 @@ setup(
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Framework :: Plone",
-        "Framework :: Plone :: 6.0",
+        "Framework :: Plone :: 6.2",
         "Framework :: Plone :: Addon",
         "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
     keywords="plone collection filter faceted tagcloud tags",
@@ -38,13 +37,8 @@ setup(
     author_email="thetetet@gmail.com",
     url="http://github.com/collective/collective.collectionfilter",
     license="GPL",
-    namespace_packages=[
-        "collective",
-    ],
-    python_requires=">=3.8",
-    packages=find_packages("src"),
-    package_dir={"": "src"},
     include_package_data=True,
+    python_requires=">=3.10",
     zip_safe=False,
     install_requires=[
         "setuptools",
@@ -65,11 +59,11 @@ setup(
         "plone.uuid",
         "z3c.form",
         "Products.CMFCore",
-        "Products.CMFPlone >= 6.0",
+        "Products.CMFPlone",
     ],
     extras_require={
         "mosaic": [
-            "plone.app.mosaic >= 3.0.0",
+            "plone.app.mosaic",
         ],
         "geolocation": [
             # support for latitude/longitude catalog index
