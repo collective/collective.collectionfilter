@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<portlets
-    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-    i18n:domain="plone">
+<portlets xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+          i18n:domain="plone"
+>
   <portlet addview="collective.collectionfilter.portlets.CollectionFilter"
            description="Portlet that groups collections items by criteria."
            title="Collection Filter"
