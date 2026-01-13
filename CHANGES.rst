@@ -1,3 +1,13 @@
+5.3.1 (2026-01-13)
+------------------
+
+Internal:
+
+
+- Update configuration files.
+  [plone devs]
+
+
 5.3.1 (unreleased)
 ------------------
 
