@@ -98,3 +98,7 @@ def upgrade_to_plone6(context):
             del registry.records[key]
 
     reapply_profile(context)
+
+def upgrade_registry_13(context):
+    # Probably not needed
+    reapply_profile(context)

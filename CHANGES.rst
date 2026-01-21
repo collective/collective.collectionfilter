@@ -132,7 +132,8 @@ Changelog
 5.1 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Add registry setting for 'int field'
+  [espenmn]
 
 
 5.0 (2023-06-07)
