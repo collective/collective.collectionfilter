@@ -2,7 +2,6 @@ from plone import api
 from Products.CMFCore.interfaces import IFolderish
 from Products.CMFPlone.utils import safe_unicode
 
-
 try:
     from plone.app.blocks.layoutbehavior import ILayoutAware
 except ImportError:

@@ -8,7 +8,6 @@ from zope import schema
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
-
 try:
     from plone.formwidget.geolocation.vocabularies import default_map_layer
     from plone.formwidget.geolocation.vocabularies import default_map_layers

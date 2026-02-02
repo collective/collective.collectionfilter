@@ -14,7 +14,6 @@ from zope.interface import implementer
 
 import re
 
-
 # tile names actijg collectionish
 COLLECTIONISH_TARGETS = [
     "plone.app.standardtiles.contentlisting",

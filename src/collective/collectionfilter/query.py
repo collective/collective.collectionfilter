@@ -10,7 +10,6 @@ from Products.CMFPlone.browser.search import quote_chars
 from Products.CMFPlone.UnicodeSplitter.config import rxGlob_U
 from zope.component import getUtility
 
-
 try:
     from Products.CMFPlone.browser.search import quote
 except ImportError:

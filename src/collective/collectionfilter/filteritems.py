@@ -26,7 +26,6 @@ from zope.interface import implementer
 
 import plone.api
 
-
 try:
     from plone.app.event.browser.event_listing import EventListing
 except ImportError:

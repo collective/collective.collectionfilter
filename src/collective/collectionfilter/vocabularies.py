@@ -20,7 +20,6 @@ from zope.schema.vocabulary import SimpleVocabulary
 
 import plone.api
 
-
 # Use this EMPTY_MARKER for your custom indexer to index empty criterions.
 EMPTY_MARKER = "__EMPTY__"
 TEXT_IDX = "SearchableText"

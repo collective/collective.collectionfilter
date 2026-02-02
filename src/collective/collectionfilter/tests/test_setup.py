@@ -10,7 +10,6 @@ from Products.CMFCore.utils import getToolByName
 
 import unittest
 
-
 no_get_installer = False
 
 try:
