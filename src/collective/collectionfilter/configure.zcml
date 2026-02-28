@@ -64,7 +64,7 @@
       />
 
   <subscriber
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot
+      for="plone.base.interfaces.IPloneSiteRoot
            zope.traversing.interfaces.IBeforeTraverseEvent"
       handler=".contentfilter.set_content_filter"
       />

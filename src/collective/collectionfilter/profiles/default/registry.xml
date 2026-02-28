@@ -12,17 +12,17 @@
     </value>
   </record>
 
-  <records interface="Products.CMFPlone.interfaces.IResourceRegistry"
+  <records interface="plone.base.interfaces.resources.IResourceRegistry"
            prefix="plone.resources/collectionfilter"
            remove="True"
   />
 
-  <records interface="Products.CMFPlone.interfaces.IResourceRegistry"
+  <records interface="plone.base.interfaces.resources.IResourceRegistry"
            prefix="plone.resources/collectionfilter-bundle"
            remove="True"
   />
 
-  <records interface="Products.CMFPlone.interfaces.IBundleRegistry"
+  <records interface="plone.base.interfaces.resources.IBundleRegistry"
            prefix="plone.bundles/collectionfilter-bundle"
   >
     <value key="enabled">True</value>

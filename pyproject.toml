@@ -170,3 +170,57 @@ ignore = [
 #  _your own configuration lines_
 #  """
 ##
+
+[project]
+name = "collective.collectionfilter"
+version = "6.0.0a2.dev0"
+description = "Plone addon for filtering collection results."
+readme = "README.rst"
+license = "GPL-2.0-only"
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Framework :: Plone",
+    "Framework :: Plone :: 6.2",
+    "Framework :: Plone :: Addon",
+    "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+keywords = ["plone collection filter faceted tagcloud tags"]
+authors = [{name = "Johannes Raggam", email = "thetetet@gmail.com"}]
+dependencies = [
+    "plone.api >= 2.0.0",
+    "plone.app.contenttypes",
+    "plone.app.event",
+    "plone.app.querystring",
+    "plone.app.uuid",
+    "plone.app.vocabularies",
+    "plone.app.z3cform",
+    "plone.autoform",
+    "plone.base",
+    "plone.dexterity",
+    "plone.i18n",
+    "plone.memoize",
+    "plone.portlets",
+    "plone.supermodel",
+    "plone.uuid",
+    "z3c.form",
+    "Products.CMFCore",
+    "Products.CMFPlone",
+]
+
+[project.optional-dependencies]
+mosaic = ["plone.app.mosaic"]
+geolocation = ["collective.geolocationbehavior >= 1.7.2", "plone.formwidget.geolocation >= 3.0.0"]
+test = ["plone.app.mosaic", "plone.browserlayer", "plone.testing", "robotsuite", "collective.geolocationbehavior", "plone.app.testing[robot]", "plone.app.robotframework", "plone.app.contenttypes", "plone.app.portlets", "plone.app.textfield", "plone.app.discussion", "plone.tiles"]
+
+[project.urls]
+Homepage = "http://github.com/collective/collective.collectionfilter"
+
+[project.entry-points."z3c.autoinclude.plugin"]
+target = "plone"
