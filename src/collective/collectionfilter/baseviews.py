@@ -26,7 +26,6 @@ from zope.schema.interfaces import IVocabularyFactory
 
 import json
 
-
 try:
     from collective.geolocationbehavior.interfaces import IGeoJSONProperties
     from plone.formwidget.geolocation.vocabularies import _

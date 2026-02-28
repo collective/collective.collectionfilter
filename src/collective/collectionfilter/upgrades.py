@@ -14,7 +14,6 @@ from zope.component.hooks import getSite
 
 import logging
 
-
 _marker = []
 
 logger = logging.getLogger(__file__)

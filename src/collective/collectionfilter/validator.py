@@ -16,7 +16,6 @@ from zope.interface import Interface
 from zope.interface import Invalid
 from zope.schema.interfaces import IField
 
-
 # Portlets can always validate.
 # Tiles can validate if its a collection, otherwise rely on status message warning on save.
 
