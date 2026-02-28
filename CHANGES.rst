@@ -1,3 +1,114 @@
+6.0.0a1 (2026-01-13)
+--------------------
+
+Breaking changes:
+
+
+- Switch to PEP 420 native namespace packaging.  @petschki
+
+
+5.3.1 (2026-01-13)
+------------------
+
+Internal:
+
+
+- Update configuration files.
+  [plone devs]
+
+
+5.3.1 (unreleased)
+------------------
+
+New features:
+
+
+- update the spanish translations missing @macagua (#242)
+- add more improvements about i18n support @macagua (#241)
+
+
+5.3.0 (2025-10-08)
+------------------
+
+New features:
+
+
+- add a pat-select2 portlet as filter option @1letter (#228)
+
+
+Bug fixes:
+
+
+- add missing translations for de and de-ch @1letter (#223)
+- Fix selecting Collectionish item in MapsTile/Portlet geojson view. @petschki
+
+
+Internal:
+
+
+- Update JS dependencies. @petschki
+
+
+5.2.2 (2025-03-21)
+------------------
+
+Bug fixes:
+
+
+- Fix permission for Tile.edit_url.
+  [ksuess] (#224)
+- Fix REQUEST during IObjectMoved event. @petschki (#227)
+
+
+5.2.1 (2024-08-30)
+------------------
+
+Bug fixes:
+
+
+- Fix Bootstrap CSS classes for checkboxes/radios in filter portlet/tile.
+
+  upgrade dependencies.
+
+  [petschki] (#211)
+
+
+5.2.0 (2023-09-27)
+------------------
+
+New features:
+
+
+- Add a Reset Button to Reset all Filters.
+  [toalba, jensens] (reset-button)
+
+
+Bug fixes:
+
+
+- Fix German label from 'Portlet Titel' to 'Filtertitel'.
+  [jensens] (detranslation)
+
+
+5.1.1 (2023-08-08)
+------------------
+
+New features:
+
+
+- Implement CSS class for disabling `collectionfilter:reload` event when
+  links in enhanced custom filter templates  are designed for other actions
+  (eg. dropdowns or collapsibles).
+  [petschki] (#201)
+
+
+Bug fixes:
+
+
+- Fix selecting default `content_selector` for mosaic pages with contentlisting tile.
+  [petschki] (#202)
+
+
 5.1 (2023-08-02)
 ----------------
 

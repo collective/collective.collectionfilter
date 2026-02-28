@@ -106,13 +106,19 @@ class BaseView:
             return self.settings.content_selector
 
         collectionish = (
-            ICollectionish(self.collection.getObject()) if self.collection else None
+            ICollectionish(self.collection.getObject(), None)
+            if self.collection
+            else None
         )
-        selector = collectionish.content_selector
-        if collectionish is None or not selector:
-            return "#content-core"
-        else:
-            return selector
+
+        if collectionish is not None:
+            # select default content
+            collectionish.selectContent()
+            selector = collectionish.content_selector
+            if selector:
+                return selector
+
+        return "#content-core"
 
     @property
     def ajax_load(self):
@@ -129,14 +135,48 @@ class BaseFilterView(BaseView):
     def input_type(self):
         if self.settings.input_type == "links":
             return "link"
+
+        if self.settings.input_type == "select2":
+            if self.settings.filter_type == "single":
+                return "select2_single"
+            else:
+                return "select2"
+
         if self.settings.filter_type == "single":
             if self.settings.input_type == "checkboxes_radiobuttons":
                 return "radio"
             return "dropdown"
         return "checkbox"
 
-    # results is called twice inside the template in view/available and view/results.  But its expensive so we cache it
-    # but just the the lifetime of the view
+    @property
+    def select2_options(self):
+        results = self.results()
+        options = []
+        selected_values = []
+        select2_options = {
+            "results": [],
+            "tags": [],
+            "selected_values": [],
+        }
+
+        if not results:
+            return select2_options
+
+        for item in results:
+            options.append(item["title"])
+            if item.get("selected"):
+                selected_values.append(item["title"])
+
+        select2_options = {
+            "results": json.dumps(results),
+            "tags": ",".join(options),
+            "selected_values": ",".join(selected_values),
+        }
+
+        return select2_options
+
+    # results is called twice inside the template in view/available and view/results.
+    # But its expensive so we cache it for the view lifetime
     @instance.memoize
     def results(self):
         results = get_filter_items(
@@ -376,9 +416,9 @@ if HAS_GEOLOCATION:
         def locations(self):
             custom_query = {}  # Additional query to filter the collection
 
-            collection = self.context
+            collection = ICollectionish(self.context, None)
             if not collection:
-                return None
+                return []
 
             # Recursively transform all to unicode
             request_params = safe_decode(get_top_request(self.request).form or {})
@@ -387,4 +427,15 @@ if HAS_GEOLOCATION:
             # defined by urlquery
             custom_query = base_query(request_params)
             custom_query = make_query(custom_query)
-            return ICollectionish(collection).results(custom_query, request_params)
+
+            return collection.results(custom_query, request_params)
+
+
+class BaseResetFilterView(BaseFilterView):
+    @property
+    def reset_url(self):
+        return f"{self.collection.getURL()}?collectionfilter=1"
+
+    @property
+    def reset_class(self):
+        return self.settings.css_class or ""

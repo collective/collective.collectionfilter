@@ -9,6 +9,7 @@ from plone.tiles.tile import PersistentTile
 from zope.component import adapter
 from zope.component import getMultiAdapter
 from zope.component import queryAdapter
+from zope.globalrequest import getRequest
 from zope.interface import implementer
 
 import re
@@ -38,7 +39,7 @@ class BaseFilterTile(PersistentTile):
 
     @property
     def edit_url(self):
-        if not api.user.has_permission("cmf.ModifyPortalContent", obj=self.context):
+        if not api.user.has_permission("Modify portal content", obj=self.context):
             return None
         return self.url.replace("@@", "@@edit-tile/")
 
@@ -58,14 +59,12 @@ class BaseFilterTile(PersistentTile):
 def findall_tiles(context, spec):
     if not isinstance(spec, list):
         spec = [spec]
-    request = context.REQUEST
+    request = getRequest()
     la = ILayoutAware(context)
     layout = (
         la.customContentLayout
         if la.customContentLayout is not None
-        else la.contentLayout
-        if la.contentLayout is not None
-        else la.content
+        else la.contentLayout if la.contentLayout is not None else la.content
     )
     if layout is None:
         return []
@@ -96,20 +95,16 @@ class CollectionishLayout(CollectionishCollection):
     def __init__(self, context):
         """Adapt either collections or contentlisting tile. The name is sorted content selector"""
         self.context = context
+        self.collection = ICollection(self.context, None)
 
-        # self.context might not be adaptable
-        # make sure you select the right content with
-        # selectContent(selector) after initialization
-        try:
-            self.collection = ICollection(self.context)
-        except TypeError:
-            self.collection = None
+        if self.collection is None:
+            # context might not be adaptable -> try to find a collectionish tile
+            self.selectContent()
 
     def selectContent(self, selector=None):
         """Pick tile that selector will match, otherwise pick first one.
         Return None if no listing tile or collection is suitable, else return this adapter.
         """
-
         if selector is None:
             selector = ""
         self.tile = None

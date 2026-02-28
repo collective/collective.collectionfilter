@@ -232,6 +232,7 @@ def InputTypeVocabulary(context):
         SimpleTerm(
             title=_("inputtype_checkboxes_dropdowns"), value="checkboxes_dropdowns"
         ),
+        SimpleTerm(title=_("inputtype_select2"), value="select2"),
     ]
     return SimpleVocabulary(items)
 

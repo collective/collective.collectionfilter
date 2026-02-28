@@ -288,3 +288,13 @@ if HAS_GEOLOCATION:
             required=False,
             default=500,
         )
+
+
+class ICollectionResetFilterSchema(ICollectionFilterBaseSchema):
+    """Schema for the reset filter."""
+
+    css_class = schema.TextLine(
+        title=_("label_css_class", "CSS Class"),
+        description=_("help_css_class", "CSS class for the reset filter button."),
+        required=False,
+    )

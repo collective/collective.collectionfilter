@@ -79,18 +79,19 @@
 
   <genericsetup:registerProfile
       name="default"
-      title="collective.collectionfilter base"
-      description="Extension profile for Plone."
+      title="collective.collectionfilter: 'base' install profile"
+      description="Install 'base' profile for collective.collectionfilter addon."
       provides="Products.GenericSetup.interfaces.EXTENSION"
       directory="profiles/default"
       />
   <genericsetup:registerProfile
       name="uninstall"
-      title="collective.collectionfilter base uninstall"
-      description="Extension profile for Plone."
+      title="collective.collectionfilter: 'base' uninstall profile"
+      description="Uninstall 'base' profile for collective.collectionfilter addon."
       provides="Products.GenericSetup.interfaces.EXTENSION"
       directory="profiles/uninstall"
       />
+
   <utility
       factory=".setuphandlers.HiddenProfiles"
       name="collective.collectionfilter-hiddenprofiles"
