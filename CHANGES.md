@@ -1,5 +1,4 @@
-6.0.0a1 (2026-01-13)
---------------------
+## 6.0.0a1 (2026-01-13)
 
 Breaking changes:
 
@@ -7,8 +6,7 @@ Breaking changes:
 - Switch to PEP 420 native namespace packaging.  @petschki
 
 
-5.3.1 (2026-01-13)
-------------------
+## 5.3.1 (2026-01-13)
 
 Internal:
 
@@ -17,8 +15,7 @@ Internal:
   [plone devs]
 
 
-5.3.1 (unreleased)
-------------------
+## 5.3.1 (unreleased)
 
 New features:
 
@@ -27,8 +24,7 @@ New features:
 - add more improvements about i18n support @macagua (#241)
 
 
-5.3.0 (2025-10-08)
-------------------
+## 5.3.0 (2025-10-08)
 
 New features:
 
@@ -49,8 +45,7 @@ Internal:
 - Update JS dependencies. @petschki
 
 
-5.2.2 (2025-03-21)
-------------------
+## 5.2.2 (2025-03-21)
 
 Bug fixes:
 
@@ -60,8 +55,7 @@ Bug fixes:
 - Fix REQUEST during IObjectMoved event. @petschki (#227)
 
 
-5.2.1 (2024-08-30)
-------------------
+## 5.2.1 (2024-08-30)
 
 Bug fixes:
 
@@ -73,8 +67,7 @@ Bug fixes:
   [petschki] (#211)
 
 
-5.2.0 (2023-09-27)
-------------------
+## 5.2.0 (2023-09-27)
 
 New features:
 
@@ -90,8 +83,7 @@ Bug fixes:
   [jensens] (detranslation)
 
 
-5.1.1 (2023-08-08)
-------------------
+## 5.1.1 (2023-08-08)
 
 New features:
 
@@ -109,8 +101,7 @@ Bug fixes:
   [petschki] (#202)
 
 
-5.1 (2023-08-02)
-----------------
+## 5.1 (2023-08-02)
 
 Bug fixes:
 
@@ -126,17 +117,14 @@ Internal:
   [plone devs] (8af8caab)
 
 
-Changelog
-=========
+# Changelog
 
-5.1 (unreleased)
-----------------
+## 5.1 (unreleased)
 
 - Nothing changed yet.
 
 
-5.0 (2023-06-07)
-----------------
+## 5.0 (2023-06-07)
 
 - implement `geojson_ajaxurl` property for `pat-leaflet` to load geojson
   information asynchronously.
@@ -146,15 +134,13 @@ Changelog
   [agitator]
 
 
-5.0a2 (2022-06-20)
-------------------
+## 5.0a2 (2022-06-20)
 
 - Updated classifiers
   [petschki]
 
 
-5.0a1 (2022-06-20)
-------------------
+## 5.0a1 (2022-06-20)
 
 Breaking Change:
 
@@ -169,8 +155,7 @@ Breaking Change:
   [1letter]
 
 
-4.0 (2022-05-10)
-----------------
+## 4.0 (2022-05-10)
 
 Breaking Change:
 
@@ -225,15 +210,13 @@ Other:
   [jensens]
 
 
-3.5.1 (2021-05-26)
-------------------
+## 3.5.1 (2021-05-26)
 
 - Updated de and ch-de translations
   [agitator]
 
 
-3.5 (2021-05-26)
-----------------
+## 3.5 (2021-05-26)
 
 - Use collection from context as default. `target_collection` is now used to select an alternative collection as result source.
   This allows to copy and paste preconfigured collections for reuse without reconfiguring each filter element.
@@ -243,8 +226,7 @@ Other:
   [jeffersonbledsoe]
 
 
-3.4.2 (2021-02-25)
-------------------
+## 3.4.2 (2021-02-25)
 
 - Do not render filter tiles when page gets AJAX loaded
   [petschki]
@@ -252,15 +234,13 @@ Other:
   [petschki]
 
 
-3.4.1 (2020-06-18)
-------------------
+## 3.4.1 (2020-06-18)
 
 - Separated translation display_modifier for portal_type and Type.
   [iham]
 
 
-3.4 (2020-06-16)
-----------------
+## 3.4 (2020-06-16)
 
 Features:
 
@@ -275,8 +255,7 @@ Bug fixes:
   [petschki]
 
 
-3.3 (2020-01-22)
-----------------
+## 3.3 (2020-01-22)
 
 - Fix is_available property
   [agitator]
@@ -288,8 +267,7 @@ Bug fixes:
   [petschki]
 
 
-3.2.1 (2019-08-07)
-------------------
+## 3.2.1 (2019-08-07)
 
 Bug fixes:
 
@@ -297,8 +275,7 @@ Bug fixes:
   [petschki]
 
 
-3.2 (2019-07-23)
-----------------
+## 3.2 (2019-07-23)
 
 Features:
 
@@ -323,8 +300,7 @@ Bug fixes:
   [djay]
 
 
-3.1 (2019-06-06)
-----------------
+## 3.1 (2019-06-06)
 
 New features:
 
@@ -354,8 +330,7 @@ Bug fixes:
   [petschki]
 
 
-3.0 (2019-03-25)
-----------------
+## 3.0 (2019-03-25)
 
 Breaking changes:
 
@@ -377,8 +352,7 @@ Bug fixes:
   [petschki]
 
 
-2.1 (2019-03-22)
-----------------
+## 2.1 (2019-03-22)
 
 New features:
 
@@ -397,16 +371,14 @@ Bug fixes:
   [agitator]
 
 
-2.0.1 (2018-12-13)
-------------------
+## 2.0.1 (2018-12-13)
 
 - Fix upgrade steps and reapply profile to fix bundle registration
   Remove conditional reinitialization - caused problems with other patterns
   [agitator]
 
 
-2.0 (2018-12-08)
-----------------
+## 2.0 (2018-12-08)
 
 Breaking changes:
 
@@ -466,15 +438,13 @@ Bug fixes:
   [petschki]
 
 
-1.0.1 (2018-02-09)
-------------------
+## 1.0.1 (2018-02-09)
 
 - Fix target collection selection via catalog vocabular and RelatedItemsFieldWidget.
   [agitator]
 
 
-1.0 (2018-01-27)
-----------------
+## 1.0 (2018-01-27)
 
 - Implement AJAX search for the collection search portlet.
   [thet]

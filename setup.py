@@ -15,9 +15,10 @@ setup(
     version=version,
     description="Plone addon for filtering collection results.",
     long_description="{}\n\n{}".format(
-        read("README.rst"),
-        read("CHANGES.rst"),
+        read("README.md"),
+        read("CHANGES.md"),
     ),
+    long_description_content_type="text/markdown",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Framework :: Plone",

@@ -17,4 +17,4 @@ omit =
     src/collective/collectionfilter/tests/*
     */lib/*
     *.txt
-    *.rst
+    *.md
