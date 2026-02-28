@@ -279,6 +279,7 @@ Ajax has completed
 I've got a site with a collection
     [arguments]  ${batch}=20
     Log in as site owner
+    Wait Until Page Contains  You are now logged in
     run keyword if  ${USE_TILES}   Enable mosaic layout for page  ${PLONE_URL}/testdoc  batch=${batch}
     run keyword if  ${USE_TILES}==False   Go to  ${PLONE_URL}/testcollection
     run keyword if  ${USE_TILES}==False   Set Batch Size  ${batch}
