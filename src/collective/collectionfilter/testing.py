@@ -211,14 +211,14 @@ COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING = FunctionalTesting(
 )
 
 
-class CollectiveCollectionFilterAjaxEnabledLayer(CollectiveCollectionFilterLayer):
+class CollectiveCollectionFilterAjaxEnabledLayer(PloneSandboxLayer):
+    defaultBases = (COLLECTIVE_COLLECTIONFILTER_FIXTURE,)
+
     def setUpPloneSite(self, portal):
         _set_ajax_enabled(True)
         os.environ["ROBOT_AJAX_ENABLED"] = "True"
-        super().setUpPloneSite(portal)
 
     def tearDownPloneSite(self, portal):
-        super().tearDownPloneSite(portal)
         del os.environ["ROBOT_AJAX_ENABLED"]
 
 
@@ -233,10 +233,11 @@ COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_ENABLED = FunctionalTesting(
 )
 
 
-class CollectiveCollectionFilterAjaxDisabledLayer(CollectiveCollectionFilterLayer):
+class CollectiveCollectionFilterAjaxDisabledLayer(PloneSandboxLayer):
+    defaultBases = (COLLECTIVE_COLLECTIONFILTER_FIXTURE,)
+
     def setUpPloneSite(self, portal):
         _set_ajax_enabled(False)
-        super().setUpPloneSite(portal)
 
 
 AJAX_DISABLED_FIXTURE = CollectiveCollectionFilterAjaxDisabledLayer()
@@ -250,13 +251,13 @@ COLLECTIVE_COLLECTIONFILTER_ACCEPTANCE_TESTING_AJAX_DISABLED = FunctionalTesting
 )
 
 
-class CollectiveCollectionFilterTilesLayer(CollectiveCollectionFilterLayer):
+class CollectiveCollectionFilterTilesLayer(PloneSandboxLayer):
+    defaultBases = (COLLECTIVE_COLLECTIONFILTER_FIXTURE,)
+
     def setUpPloneSite(self, portal):
         os.environ["ROBOT_USE_TILES"] = "True"
-        super().setUpPloneSite(portal)
 
     def tearDownPloneSite(self, portal):
-        super().tearDownPloneSite(portal)
         del os.environ["ROBOT_USE_TILES"]
 
 
