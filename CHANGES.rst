@@ -1,15 +1,48 @@
 Changelog
 =========
 
-4.0 (unreleased)
+4.1 (unreleased)
+----------------
+
+- Nothing changed yet.
+
+
+4.0 (2022-05-10)
 ----------------
 
 Breaking Change:
 
-- Add idx parameter to display_modifier call, so that we can use the index name to resolve the correct translated taxonomy titles in collective.taxonomy. This means that the display_modifier method in the groupby_modifier adapters needs to expect this parameter too!
+- Remove Plone 5.0 and 5.1 support.
+  [petschki]
+
+- Add idx parameter to display_modifier call, so that we can use the index name to resolve the correct translated
+  taxonomy titles in collective.taxonomy. This means that the display_modifier method in the groupby_modifier adapters
+  needs to expect this parameter too!
   [MrTango]
 
+Features:
+
+- Add checkbox to reverse output the filters.
+  [jensens]
+
+- Support and Test Plone 6.
+  [jensens]
+
+- Add a module global COLLECTIONISH_TARGETS to c.c.tiles to register other tiles with collections than plone.app.standardtiles.contentlisting.
+  [jensens]
+
 Bug Fixes:
+
+- Fix `b_start` in tiles, where the key is pre/postfixed.
+  Removes those from new filters too, in order to not be on a page that does not exist for the new filtered result.
+  [jensens]
+
+- Not every metadata entry has an index with same name.
+  Ignore if not a pair.
+  [jensens]
+
+- Fix/Workaround for #59 (Int fields in indexes are not working).
+  [jensens]
 
 - Hide uninstall profiles from install view.
   [jensens]
@@ -23,6 +56,7 @@ Bug Fixes:
 - Fixed searches for only non-alphanumeric characters causing an exception to be displayed.
   [JeffersonBledsoe]
 
+
 Other:
 
 - Code-Style Black and Isort
@@ -30,7 +64,7 @@ Other:
 
 
 3.5.1 (2021-05-26)
-----------------
+------------------
 
 - Updated de and ch-de translations
   [agitator]

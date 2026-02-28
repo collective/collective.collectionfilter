@@ -14,6 +14,8 @@ from Products.PluginIndexes.BooleanIndex.BooleanIndex import BooleanIndex
 
 import json
 import os
+import pytz
+import six
 
 
 try:
@@ -77,12 +79,17 @@ class CollectiveCollectionFilterLayer(PloneSandboxLayer):
                     }
                 ],
             )
+            if six.PY2:
+                now = datetime.now()
+            else:
+                now = datetime.now(pytz.UTC)
+
             portal.invokeFactory(
                 "Event",
                 id="testevent",
                 title=u"Test Event",
-                start=datetime.now() + timedelta(days=1),
-                end=datetime.now() + timedelta(days=2),
+                start=now + timedelta(days=1),
+                end=now + timedelta(days=2),
                 subject=[u"Süper", u"Evänt"],
                 exclude_from_nav=False,
             )
