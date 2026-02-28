@@ -2,7 +2,10 @@ from collective.collectionfilter import _
 from collective.collectionfilter import utils
 from plone.api.portal import get_registry_record as getrec
 from plone.app.z3cform.widgets.relateditems import RelatedItemsFieldWidget
-from plone.app.z3cform.widgets.select import SelectFieldWidget
+
+# Note: the old plone.app.z3cform.widget.SelectFieldWidget was actually Select2FieldWidget.
+# Using plain SelectFieldWidget here would render a basic <select> instead of select2.
+from plone.app.z3cform.widgets.select import Select2FieldWidget as SelectFieldWidget
 from plone.autoform.directives import widget
 from zope import schema
 from zope.interface import Interface
