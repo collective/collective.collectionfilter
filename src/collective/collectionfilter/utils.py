@@ -1,6 +1,6 @@
 from plone import api
+from plone.base.utils import safe_text as safe_unicode
 from Products.CMFCore.interfaces import IFolderish
-from Products.CMFPlone.utils import safe_unicode
 
 
 try:
