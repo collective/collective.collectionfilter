@@ -4,7 +4,7 @@ Bug fixes:
 
 
 - Fix robot test race condition: wait for login before navigating. @jensens
-- Fix deprecation warnings: use new import paths for Plone 7 compatibility. @jensens
+- Fix deprecation warnings: use new import paths for Plone 6 compatibility. @jensens
 - Fix Dependabot security alerts via yarn resolutions. @jensens
 
 Internal:
