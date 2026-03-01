@@ -1,3 +1,21 @@
+## 6.0.0a2 (unreleased)
+
+Bug fixes:
+
+
+- Fix robot test race condition: wait for login before navigating. @jensens
+- Fix deprecation warnings: use new import paths for Plone 7 compatibility. @jensens
+- Fix Dependabot security alerts via yarn resolutions. @jensens
+
+Internal:
+
+
+- Optimize test layers: stack variant fixtures on base instead of re-creating. @jensens
+- Overhaul README and fix CI badge. @jensens
+- Convert all .rst files to markdown. @jensens
+- Update pre-commit hooks and JS dependencies. @jensens
+
+
 ## 6.0.0a1 (2026-01-13)
 
 Breaking changes:
