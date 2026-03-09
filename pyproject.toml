@@ -7,37 +7,39 @@ requires = ["setuptools>=68.2,<80", "wheel"]
 [tool.towncrier]
 directory = "news/"
 filename = "CHANGES.md"
+start_string = "<!-- towncrier release notes start -->\n"
 title_format = "## {version} ({project_date})"
-underlines = ["", ""]
+template = "news/.changelog_template.jinja"
+underlines = ["", "", ""]
 
 [[tool.towncrier.type]]
 directory = "breaking"
-name = "Breaking changes:"
+name = "Breaking changes"
 showcontent = true
 
 [[tool.towncrier.type]]
 directory = "feature"
-name = "New features:"
+name = "New features"
 showcontent = true
 
 [[tool.towncrier.type]]
 directory = "bugfix"
-name = "Bug fixes:"
+name = "Bug fixes"
 showcontent = true
 
 [[tool.towncrier.type]]
 directory = "internal"
-name = "Internal:"
+name = "Internal"
 showcontent = true
 
 [[tool.towncrier.type]]
 directory = "documentation"
-name = "Documentation:"
+name = "Documentation"
 showcontent = true
 
 [[tool.towncrier.type]]
 directory = "tests"
-name = "Tests:"
+name = "Tests"
 showcontent = true
 
 ##
@@ -60,7 +62,7 @@ profile = "plone"
 ##
 
 [tool.black]
-target-version = ["py38"]
+target-version = ["py310"]
 
 ##
 # Add extra configuration options in .meta.toml:
