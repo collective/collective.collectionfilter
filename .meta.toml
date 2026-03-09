@@ -19,7 +19,7 @@ dependencies_ignores = """
 extra_lines = """
 [project]
 name = "collective.collectionfilter"
-version = "6.0.0a2.dev0"
+version = ""
 description = "Plone addon for filtering collection results."
 readme = "README.md"
 license = "GPL-2.0-only"
