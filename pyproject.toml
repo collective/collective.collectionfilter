@@ -166,7 +166,7 @@ ignore = [
 
 [project]
 name = "collective.collectionfilter"
-version = "6.0.0"
+version = "6.0.1.dev0"
 description = "Plone addon for filtering collection results."
 readme = "README.md"
 license = "GPL-2.0-only"
