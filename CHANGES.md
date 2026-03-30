@@ -2,6 +2,21 @@
 
 <!-- towncrier release notes start -->
 
+## 6.0.0 (2026-03-31)
+
+
+### Breaking changes
+
+- Switch to pyproject.toml packaging.
+  [thet] 
+
+
+### Internal
+
+- Run with plone-codemod.
+  [thet] 
+- Update configuration files @plone 
+
 ## 6.0.0a2 (unreleased)
 
 Bug fixes:
