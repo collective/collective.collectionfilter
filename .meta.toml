@@ -12,6 +12,9 @@ dependencies_ignores = """
 [
     'collective.geolocationbehavior', 'plone.formwidget.geolocation',
     'plone.app.blocks', 'plone.tiles', 'plone.app.tiles', 'plone.app.portlets',
+    'pytz', 'Acquisition', 'Products.Five', 'zope.component', 'zope.globalrequest',
+    'zope.i18n', 'zope.i18nmessageid', 'zope.interface', 'zope.publisher',
+    'zope.schema', 'zope.traversing', 'zope.lifecycleevent',
 ]
 """
 
@@ -62,7 +65,7 @@ dependencies = [
 [project.optional-dependencies]
 mosaic = ["plone.app.mosaic"]
 geolocation = ["collective.geolocationbehavior >= 1.7.2", "plone.formwidget.geolocation >= 3.0.0"]
-test = ["plone.app.mosaic", "plone.browserlayer", "plone.testing", "robotsuite", "collective.geolocationbehavior", "plone.app.testing[robot]", "plone.app.robotframework", "plone.app.contenttypes", "plone.app.portlets", "plone.app.textfield", "plone.app.discussion", "plone.tiles"]
+test = ["plone.app.mosaic", "plone.browserlayer", "plone.testing", "robotsuite", "collective.geolocationbehavior", "plone.app.testing[robot]", "plone.app.robotframework", "plone.app.contenttypes", "plone.app.portlets", "plone.app.textfield", "plone.tiles"]
 
 [project.urls]
 Homepage = "http://github.com/collective/collective.collectionfilter"
@@ -77,6 +80,10 @@ forest.*
 test_*
 robot_*
 dependencies.svg
+playwright-log.txt
+log.html
+output.xml
+report.html
 """
 
 [tox]
@@ -84,7 +91,4 @@ test_extras = """
     geolocation
     mosaic
 """
-test_matrix = { "6.2" = ["*"] }
-
-[github]
-jobs = ["qa", "release_ready"]
+test_matrix = {"6.2" = ["*"]}
