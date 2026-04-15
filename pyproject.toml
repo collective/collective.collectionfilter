@@ -1,8 +1,10 @@
 # Generated from:
-# https://github.com/plone/meta/tree/main/src/plone/meta/default
+# https://github.com/plone/meta/tree/2.x/src/plone/meta/default
 # See the inline comments on how to expand/tweak this configuration file
 [build-system]
-requires = ["setuptools>=68.2,<80", "wheel"]
+requires = ["setuptools>=68.2,<83", "wheel"]
+
+
 
 [tool.towncrier]
 directory = "news/"
@@ -169,7 +171,7 @@ ignore = [
 
 [project]
 name = "collective.collectionfilter"
-version = "6.0.1.dev0"
+version = ""
 description = "Plone addon for filtering collection results."
 readme = "README.md"
 license = "GPL-2.0-only"
