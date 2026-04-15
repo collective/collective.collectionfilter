@@ -2,6 +2,6 @@ include *.md *.rst
 recursive-include docs *
 recursive-include src *
 recursive-exclude src *.pyc *.pyo
-exclude .* *.js *.json *.txt Makefile mx.ini yarn.lock *.sh
+exclude .* *.js *.json *.txt Makefile mx.ini pnpm-lock.yaml *.sh
 recursive-exclude resources *
 recursive-exclude news *

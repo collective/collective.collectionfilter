@@ -1,13 +1,13 @@
 # Generated from:
-# https://github.com/plone/meta/tree/main/src/plone/meta/default
+# https://github.com/plone/meta/tree/2.x/src/plone/meta/default
 # See the inline comments on how to expand/tweak this configuration file
 [meta]
 template = "default"
-commit-id = "2.4.1.dev0"
+commit-id = "2.8.0"
 
 [pyproject]
 codespell_ignores = "Dokument"
-codespell_skip = "*.min.js,*.min.js.map,yarn.lock,*.po,*.robot,*.json"
+codespell_skip = "*.min.js,*.min.js.map,pnpm-lock.yaml,*.po,*.robot,*.json"
 dependencies_ignores = """
 [
     'collective.geolocationbehavior', 'plone.formwidget.geolocation',
@@ -22,7 +22,7 @@ dependencies_ignores = """
 extra_lines = """
 [project]
 name = "collective.collectionfilter"
-version = ""
+version = "6.0.1.dev0"
 description = "Plone addon for filtering collection results."
 readme = "README.md"
 license = "GPL-2.0-only"
@@ -37,6 +37,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 keywords = ["plone collection filter faceted tagcloud tags"]

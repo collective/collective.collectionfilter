@@ -276,14 +276,6 @@ run: ${RUN_PREREQUISITES} ## run/start Plone
 	@${PYBIN}runwsgi -v instance/etc/zope.ini
 
 ##############################################################################
-# NODE
-
-.PHONY: node
-node: # yarn install
-	@echo "$(OK_COLOR)Yarn install$(NO_COLOR)"
-	yarn install
-
-##############################################################################
 # CLEAN
 .PHONY: clean-venv
 clean-venv: ## remove Python virtual environment
@@ -311,13 +303,8 @@ clean-instance:  ## remove instance configuration (keeps data)
 	@echo "$(OK_COLOR)Remove Plone/Zope configuration (keeps data) and sentinel files.$(NO_COLOR)"
 	rm -f ${INSTANCE_TARGET}
 
-.PHONY: clean-node
-clean-node:  ## remove instance configuration (keeps data)
-	@echo "$(OK_COLOR)Remove npm/yarn installation.$(NO_COLOR)"
-	rm -rf ${ADDONBASE}/node_modules
-
 .PHONY: clean
-clean:  clean-venv clean-pyc clean-make clean-instance clean-node  ## clean all (except local database and pip installed packages)
+clean:  clean-venv clean-pyc clean-make clean-instance   ## clean all (except local database and pip installed packages)
 
 ##############################################################################
 # DOCKER/CONTAINER
