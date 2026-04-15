@@ -37,11 +37,11 @@ Scenario: Add filter to collection
    When I'm viewing the collection
    then Should be 6 collection results
     and Should be filter checkboxes    All (6)    blue (1)    Dokumänt (2)    Evänt (1)    green (1)    red (1)    Süper (2)
-   
+
    When Click Input "Dokumänt (2)"
    then Should be 2 collection results
     and Should be filter checkboxes    All (6)    blue (1)    Dokumänt (2)    Evänt (1)    green (1)    red (1)    Süper (2)
-   
+
    When Click Input "All (6)"
    then Should be 6 collection results
     and Should be filter checkboxes    All (6)    blue (1)    Dokumänt (2)    Evänt (1)    green (1)    red (1)    Süper (2)
@@ -52,11 +52,11 @@ Scenario: Test Batching
     and my collection has a collection filter    Subject    or    checkboxes_dropdowns
    When I'm viewing the collection
    then Should be 1 collection results
-     
+
    When Click Input "Süper (2)"
    then Should be 1 collection results
     and Should be 1 pages
-     
+
    When Click Page "1"
    then Should be 1 collection results
    then Should be 1 pages
@@ -117,25 +117,25 @@ Scenario: Combine search and AND filter
     and Should be filter checkboxes    All (1)    Evänt (1)    Süper (1)
 
 
-# Scenario: Search filter
-#     Given I've got a site with a collection
-#       and my collection has a collection search
-#       and my collection has a collection filter
-#       and I'm viewing the collection
-#     When I search for "Document"
-#     Then should be 1 collection results
-#       and Should be filter checkboxes  All (1)  Dokumänt (1)  Süper (1)
+Scenario: Search filter
+    Given I've got a site with a collection
+      and my collection has a collection search
+      and my collection has a collection filter
+      and I'm viewing the collection
+     When I search for "Document"
+     Then should be 1 collection results
+      and Should be filter checkboxes    All (1)    Dokumänt (1)    Süper (1)
 
-#     When I search for "& - * $"
-#     Then page should not contain  error
+     When I search for "& - * $"
+     Then page should not contain    error
 
-#     # Searching for query keywords (https://github.com/collective/collective.collectionfilter/issues/85)
-#     When I search for "and Document"
-#     Then should be 1 collection results
-#       and Should be filter checkboxes  All (1)  Dokumänt (1)  Süper (1)
-#     When I search for "or Document"
-#     Then should be 0 collection results
-#       and I should see 0 filter options on the page
-#     When I search for "not Document"
-#     Then should be 0 collection results
-#       and I should see 0 filter options on the page
+     # Searching for query keywords (https://github.com/collective/collective.collectionfilter/issues/85)
+     When I search for "and Document"
+     Then should be 1 collection results
+      and Should be filter checkboxes    All (1)    Dokumänt (1)    Süper (1)
+     When I search for "or Document"
+     Then should be 0 collection results
+      and I should see 0 filter options on the page
+     When I search for "not Document"
+     Then should be 0 collection results
+      and I should see 0 filter options on the page

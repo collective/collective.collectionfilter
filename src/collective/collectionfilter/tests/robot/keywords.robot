@@ -109,6 +109,12 @@ I've got a site with a collection
     Run Keyword If    ${USE_TILES} == False   Go to    ${PLONE_URL}/testcollection
     Run Keyword If    ${USE_TILES} == False   Set Batch Size    ${batch}
 
+I've got a site without a listing
+    # Sets up testdoc with Mosaic layout but without a Content Listing tile.
+    # Used to test the "need to add a Content Listing" warning in tile mode.
+    a logged in test-user
+    Enable mosaic layout for page    batch=0
+
 Enable mosaic layout for page
     [Arguments]  ${page}=${PLONE_URL}/testdoc  ${batch}=20
     Go To    ${page}
@@ -217,6 +223,10 @@ Page should not contain
     [Arguments]   ${text}
     Get Text    //body    not contains    ${text}
 
+Page should contain
+    [Arguments]   ${text}
+    Get Text    //body    contains    ${text}
+
 # Mosaic
 
 Add Contentlisting Tile
@@ -270,6 +280,37 @@ Open advanced mosaic editor
 My collection has a collection search tile
     Open advanced mosaic editor
     Add search tile
+    Save mosaic page
+
+My collection has a collection filter tile
+    [Arguments]    ${group_by}=Subject    ${op}=or    ${style}=checkboxes_dropdowns    @{options}
+    Open advanced mosaic editor
+    Add filter tile    ${group_by}    ${op}    ${style}    @{options}
+    Save mosaic page
+
+Add filter tile
+    # Inserts and configures a Collection Filter tile in the already-open Mosaic editor.
+    # Does NOT save the page — call "Save mosaic page" separately.
+    [Arguments]    ${group_by}=Subject    ${op}=or    ${style}=checkboxes_dropdowns    @{options}
+    Insert Tile    "Collection Filter"
+    Wait For Condition    Classes    //body    contains    modal-open
+    Type Text    //input[@id="form-widgets-header"]    ${group_by}
+    Set Filter Options    ${group_by}    ${op}    ${style}    @{options}
+    Click    css=.pattern-modal-buttons #buttons-save
+    Drag tile
+
+Add search tile
+    # Inserts and configures a Collection Search tile in the already-open Mosaic editor.
+    # Does NOT save the page — call "Save mosaic page" separately.
+    Insert Tile    "Collection Search"
+    Wait For Condition    Classes    //body    contains    modal-open
+    Type Text    //input[@id="form-widgets-header"]    Searchable Text
+    Click    css=.pattern-modal-buttons #buttons-save
+    Drag tile
+
+edit mosaic page
+    # Re-enters the Mosaic editor for testdoc (page must already have a Mosaic layout).
+    Open advanced mosaic editor
 
 Set Style
     [Arguments]    ${selector}    ${style}    ${value}
