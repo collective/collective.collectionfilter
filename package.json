@@ -34,7 +34,7 @@
         "build:webpack": "NODE_ENV=production webpack --config webpack.config.js",
         "build:css": "npm-run-all css-compile css-minify",
         "watch:webpack": "NODE_ENV=development webpack --config webpack.config.js --watch",
-        "watch:scss": "nodemon --watch resources/scss/ --ext scss --exec \"yarn build:css\"",
+        "watch:scss": "nodemon --watch resources/scss/ --ext scss --exec \"pnpm build:css\"",
         "start": "NODE_ENV=development webpack serve --config webpack.config.js",
         "css-compile": "sass --load-path=node_modules --style expanded --source-map --embed-sources --no-error-css resources/scss/collectionfilter.scss:src/collective/collectionfilter/static/collectionfilter.css",
         "css-minify": "cleancss --format breakWith=lf --source-map --source-map-inline-sources --output src/collective/collectionfilter/static/collectionfilter.min.css src/collective/collectionfilter/static/collectionfilter.css"
