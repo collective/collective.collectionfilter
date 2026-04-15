@@ -20,13 +20,13 @@ There are five portlets/tiles available:
 ## Filtering collections
 
 Add filter/search portlets directly to a collection.
-Selecting filter values reloads results asynchronously (no page refresh) via AJAX.
+Selecting filter values reloads results without a page refresh via AJAX.
 
 If your theme or view template needs customization for AJAX loading, adjust the `Content Selector` and/or `View Template` settings.
-Make sure the selector exists on both the source collection template and the target page.
+The selector must exist on both the source collection template and the target page.
 
 Filters can also target a remote collection — specify a `target collection` in the portlet/tile settings.
-Without AJAX, selecting a filter option redirects to the collection.
+If AJAX is disabled, selecting a filter option redirects to the collection.
 
 
 ## Mosaic integration
@@ -51,7 +51,7 @@ Install the extra:
 pip install collective.collectionfilter[geolocation]
 ```
 
-This provides a LeafletJS map tile/portlet showing `IGeolocatable` collection items.
+Enables a LeafletJS map tile/portlet that displays `IGeolocatable` collection items.
 Enable `Narrow down results` to filter the collection and other tiles when the user pans or zooms the map.
 
 
@@ -109,7 +109,7 @@ Modify the `_groupby` dict (not the `groupby` property, which triggers adapter l
 - Version 4.x — Plone 5.2
 - Version 3.x — Plone 5.0/5.1
 
-If AJAX loading doesn't work with your theme, disable it in the registry or override via [diazo](https://docs.diazo.org/en/latest/index.html).
+Should AJAX loading not work with your theme, disable it in the registry or override via [diazo](https://docs.diazo.org/en/latest/index.html).
 
 
 ## Authors
