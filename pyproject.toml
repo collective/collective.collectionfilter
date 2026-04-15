@@ -76,7 +76,7 @@ target-version = ["py310"]
 
 [tool.codespell]
 ignore-words-list = "discreet,assertin,thet,Dokument"
-skip = "*.po,*.min.js,*.min.js.map,yarn.lock,*.po,*.robot,*.json"
+skip = "*.po,*.min.js,*.min.js.map,pnpm-lock.yaml,*.po,*.robot,*.json"
 ##
 # Add extra configuration options in .meta.toml:
 #  [pyproject]
@@ -171,7 +171,7 @@ ignore = [
 
 [project]
 name = "collective.collectionfilter"
-version = ""
+version = "6.0.1.dev0"
 description = "Plone addon for filtering collection results."
 readme = "README.md"
 license = "GPL-2.0-only"
@@ -186,6 +186,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 keywords = ["plone collection filter faceted tagcloud tags"]
