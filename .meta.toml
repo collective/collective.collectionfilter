@@ -65,7 +65,7 @@ dependencies = [
 [project.optional-dependencies]
 mosaic = ["plone.app.mosaic"]
 geolocation = ["collective.geolocationbehavior >= 1.7.2", "plone.formwidget.geolocation >= 3.0.0"]
-test = ["plone.app.mosaic", "plone.browserlayer", "plone.testing", "robotsuite", "collective.geolocationbehavior", "plone.app.testing[robot]", "plone.app.robotframework", "plone.app.contenttypes", "plone.app.portlets", "plone.app.textfield", "plone.app.discussion", "plone.tiles"]
+test = ["plone.app.mosaic", "plone.browserlayer", "plone.testing", "robotsuite", "collective.geolocationbehavior", "plone.app.testing[robot]", "plone.app.robotframework", "plone.app.contenttypes", "plone.app.portlets", "plone.app.textfield", "plone.tiles"]
 
 [project.urls]
 Homepage = "http://github.com/collective/collective.collectionfilter"
