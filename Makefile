@@ -279,9 +279,9 @@ run: ${RUN_PREREQUISITES} ## run/start Plone
 # NODE
 
 .PHONY: node
-node: # yarn install
-	@echo "$(OK_COLOR)Yarn install$(NO_COLOR)"
-	yarn install
+node: # pnpm install
+	@echo "$(OK_COLOR)pnpm install$(NO_COLOR)"
+	pnpm install
 
 ##############################################################################
 # CLEAN
@@ -313,7 +313,7 @@ clean-instance:  ## remove instance configuration (keeps data)
 
 .PHONY: clean-node
 clean-node:  ## remove instance configuration (keeps data)
-	@echo "$(OK_COLOR)Remove npm/yarn installation.$(NO_COLOR)"
+	@echo "$(OK_COLOR)Remove pnpm installation.$(NO_COLOR)"
 	rm -rf ${ADDONBASE}/node_modules
 
 .PHONY: clean
