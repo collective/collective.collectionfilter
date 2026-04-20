@@ -46,7 +46,11 @@ def _encode_base_query(urlquery, idx):
 
 
 def _build_url(
-    collection_url, filter_value, current_idx_value, idx, filter_type,
+    collection_url,
+    filter_value,
+    current_idx_value,
+    idx,
+    filter_type,
     base_query_string="",
 ):
     # Build only the idx-specific query part
@@ -272,7 +276,7 @@ def get_filter_items(
     all_count = (
         catalog_results_fullcount
         if catalog_results_fullcount is not None
-        else getattr(catalog_results, 'actual_result_count', None)
+        else getattr(catalog_results, "actual_result_count", None)
         or len(catalog_results)
     )
     ret = [
