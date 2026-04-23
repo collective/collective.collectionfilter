@@ -65,3 +65,5 @@ report.html
 #  _your own configuration lines_
 #  """
 ##
+temp_auto_push.bat
+temp_interactive_push.bat
