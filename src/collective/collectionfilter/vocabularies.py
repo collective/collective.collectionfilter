@@ -104,10 +104,18 @@ def get_yes_no_title(item, *args, **kwargs):
     return translate_messagefactory(value)
 
 
+_portal_type_vocabulary_cache = None
+
+
 def translate_portal_type(value, *args, **kwargs):
-    vocabulary = ReallyUserFriendlyTypesVocabularyFactory(None)
-    term = vocabulary.getTermByToken(value)
-    return term.title if term else value
+    global _portal_type_vocabulary_cache
+    if _portal_type_vocabulary_cache is None:
+        _portal_type_vocabulary_cache = ReallyUserFriendlyTypesVocabularyFactory(None)
+    try:
+        term = _portal_type_vocabulary_cache.getTermByToken(value)
+        return term.title if term else value
+    except LookupError:
+        return value
 
 
 def sort_key_title(it):

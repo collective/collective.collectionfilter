@@ -40,7 +40,7 @@ def safe_decode(val):
     if isinstance(val, list):
         return [safe_decode(it) for it in val]
     if isinstance(val, tuple):
-        return (safe_decode(it) for it in val)
+        return tuple(safe_decode(it) for it in val)
     if val:
         return safe_text(val)
     return val
@@ -55,7 +55,7 @@ def safe_encode(val):
     if isinstance(val, list):
         return [safe_encode(it) for it in val]
     if isinstance(val, tuple):
-        return (safe_encode(it) for it in val)
+        return tuple(safe_encode(it) for it in val)
     if isinstance(val, str):
         return safe_text(val).encode("utf-8")
     return val
