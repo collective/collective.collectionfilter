@@ -1,30 +1,37 @@
-import $ from "jquery";
-import Base from "@patternslib/patternslib/src/core/base";
+import { BasePattern } from "@patternslib/patternslib/src/core/basepattern";
+import Parser from "@patternslib/patternslib/src/core/parser";
+import registry from "@patternslib/patternslib/src/core/registry";
 import Contentloader from "@plone/mockup/src/pat/contentloader/contentloader";
 
-export default Base.extend({
-    name: "collectionfilter",
-    trigger: ".pat-collectionfilter",
-    parser: "mockup",
-    defaults: {
-        collectionUUID: null,
-        collectionURL: null,
-        reloadURL: null,
-        ajaxLoad: true,
-        contentSelector: "#content-core",
-    },
-    _initmap_cycles: 2,
-    _zoomed: false,
+export const parser = new Parser("collectionfilter");
+parser.addArgument("collectionUUID", null);
+parser.addArgument("collectionURL", null);
+parser.addArgument("reloadURL", null);
+parser.addArgument("ajaxLoad", true);
+parser.addArgument("contentSelector", "#content-core");
 
-    init: function () {
-        this.$el.unbind("collectionfilter:reload");
+class Pattern extends BasePattern {
+    static name = "collectionfilter";
+    static trigger = ".pat-collectionfilter";
+    static parser = parser;
 
-        this.$el.on(
+    _initmap_cycles = 2;
+    _zoomed = false;
+    _ac = null;
+
+    async init() {
+        // Remove previous listeners if re-initialized
+        if (this._ac) this._ac.abort();
+        this._ac = new AbortController();
+        const signal = this._ac.signal;
+
+        this.el.addEventListener(
             "collectionfilter:reload",
-            function (e, data) {
+            (e) => {
+                const data = e.detail;
                 if (
-                    (data.noReloadSearch && this.$el.hasClass("collectionSearch")) ||
-                    (data.noReloadMap && this.$el.hasClass("collectionMaps"))
+                    (data.noReloadSearch && this.el.classList.contains("collectionSearch")) ||
+                    (data.noReloadMap && this.el.classList.contains("collectionMaps"))
                 ) {
                     // don't reload search while typing or map while move/zooming
                     return;
@@ -32,131 +39,140 @@ export default Base.extend({
                 if (data.collectionUUID === this.options.collectionUUID) {
                     this.reload(data.targetFilterURL);
                 }
-            }.bind(this)
+            },
+            { signal }
         );
 
         // Collection Search
-        if (this.$el.hasClass("collectionSearch") && this.options.ajaxLoad) {
+        if (this.el.classList.contains("collectionSearch") && this.options.ajaxLoad) {
             // initialize collection search
 
-            $('button[type="submit"]', this.$el).hide();
-            $("form", this.$el).on("submit", function (e) {
-                e.preventDefault();
+            this.el.querySelectorAll('button[type="submit"]').forEach((btn) => {
+                btn.style.display = "none";
             });
-            var delayTimer;
-            $('input[name="SearchableText"]', this.$el).on(
-                "keyup",
-                function (e) {
-                    clearTimeout(delayTimer);
-                    // minimum 3 characters before searching
-                    if ($(e.target).val().length > 0 && $(e.target).val().length < 3)
-                        return;
-                    delayTimer = setTimeout(
-                        function () {
-                            var collectionURL = $(e.target).data("url");
-                            var val = encodeURIComponent($(e.target).val());
+            this.el.querySelectorAll("form").forEach((form) => {
+                form.addEventListener("submit", (e) => e.preventDefault(), { signal });
+            });
+            let delayTimer;
+            this.el.querySelectorAll('input[name="SearchableText"]').forEach((input) => {
+                input.addEventListener(
+                    "keyup",
+                    (e) => {
+                        clearTimeout(delayTimer);
+                        // minimum 3 characters before searching
+                        if (e.target.value.length > 0 && e.target.value.length < 3)
+                            return;
+                        delayTimer = setTimeout(() => {
+                            let collectionURL = e.target.dataset.url;
+                            const val = encodeURIComponent(e.target.value);
                             if (val) {
-                                collectionURL +=
-                                    "&" + $(e.target).attr("name") + "=" + val;
+                                collectionURL += "&" + e.target.name + "=" + val;
                             }
-                            $(this.trigger).trigger("collectionfilter:reload", {
+                            this._dispatchReload({
                                 collectionUUID: this.options.collectionUUID,
                                 targetFilterURL: collectionURL,
                                 noReloadSearch: true,
                             });
                             this.reloadCollection(collectionURL);
-                        }.bind(this),
-                        500
-                    );
-                }.bind(this)
-            );
-            return; // no more action neccesarry.
+                        }, 500);
+                    },
+                    { signal }
+                );
+            });
+            return; // no more action necessary.
         }
 
         // OPTION 1 - filter rendered as links
         // Do not handle click event for links with class ".collectionfilter-disabled"
-        $(".filterContent a:not(.collectionfilter-disabled)", this.$el).on(
-            "click",
-            function (e) {
-                e.stopPropagation();
-                e.preventDefault();
-                // TODO: nextline: strange, it's not the anchor element itself,
-                // but a span. jQuery's closest also catches the root element
-                // itself, so this shouldn't be a problem.
-                var collectionURL = $(e.target).closest("a").attr("href");
+        this.el
+            .querySelectorAll(".filterContent a:not(.collectionfilter-disabled)")
+            .forEach((a) => {
+                a.addEventListener(
+                    "click",
+                    (e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        // TODO: nextline: strange, it's not the anchor element itself,
+                        // but a span. closest also catches the root element
+                        // itself, so this shouldn't be a problem.
+                        const collectionURL = e.target.closest("a").href;
 
-                $(this.trigger).trigger("collectionfilter:reload", {
-                    collectionUUID: this.options.collectionUUID,
-                    targetFilterURL: collectionURL,
-                });
+                        this._dispatchReload({
+                            collectionUUID: this.options.collectionUUID,
+                            targetFilterURL: collectionURL,
+                        });
 
-                this.reloadCollection(collectionURL);
-            }.bind(this)
-        );
+                        this.reloadCollection(collectionURL);
+                    },
+                    { signal }
+                );
+            });
 
         // OPTION 2 - filter rendered as checkboxes or as pat-select2
-        $(".filterContent input", this.$el).on(
-            "change",
-            function (e) {
+        this.el.querySelectorAll(".filterContent input").forEach((input) => {
+            input.addEventListener(
+                "change",
+                (e) => {
+                    let collectionURL = null;
 
-                var collectionURL = null;
-
-                if(e.currentTarget.classList.contains('pat-select2') == true){
-
-                    // the pat-select2 field
-                    const select2 = e.currentTarget
-                    const options = JSON.parse(select2.dataset.results)
-                    let current_option = null
-                    if(e.added){
-                        // option is added
-                        current_option = e.added
-                    } else{
-                        // option is removed
-                        current_option = e.removed
+                    if (e.currentTarget.classList.contains("pat-select2")) {
+                        // the pat-select2 field
+                        const select2 = e.currentTarget;
+                        const options = JSON.parse(select2.dataset.results);
+                        let current_option = null;
+                        if (e.added) {
+                            // option is added
+                            current_option = e.added;
+                        } else {
+                            // option is removed
+                            current_option = e.removed;
+                        }
+                        const item = options.find((item) => item.title == current_option.text);
+                        collectionURL = item.url;
+                    } else {
+                        // other checkboxes
+                        collectionURL = e.target.dataset.url;
                     }
 
-                    const item = options.find((item) => item.title == current_option.text)
+                    this._dispatchReload({
+                        collectionUUID: this.options.collectionUUID,
+                        targetFilterURL: collectionURL,
+                    });
 
-                    collectionURL = item.url
-
-                } else{
-                    //other checkboxes
-                    collectionURL = $(e.target).data("url");
-                }
-
-                $(this.trigger).trigger("collectionfilter:reload", {
-                    collectionUUID: this.options.collectionUUID,
-                    targetFilterURL: collectionURL,
-                });
-
-                this.reloadCollection(collectionURL);
-
-            }.bind(this)
-        );
+                    this.reloadCollection(collectionURL);
+                },
+                { signal }
+            );
+        });
 
         // OPTION 3 - filter rendered as dropdowns
-        $(".filterContent select", this.$el).on(
-            "change",
-            function (e) {
-                // See: https://stackoverflow.com/a/12750327/1337474
-                var option = $("option:selected", e.target);
-                var collectionURL = $(option).data("url");
+        this.el.querySelectorAll(".filterContent select").forEach((select) => {
+            select.addEventListener(
+                "change",
+                (e) => {
+                    // See: https://stackoverflow.com/a/12750327/1337474
+                    const option = e.target.selectedOptions[0];
+                    const collectionURL = option.dataset.url;
 
-                $(this.trigger).trigger("collectionfilter:reload", {
-                    collectionUUID: this.options.collectionUUID,
-                    targetFilterURL: collectionURL,
-                });
+                    this._dispatchReload({
+                        collectionUUID: this.options.collectionUUID,
+                        targetFilterURL: collectionURL,
+                    });
 
-                this.reloadCollection(collectionURL);
-            }.bind(this)
-        );
+                    this.reloadCollection(collectionURL);
+                },
+                { signal }
+            );
+        });
 
         // OPTION4 - maps filter
-        if (this.$el.hasClass("collectionMaps")) {
-            $(".pat-leaflet", this.$el).on(
+        if (this.el.classList.contains("collectionMaps")) {
+            // Leaflet events are dispatched via jQuery - use lazy import
+            const $ = (await import("jquery")).default;
+            $(".pat-leaflet", this.el).on(
                 "leaflet.moveend leaflet.zoomend",
-                function (e, le) {
-                    var narrow_down = $(e.target).data("narrow-down-result");
+                (e, le) => {
+                    const narrow_down = e.target.dataset.narrowDownResult;
                     // do nothing if not narrowing down result
                     if (narrow_down.toLowerCase() === "false") return;
 
@@ -167,15 +183,15 @@ export default Base.extend({
                         return;
                     }
 
-                    var levent = le["original_event"];
+                    const levent = le["original_event"];
                     // prevent double loading when zooming (because it's always a move too)
                     if (levent.type === "moveend" && this._zoomed) {
                         this._zoomed = false;
                         return;
                     }
                     if (levent.type === "zoomend") this._zoomed = true;
-                    var collectionURL = $(e.target).data("url"),
-                        bounds = levent.target.getBounds();
+                    let collectionURL = e.target.dataset.url;
+                    const bounds = levent.target.getBounds();
                     // generate bounds query
                     collectionURL +=
                         "&latitude.query:list:record=" +
@@ -190,43 +206,52 @@ export default Base.extend({
                         bounds._southWest.lng +
                         "&longitude.range:record=minmax";
 
-                    $(this.trigger).trigger("collectionfilter:reload", {
+                    this._dispatchReload({
                         collectionUUID: this.options.collectionUUID,
                         targetFilterURL: collectionURL,
                         noReloadMap: true,
                     });
 
                     this.reloadCollection(collectionURL);
-                }.bind(this)
+                }
             );
         }
+    }
 
-    },
+    _dispatchReload(data) {
+        document.querySelectorAll(this.trigger).forEach((el) => {
+            el.dispatchEvent(
+                new CustomEvent("collectionfilter:reload", {
+                    bubbles: false,
+                    detail: data,
+                })
+            );
+        });
+    }
 
-    reload: function (filterURL) {
+    reload(filterURL) {
         if (!this.options.ajaxLoad) {
             window.location.href = filterURL;
             return;
         }
-        var reloadURL = this.options.reloadURL;
-        var urlParts = reloadURL.split("?");
-        var query1 = urlParts[1] || [];
-        var query2 = filterURL.split("?")[1] || [];
-        var query = [].concat(query1, query2).join("&");
-        reloadURL = [].concat(urlParts[0], query).join("?");
+        const urlParts = this.options.reloadURL.split("?");
+        const query1 = urlParts[1] || [];
+        const query2 = filterURL.split("?")[1] || [];
+        const query = [].concat(query1, query2).join("&");
+        const reloadURL = [].concat(urlParts[0], query).join("?");
 
-        var cl = new Contentloader(this.$el, {
+        new Contentloader(this.el, {
             url: reloadURL,
-            target: this.$el,
+            target: this.el,
             content: "aside",
             trigger: "immediate",
         });
-    },
+    }
 
-    reloadCollection: function (collectionURL) {
+    reloadCollection(collectionURL) {
         if (!this.options.ajaxLoad) return;
-        var cl = new Contentloader(
-            $(this.options.contentSelector).parent(), // let base element for setting classes and triggering events be the parent, which isn't replaced.
+        new Contentloader(
+            document.querySelector(this.options.contentSelector).parentElement, // let base element for setting classes and triggering events be the parent, which isn't replaced.
             {
                 url: collectionURL + "&ajax_load=1",
                 target: this.options.contentSelector,
@@ -243,7 +268,7 @@ export default Base.extend({
         // XXX: This leads to unwanted browser url when the context
         // is not the collection for eg. a Mosaic Page with filter
         // tiles.
-        var re = /@@.*\//;
+        const re = /@@.*\//;
         collectionURL = collectionURL.replace(re, "");
         window.history.replaceState(
             {
@@ -252,5 +277,8 @@ export default Base.extend({
             "",
             collectionURL
         );
-    },
-});
+    }
+}
+
+registry.register(Pattern);
+export default Pattern;
