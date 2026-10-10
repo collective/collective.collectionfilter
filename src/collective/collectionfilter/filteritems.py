@@ -34,30 +34,61 @@ except ImportError:
         pass
 
 
+def _encode_base_query(urlquery, idx):
+    """Pre-encode the parts of urlquery that don't change per filter value.
+
+    Returns (base_query_string, has_base) where base_query_string is the
+    URL-encoded string of all query params except idx and idx_op.
+    """
+    base_parts = {k: v for k, v in urlquery.items() if k != idx and k != idx + "_op"}
+    encoded = urlencode(safe_encode(base_parts), doseq=True) if base_parts else ""
+    return encoded
+
+
 def _build_url(
-    collection_url, urlquery, filter_value, current_idx_value, idx, filter_type
+    collection_url,
+    filter_value,
+    current_idx_value,
+    idx,
+    filter_type,
+    base_query_string="",
 ):
-    # Build filter url query
-    _urlquery = urlquery.copy()
-
-    # Allow deselection
+    # Build only the idx-specific query part
+    idx_query = {}
     if filter_value in current_idx_value:
-        _urlquery[idx] = [it for it in current_idx_value if it != filter_value]
+        remaining = [it for it in current_idx_value if it != filter_value]
+        if remaining:
+            idx_query[idx] = remaining
     elif filter_type != "single":
-        # additive filter behavior
-        _urlquery[idx] = current_idx_value + [filter_value]
-        _urlquery[idx + "_op"] = filter_type  # additive operator
+        idx_query[idx] = current_idx_value + [filter_value]
+        idx_query[idx + "_op"] = filter_type
     else:
-        _urlquery[idx] = filter_value
+        idx_query[idx] = filter_value
 
-    query_param = urlencode(safe_encode(_urlquery), doseq=True)
-    return "/".join(
-        [
-            it
-            for it in [collection_url, "?" + query_param if query_param else None]
-            if it
-        ]
-    )
+    idx_param = urlencode(safe_encode(idx_query), doseq=True) if idx_query else ""
+
+    # Combine base and idx-specific parts
+    if base_query_string and idx_param:
+        query_param = base_query_string + "&" + idx_param
+    else:
+        query_param = base_query_string or idx_param
+
+    if query_param:
+        return collection_url + "/?" + query_param
+    return collection_url
+
+
+# Module-level cache for idnormalizer results within a request
+_idnorm_cache = {}
+
+
+def _cached_normalize(value):
+    """Cache idnormalizer.normalize results to avoid repeated normalization."""
+    result = _idnorm_cache.get(value)
+    if result is None:
+        result = idnormalizer.normalize(value)
+        _idnorm_cache[value] = result
+    return result
 
 
 def _build_option(filter_value, url, current_idx_value, groupby_options):
@@ -77,7 +108,7 @@ def _build_option(filter_value, url, current_idx_value, groupby_options):
     # Set selected state
     selected = filter_value in current_idx_value
     css_class = "filterItem {}{} {}".format(
-        "filter-" + idnormalizer.normalize(filter_value),
+        "filter-" + _cached_normalize(filter_value),
         " selected" if selected else "",
         css_modifier(filter_value) if css_modifier else "",
     )
@@ -164,11 +195,15 @@ def get_filter_items(
 
     urlquery = base_query(request_params, extra_ignores)
 
+    # Pre-encode the base query parts that don't change per filter value
+    base_query_string = _encode_base_query(urlquery, idx)
+
     # Get all collection results with additional filter defined by urlquery
     custom_query.update(urlquery)
     custom_query = make_query(custom_query)
 
     catalog_results = collection.results(custom_query, request_params)
+    catalog_results_fullcount = None
     if narrow_down and show_count:
         # we need the extra_ignores to get a true count
         # even when narrow_down filters the display of indexed values
@@ -176,7 +211,8 @@ def get_filter_items(
         count_query = {}
         count_urlquery = base_query(request_params, [idx, idx + "_op"])
         count_query.update(count_urlquery)
-        catalog_results_fullcount = collection.results(count_query, request_params)
+        count_results = collection.results(count_query, request_params)
+        catalog_results_fullcount = len(count_results)
     if not catalog_results:
         return None
 
@@ -220,11 +256,11 @@ def get_filter_items(
 
             url = _build_url(
                 collection_url=option_url,
-                urlquery=urlquery,
                 filter_value=filter_value,
                 current_idx_value=current_idx_value,
                 idx=idx,
                 filter_type=filter_type,
+                base_query_string=base_query_string,
             )
             grouped_results[filter_value] = _build_option(
                 filter_value=filter_value,
@@ -237,9 +273,12 @@ def get_filter_items(
     urlquery_all = {
         k: v for k, v in list(urlquery.items()) if k not in (idx, idx + "_op")
     }
-    if narrow_down and show_count:
-        # TODO: catalog_results_fullcount is possibly undefined
-        catalog_results = catalog_results_fullcount
+    all_count = (
+        catalog_results_fullcount
+        if catalog_results_fullcount is not None
+        else getattr(catalog_results, "actual_result_count", None)
+        or len(catalog_results)
+    )
     ret = [
         {
             "title": translate(
@@ -252,7 +291,7 @@ def get_filter_items(
             ),
             "value": "all",
             "css_class": "filterItem filter-all",
-            "count": len(catalog_results),
+            "count": all_count,
             "selected": idx not in request_params,
         }
     ]
